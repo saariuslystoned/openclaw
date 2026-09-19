@@ -1,0 +1,22 @@
+{
+  "variant": "consult-nosched",
+  "model": "gemini-3.8-live-extended-thinking",
+  "errors": [],
+  "tool_calls": [
+    "lookup_calendar"
+  ],
+  "status_transitions": [
+    "IN_PROGRESS",
+    "IDLE"
+  ],
+  "audio_bytes": 336482,
+  "audio_seconds": 7.0,
+  "interrupted_seen": false,
+  "turn_complete_count": 2,
+  "final_result_spoken": false,
+  "output_transcript": "Let me check your calendar for tomorrow.I'm checking your calendar for Sunday, September 20, 2026 now. One moment.",
+  "input_transcript": "Hey Gemini. What's on my calendar tomorrow?",
+  "acted": false,
+  "final_sent_at": 17.411103010177612,
+  "final_delay": 6.0
+}

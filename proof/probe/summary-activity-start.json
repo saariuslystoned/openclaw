@@ -1,0 +1,16 @@
+{
+  "variant": "activity-start",
+  "model": "gemini-3.8-live-extended-thinking",
+  "errors": [],
+  "tool_calls": [],
+  "status_transitions": [],
+  "audio_bytes": 1589282,
+  "audio_seconds": 33.1,
+  "interrupted_seen": false,
+  "turn_complete_count": 0,
+  "final_result_spoken": false,
+  "output_transcript": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,",
+  "input_transcript": "Please count slowly from 1 to 40. One number at a time. And do not stop until you reach 40.",
+  "acted": true,
+  "final_sent_at": null
+}

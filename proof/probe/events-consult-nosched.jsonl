@@ -1,0 +1,29 @@
+{"t": 0.066, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "consult-nosched"}
+{"t": 0.393, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.131, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 6.979, "kind": "input_transcription", "text": "Hey Gemini. What's on my calendar tomorrow?", "finished": null}
+{"t": 7.14, "kind": "output_transcription", "text": "Let me check your ", "finished": null}
+{"t": 7.14, "kind": "audio", "bytes": 16800, "total": 16800}
+{"t": 7.37, "kind": "audio", "bytes": 17280, "total": 34080}
+{"t": 7.739, "kind": "output_transcription", "text": "schedule for tomorrow.", "finished": null}
+{"t": 7.74, "kind": "audio", "bytes": 28800, "total": 62880}
+{"t": 8.323, "kind": "audio", "bytes": 15360, "total": 78240}
+{"t": 8.644, "kind": "audio", "bytes": 17280, "total": 95520}
+{"t": 8.99, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 8.992, "kind": "server_content", "turn_complete": true, "interaction_status": "IN_PROGRESS"}
+{"t": 9.636, "kind": "tool_call", "calls": [{"id": "call_11570_fc_0_0", "name": "lookup_calendar", "args": {"day": "2026-09-20"}}]}
+{"t": 9.637, "kind": "send_tool_response", "stage": "interim", "will_continue": true, "scheduling": false}
+{"t": 10.66, "kind": "output_transcription", "text": "Checking your ", "finished": null}
+{"t": 10.66, "kind": "audio", "bytes": 2, "total": 95522}
+{"t": 10.708, "kind": "audio", "bytes": 7200, "total": 102722}
+{"t": 10.757, "kind": "audio", "bytes": 7680, "total": 110402}
+{"t": 10.923, "kind": "audio", "bytes": 11520, "total": 121922}
+{"t": 11.159, "kind": "audio", "bytes": 9600, "total": 131522}
+{"t": 11.358, "kind": "audio", "bytes": 9600, "total": 141122}
+{"t": 11.558, "kind": "output_transcription", "text": "calendar now.", "finished": null}
+{"t": 11.558, "kind": "audio", "bytes": 9600, "total": 150722}
+{"t": 11.764, "kind": "audio", "bytes": 15360, "total": 166082}
+{"t": 12.078, "kind": "audio", "bytes": 7680, "total": 173762}
+{"t": 12.232, "kind": "audio", "bytes": 1920, "total": 175682}
+{"t": 12.271, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 12.271, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}

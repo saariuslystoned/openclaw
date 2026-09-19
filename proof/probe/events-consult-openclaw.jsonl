@@ -1,0 +1,16 @@
+{"t": 0.066, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "consult-openclaw"}
+{"t": 0.412, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.138, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 7.0, "kind": "input_transcription", "text": "Hey Gemini. What's on my calendar tomorrow?", "finished": null}
+{"t": 7.012, "kind": "output_transcription", "text": "Let me check ", "finished": null}
+{"t": 7.012, "kind": "audio", "bytes": 8160, "total": 8160}
+{"t": 7.092, "kind": "audio", "bytes": 15360, "total": 23520}
+{"t": 7.414, "kind": "audio", "bytes": 19200, "total": 42720}
+{"t": 7.812, "kind": "output_transcription", "text": "your schedule.", "finished": null}
+{"t": 7.812, "kind": "audio", "bytes": 19200, "total": 61920}
+{"t": 8.196, "kind": "audio", "bytes": 11520, "total": 73440}
+{"t": 8.425, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 8.429, "kind": "server_content", "turn_complete": true, "interaction_status": "IN_PROGRESS"}
+{"t": 9.283, "kind": "tool_call", "calls": [{"id": "call_271189_fc_0_0", "name": "lookup_calendar", "args": {"day": "2026-09-20"}}]}
+{"t": 9.285, "kind": "send_tool_response", "stage": "interim", "will_continue": true, "scheduling": true}
+{"t": 9.408, "kind": "error", "type": "APIError", "message": "1007 None. Function response scheduling is not supported for this model."}

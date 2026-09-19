@@ -1,0 +1,22 @@
+{
+  "variant": "consult-openclaw",
+  "model": "gemini-3.8-live-extended-thinking",
+  "errors": [
+    "APIError: 1007 None. Function response scheduling is not supported for this model."
+  ],
+  "tool_calls": [
+    "lookup_calendar"
+  ],
+  "status_transitions": [
+    "IN_PROGRESS"
+  ],
+  "audio_bytes": 73440,
+  "audio_seconds": 1.5,
+  "interrupted_seen": false,
+  "turn_complete_count": 1,
+  "final_result_spoken": false,
+  "output_transcript": "Let me check your schedule.",
+  "input_transcript": "Hey Gemini. What's on my calendar tomorrow?",
+  "acted": false,
+  "final_sent_at": null
+}

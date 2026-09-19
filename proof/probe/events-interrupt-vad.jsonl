@@ -1,0 +1,29 @@
+{"t": 0.053, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-vad"}
+{"t": 0.325, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.091, "kind": "say", "text": "Please count slowly from one to forty, one number at a time, and do not stop until you reach forty.", "ms": 5697}
+{"t": 10.24, "kind": "input_transcription", "text": "Please count slowly from 1 to 40. One number at a time. And do not stop until you reach 40.", "finished": null}
+{"t": 10.244, "kind": "output_transcription", "text": "1, 2, 3, ", "finished": null}
+{"t": 10.244, "kind": "audio", "bytes": 5280, "total": 5280}
+{"t": 10.256, "kind": "audio", "bytes": 7680, "total": 12960}
+{"t": 10.44, "kind": "audio", "bytes": 7680, "total": 20640}
+{"t": 10.579, "kind": "audio", "bytes": 13440, "total": 34080}
+{"t": 10.846, "kind": "audio", "bytes": 3840, "total": 37920}
+{"t": 10.944, "kind": "output_transcription", "text": "4, 5,", "finished": null}
+{"t": 10.944, "kind": "audio", "bytes": 19200, "total": 57120}
+{"t": 11.339, "kind": "audio", "bytes": 15360, "total": 72480}
+{"t": 11.657, "kind": "audio", "bytes": 13440, "total": 85920}
+{"t": 11.948, "kind": "output_transcription", "text": " 6,", "finished": null}
+{"t": 11.948, "kind": "audio", "bytes": 24960, "total": 110880}
+{"t": 12.457, "kind": "audio", "bytes": 15360, "total": 126240}
+{"t": 12.773, "kind": "audio", "bytes": 7680, "total": 133920}
+{"t": 12.937, "kind": "output_transcription", "text": " 7,", "finished": null}
+{"t": 12.937, "kind": "audio", "bytes": 15360, "total": 149280}
+{"t": 12.945, "kind": "action", "what": "speak 'Stop, that's enough.' (server VAD)"}
+{"t": 14.165, "kind": "say", "text": "Stop, that's enough.", "ms": 1259}
+{"t": 14.166, "kind": "audio", "bytes": 17280, "total": 166560}
+{"t": 14.166, "kind": "audio", "bytes": 15360, "total": 181920}
+{"t": 14.166, "kind": "output_transcription", "text": " 8,", "finished": null}
+{"t": 14.166, "kind": "audio", "bytes": 23040, "total": 204960}
+{"t": 14.422, "kind": "audio", "bytes": 21120, "total": 226080}
+{"t": 14.502, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 14.847, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}

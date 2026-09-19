@@ -1,0 +1,22 @@
+{
+  "variant": "consult-nosched",
+  "model": "gemini-3.8-live-extended-thinking",
+  "errors": [],
+  "tool_calls": [
+    "lookup_calendar"
+  ],
+  "status_transitions": [
+    "IN_PROGRESS",
+    "IDLE"
+  ],
+  "audio_bytes": 224640,
+  "audio_seconds": 4.7,
+  "interrupted_seen": false,
+  "turn_complete_count": 2,
+  "final_result_spoken": false,
+  "output_transcript": "Let me check your schedule for tomorrow.I'm checking your calendar for tomorrow right now.",
+  "input_transcript": "Hey Gemini. What's on my calendar tomorrow?",
+  "acted": false,
+  "final_sent_at": null,
+  "final_delay": 6.0
+}

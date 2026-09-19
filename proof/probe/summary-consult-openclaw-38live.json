@@ -1,0 +1,19 @@
+{
+  "variant": "consult-openclaw",
+  "model": "gemini-3.8-live",
+  "errors": [],
+  "tool_calls": [
+    "lookup_calendar"
+  ],
+  "status_transitions": [],
+  "audio_bytes": 337442,
+  "audio_seconds": 7.0,
+  "interrupted_seen": false,
+  "turn_complete_count": 3,
+  "final_result_spoken": true,
+  "output_transcript": "Sure, let me check your schedule for tomorrow.Tomorrow, you have the dentist at ten in the morning, followed by lunch with Sam at noon.",
+  "input_transcript": "Hey Gemini. What's on my calendar tomorrow?",
+  "acted": false,
+  "final_sent_at": 14.384160995483398,
+  "final_delay": 6.0
+}

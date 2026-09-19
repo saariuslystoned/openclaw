@@ -1,0 +1,22 @@
+{
+  "variant": "consult-final-only",
+  "model": "gemini-3.8-live-extended-thinking",
+  "errors": [],
+  "tool_calls": [
+    "lookup_calendar"
+  ],
+  "status_transitions": [
+    "IN_PROGRESS",
+    "IDLE"
+  ],
+  "audio_bytes": 354242,
+  "audio_seconds": 7.4,
+  "interrupted_seen": false,
+  "turn_complete_count": 2,
+  "final_result_spoken": true,
+  "output_transcript": "Let me check your calendar for tomorrow.Tomorrow, you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.",
+  "input_transcript": "Hey Gemini. What's on my calendar tomorrow?",
+  "acted": false,
+  "final_sent_at": 35.308003187179565,
+  "final_delay": 25.0
+}

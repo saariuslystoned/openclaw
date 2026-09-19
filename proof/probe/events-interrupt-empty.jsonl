@@ -1,0 +1,24 @@
+{"t": 0.053, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-empty"}
+{"t": 0.361, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.08, "kind": "say", "text": "Please count slowly from one to forty, one number at a time, and do not stop until you reach forty.", "ms": 5697}
+{"t": 10.207, "kind": "input_transcription", "text": "Please count slowly from 1 to 40. One number at a time. And do not stop until you reach 40.", "finished": null}
+{"t": 10.21, "kind": "output_transcription", "text": "1, 2, 3, ", "finished": null}
+{"t": 10.21, "kind": "audio", "bytes": 2, "total": 2}
+{"t": 10.217, "kind": "audio", "bytes": 9600, "total": 9602}
+{"t": 10.376, "kind": "audio", "bytes": 13440, "total": 23042}
+{"t": 10.603, "kind": "audio", "bytes": 13440, "total": 36482}
+{"t": 10.886, "kind": "output_transcription", "text": "4, 5,", "finished": null}
+{"t": 10.887, "kind": "audio", "bytes": 11520, "total": 48002}
+{"t": 11.143, "kind": "audio", "bytes": 7680, "total": 55682}
+{"t": 11.305, "kind": "audio", "bytes": 15360, "total": 71042}
+{"t": 11.599, "kind": "audio", "bytes": 11520, "total": 82562}
+{"t": 11.829, "kind": "audio", "bytes": 1920, "total": 84482}
+{"t": 11.888, "kind": "output_transcription", "text": " 6,", "finished": null}
+{"t": 11.888, "kind": "audio", "bytes": 19200, "total": 103682}
+{"t": 12.292, "kind": "audio", "bytes": 24960, "total": 128642}
+{"t": 12.796, "kind": "audio", "bytes": 3840, "total": 132482}
+{"t": 12.904, "kind": "output_transcription", "text": " 7,", "finished": null}
+{"t": 12.904, "kind": "audio", "bytes": 24960, "total": 157442}
+{"t": 12.927, "kind": "action", "what": "send_client_content(turns=None, turn_complete=True)"}
+{"t": 13.0, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 13.393, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}

@@ -1,0 +1,46 @@
+{"t": 0.07, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "consult-final-only"}
+{"t": 0.419, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.041, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2527}
+{"t": 6.828, "kind": "input_transcription", "text": "Hey Gemini. What's on my calendar tomorrow?", "finished": null}
+{"t": 6.837, "kind": "output_transcription", "text": "Let me check your ", "finished": null}
+{"t": 6.837, "kind": "audio", "bytes": 6720, "total": 6720}
+{"t": 6.924, "kind": "audio", "bytes": 19200, "total": 25920}
+{"t": 7.285, "kind": "audio", "bytes": 17280, "total": 43200}
+{"t": 7.651, "kind": "output_transcription", "text": "calendar for tomorrow.", "finished": null}
+{"t": 7.651, "kind": "audio", "bytes": 24960, "total": 68160}
+{"t": 8.16, "kind": "audio", "bytes": 15360, "total": 83520}
+{"t": 8.475, "kind": "audio", "bytes": 7680, "total": 91200}
+{"t": 8.629, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 8.63, "kind": "server_content", "turn_complete": true, "interaction_status": "IN_PROGRESS"}
+{"t": 10.302, "kind": "tool_call", "calls": [{"id": "call_368848_fc_0_0", "name": "lookup_calendar", "args": {"day": "2026-09-20"}}]}
+{"t": 35.307, "kind": "send_tool_response", "stage": "final", "scheduling": false}
+{"t": 36.536, "kind": "output_transcription", "text": "Tomorrow, you have ", "finished": null}
+{"t": 36.536, "kind": "audio", "bytes": 2, "total": 91202}
+{"t": 36.585, "kind": "audio", "bytes": 11520, "total": 102722}
+{"t": 36.73, "kind": "audio", "bytes": 15360, "total": 118082}
+{"t": 37.046, "kind": "audio", "bytes": 9600, "total": 127682}
+{"t": 37.245, "kind": "output_transcription", "text": "a dentist appointment", "finished": null}
+{"t": 37.245, "kind": "audio", "bytes": 7680, "total": 135362}
+{"t": 37.412, "kind": "audio", "bytes": 15360, "total": 150722}
+{"t": 37.728, "kind": "audio", "bytes": 9600, "total": 160322}
+{"t": 37.925, "kind": "audio", "bytes": 11520, "total": 171842}
+{"t": 38.16, "kind": "audio", "bytes": 3840, "total": 175682}
+{"t": 38.246, "kind": "output_transcription", "text": " at 10:00 AM, followed", "finished": null}
+{"t": 38.246, "kind": "audio", "bytes": 11520, "total": 187202}
+{"t": 38.485, "kind": "audio", "bytes": 9600, "total": 196802}
+{"t": 38.684, "kind": "audio", "bytes": 9600, "total": 206402}
+{"t": 38.886, "kind": "audio", "bytes": 11520, "total": 217922}
+{"t": 39.122, "kind": "audio", "bytes": 5760, "total": 223682}
+{"t": 39.255, "kind": "output_transcription", "text": " by lunch with", "finished": null}
+{"t": 39.255, "kind": "audio", "bytes": 23040, "total": 246722}
+{"t": 39.729, "kind": "audio", "bytes": 15360, "total": 262082}
+{"t": 40.051, "kind": "audio", "bytes": 17280, "total": 279362}
+{"t": 40.413, "kind": "output_transcription", "text": " Sam at 12:00 PM.", "finished": null}
+{"t": 40.414, "kind": "audio", "bytes": 19200, "total": 298562}
+{"t": 40.81, "kind": "audio", "bytes": 15360, "total": 313922}
+{"t": 41.13, "kind": "audio", "bytes": 15360, "total": 329282}
+{"t": 41.468, "kind": "audio", "bytes": 21120, "total": 350402}
+{"t": 41.886, "kind": "audio", "bytes": 3840, "total": 354242}
+{"t": 41.958, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 41.965, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 41.965, "kind": "stream_ended", "close_code": null, "close_reason": "None"}

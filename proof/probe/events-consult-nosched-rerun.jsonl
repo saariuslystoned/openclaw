@@ -1,0 +1,36 @@
+{"t": 0.07, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "consult-nosched"}
+{"t": 0.387, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.044, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 6.898, "kind": "input_transcription", "text": "Hey Gemini. What's on my calendar tomorrow?", "finished": null}
+{"t": 6.914, "kind": "output_transcription", "text": "Let me check your ", "finished": null}
+{"t": 6.914, "kind": "audio", "bytes": 10560, "total": 10560}
+{"t": 7.041, "kind": "audio", "bytes": 17280, "total": 27840}
+{"t": 7.414, "kind": "output_transcription", "text": "schedule for tomorrow.", "finished": null}
+{"t": 7.415, "kind": "audio", "bytes": 32640, "total": 60480}
+{"t": 8.079, "kind": "audio", "bytes": 15360, "total": 75840}
+{"t": 8.389, "kind": "audio", "bytes": 19200, "total": 95040}
+{"t": 8.788, "kind": "audio", "bytes": 5760, "total": 100800}
+{"t": 8.899, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 8.902, "kind": "server_content", "turn_complete": true, "interaction_status": "IN_PROGRESS"}
+{"t": 14.299, "kind": "tool_call", "calls": [{"id": "call_278414_fc_0_0", "name": "lookup_calendar", "args": {"day": "2026-09-20"}}]}
+{"t": 14.301, "kind": "send_tool_response", "stage": "interim", "will_continue": true, "scheduling": false}
+{"t": 16.017, "kind": "output_transcription", "text": "I'm checking your calendar ", "finished": null}
+{"t": 16.017, "kind": "audio", "bytes": 2880, "total": 103680}
+{"t": 16.028, "kind": "audio", "bytes": 9600, "total": 113280}
+{"t": 16.175, "kind": "audio", "bytes": 9600, "total": 122880}
+{"t": 16.375, "kind": "audio", "bytes": 7680, "total": 130560}
+{"t": 16.535, "kind": "audio", "bytes": 7680, "total": 138240}
+{"t": 16.699, "kind": "output_transcription", "text": "for tomorrow right", "finished": null}
+{"t": 16.699, "kind": "audio", "bytes": 9600, "total": 147840}
+{"t": 16.897, "kind": "audio", "bytes": 11520, "total": 159360}
+{"t": 17.142, "kind": "audio", "bytes": 13440, "total": 172800}
+{"t": 17.416, "kind": "audio", "bytes": 7680, "total": 180480}
+{"t": 17.577, "kind": "audio", "bytes": 7680, "total": 188160}
+{"t": 17.74, "kind": "output_transcription", "text": " now.", "finished": null}
+{"t": 17.74, "kind": "audio", "bytes": 13440, "total": 201600}
+{"t": 18.017, "kind": "audio", "bytes": 7680, "total": 209280}
+{"t": 18.176, "kind": "audio", "bytes": 7680, "total": 216960}
+{"t": 18.335, "kind": "audio", "bytes": 7680, "total": 224640}
+{"t": 18.49, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 18.493, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 18.493, "kind": "stream_ended", "close_code": null, "close_reason": "None"}
