@@ -1,0 +1,14 @@
+{"t": 0.302, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "thinking": "high", "silence_mode": "end"}
+{"t": 0.706, "kind": "raw", "frame": {"sessionResumptionUpdate": {"newHandle": "328a98fa-182e-49db-956d-c509190419b8", "resumable": true}}}
+{"t": 0.706, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "328a98fa-182e-49db-956d-c509190419b8", "resumable": true}}}
+{"t": 1.247, "kind": "send_audio_stream_end"}
+{"t": 9.852, "kind": "say", "text": "Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.", "ms": 5381}
+{"t": 16.145, "kind": "send_audio_stream_end"}
+{"t": 34.854, "kind": "no_turn_complete_within", "s": 25}
+{"t": 49.265, "kind": "say", "text": "Thanks. Now name one fruit that is yellow, and keep it short.", "ms": 3717}
+{"t": 53.935, "kind": "send_audio_stream_end"}
+{"t": 74.26, "kind": "no_turn_complete_within", "s": 25}
+{"t": 87.479, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 90.803, "kind": "send_audio_stream_end"}
+{"t": 112.481, "kind": "no_turn_complete_within", "s": 25}
+{"t": 121.483, "kind": "end"}

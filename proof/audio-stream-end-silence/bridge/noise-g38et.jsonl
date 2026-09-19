@@ -1,0 +1,73 @@
+{"t_ms":1,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live-extended-thinking","commit":"87ed0f9fdd4","micSilence":"noise-floor","extensionsGoogleDirty":false}
+{"t_ms":23650,"phase":"connect","kind":"onReady"}
+{"t_ms":28380,"phase":"utterance-1","kind":"speak","text":"Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.","audio_ms":5531}
+{"t_ms":35411,"phase":"utterance-1","kind":"onTranscript","role":"user","text":"Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","final":true}
+{"t_ms":35546,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"The sky is usually ","final":false}
+{"t_ms":35548,"phase":"utterance-1","kind":"audio","bytes":9600,"total":9600}
+{"t_ms":35649,"phase":"utterance-1","kind":"audio","bytes":7680,"total":17280}
+{"t_ms":35803,"phase":"utterance-1","kind":"audio","bytes":7680,"total":24960}
+{"t_ms":35979,"phase":"utterance-1","kind":"audio","bytes":19200,"total":44160}
+{"t_ms":36358,"phase":"utterance-1","kind":"audio","bytes":1920,"total":46080}
+{"t_ms":36419,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"blue on a clear","final":false}
+{"t_ms":36420,"phase":"utterance-1","kind":"audio","bytes":24960,"total":71040}
+{"t_ms":36932,"phase":"utterance-1","kind":"audio","bytes":15360,"total":86400}
+{"t_ms":37263,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":" day.","final":false}
+{"t_ms":37264,"phase":"utterance-1","kind":"audio","bytes":30720,"total":117120}
+{"t_ms":37873,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"The sky is usually blue on a clear day.","final":true}
+{"t_ms":37875,"phase":"utterance-1","kind":"onResponseDone","status":"completed"}
+{"t_ms":47731,"phase":"utterance-2","kind":"speak","text":"I want to plan a small garden this spring. I have a sunny patch about four meters long, the soil is a bit sandy, and I would like easy vegetables. Which three would you suggest, briefly?","audio_ms":10757}
+{"t_ms":60197,"phase":"utterance-2","kind":"onTranscript","role":"user","text":"I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy, and I would like easy vegetables. Which three would you suggest briefly?","final":true}
+{"t_ms":61563,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"I'll find some ","final":false}
+{"t_ms":61564,"phase":"utterance-2","kind":"audio","bytes":10560,"total":127680}
+{"t_ms":61691,"phase":"utterance-2","kind":"audio","bytes":17280,"total":144960}
+{"t_ms":62042,"phase":"utterance-2","kind":"audio","bytes":9600,"total":154560}
+{"t_ms":62248,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"great options","final":false}
+{"t_ms":62249,"phase":"utterance-2","kind":"audio","bytes":17280,"total":171840}
+{"t_ms":62621,"phase":"utterance-2","kind":"audio","bytes":17280,"total":189120}
+{"t_ms":62972,"phase":"utterance-2","kind":"audio","bytes":19200,"total":208320}
+{"t_ms":63355,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" for you.","final":false}
+{"t_ms":63355,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"I'll find some great options for you.","final":true}
+{"t_ms":63357,"phase":"utterance-2","kind":"onResponseDone","status":"completed"}
+{"t_ms":65402,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"Carrots, radishes, and ","final":false}
+{"t_ms":65402,"phase":"utterance-2","kind":"audio","bytes":2,"total":208322}
+{"t_ms":65423,"phase":"utterance-2","kind":"audio","bytes":6720,"total":215042}
+{"t_ms":65483,"phase":"utterance-2","kind":"audio","bytes":11520,"total":226562}
+{"t_ms":65703,"phase":"utterance-2","kind":"audio","bytes":11520,"total":238082}
+{"t_ms":65941,"phase":"utterance-2","kind":"audio","bytes":7680,"total":245762}
+{"t_ms":66120,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"bush beans","final":false}
+{"t_ms":66121,"phase":"utterance-2","kind":"audio","bytes":28800,"total":274562}
+{"t_ms":66710,"phase":"utterance-2","kind":"audio","bytes":17280,"total":291842}
+{"t_ms":67061,"phase":"utterance-2","kind":"audio","bytes":1920,"total":293762}
+{"t_ms":67117,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" are great choices","final":false}
+{"t_ms":67117,"phase":"utterance-2","kind":"audio","bytes":26880,"total":320642}
+{"t_ms":70075,"phase":"utterance-3","kind":"speak","text":"Thanks. Now name one fruit that is yellow, and keep it short.","audio_ms":3718}
+{"t_ms":70076,"phase":"utterance-3","kind":"audio","bytes":19200,"total":339842}
+{"t_ms":70076,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":" for sunny, sandy soil.","final":false}
+{"t_ms":70077,"phase":"utterance-3","kind":"audio","bytes":26880,"total":366722}
+{"t_ms":70078,"phase":"utterance-3","kind":"audio","bytes":21120,"total":387842}
+{"t_ms":70079,"phase":"utterance-3","kind":"audio","bytes":15360,"total":403202}
+{"t_ms":70079,"phase":"utterance-3","kind":"audio","bytes":17280,"total":420482}
+{"t_ms":70080,"phase":"utterance-3","kind":"audio","bytes":17280,"total":437762}
+{"t_ms":70098,"phase":"utterance-3","kind":"audio","bytes":1920,"total":439682}
+{"t_ms":70137,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"Carrots, radishes, and bush beans are great choices for sunny, sandy soil.","final":true}
+{"t_ms":70140,"phase":"utterance-3","kind":"onResponseDone","status":"completed"}
+{"t_ms":75052,"phase":"utterance-3","kind":"onTranscript","role":"user","text":"one fruit that is yellow and keep it short","final":true}
+{"t_ms":75053,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"A banana is a ","final":false}
+{"t_ms":75053,"phase":"utterance-3","kind":"audio","bytes":2,"total":439684}
+{"t_ms":75062,"phase":"utterance-3","kind":"audio","bytes":9600,"total":449284}
+{"t_ms":75157,"phase":"utterance-3","kind":"audio","bytes":7680,"total":456964}
+{"t_ms":75320,"phase":"utterance-3","kind":"audio","bytes":7680,"total":464644}
+{"t_ms":75480,"phase":"utterance-3","kind":"audio","bytes":7680,"total":472324}
+{"t_ms":75648,"phase":"utterance-3","kind":"audio","bytes":7680,"total":480004}
+{"t_ms":75804,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"fruit that is yellow.","final":false}
+{"t_ms":75804,"phase":"utterance-3","kind":"audio","bytes":15360,"total":495364}
+{"t_ms":76122,"phase":"utterance-3","kind":"audio","bytes":13440,"total":508804}
+{"t_ms":76396,"phase":"utterance-3","kind":"audio","bytes":7680,"total":516484}
+{"t_ms":76557,"phase":"utterance-3","kind":"audio","bytes":7680,"total":524164}
+{"t_ms":76725,"phase":"utterance-3","kind":"audio","bytes":15360,"total":539524}
+{"t_ms":77041,"phase":"utterance-3","kind":"audio","bytes":7680,"total":547204}
+{"t_ms":77191,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"A banana is a fruit that is yellow.","final":true}
+{"t_ms":77194,"phase":"utterance-3","kind":"onResponseDone","status":"completed"}
+{"t_ms":77932,"phase":"before-close","kind":"finals-before-close","user":["Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy, and I would like easy vegetables. Which three would you suggest briefly?","one fruit that is yellow and keep it short"],"assistant":["The sky is usually blue on a clear day.","I'll find some great options for you.","Carrots, radishes, and bush beans are great choices for sunny, sandy soil.","A banana is a fruit that is yellow."]}
+{"t_ms":77933,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":77933,"phase":"close","kind":"summary","model":"gemini-3.8-live-extended-thinking","commit":"87ed0f9fdd4","userFinalsDuringCall":3,"userPartialsDuringCall":0,"finals":["user: Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","assistant: The sky is usually blue on a clear day.","user: I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy, and I would like easy vegetables. Which three would you suggest briefly?","assistant: I'll find some great options for you.","assistant: Carrots, radishes, and bush beans are great choices for sunny, sandy soil.","user: one fruit that is yellow and keep it short","assistant: A banana is a fruit that is yellow."]}

@@ -1,0 +1,10 @@
+{"t": 0.301, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "thinking": "high", "silence_mode": "stop"}
+{"t": 0.706, "kind": "raw", "frame": {"sessionResumptionUpdate": {"newHandle": "cb4deab3-873a-41a5-870e-374a68e970de", "resumable": true}}}
+{"t": 0.706, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "cb4deab3-873a-41a5-870e-374a68e970de", "resumable": true}}}
+{"t": 9.931, "kind": "say", "text": "Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.", "ms": 5359}
+{"t": 34.931, "kind": "no_turn_complete_within", "s": 25}
+{"t": 49.472, "kind": "say", "text": "Thanks. Now name one fruit that is yellow, and keep it short.", "ms": 3717}
+{"t": 74.474, "kind": "no_turn_complete_within", "s": 25}
+{"t": 87.581, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 112.581, "kind": "no_turn_complete_within", "s": 25}
+{"t": 121.584, "kind": "end"}

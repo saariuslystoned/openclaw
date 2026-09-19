@@ -1,0 +1,186 @@
+{"t": 0.279, "kind": "connect", "model": "gemini-3.8-live", "thinking": "none", "silence_mode": "stream"}
+{"t": 0.623, "kind": "raw", "frame": {"sessionResumptionUpdate": {"newHandle": "9124ad07-1358-4ae5-9547-1ad9cb7e3c9a", "resumable": true}}}
+{"t": 0.623, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "9124ad07-1358-4ae5-9547-1ad9cb7e3c9a", "resumable": true}}}
+{"t": 9.736, "kind": "say", "text": "Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.", "ms": 5381}
+{"t": 16.708, "kind": "raw", "frame": {}}
+{"t": 16.708, "kind": "msg", "msg": {}}
+{"t": 16.708, "kind": "raw", "frame": {}}
+{"t": 16.708, "kind": "msg", "msg": {}}
+{"t": 16.708, "kind": "raw", "frame": {}}
+{"t": 16.708, "kind": "msg", "msg": {}}
+{"t": 16.71, "kind": "raw", "frame": {}}
+{"t": 16.71, "kind": "msg", "msg": {}}
+{"t": 16.71, "kind": "raw", "frame": {}}
+{"t": 16.71, "kind": "msg", "msg": {}}
+{"t": 16.71, "kind": "raw", "frame": {}}
+{"t": 16.71, "kind": "msg", "msg": {}}
+{"t": 16.71, "kind": "raw", "frame": {}}
+{"t": 16.711, "kind": "msg", "msg": {}}
+{"t": 16.711, "kind": "raw", "frame": {"serverContent": {"inputTranscription": {"text": "Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?"}}}}
+{"t": 16.711, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?"}}}}
+{"t": 16.712, "kind": "raw", "frame": {"serverContent": {}}}
+{"t": 16.712, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 16.715, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<5120 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "The sky is usually "}}}}
+{"t": 16.715, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<5120 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "The sky is usually "}}}}
+{"t": 16.737, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}}}}
+{"t": 16.737, "kind": "audio_part", "n": 1}
+{"t": 16.749, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<17920 bytes>"}}], "role": "model"}}}}
+{"t": 16.749, "kind": "audio_part", "n": 1}
+{"t": 16.758, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<15360 bytes>"}}], "role": "model"}}}}
+{"t": 16.759, "kind": "audio_part", "n": 1}
+{"t": 16.759, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<2560 bytes>"}}], "role": "model"}}}}
+{"t": 16.76, "kind": "audio_part", "n": 1}
+{"t": 16.771, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<12800 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "blue on a clear"}}}}
+{"t": 16.771, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<12800 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "blue on a clear"}}}}
+{"t": 16.772, "kind": "raw", "frame": {}}
+{"t": 16.772, "kind": "msg", "msg": {}}
+{"t": 16.776, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}}}}
+{"t": 16.776, "kind": "audio_part", "n": 1}
+{"t": 16.842, "kind": "raw", "frame": {}}
+{"t": 16.842, "kind": "msg", "msg": {}}
+{"t": 16.865, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<33280 bytes>"}}], "role": "model"}}}}
+{"t": 16.866, "kind": "audio_part", "n": 1}
+{"t": 17.034, "kind": "raw", "frame": {}}
+{"t": 17.035, "kind": "msg", "msg": {}}
+{"t": 17.035, "kind": "raw", "frame": {}}
+{"t": 17.035, "kind": "msg", "msg": {}}
+{"t": 17.045, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<46080 bytes>"}}], "role": "model"}, "outputTranscription": {"text": " day."}}}}
+{"t": 17.045, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<46080 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": " day."}}}}
+{"t": 17.045, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<2560 bytes>"}}], "role": "model"}}}}
+{"t": 17.047, "kind": "audio_part", "n": 1}
+{"t": 17.048, "kind": "raw", "frame": {"serverContent": {"generationComplete": true}}}
+{"t": 17.048, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 19.154, "kind": "raw", "frame": {"serverContent": {"turnComplete": true}, "usageMetadata": {"promptTokenCount": 782, "responseTokenCount": 66, "totalTokenCount": 848, "promptTokensDetails": [{"modality": "TEXT", "tokenCount": 365}, {"modality": "AUDIO", "tokenCount": 366}], "responseTokensDetails": [{"modality": "AUDIO", "tokenCount": 66}], "thoughtsTokenCount": 55}}}
+{"t": 19.154, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 782, "response_token_count": 66, "thoughts_token_count": 55, "total_token_count": 848, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 365}, {"modality": "AUDIO", "token_count": 366}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 66}]}}}
+{"t": 32.816, "kind": "say", "text": "Thanks. Now name one fruit that is yellow, and keep it short.", "ms": 3717}
+{"t": 38.187, "kind": "raw", "frame": {}}
+{"t": 38.188, "kind": "msg", "msg": {}}
+{"t": 38.189, "kind": "raw", "frame": {"serverContent": {"inputTranscription": {"text": "Thanks. Now name one fruit that is yellow. And keep it short."}}}}
+{"t": 38.189, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "Thanks. Now name one fruit that is yellow. And keep it short."}}}}
+{"t": 38.19, "kind": "raw", "frame": {"serverContent": {}}}
+{"t": 38.19, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 38.325, "kind": "raw", "frame": {}}
+{"t": 38.325, "kind": "msg", "msg": {}}
+{"t": 38.33, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "A banana is "}}}}
+{"t": 38.331, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<10240 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "A banana is "}}}}
+{"t": 38.336, "kind": "raw", "frame": {}}
+{"t": 38.337, "kind": "msg", "msg": {}}
+{"t": 38.352, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<12800 bytes>"}}], "role": "model"}}}}
+{"t": 38.353, "kind": "audio_part", "n": 1}
+{"t": 38.404, "kind": "raw", "frame": {}}
+{"t": 38.404, "kind": "msg", "msg": {}}
+{"t": 38.404, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}}}}
+{"t": 38.404, "kind": "audio_part", "n": 1}
+{"t": 38.467, "kind": "raw", "frame": {}}
+{"t": 38.467, "kind": "msg", "msg": {}}
+{"t": 38.472, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<15360 bytes>"}}], "role": "model"}}}}
+{"t": 38.472, "kind": "audio_part", "n": 1}
+{"t": 38.529, "kind": "raw", "frame": {}}
+{"t": 38.535, "kind": "msg", "msg": {}}
+{"t": 38.538, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "a yellow fruit."}}}}
+{"t": 38.538, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<20480 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "a yellow fruit."}}}}
+{"t": 38.572, "kind": "raw", "frame": {}}
+{"t": 38.573, "kind": "msg", "msg": {}}
+{"t": 38.576, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<12800 bytes>"}}], "role": "model"}}}}
+{"t": 38.579, "kind": "audio_part", "n": 1}
+{"t": 38.631, "kind": "raw", "frame": {}}
+{"t": 38.631, "kind": "msg", "msg": {}}
+{"t": 38.637, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<15360 bytes>"}}], "role": "model"}}}}
+{"t": 38.637, "kind": "audio_part", "n": 1}
+{"t": 38.661, "kind": "raw", "frame": {}}
+{"t": 38.661, "kind": "msg", "msg": {}}
+{"t": 38.666, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}}}}
+{"t": 38.666, "kind": "audio_part", "n": 1}
+{"t": 38.723, "kind": "raw", "frame": {}}
+{"t": 38.723, "kind": "msg", "msg": {}}
+{"t": 38.726, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<10240 bytes>"}}], "role": "model"}}}}
+{"t": 38.726, "kind": "audio_part", "n": 1}
+{"t": 38.779, "kind": "raw", "frame": {}}
+{"t": 38.78, "kind": "msg", "msg": {}}
+{"t": 38.785, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<15360 bytes>"}}], "role": "model"}}}}
+{"t": 38.785, "kind": "audio_part", "n": 1}
+{"t": 38.81, "kind": "raw", "frame": {}}
+{"t": 38.811, "kind": "msg", "msg": {}}
+{"t": 38.812, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<7680 bytes>"}}], "role": "model"}}}}
+{"t": 38.812, "kind": "audio_part", "n": 1}
+{"t": 38.84, "kind": "raw", "frame": {"serverContent": {"generationComplete": true}}}
+{"t": 38.84, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 40.537, "kind": "raw", "frame": {"serverContent": {"turnComplete": true}, "usageMetadata": {"promptTokenCount": 992, "responseTokenCount": 61, "totalTokenCount": 1053, "promptTokensDetails": [{"modality": "TEXT", "tokenCount": 390}, {"modality": "AUDIO", "tokenCount": 535}], "responseTokensDetails": [{"modality": "AUDIO", "tokenCount": 61}], "thoughtsTokenCount": 24}}}
+{"t": 40.537, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 992, "response_token_count": 61, "thoughts_token_count": 24, "total_token_count": 1053, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 390}, {"modality": "AUDIO", "token_count": 535}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 61}]}}}
+{"t": 53.195, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 57.239, "kind": "raw", "frame": {}}
+{"t": 57.239, "kind": "msg", "msg": {}}
+{"t": 57.241, "kind": "raw", "frame": {}}
+{"t": 57.241, "kind": "msg", "msg": {}}
+{"t": 57.241, "kind": "raw", "frame": {"serverContent": {"inputTranscription": {"text": "Hey Gemini. What's on my calendar tomorrow?"}}}}
+{"t": 57.241, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "Hey Gemini. What's on my calendar tomorrow?"}}}}
+{"t": 57.241, "kind": "raw", "frame": {"serverContent": {}}}
+{"t": 57.241, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 57.241, "kind": "raw", "frame": {"toolCall": {"functionCalls": [{"name": "lookup_calendar", "args": {"day": "2026-09-20"}, "id": "call_995754"}]}}}
+{"t": 57.242, "kind": "msg", "msg": {"tool_call": {"function_calls": [{"id": "call_995754", "args": {"day": "2026-09-20"}, "name": "lookup_calendar"}]}}}
+{"t": 57.242, "kind": "raw", "frame": {"serverContent": {"generationComplete": true}}}
+{"t": 57.242, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 57.242, "kind": "raw", "frame": {"serverContent": {"turnComplete": true}, "usageMetadata": {"promptTokenCount": 1159, "responseTokenCount": 21, "totalTokenCount": 1180, "promptTokensDetails": [{"modality": "TEXT", "tokenCount": 408}, {"modality": "AUDIO", "tokenCount": 670}], "thoughtsTokenCount": 74}}}
+{"t": 57.242, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 1159, "response_token_count": 21, "thoughts_token_count": 74, "total_token_count": 1180, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 408}, {"modality": "AUDIO", "token_count": 670}]}}}
+{"t": 59.243, "kind": "send_tool_response", "id": "call_995754"}
+{"t": 59.774, "kind": "raw", "frame": {}}
+{"t": 59.775, "kind": "msg", "msg": {}}
+{"t": 59.775, "kind": "raw", "frame": {"serverContent": {}}}
+{"t": 59.775, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 60.062, "kind": "raw", "frame": {}}
+{"t": 60.062, "kind": "msg", "msg": {}}
+{"t": 60.072, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "You have a dentist "}}}}
+{"t": 60.073, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<20480 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "You have a dentist "}}}}
+{"t": 60.136, "kind": "raw", "frame": {}}
+{"t": 60.137, "kind": "msg", "msg": {}}
+{"t": 60.143, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<25600 bytes>"}}], "role": "model"}}}}
+{"t": 60.144, "kind": "audio_part", "n": 1}
+{"t": 60.165, "kind": "raw", "frame": {}}
+{"t": 60.165, "kind": "msg", "msg": {}}
+{"t": 60.165, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<2560 bytes>"}}], "role": "model"}}}}
+{"t": 60.166, "kind": "audio_part", "n": 1}
+{"t": 60.269, "kind": "raw", "frame": {}}
+{"t": 60.269, "kind": "msg", "msg": {}}
+{"t": 60.275, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<23040 bytes>"}}], "role": "model"}, "outputTranscription": {"text": "appointment at ten"}}}}
+{"t": 60.276, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<23040 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": "appointment at ten"}}}}
+{"t": 60.312, "kind": "raw", "frame": {}}
+{"t": 60.312, "kind": "msg", "msg": {}}
+{"t": 60.321, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}}}}
+{"t": 60.321, "kind": "audio_part", "n": 1}
+{"t": 60.408, "kind": "raw", "frame": {}}
+{"t": 60.432, "kind": "msg", "msg": {}}
+{"t": 60.434, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}}}}
+{"t": 60.436, "kind": "audio_part", "n": 1}
+{"t": 60.533, "kind": "raw", "frame": {}}
+{"t": 60.534, "kind": "msg", "msg": {}}
+{"t": 60.542, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<30720 bytes>"}}], "role": "model"}, "outputTranscription": {"text": " in the morning and lunch"}}}}
+{"t": 60.543, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<30720 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": " in the morning and lunch"}}}}
+{"t": 60.607, "kind": "raw", "frame": {}}
+{"t": 60.607, "kind": "msg", "msg": {}}
+{"t": 60.612, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}}}}
+{"t": 60.612, "kind": "audio_part", "n": 1}
+{"t": 60.77, "kind": "raw", "frame": {}}
+{"t": 60.771, "kind": "msg", "msg": {}}
+{"t": 60.782, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<38400 bytes>"}}], "role": "model"}, "outputTranscription": {"text": " with Sam at noon tomorrow."}}}}
+{"t": 60.783, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<38400 bytes>", "mime_type": "audio/pcm;rate=24000"}}], "role": "model"}, "output_transcription": {"text": " with Sam at noon tomorrow."}}}}
+{"t": 60.813, "kind": "raw", "frame": {}}
+{"t": 60.813, "kind": "msg", "msg": {}}
+{"t": 60.819, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<20480 bytes>"}}], "role": "model"}}}}
+{"t": 60.819, "kind": "audio_part", "n": 1}
+{"t": 60.904, "kind": "raw", "frame": {}}
+{"t": 60.904, "kind": "msg", "msg": {}}
+{"t": 60.912, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<23040 bytes>"}}], "role": "model"}}}}
+{"t": 60.912, "kind": "audio_part", "n": 1}
+{"t": 60.994, "kind": "raw", "frame": {}}
+{"t": 60.995, "kind": "msg", "msg": {}}
+{"t": 61.002, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<23040 bytes>"}}], "role": "model"}}}}
+{"t": 61.003, "kind": "audio_part", "n": 1}
+{"t": 61.019, "kind": "raw", "frame": {}}
+{"t": 61.019, "kind": "msg", "msg": {}}
+{"t": 61.021, "kind": "raw", "frame": {"serverContent": {"modelTurn": {"parts": [{"inlineData": {"mimeType": "audio/pcm;rate=24000", "data": "<2560 bytes>"}}], "role": "model"}}}}
+{"t": 61.021, "kind": "audio_part", "n": 1}
+{"t": 61.05, "kind": "raw", "frame": {"serverContent": {"generationComplete": true}}}
+{"t": 61.05, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 64.312, "kind": "raw", "frame": {"serverContent": {"turnComplete": true}, "usageMetadata": {"promptTokenCount": 1211, "responseTokenCount": 112, "totalTokenCount": 1323, "promptTokensDetails": [{"modality": "TEXT", "tokenCount": 442}, {"modality": "AUDIO", "tokenCount": 670}], "responseTokensDetails": [{"modality": "AUDIO", "tokenCount": 112}], "thoughtsTokenCount": 141}}}
+{"t": 64.313, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 1211, "response_token_count": 112, "thoughts_token_count": 141, "total_token_count": 1323, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 442}, {"modality": "AUDIO", "token_count": 670}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 112}]}}}
+{"t": 66.241, "kind": "end"}
