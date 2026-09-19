@@ -41,7 +41,7 @@ function synth(text: string): Buffer {
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "say-")), "u.wav");
   execFileSync("/usr/bin/say", ["-o", file, "--data-format=LEI16@24000", text]);
   const wav = fs.readFileSync(file);
-  for (let off = 12; off + 8 <= wav.length;) {
+  for (let off = 12; off + 8 <= wav.length; ) {
     const id = wav.toString("ascii", off, off + 4);
     const size = wav.readUInt32LE(off + 4);
     if (id === "data") {
@@ -96,12 +96,7 @@ const bridge = buildGoogleRealtimeVoiceProvider().createBridge({
   },
 });
 
-log("createBridge", {
-  model,
-  commit,
-  micSilence: process.env.MIC_SILENCE === "zeros" ? "zeros" : "noise-floor",
-  extensionsGoogleDirty: dirty !== "",
-});
+log("createBridge", { model, commit, micSilence: process.env.MIC_SILENCE === "zeros" ? "zeros" : "noise-floor", extensionsGoogleDirty: dirty !== "" });
 await bridge.connect();
 if (!(await until(() => ready, 15_000))) {
   log("fatal", { message: "bridge never became ready" });
@@ -122,9 +117,7 @@ const noiseFloor = () => {
 const mic: Buffer[] = [];
 const pump = setInterval(() => {
   if (!closed) {
-    bridge.sendAudio(
-      mic.shift() ?? (process.env.MIC_SILENCE === "zeros" ? Buffer.alloc(FRAME) : noiseFloor()),
-    );
+    bridge.sendAudio(mic.shift() ?? (process.env.MIC_SILENCE === "zeros" ? Buffer.alloc(FRAME) : noiseFloor()));
   }
 }, 32);
 
@@ -135,10 +128,7 @@ for (const [i, text] of UTTERANCES.entries()) {
     mic.push(pcm.subarray(off, off + FRAME));
   }
   const doneBefore = responsesDone.length;
-  log("speak", {
-    text: text.replace(/\[\[slnc \d+\]\] /g, ""),
-    audio_ms: Math.round((pcm.length / 48_000) * 1000),
-  });
+  log("speak", { text: text.replace(/\[\[slnc \d+\]\] /g, ""), audio_ms: Math.round((pcm.length / 48_000) * 1000) });
   if (!(await until(() => responsesDone.length > doneBefore && mic.length === 0, 40_000))) {
     log("no-response-within", { seconds: 40 });
   }
@@ -160,9 +150,7 @@ log("summary", {
   model,
   commit,
   userFinalsDuringCall: finalsBeforeClose.filter((x) => x.role === "user").length,
-  userPartialsDuringCall: transcripts.filter(
-    (x) => x.role === "user" && !x.final && x.t_ms <= (finalsBeforeClose.at(-1)?.t_ms ?? Infinity),
-  ).length,
+  userPartialsDuringCall: transcripts.filter((x) => x.role === "user" && !x.final && x.t_ms <= (finalsBeforeClose.at(-1)?.t_ms ?? Infinity)).length,
   finals: transcripts.filter((x) => x.final).map((x) => `${x.role}: ${x.text}`),
 });
 out.end();

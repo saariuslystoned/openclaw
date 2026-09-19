@@ -31,3 +31,17 @@ Gemini 3.1 treats `audioStreamEnd` as the end of the user's turn. Gemini 3.8 ign
 server VAD only detects the end of speech while trailing audio keeps arriving, and 500 ms of
 trailing silence is not enough. (`count(no_turn_complete_within)` in each events file = turns
 the model never closed within 25 s.)
+
+## After the fix (`bridge-after/`, fix/google-gemini-3-8-live-audio-stream-end @ 91eb5a9986c)
+
+The same driver with `MIC_SILENCE=zeros`. On 3.8 the bridge now forwards every silent frame
+and never sends `audioStreamEnd`; 3.1 keeps ending the stream after 500 ms.
+
+| run | model replies | user finals during the call |
+|---|---|---|
+| `zeros-g38et.jsonl`, `zeros-g38et-2.jsonl`, `zeros-g38et-3.jsonl` | 3 / 3 each | 3 each |
+| `zeros-g38.jsonl` | 3 / 3 | 3 |
+| `zeros-g31.jsonl` (unchanged path) | 3 / 3 | 3 |
+
+`zeros-g38et.jsonl` also logged a server `goAway` (300 s left) at 89 s. The provider already
+reports this as `onError`, and the session continued to a clean close. The two reruns saw none.
