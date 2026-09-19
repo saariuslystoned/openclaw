@@ -1,0 +1,23 @@
+{
+ "capture": {
+  "active": true,
+  "bytes": 256823,
+  "display_name": "Common Panel",
+  "height": 2152,
+  "logical_display_id": 0,
+  "minimum_expected_bytes": 20000,
+  "physical_display_id": "4619827677550801152",
+  "png_valid": true,
+  "sha256": "d148fc5d796dce2d195e0a2e384de18b8049aee700719e51c021c6127b9cec66",
+  "suspicious_low_bytes": false,
+  "width": 2076
+ },
+ "result": "ok",
+ "schema": "phone-proof.capture.v1",
+ "target": {
+  "authorized_device_count": 3,
+  "device_class": "physical",
+  "model": "Pixel 11 Pro Fold",
+  "target_kind": "explicit-serial"
+ }
+}

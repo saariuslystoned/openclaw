@@ -23,6 +23,8 @@ Date: 2026-09-19, 00:40 to 01:15 America/New_York. Cockpit: this Mac, headless.
 
 | 6 (`scout-run6-forced-consult.jsonl`) | gemini-3.1-flash-live-preview with `consultRouting: "force-agent-consult"`, gateway rebuilt from the amended head (a6cc28f, replay waits for queue capacity) | two consults on the real path: the relay's forced consult (client submits the `working` result, `talk.client.toolCall`, run aborted by the relay when the model issued its own native call 2 s later) and the model's own `openclaw_agent_consult` (`chat` final "…1:53 AM EDT…", final tool result, spoken answer). The model spoke "I'm checking on that with OpenClaw" during the run, but this model delivers the transcript final only when the response ends, after the tool result | one `begin (client)` / `release` pair per consult, both `held: 0` (see the last four lines of `gateway-hold-lines.jsonl`) |
 
+| phone (`phone-fold11/`) | gemini-3.8-live-extended-thinking on the combined build, Pixel 11 Pro Fold as the real client over `adb reverse` | `tool.call` → `hold begin (client)` → the model's "I am currently querying…" final held inside the window → `tool.result` → **`hold release` held 1, heldMs 8404** → held final appended right behind the consult run in the session store → spoken answer. See `phone-fold11/PROOF.md` | `held: 1` |
+
 `grep -c "outside the current turn"` on the gateway log: 0 for every run.
 
 ## What this shows
