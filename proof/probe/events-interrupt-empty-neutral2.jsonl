@@ -1,0 +1,53 @@
+{"t": 0.057, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-empty"}
+{"t": 0.406, "kind": "session_resumption_update", "resumable": true}
+{"t": 4.167, "kind": "say", "text": "Tell me, in a lot of detail, the history of lighthouses. Take your time.", "ms": 3941}
+{"t": 9.519, "kind": "input_transcription", "text": "Tell me in a lot of detail the history of lighthouses. Take your time.", "finished": null}
+{"t": 10.023, "kind": "output_transcription", "text": "Lighthouses have ", "finished": null}
+{"t": 10.023, "kind": "audio", "bytes": 24960, "total": 24960}
+{"t": 10.415, "kind": "audio", "bytes": 17280, "total": 42240}
+{"t": 10.761, "kind": "audio", "bytes": 1920, "total": 44160}
+{"t": 10.819, "kind": "output_transcription", "text": "a fascinating", "finished": null}
+{"t": 10.819, "kind": "audio", "bytes": 19200, "total": 63360}
+{"t": 11.226, "kind": "audio", "bytes": 19200, "total": 82560}
+{"t": 11.607, "kind": "audio", "bytes": 9600, "total": 92160}
+{"t": 11.817, "kind": "output_transcription", "text": " history, evolving", "finished": null}
+{"t": 11.817, "kind": "audio", "bytes": 15360, "total": 107520}
+{"t": 12.137, "kind": "audio", "bytes": 21120, "total": 128640}
+{"t": 12.569, "kind": "audio", "bytes": 11520, "total": 140160}
+{"t": 12.823, "kind": "output_transcription", "text": " from simple bonfires", "finished": null}
+{"t": 12.824, "kind": "audio", "bytes": 28800, "total": 168960}
+{"t": 12.872, "kind": "action", "what": "send_client_content(turns=None, turn_complete=True)"}
+{"t": 12.943, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 13.4, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 13.4, "kind": "receive_generator_ended"}
+{"t": 13.411, "kind": "output_transcription", "text": "to the ", "finished": null}
+{"t": 13.411, "kind": "audio", "bytes": 11520, "total": 180480}
+{"t": 13.647, "kind": "audio", "bytes": 7680, "total": 188160}
+{"t": 13.804, "kind": "audio", "bytes": 7680, "total": 195840}
+{"t": 13.969, "kind": "audio", "bytes": 11520, "total": 207360}
+{"t": 14.206, "kind": "audio", "bytes": 7680, "total": 215040}
+{"t": 14.36, "kind": "audio", "bytes": 1920, "total": 216960}
+{"t": 14.416, "kind": "output_transcription", "text": "sophisticated", "finished": null}
+{"t": 14.417, "kind": "audio", "bytes": 17280, "total": 234240}
+{"t": 14.764, "kind": "audio", "bytes": 7680, "total": 241920}
+{"t": 14.927, "kind": "audio", "bytes": 9600, "total": 251520}
+{"t": 15.127, "kind": "audio", "bytes": 7680, "total": 259200}
+{"t": 15.281, "kind": "audio", "bytes": 5760, "total": 264960}
+{"t": 15.405, "kind": "output_transcription", "text": " architectural", "finished": null}
+{"t": 15.405, "kind": "audio", "bytes": 7680, "total": 272640}
+{"t": 15.568, "kind": "audio", "bytes": 9600, "total": 282240}
+{"t": 15.765, "kind": "audio", "bytes": 7680, "total": 289920}
+{"t": 15.927, "kind": "audio", "bytes": 11520, "total": 301440}
+{"t": 16.168, "kind": "audio", "bytes": 9600, "total": 311040}
+{"t": 16.362, "kind": "audio", "bytes": 1920, "total": 312960}
+{"t": 16.42, "kind": "output_transcription", "text": " wonders we", "finished": null}
+{"t": 16.42, "kind": "audio", "bytes": 26880, "total": 339840}
+{"t": 16.977, "kind": "audio", "bytes": 19200, "total": 359040}
+{"t": 17.384, "kind": "output_transcription", "text": " see along coastlines today.", "finished": null}
+{"t": 17.384, "kind": "audio", "bytes": 34560, "total": 393600}
+{"t": 18.093, "kind": "audio", "bytes": 17280, "total": 410880}
+{"t": 18.441, "kind": "audio", "bytes": 1920, "total": 412800}
+{"t": 18.481, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 18.484, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 18.484, "kind": "receive_generator_ended"}
+{"t": 34.168, "kind": "budget_reached", "seconds": 30.0}

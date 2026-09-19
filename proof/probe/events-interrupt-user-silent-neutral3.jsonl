@@ -1,0 +1,94 @@
+{"t": 0.058, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-user-silent"}
+{"t": 0.412, "kind": "session_resumption_update", "resumable": true}
+{"t": 4.195, "kind": "say", "text": "Tell me, in a lot of detail, the history of lighthouses. Take your time.", "ms": 3941}
+{"t": 9.554, "kind": "input_transcription", "text": "Tell me in a lot of detail the history of lighthouses. Take your time.", "finished": null}
+{"t": 10.566, "kind": "output_transcription", "text": "Lighthouses have a ", "finished": null}
+{"t": 10.566, "kind": "audio", "bytes": 19680, "total": 19680}
+{"t": 10.855, "kind": "audio", "bytes": 15360, "total": 35040}
+{"t": 11.188, "kind": "output_transcription", "text": "rich history", "finished": null}
+{"t": 11.188, "kind": "audio", "bytes": 32640, "total": 67680}
+{"t": 11.854, "kind": "audio", "bytes": 15360, "total": 83040}
+{"t": 12.181, "kind": "output_transcription", "text": " spanning thousands", "finished": null}
+{"t": 12.181, "kind": "audio", "bytes": 23040, "total": 106080}
+{"t": 12.657, "kind": "audio", "bytes": 15360, "total": 121440}
+{"t": 12.972, "kind": "audio", "bytes": 9600, "total": 131040}
+{"t": 13.18, "kind": "output_transcription", "text": " of years, originally", "finished": null}
+{"t": 13.18, "kind": "audio", "bytes": 19200, "total": 150240}
+{"t": 13.227, "kind": "action", "what": "send_client_content(user '[You were interrupted. Stop speaking and wait silently.]', turn_complete=True)"}
+{"t": 13.301, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 13.565, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 13.565, "kind": "receive_generator_ended"}
+{"t": 15.801, "kind": "output_transcription", "text": "originally built as ", "finished": null}
+{"t": 15.802, "kind": "audio", "bytes": 7200, "total": 157440}
+{"t": 15.86, "kind": "audio", "bytes": 15360, "total": 172800}
+{"t": 16.178, "kind": "audio", "bytes": 13440, "total": 186240}
+{"t": 16.468, "kind": "output_transcription", "text": "simple bonfires", "finished": null}
+{"t": 16.469, "kind": "audio", "bytes": 30720, "total": 216960}
+{"t": 17.1, "kind": "audio", "bytes": 17280, "total": 234240}
+{"t": 17.464, "kind": "output_transcription", "text": " on hills to guide", "finished": null}
+{"t": 17.464, "kind": "audio", "bytes": 24960, "total": 259200}
+{"t": 17.98, "kind": "audio", "bytes": 15360, "total": 274560}
+{"t": 18.293, "kind": "audio", "bytes": 7680, "total": 282240}
+{"t": 18.462, "kind": "output_transcription", "text": " sailors to safety", "finished": null}
+{"t": 18.462, "kind": "audio", "bytes": 19200, "total": 301440}
+{"t": 18.858, "kind": "audio", "bytes": 15360, "total": 316800}
+{"t": 19.179, "kind": "audio", "bytes": 13440, "total": 330240}
+{"t": 19.467, "kind": "output_transcription", "text": " at night. Over", "finished": null}
+{"t": 19.467, "kind": "audio", "bytes": 28800, "total": 359040}
+{"t": 20.058, "kind": "audio", "bytes": 15360, "total": 374400}
+{"t": 20.371, "kind": "audio", "bytes": 3840, "total": 378240}
+{"t": 20.462, "kind": "output_transcription", "text": " time, these developed", "finished": null}
+{"t": 20.462, "kind": "audio", "bytes": 17280, "total": 395520}
+{"t": 20.832, "kind": "audio", "bytes": 15360, "total": 410880}
+{"t": 21.139, "kind": "audio", "bytes": 15360, "total": 426240}
+{"t": 21.466, "kind": "output_transcription", "text": " into more permanent", "finished": null}
+{"t": 21.467, "kind": "audio", "bytes": 32640, "total": 458880}
+{"t": 22.14, "kind": "audio", "bytes": 15360, "total": 474240}
+{"t": 22.462, "kind": "output_transcription", "text": " masonry structures,", "finished": null}
+{"t": 22.462, "kind": "audio", "bytes": 19200, "total": 493440}
+{"t": 22.861, "kind": "audio", "bytes": 17280, "total": 510720}
+{"t": 23.218, "kind": "audio", "bytes": 11520, "total": 522240}
+{"t": 23.462, "kind": "output_transcription", "text": " with the famous", "finished": null}
+{"t": 23.463, "kind": "audio", "bytes": 19200, "total": 541440}
+{"t": 23.86, "kind": "audio", "bytes": 17280, "total": 558720}
+{"t": 24.224, "kind": "audio", "bytes": 11520, "total": 570240}
+{"t": 24.463, "kind": "output_transcription", "text": " Lighthouse of Alexandria", "finished": null}
+{"t": 24.463, "kind": "audio", "bytes": 21120, "total": 591360}
+{"t": 24.901, "kind": "audio", "bytes": 17280, "total": 608640}
+{"t": 25.257, "kind": "audio", "bytes": 9600, "total": 618240}
+{"t": 25.466, "kind": "output_transcription", "text": " serving", "finished": null}
+{"t": 25.466, "kind": "audio", "bytes": 28800, "total": 647040}
+{"t": 26.06, "kind": "audio", "bytes": 17280, "total": 664320}
+{"t": 26.408, "kind": "audio", "bytes": 1920, "total": 666240}
+{"t": 26.474, "kind": "output_transcription", "text": " as an early wonder", "finished": null}
+{"t": 26.474, "kind": "audio", "bytes": 24960, "total": 691200}
+{"t": 26.98, "kind": "audio", "bytes": 15360, "total": 706560}
+{"t": 27.295, "kind": "audio", "bytes": 7680, "total": 714240}
+{"t": 27.465, "kind": "output_transcription", "text": " of the world.", "finished": null}
+{"t": 27.465, "kind": "audio", "bytes": 24960, "total": 739200}
+{"t": 27.979, "kind": "audio", "bytes": 17280, "total": 756480}
+{"t": 28.329, "kind": "audio", "bytes": 5760, "total": 762240}
+{"t": 28.463, "kind": "output_transcription", "text": " As technology", "finished": null}
+{"t": 28.463, "kind": "audio", "bytes": 23040, "total": 785280}
+{"t": 28.941, "kind": "audio", "bytes": 21120, "total": 806400}
+{"t": 29.367, "kind": "audio", "bytes": 3840, "total": 810240}
+{"t": 29.46, "kind": "output_transcription", "text": " progressed,", "finished": null}
+{"t": 29.46, "kind": "audio", "bytes": 19200, "total": 829440}
+{"t": 29.871, "kind": "audio", "bytes": 15360, "total": 844800}
+{"t": 30.18, "kind": "audio", "bytes": 13440, "total": 858240}
+{"t": 30.464, "kind": "output_transcription", "text": " open fires were replaced", "finished": null}
+{"t": 30.464, "kind": "audio", "bytes": 26880, "total": 885120}
+{"t": 31.029, "kind": "audio", "bytes": 17280, "total": 902400}
+{"t": 31.368, "kind": "audio", "bytes": 3840, "total": 906240}
+{"t": 31.461, "kind": "output_transcription", "text": " by candles,", "finished": null}
+{"t": 31.461, "kind": "audio", "bytes": 19200, "total": 925440}
+{"t": 31.877, "kind": "audio", "bytes": 17280, "total": 942720}
+{"t": 32.424, "kind": "audio", "bytes": 11520, "total": 954240}
+{"t": 33.374, "kind": "output_transcription", "text": " oil lamps,", "finished": null}
+{"t": 33.375, "kind": "audio", "bytes": 30720, "total": 984960}
+{"t": 33.376, "kind": "audio", "bytes": 15360, "total": 1000320}
+{"t": 33.873, "kind": "audio", "bytes": 1920, "total": 1002240}
+{"t": 33.879, "kind": "output_transcription", "text": " and eventually powerful", "finished": null}
+{"t": 33.879, "kind": "audio", "bytes": 26880, "total": 1029120}
+{"t": 34.02, "kind": "audio", "bytes": 19200, "total": 1048320}
+{"t": 34.195, "kind": "budget_reached", "seconds": 30.0}

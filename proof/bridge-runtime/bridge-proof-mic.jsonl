@@ -1,0 +1,104 @@
+{"t_ms":1,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live-extended-thinking","thinkingLevel":"high","supportsToolResultContinuation":false}
+{"t_ms":17274,"phase":"connect","kind":"onReady","supportsToolResultContinuation":false}
+{"t_ms":17274,"phase":"connect","kind":"mic-pump","note":"24 kHz PCM16 silence every 32 ms, as a relay client would stream"}
+{"t_ms":17945,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check your ","final":false}
+{"t_ms":17945,"phase":"consult","kind":"audio","bytes":2,"total":2}
+{"t_ms":18074,"phase":"consult","kind":"audio","bytes":20640,"total":20642}
+{"t_ms":18390,"phase":"consult","kind":"onTranscript","role":"assistant","text":"schedule for tomorrow.","final":false}
+{"t_ms":18390,"phase":"consult","kind":"audio","bytes":26880,"total":47522}
+{"t_ms":18960,"phase":"consult","kind":"audio","bytes":21120,"total":68642}
+{"t_ms":19385,"phase":"consult","kind":"audio","bytes":15360,"total":84002}
+{"t_ms":19709,"phase":"consult","kind":"audio","bytes":17280,"total":101282}
+{"t_ms":20072,"phase":"consult","kind":"audio","bytes":3840,"total":105122}
+{"t_ms":20134,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check your schedule for tomorrow.","final":true}
+{"t_ms":20137,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":21052,"phase":"consult","kind":"onToolCall","callId":"call_436147_fc_0_0","name":"openclaw_agent_consult","args":{"prompt":"What is on my calendar tomorrow?"}}
+{"t_ms":27057,"phase":"consult","kind":"submitToolResult","callId":"call_436147_fc_0_0","stage":"final","scheduling":"none"}
+{"t_ms":29184,"phase":"consult","kind":"onTranscript","role":"assistant","text":"You have a dentist ","final":false}
+{"t_ms":29185,"phase":"consult","kind":"audio","bytes":2,"total":105124}
+{"t_ms":29257,"phase":"consult","kind":"audio","bytes":10560,"total":115684}
+{"t_ms":29377,"phase":"consult","kind":"audio","bytes":9600,"total":125284}
+{"t_ms":29555,"phase":"consult","kind":"audio","bytes":9600,"total":134884}
+{"t_ms":29757,"phase":"consult","kind":"audio","bytes":5760,"total":140644}
+{"t_ms":29875,"phase":"consult","kind":"onTranscript","role":"assistant","text":"appointment at 10:00","final":false}
+{"t_ms":29875,"phase":"consult","kind":"audio","bytes":9600,"total":150244}
+{"t_ms":30078,"phase":"consult","kind":"audio","bytes":13440,"total":163684}
+{"t_ms":30356,"phase":"consult","kind":"audio","bytes":11520,"total":175204}
+{"t_ms":30591,"phase":"consult","kind":"audio","bytes":7680,"total":182884}
+{"t_ms":30756,"phase":"consult","kind":"audio","bytes":5760,"total":188644}
+{"t_ms":30878,"phase":"consult","kind":"onTranscript","role":"assistant","text":" AM, followed","final":false}
+{"t_ms":30878,"phase":"consult","kind":"audio","bytes":13440,"total":202084}
+{"t_ms":31155,"phase":"consult","kind":"audio","bytes":7680,"total":209764}
+{"t_ms":31313,"phase":"consult","kind":"audio","bytes":7680,"total":217444}
+{"t_ms":31472,"phase":"consult","kind":"audio","bytes":7680,"total":225124}
+{"t_ms":31632,"phase":"consult","kind":"audio","bytes":7680,"total":232804}
+{"t_ms":31806,"phase":"consult","kind":"audio","bytes":3840,"total":236644}
+{"t_ms":31884,"phase":"consult","kind":"onTranscript","role":"assistant","text":" by lunch with","final":false}
+{"t_ms":31885,"phase":"consult","kind":"audio","bytes":24960,"total":261604}
+{"t_ms":32401,"phase":"consult","kind":"audio","bytes":15360,"total":276964}
+{"t_ms":32734,"phase":"consult","kind":"onTranscript","role":"assistant","text":" Sam at 12:00 PM.","final":false}
+{"t_ms":32734,"phase":"consult","kind":"audio","bytes":28800,"total":305764}
+{"t_ms":33317,"phase":"consult","kind":"audio","bytes":15360,"total":321124}
+{"t_ms":33639,"phase":"consult","kind":"audio","bytes":15360,"total":336484}
+{"t_ms":33961,"phase":"consult","kind":"audio","bytes":19200,"total":355684}
+{"t_ms":34352,"phase":"consult","kind":"audio","bytes":5760,"total":361444}
+{"t_ms":34467,"phase":"consult","kind":"onTranscript","role":"assistant","text":"You have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","final":true}
+{"t_ms":34469,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":37037,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"1, 2, 3, ","final":false}
+{"t_ms":37037,"phase":"interrupt","kind":"audio","bytes":9120,"total":370564}
+{"t_ms":37131,"phase":"interrupt","kind":"audio","bytes":17280,"total":387844}
+{"t_ms":37487,"phase":"interrupt","kind":"audio","bytes":13440,"total":401284}
+{"t_ms":37778,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"4, 5,","final":false}
+{"t_ms":37779,"phase":"interrupt","kind":"audio","bytes":32640,"total":433924}
+{"t_ms":38448,"phase":"interrupt","kind":"audio","bytes":15360,"total":449284}
+{"t_ms":38775,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" 6,","final":false}
+{"t_ms":38776,"phase":"interrupt","kind":"audio","bytes":26880,"total":476164}
+{"t_ms":39332,"phase":"interrupt","kind":"audio","bytes":17280,"total":493444}
+{"t_ms":39680,"phase":"interrupt","kind":"audio","bytes":3840,"total":497284}
+{"t_ms":39776,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" 7,","final":false}
+{"t_ms":39776,"phase":"interrupt","kind":"audio","bytes":28800,"total":526084}
+{"t_ms":39822,"phase":"interrupt","kind":"handleBargeIn","audioPlaybackActive":true}
+{"t_ms":39876,"phase":"interrupt","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":39876,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"1, 2, 3, 4, 5, 6, 7,","final":true}
+{"t_ms":40361,"phase":"interrupt","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":40377,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" 8,","final":false}
+{"t_ms":40377,"phase":"interrupt","kind":"audio","bytes":11520,"total":537604}
+{"t_ms":40609,"phase":"interrupt","kind":"audio","bytes":13440,"total":551044}
+{"t_ms":40888,"phase":"interrupt","kind":"audio","bytes":11520,"total":562564}
+{"t_ms":41163,"phase":"interrupt","kind":"audio","bytes":7680,"total":570244}
+{"t_ms":41280,"phase":"interrupt","kind":"audio","bytes":3840,"total":574084}
+{"t_ms":41366,"phase":"interrupt","kind":"audio","bytes":9600,"total":583684}
+{"t_ms":41570,"phase":"interrupt","kind":"audio","bytes":13440,"total":597124}
+{"t_ms":41856,"phase":"interrupt","kind":"audio","bytes":11520,"total":608644}
+{"t_ms":42224,"phase":"interrupt","kind":"audio","bytes":13440,"total":622084}
+{"t_ms":43010,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" 9,","final":false}
+{"t_ms":43010,"phase":"interrupt","kind":"audio","bytes":7680,"total":629764}
+{"t_ms":43014,"phase":"interrupt","kind":"audio","bytes":9600,"total":639364}
+{"t_ms":43014,"phase":"interrupt","kind":"audio","bytes":11520,"total":650884}
+{"t_ms":43015,"phase":"interrupt","kind":"audio","bytes":9600,"total":660484}
+{"t_ms":43381,"phase":"interrupt","kind":"interrupt-result","clear_after_ms":55,"clear_reason":"barge-in","response_done_after_ms":540,"response_done_status":"cancelled","audio_bytes_after_done":122880}
+{"t_ms":43907,"phase":"follow-up","kind":"audio","bytes":9600,"total":670084}
+{"t_ms":43920,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" 10,","final":false}
+{"t_ms":43921,"phase":"follow-up","kind":"audio","bytes":9600,"total":679684}
+{"t_ms":43923,"phase":"follow-up","kind":"audio","bytes":7680,"total":687364}
+{"t_ms":43936,"phase":"follow-up","kind":"audio","bytes":28800,"total":716164}
+{"t_ms":43986,"phase":"follow-up","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":43987,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"8, 9, 10,","final":true}
+{"t_ms":44321,"phase":"follow-up","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":44581,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I stopped counting ","final":false}
+{"t_ms":44581,"phase":"follow-up","kind":"audio","bytes":2,"total":716166}
+{"t_ms":44597,"phase":"follow-up","kind":"audio","bytes":5280,"total":721446}
+{"t_ms":44658,"phase":"follow-up","kind":"audio","bytes":7680,"total":729126}
+{"t_ms":44769,"phase":"follow-up","kind":"audio","bytes":7680,"total":736806}
+{"t_ms":44928,"phase":"follow-up","kind":"audio","bytes":7680,"total":744486}
+{"t_ms":45089,"phase":"follow-up","kind":"audio","bytes":7680,"total":752166}
+{"t_ms":45249,"phase":"follow-up","kind":"audio","bytes":9600,"total":761766}
+{"t_ms":45449,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"at 11.","final":false}
+{"t_ms":45449,"phase":"follow-up","kind":"audio","bytes":9600,"total":771366}
+{"t_ms":45654,"phase":"follow-up","kind":"audio","bytes":17280,"total":788646}
+{"t_ms":46016,"phase":"follow-up","kind":"audio","bytes":15360,"total":804006}
+{"t_ms":46328,"phase":"follow-up","kind":"audio","bytes":5760,"total":809766}
+{"t_ms":46443,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I stopped counting at 11.","final":true}
+{"t_ms":46446,"phase":"follow-up","kind":"onResponseDone","status":"completed"}
+{"t_ms":46496,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":46496,"phase":"close","kind":"summary","toolCalls":["openclaw_agent_consult"],"responsesDone":[{"t_ms":20137,"status":"completed"},{"t_ms":34469,"status":"completed"},{"t_ms":40361,"status":"cancelled"},{"t_ms":44321,"status":"cancelled"},{"t_ms":46446,"status":"completed"}],"clears":[{"t_ms":39876,"reason":"barge-in"},{"t_ms":43986,"reason":"barge-in"}],"transcripts":["assistant: Let me check your schedule for tomorrow.","assistant: You have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","assistant: 1, 2, 3, 4, 5, 6, 7,","assistant: 8, 9, 10,","assistant: I stopped counting at 11."]}

@@ -1,0 +1,94 @@
+{"t_ms":0,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live-extended-thinking","thinkingLevel":"high","supportsToolResultContinuation":false}
+{"t_ms":9575,"phase":"connect","kind":"onReady","supportsToolResultContinuation":false}
+{"t_ms":9576,"phase":"connect","kind":"mic-pump","note":"24 kHz PCM16 silence every 32 ms, as a relay client would stream"}
+{"t_ms":10304,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Checking your calendar ","final":false}
+{"t_ms":10305,"phase":"consult","kind":"audio","bytes":4800,"total":4800}
+{"t_ms":10390,"phase":"consult","kind":"audio","bytes":15360,"total":20160}
+{"t_ms":10638,"phase":"consult","kind":"audio","bytes":15360,"total":35520}
+{"t_ms":10976,"phase":"consult","kind":"onTranscript","role":"assistant","text":"for tomorrow.","final":false}
+{"t_ms":10977,"phase":"consult","kind":"audio","bytes":34560,"total":70080}
+{"t_ms":11670,"phase":"consult","kind":"audio","bytes":15360,"total":85440}
+{"t_ms":11983,"phase":"consult","kind":"audio","bytes":1920,"total":87360}
+{"t_ms":12018,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Checking your calendar for tomorrow.","final":true}
+{"t_ms":12020,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":12846,"phase":"consult","kind":"onToolCall","callId":"call_401907_fc_0_0","name":"openclaw_agent_consult","args":{"prompt":"What is on my calendar for tomorrow, Sunday, September 20, 2026?"}}
+{"t_ms":18868,"phase":"consult","kind":"submitToolResult","callId":"call_401907_fc_0_0","stage":"final","scheduling":"none"}
+{"t_ms":22996,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have a ","final":false}
+{"t_ms":22996,"phase":"consult","kind":"audio","bytes":2,"total":87362}
+{"t_ms":23044,"phase":"consult","kind":"audio","bytes":9600,"total":96962}
+{"t_ms":23144,"phase":"consult","kind":"audio","bytes":7680,"total":104642}
+{"t_ms":23303,"phase":"consult","kind":"audio","bytes":7680,"total":112322}
+{"t_ms":23461,"phase":"consult","kind":"audio","bytes":7680,"total":120002}
+{"t_ms":23620,"phase":"consult","kind":"audio","bytes":3840,"total":123842}
+{"t_ms":23706,"phase":"consult","kind":"onTranscript","role":"assistant","text":"dentist appointment at 10","final":false}
+{"t_ms":23706,"phase":"consult","kind":"audio","bytes":17280,"total":141122}
+{"t_ms":24065,"phase":"consult","kind":"audio","bytes":9600,"total":150722}
+{"t_ms":24260,"phase":"consult","kind":"audio","bytes":7680,"total":158402}
+{"t_ms":24423,"phase":"consult","kind":"audio","bytes":11520,"total":169922}
+{"t_ms":24659,"phase":"consult","kind":"audio","bytes":1920,"total":171842}
+{"t_ms":24707,"phase":"consult","kind":"onTranscript","role":"assistant","text":" 00 AM, followed","final":false}
+{"t_ms":24707,"phase":"consult","kind":"audio","bytes":13440,"total":185282}
+{"t_ms":24982,"phase":"consult","kind":"audio","bytes":7680,"total":192962}
+{"t_ms":25143,"phase":"consult","kind":"audio","bytes":7680,"total":200642}
+{"t_ms":25308,"phase":"consult","kind":"audio","bytes":17280,"total":217922}
+{"t_ms":25661,"phase":"consult","kind":"audio","bytes":1920,"total":219842}
+{"t_ms":25707,"phase":"consult","kind":"onTranscript","role":"assistant","text":" by lunch with Sam","final":false}
+{"t_ms":25707,"phase":"consult","kind":"audio","bytes":17280,"total":237122}
+{"t_ms":26066,"phase":"consult","kind":"audio","bytes":15360,"total":252482}
+{"t_ms":26387,"phase":"consult","kind":"audio","bytes":15360,"total":267842}
+{"t_ms":26714,"phase":"consult","kind":"onTranscript","role":"assistant","text":" at 12 00 PM.","final":false}
+{"t_ms":26714,"phase":"consult","kind":"audio","bytes":28800,"total":296642}
+{"t_ms":27312,"phase":"consult","kind":"audio","bytes":24960,"total":321602}
+{"t_ms":27825,"phase":"consult","kind":"audio","bytes":11520,"total":333122}
+{"t_ms":28058,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have a dentist appointment at 10 00 AM, followed by lunch with Sam at 12 00 PM.","final":true}
+{"t_ms":28060,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":30717,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Let me look into ","final":false}
+{"t_ms":30717,"phase":"interrupt","kind":"audio","bytes":6720,"total":339842}
+{"t_ms":30793,"phase":"interrupt","kind":"audio","bytes":21120,"total":360962}
+{"t_ms":31205,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"that history for you.","final":false}
+{"t_ms":31205,"phase":"interrupt","kind":"audio","bytes":28800,"total":389762}
+{"t_ms":31800,"phase":"interrupt","kind":"audio","bytes":19200,"total":408962}
+{"t_ms":32201,"phase":"interrupt","kind":"audio","bytes":15360,"total":424322}
+{"t_ms":32518,"phase":"interrupt","kind":"audio","bytes":13440,"total":437762}
+{"t_ms":32793,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Let me look into that history for you.","final":true}
+{"t_ms":32811,"phase":"interrupt","kind":"onResponseDone","status":"completed"}
+{"t_ms":35114,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Lighthouses originated ","final":false}
+{"t_ms":35114,"phase":"interrupt","kind":"audio","bytes":2,"total":437764}
+{"t_ms":35161,"phase":"interrupt","kind":"audio","bytes":9120,"total":446884}
+{"t_ms":35251,"phase":"interrupt","kind":"audio","bytes":9600,"total":456484}
+{"t_ms":35451,"phase":"interrupt","kind":"audio","bytes":9600,"total":466084}
+{"t_ms":35652,"phase":"interrupt","kind":"audio","bytes":9600,"total":475684}
+{"t_ms":35857,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"in antiquity,","final":false}
+{"t_ms":35858,"phase":"interrupt","kind":"audio","bytes":19200,"total":494884}
+{"t_ms":35895,"phase":"interrupt","kind":"handleBargeIn","audioPlaybackActive":true}
+{"t_ms":35942,"phase":"interrupt","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":35942,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Lighthouses originated in antiquity,","final":true}
+{"t_ms":36246,"phase":"interrupt","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":36566,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no ","final":false}
+{"t_ms":36566,"phase":"interrupt","kind":"audio","bytes":2400,"total":497284}
+{"t_ms":36617,"phase":"interrupt","kind":"audio","bytes":13440,"total":510724}
+{"t_ms":36798,"phase":"interrupt","kind":"audio","bytes":7680,"total":518404}
+{"t_ms":36963,"phase":"interrupt","kind":"audio","bytes":11520,"total":529924}
+{"t_ms":37197,"phase":"interrupt","kind":"audio","bytes":3840,"total":533764}
+{"t_ms":37275,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"speech>","final":false}
+{"t_ms":37275,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no speech>","final":true}
+{"t_ms":37277,"phase":"interrupt","kind":"onResponseDone","status":"completed"}
+{"t_ms":39249,"phase":"interrupt","kind":"interrupt-result","clear_after_ms":47,"clear_reason":"barge-in","response_done_after_ms":351,"response_done_status":"cancelled","audio_bytes_after_done":38880}
+{"t_ms":40297,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"We left off ","final":false}
+{"t_ms":40297,"phase":"follow-up","kind":"audio","bytes":17280,"total":551044}
+{"t_ms":40555,"phase":"follow-up","kind":"audio","bytes":15360,"total":566404}
+{"t_ms":40868,"phase":"follow-up","kind":"audio","bytes":3840,"total":570244}
+{"t_ms":40958,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"discussing how lighthouses","final":false}
+{"t_ms":40958,"phase":"follow-up","kind":"audio","bytes":21120,"total":591364}
+{"t_ms":41397,"phase":"follow-up","kind":"audio","bytes":15360,"total":606724}
+{"t_ms":41722,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" originated in antiquity.","final":false}
+{"t_ms":41722,"phase":"follow-up","kind":"audio","bytes":28800,"total":635524}
+{"t_ms":42317,"phase":"follow-up","kind":"audio","bytes":17280,"total":652804}
+{"t_ms":42689,"phase":"follow-up","kind":"audio","bytes":19200,"total":672004}
+{"t_ms":43074,"phase":"follow-up","kind":"audio","bytes":15360,"total":687364}
+{"t_ms":43395,"phase":"follow-up","kind":"audio","bytes":15360,"total":702724}
+{"t_ms":43721,"phase":"follow-up","kind":"audio","bytes":23040,"total":725764}
+{"t_ms":44188,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"We left off discussing how lighthouses originated in antiquity.","final":true}
+{"t_ms":44188,"phase":"follow-up","kind":"onResponseDone","status":"completed"}
+{"t_ms":46720,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":46720,"phase":"close","kind":"summary","toolCalls":["openclaw_agent_consult"],"responsesDone":[{"t_ms":12020,"status":"completed"},{"t_ms":28060,"status":"completed"},{"t_ms":32811,"status":"completed"},{"t_ms":36246,"status":"cancelled"},{"t_ms":37277,"status":"completed"},{"t_ms":44188,"status":"completed"}],"clears":[{"t_ms":35942,"reason":"barge-in"}],"transcripts":["assistant: Checking your calendar for tomorrow.","assistant: Tomorrow you have a dentist appointment at 10 00 AM, followed by lunch with Sam at 12 00 PM.","assistant: Let me look into that history for you.","assistant: Lighthouses originated in antiquity,","assistant: <no speech>","assistant: We left off discussing how lighthouses originated in antiquity."]}

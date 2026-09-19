@@ -1,0 +1,42 @@
+{"t": 0.104, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-text"}
+{"t": 0.403, "kind": "session_resumption_update", "resumable": true}
+{"t": 5.814, "kind": "say", "text": "Please count slowly from one to forty, one number at a time, and do not stop until you reach forty.", "ms": 5697}
+{"t": 12.888, "kind": "input_transcription", "text": "Please count slowly from 1 to 40. One number at a time. And do not stop until you reach 40.", "finished": null}
+{"t": 12.888, "kind": "output_transcription", "text": "1, 2, ", "finished": null}
+{"t": 12.888, "kind": "audio", "bytes": 2, "total": 2}
+{"t": 12.892, "kind": "audio", "bytes": 5280, "total": 5282}
+{"t": 12.918, "kind": "audio", "bytes": 11520, "total": 16802}
+{"t": 13.13, "kind": "audio", "bytes": 7680, "total": 24482}
+{"t": 13.526, "kind": "audio", "bytes": 7680, "total": 32162}
+{"t": 13.529, "kind": "audio", "bytes": 5760, "total": 37922}
+{"t": 13.579, "kind": "output_transcription", "text": "3, 4,", "finished": null}
+{"t": 13.579, "kind": "audio", "bytes": 17280, "total": 55202}
+{"t": 13.933, "kind": "audio", "bytes": 9600, "total": 64802}
+{"t": 14.143, "kind": "audio", "bytes": 21120, "total": 85922}
+{"t": 14.58, "kind": "output_transcription", "text": " 5,", "finished": null}
+{"t": 14.58, "kind": "audio", "bytes": 19200, "total": 105122}
+{"t": 14.978, "kind": "audio", "bytes": 17280, "total": 122402}
+{"t": 15.384, "kind": "audio", "bytes": 11520, "total": 133922}
+{"t": 15.579, "kind": "output_transcription", "text": " 6,", "finished": null}
+{"t": 15.579, "kind": "audio", "bytes": 17280, "total": 151202}
+{"t": 15.589, "kind": "action", "what": "send_client_content(user 'Stop.', turn_complete=True)"}
+{"t": 15.66, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 15.925, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 15.925, "kind": "receive_generator_ended"}
+{"t": 16.142, "kind": "output_transcription", "text": "Okay, I've ", "finished": null}
+{"t": 16.142, "kind": "audio", "bytes": 2, "total": 151204}
+{"t": 16.178, "kind": "audio", "bytes": 4800, "total": 156004}
+{"t": 16.214, "kind": "audio", "bytes": 9600, "total": 165604}
+{"t": 16.378, "kind": "audio", "bytes": 11520, "total": 177124}
+{"t": 16.615, "kind": "audio", "bytes": 9600, "total": 186724}
+{"t": 16.822, "kind": "output_transcription", "text": "stopped counting.", "finished": null}
+{"t": 16.822, "kind": "audio", "bytes": 15360, "total": 202084}
+{"t": 17.143, "kind": "audio", "bytes": 7680, "total": 209764}
+{"t": 17.304, "kind": "audio", "bytes": 11520, "total": 221284}
+{"t": 17.539, "kind": "audio", "bytes": 11520, "total": 232804}
+{"t": 17.776, "kind": "audio", "bytes": 9600, "total": 242404}
+{"t": 17.975, "kind": "audio", "bytes": 5760, "total": 248164}
+{"t": 18.108, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 18.108, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 18.108, "kind": "receive_generator_ended"}
+{"t": 35.815, "kind": "budget_reached", "seconds": 30.0}

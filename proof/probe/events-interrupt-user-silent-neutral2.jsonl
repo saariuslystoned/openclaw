@@ -1,0 +1,30 @@
+{"t": 0.059, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-user-silent"}
+{"t": 0.374, "kind": "session_resumption_update", "resumable": true}
+{"t": 4.179, "kind": "say", "text": "Tell me, in a lot of detail, the history of lighthouses. Take your time.", "ms": 3941}
+{"t": 9.532, "kind": "input_transcription", "text": "Tell me in a lot of detail the history of lighthouses. Take your time.", "finished": null}
+{"t": 9.833, "kind": "output_transcription", "text": "Exploring the evolution ", "finished": null}
+{"t": 9.833, "kind": "audio", "bytes": 23520, "total": 23520}
+{"t": 10.2, "kind": "audio", "bytes": 17280, "total": 40800}
+{"t": 10.548, "kind": "audio", "bytes": 3840, "total": 44640}
+{"t": 10.64, "kind": "output_transcription", "text": "of these", "finished": null}
+{"t": 10.64, "kind": "audio", "bytes": 21120, "total": 65760}
+{"t": 11.079, "kind": "audio", "bytes": 15360, "total": 81120}
+{"t": 11.399, "kind": "audio", "bytes": 17280, "total": 98400}
+{"t": 11.765, "kind": "output_transcription", "text": " coastal guardians.", "finished": null}
+{"t": 11.765, "kind": "audio", "bytes": 24960, "total": 123360}
+{"t": 12.279, "kind": "audio", "bytes": 19200, "total": 142560}
+{"t": 12.678, "kind": "audio", "bytes": 15360, "total": 157920}
+{"t": 12.722, "kind": "action", "what": "send_client_content(user '[You were interrupted. Stop speaking and wait silently.]', turn_complete=True)"}
+{"t": 12.789, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 12.991, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 12.991, "kind": "receive_generator_ended"}
+{"t": 13.22, "kind": "output_transcription", "text": "<no ", "finished": null}
+{"t": 13.22, "kind": "audio", "bytes": 2, "total": 157922}
+{"t": 13.237, "kind": "audio", "bytes": 2, "total": 157924}
+{"t": 13.294, "kind": "audio", "bytes": 2, "total": 157926}
+{"t": 13.382, "kind": "audio", "bytes": 2, "total": 157928}
+{"t": 13.397, "kind": "output_transcription", "text": "speech>", "finished": null}
+{"t": 13.412, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 13.432, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 13.432, "kind": "receive_generator_ended"}
+{"t": 34.181, "kind": "budget_reached", "seconds": 30.0}

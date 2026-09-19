@@ -1,0 +1,98 @@
+{"t": 0.057, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-user-silent"}
+{"t": 0.367, "kind": "session_resumption_update", "resumable": true}
+{"t": 3.992, "kind": "say", "text": "Please count slowly from one to forty, one number at a time, and do not stop until you reach forty.", "ms": 5697}
+{"t": 11.077, "kind": "input_transcription", "text": "Please count slowly from 1 to 40. One number at a time. And do not stop until you reach 40.", "finished": null}
+{"t": 11.077, "kind": "output_transcription", "text": "1, 2, ", "finished": null}
+{"t": 11.077, "kind": "audio", "bytes": 2, "total": 2}
+{"t": 11.085, "kind": "audio", "bytes": 8160, "total": 8162}
+{"t": 11.151, "kind": "audio", "bytes": 7680, "total": 15842}
+{"t": 11.313, "kind": "audio", "bytes": 7680, "total": 23522}
+{"t": 11.479, "kind": "audio", "bytes": 13440, "total": 36962}
+{"t": 11.773, "kind": "output_transcription", "text": "3, 4,", "finished": null}
+{"t": 11.773, "kind": "audio", "bytes": 30720, "total": 67682}
+{"t": 12.396, "kind": "audio", "bytes": 15360, "total": 83042}
+{"t": 12.706, "kind": "audio", "bytes": 1920, "total": 84962}
+{"t": 12.764, "kind": "output_transcription", "text": " 5,", "finished": null}
+{"t": 12.764, "kind": "audio", "bytes": 26880, "total": 111842}
+{"t": 13.317, "kind": "audio", "bytes": 19200, "total": 131042}
+{"t": 13.707, "kind": "audio", "bytes": 1920, "total": 132962}
+{"t": 13.763, "kind": "output_transcription", "text": " 6,", "finished": null}
+{"t": 13.763, "kind": "audio", "bytes": 26880, "total": 159842}
+{"t": 13.809, "kind": "action", "what": "send_client_content(user '[You were interrupted. Stop speaking and wait silently.]', turn_complete=True)"}
+{"t": 13.879, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 14.307, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 14.307, "kind": "receive_generator_ended"}
+{"t": 15.98, "kind": "output_transcription", "text": "7, 8, ", "finished": null}
+{"t": 15.98, "kind": "audio", "bytes": 10560, "total": 170402}
+{"t": 16.103, "kind": "audio", "bytes": 15360, "total": 185762}
+{"t": 16.422, "kind": "audio", "bytes": 13440, "total": 199202}
+{"t": 16.709, "kind": "output_transcription", "text": "9,", "finished": null}
+{"t": 16.71, "kind": "audio", "bytes": 28800, "total": 228002}
+{"t": 17.303, "kind": "audio", "bytes": 15360, "total": 243362}
+{"t": 17.615, "kind": "audio", "bytes": 3840, "total": 247202}
+{"t": 17.704, "kind": "output_transcription", "text": " 10,", "finished": null}
+{"t": 17.705, "kind": "audio", "bytes": 17280, "total": 264482}
+{"t": 18.065, "kind": "audio", "bytes": 17280, "total": 281762}
+{"t": 18.424, "kind": "audio", "bytes": 13440, "total": 295202}
+{"t": 18.713, "kind": "output_transcription", "text": " 11,", "finished": null}
+{"t": 18.713, "kind": "audio", "bytes": 15360, "total": 310562}
+{"t": 19.025, "kind": "audio", "bytes": 21120, "total": 331682}
+{"t": 19.459, "kind": "audio", "bytes": 11520, "total": 343202}
+{"t": 19.705, "kind": "output_transcription", "text": " 12,", "finished": null}
+{"t": 19.705, "kind": "audio", "bytes": 17280, "total": 360482}
+{"t": 20.066, "kind": "audio", "bytes": 17280, "total": 377762}
+{"t": 20.422, "kind": "audio", "bytes": 13440, "total": 391202}
+{"t": 20.702, "kind": "output_transcription", "text": " 13,", "finished": null}
+{"t": 20.702, "kind": "audio", "bytes": 15360, "total": 406562}
+{"t": 21.025, "kind": "audio", "bytes": 17280, "total": 423842}
+{"t": 21.383, "kind": "audio", "bytes": 15360, "total": 439202}
+{"t": 21.705, "kind": "output_transcription", "text": " 14,", "finished": null}
+{"t": 21.705, "kind": "audio", "bytes": 21120, "total": 460322}
+{"t": 22.143, "kind": "audio", "bytes": 15360, "total": 475682}
+{"t": 22.46, "kind": "audio", "bytes": 11520, "total": 487202}
+{"t": 22.704, "kind": "output_transcription", "text": " 15,", "finished": null}
+{"t": 22.704, "kind": "audio", "bytes": 17280, "total": 504482}
+{"t": 23.079, "kind": "audio", "bytes": 23040, "total": 527522}
+{"t": 23.535, "kind": "audio", "bytes": 7680, "total": 535202}
+{"t": 23.701, "kind": "output_transcription", "text": " 16,", "finished": null}
+{"t": 23.701, "kind": "audio", "bytes": 15360, "total": 550562}
+{"t": 24.022, "kind": "audio", "bytes": 15360, "total": 565922}
+{"t": 24.344, "kind": "audio", "bytes": 15360, "total": 581282}
+{"t": 24.652, "kind": "audio", "bytes": 1920, "total": 583202}
+{"t": 24.71, "kind": "output_transcription", "text": " 17,", "finished": null}
+{"t": 24.71, "kind": "audio", "bytes": 26880, "total": 610082}
+{"t": 25.265, "kind": "audio", "bytes": 21120, "total": 631202}
+{"t": 25.711, "kind": "output_transcription", "text": " 18,", "finished": null}
+{"t": 25.711, "kind": "audio", "bytes": 28800, "total": 660002}
+{"t": 26.307, "kind": "audio", "bytes": 15360, "total": 675362}
+{"t": 26.615, "kind": "audio", "bytes": 3840, "total": 679202}
+{"t": 26.703, "kind": "output_transcription", "text": " 19,", "finished": null}
+{"t": 26.704, "kind": "audio", "bytes": 19200, "total": 698402}
+{"t": 27.102, "kind": "audio", "bytes": 15360, "total": 713762}
+{"t": 27.42, "kind": "audio", "bytes": 13440, "total": 727202}
+{"t": 27.707, "kind": "output_transcription", "text": " 20,", "finished": null}
+{"t": 27.707, "kind": "audio", "bytes": 23040, "total": 750242}
+{"t": 28.186, "kind": "audio", "bytes": 19200, "total": 769442}
+{"t": 28.577, "kind": "audio", "bytes": 5760, "total": 775202}
+{"t": 28.706, "kind": "output_transcription", "text": " 21,", "finished": null}
+{"t": 28.707, "kind": "audio", "bytes": 21120, "total": 796322}
+{"t": 29.143, "kind": "audio", "bytes": 17280, "total": 813602}
+{"t": 29.496, "kind": "audio", "bytes": 9600, "total": 823202}
+{"t": 29.705, "kind": "output_transcription", "text": " 22,", "finished": null}
+{"t": 29.705, "kind": "audio", "bytes": 19200, "total": 842402}
+{"t": 30.101, "kind": "audio", "bytes": 15360, "total": 857762}
+{"t": 30.42, "kind": "audio", "bytes": 13440, "total": 871202}
+{"t": 30.709, "kind": "output_transcription", "text": " 23,", "finished": null}
+{"t": 30.71, "kind": "audio", "bytes": 28800, "total": 900002}
+{"t": 31.306, "kind": "audio", "bytes": 19200, "total": 919202}
+{"t": 31.708, "kind": "output_transcription", "text": " 24,", "finished": null}
+{"t": 31.708, "kind": "audio", "bytes": 21120, "total": 940322}
+{"t": 32.143, "kind": "audio", "bytes": 17280, "total": 957602}
+{"t": 32.498, "kind": "audio", "bytes": 9600, "total": 967202}
+{"t": 32.704, "kind": "output_transcription", "text": " 25,", "finished": null}
+{"t": 32.704, "kind": "audio", "bytes": 15360, "total": 982562}
+{"t": 33.023, "kind": "audio", "bytes": 15360, "total": 997922}
+{"t": 33.344, "kind": "audio", "bytes": 17280, "total": 1015202}
+{"t": 33.707, "kind": "output_transcription", "text": " 26,", "finished": null}
+{"t": 33.707, "kind": "audio", "bytes": 23040, "total": 1038242}
+{"t": 33.992, "kind": "budget_reached", "seconds": 30.0}

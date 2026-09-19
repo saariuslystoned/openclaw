@@ -1,0 +1,105 @@
+{"t": 0.059, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-empty"}
+{"t": 0.389, "kind": "session_resumption_update", "resumable": true}
+{"t": 4.181, "kind": "say", "text": "Tell me, in a lot of detail, the history of lighthouses. Take your time.", "ms": 3941}
+{"t": 9.522, "kind": "input_transcription", "text": "Tell me in a lot of detail the history of lighthouses. Take your time.", "finished": null}
+{"t": 10.529, "kind": "output_transcription", "text": "Lighthouses originated ", "finished": null}
+{"t": 10.529, "kind": "audio", "bytes": 22080, "total": 22080}
+{"t": 10.864, "kind": "audio", "bytes": 13440, "total": 35520}
+{"t": 11.145, "kind": "output_transcription", "text": "in antiquity,", "finished": null}
+{"t": 11.145, "kind": "audio", "bytes": 15360, "total": 50880}
+{"t": 11.467, "kind": "audio", "bytes": 15360, "total": 66240}
+{"t": 11.786, "kind": "audio", "bytes": 15360, "total": 81600}
+{"t": 12.096, "kind": "audio", "bytes": 1920, "total": 83520}
+{"t": 12.151, "kind": "output_transcription", "text": " starting with beacon", "finished": null}
+{"t": 12.151, "kind": "audio", "bytes": 19200, "total": 102720}
+{"t": 12.546, "kind": "audio", "bytes": 19200, "total": 121920}
+{"t": 12.941, "kind": "audio", "bytes": 9600, "total": 131520}
+{"t": 13.149, "kind": "output_transcription", "text": " fires on hills,", "finished": null}
+{"t": 13.149, "kind": "audio", "bytes": 21120, "total": 152640}
+{"t": 13.184, "kind": "action", "what": "send_client_content(turns=None, turn_complete=True)"}
+{"t": 13.243, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 13.575, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 13.575, "kind": "receive_generator_ended"}
+{"t": 13.772, "kind": "output_transcription", "text": "which gradually ", "finished": null}
+{"t": 13.772, "kind": "audio", "bytes": 11520, "total": 164160}
+{"t": 13.909, "kind": "audio", "bytes": 7680, "total": 171840}
+{"t": 14.068, "kind": "audio", "bytes": 7680, "total": 179520}
+{"t": 14.234, "kind": "audio", "bytes": 15360, "total": 194880}
+{"t": 14.549, "kind": "audio", "bytes": 5760, "total": 200640}
+{"t": 14.675, "kind": "output_transcription", "text": "grew", "finished": null}
+{"t": 14.675, "kind": "audio", "bytes": 13440, "total": 214080}
+{"t": 14.954, "kind": "audio", "bytes": 13440, "total": 227520}
+{"t": 15.232, "kind": "audio", "bytes": 9600, "total": 237120}
+{"t": 15.432, "kind": "audio", "bytes": 9600, "total": 246720}
+{"t": 15.625, "kind": "audio", "bytes": 1920, "total": 248640}
+{"t": 15.67, "kind": "output_transcription", "text": " into monumental", "finished": null}
+{"t": 15.67, "kind": "audio", "bytes": 7680, "total": 256320}
+{"t": 15.83, "kind": "audio", "bytes": 9600, "total": 265920}
+{"t": 16.03, "kind": "audio", "bytes": 9600, "total": 275520}
+{"t": 16.23, "kind": "audio", "bytes": 9600, "total": 285120}
+{"t": 16.43, "kind": "audio", "bytes": 7680, "total": 292800}
+{"t": 16.586, "kind": "audio", "bytes": 3840, "total": 296640}
+{"t": 16.68, "kind": "output_transcription", "text": " structures like the Pharos", "finished": null}
+{"t": 16.68, "kind": "audio", "bytes": 24960, "total": 321600}
+{"t": 17.194, "kind": "audio", "bytes": 17280, "total": 338880}
+{"t": 17.549, "kind": "audio", "bytes": 5760, "total": 344640}
+{"t": 17.677, "kind": "output_transcription", "text": " of Alexandria.", "finished": null}
+{"t": 17.677, "kind": "audio", "bytes": 21120, "total": 365760}
+{"t": 18.117, "kind": "audio", "bytes": 19200, "total": 384960}
+{"t": 18.508, "kind": "audio", "bytes": 7680, "total": 392640}
+{"t": 18.679, "kind": "output_transcription", "text": " Over", "finished": null}
+{"t": 18.679, "kind": "audio", "bytes": 23040, "total": 415680}
+{"t": 19.156, "kind": "audio", "bytes": 17280, "total": 432960}
+{"t": 19.509, "kind": "audio", "bytes": 7680, "total": 440640}
+{"t": 19.676, "kind": "output_transcription", "text": " time, technology", "finished": null}
+{"t": 19.676, "kind": "audio", "bytes": 17280, "total": 457920}
+{"t": 20.035, "kind": "audio", "bytes": 15360, "total": 473280}
+{"t": 20.354, "kind": "audio", "bytes": 15360, "total": 488640}
+{"t": 20.676, "kind": "output_transcription", "text": " evolved from simple", "finished": null}
+{"t": 20.676, "kind": "audio", "bytes": 17280, "total": 505920}
+{"t": 21.036, "kind": "audio", "bytes": 15360, "total": 521280}
+{"t": 21.356, "kind": "audio", "bytes": 15360, "total": 536640}
+{"t": 21.681, "kind": "output_transcription", "text": " open fires", "finished": null}
+{"t": 21.681, "kind": "audio", "bytes": 24960, "total": 561600}
+{"t": 22.199, "kind": "audio", "bytes": 21120, "total": 582720}
+{"t": 22.625, "kind": "audio", "bytes": 1920, "total": 584640}
+{"t": 22.682, "kind": "output_transcription", "text": " to the development of reflectors", "finished": null}
+{"t": 22.682, "kind": "audio", "bytes": 30720, "total": 615360}
+{"t": 23.317, "kind": "audio", "bytes": 15360, "total": 630720}
+{"t": 23.626, "kind": "audio", "bytes": 1920, "total": 632640}
+{"t": 23.681, "kind": "output_transcription", "text": " and complex", "finished": null}
+{"t": 23.681, "kind": "audio", "bytes": 26880, "total": 659520}
+{"t": 24.238, "kind": "audio", "bytes": 15360, "total": 674880}
+{"t": 24.549, "kind": "audio", "bytes": 5760, "total": 680640}
+{"t": 24.674, "kind": "output_transcription", "text": " lenses, such", "finished": null}
+{"t": 24.674, "kind": "audio", "bytes": 15360, "total": 696000}
+{"t": 24.996, "kind": "audio", "bytes": 17280, "total": 713280}
+{"t": 25.353, "kind": "audio", "bytes": 15360, "total": 728640}
+{"t": 25.683, "kind": "output_transcription", "text": " as the Fresnel lens,", "finished": null}
+{"t": 25.683, "kind": "audio", "bytes": 30720, "total": 759360}
+{"t": 26.316, "kind": "audio", "bytes": 15360, "total": 774720}
+{"t": 26.627, "kind": "audio", "bytes": 1920, "total": 776640}
+{"t": 26.673, "kind": "output_transcription", "text": " which significantly", "finished": null}
+{"t": 26.674, "kind": "audio", "bytes": 15360, "total": 792000}
+{"t": 26.996, "kind": "audio", "bytes": 17280, "total": 809280}
+{"t": 27.352, "kind": "audio", "bytes": 15360, "total": 824640}
+{"t": 27.68, "kind": "output_transcription", "text": " improved visibility", "finished": null}
+{"t": 27.68, "kind": "audio", "bytes": 26880, "total": 851520}
+{"t": 28.236, "kind": "audio", "bytes": 21120, "total": 872640}
+{"t": 28.681, "kind": "output_transcription", "text": " and guided ships", "finished": null}
+{"t": 28.681, "kind": "audio", "bytes": 21120, "total": 893760}
+{"t": 29.114, "kind": "audio", "bytes": 19200, "total": 912960}
+{"t": 29.521, "kind": "audio", "bytes": 7680, "total": 920640}
+{"t": 29.677, "kind": "output_transcription", "text": " safely along dangerous", "finished": null}
+{"t": 29.677, "kind": "audio", "bytes": 19200, "total": 939840}
+{"t": 30.077, "kind": "audio", "bytes": 24960, "total": 964800}
+{"t": 30.603, "kind": "output_transcription", "text": " coastlines.", "finished": null}
+{"t": 30.604, "kind": "audio", "bytes": 28800, "total": 993600}
+{"t": 31.196, "kind": "audio", "bytes": 21120, "total": 1014720}
+{"t": 31.667, "kind": "audio", "bytes": 15360, "total": 1030080}
+{"t": 31.973, "kind": "audio", "bytes": 17280, "total": 1047360}
+{"t": 33.355, "kind": "audio", "bytes": 5760, "total": 1053120}
+{"t": 33.356, "kind": "server_content", "generation_complete": true, "interaction_status": null}
+{"t": 33.376, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 33.376, "kind": "receive_generator_ended"}
+{"t": 34.183, "kind": "budget_reached", "seconds": 30.0}

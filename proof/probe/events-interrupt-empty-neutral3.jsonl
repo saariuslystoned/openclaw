@@ -1,0 +1,100 @@
+{"t": 0.059, "kind": "connect", "model": "gemini-3.8-live-extended-thinking", "variant": "interrupt-empty"}
+{"t": 0.389, "kind": "session_resumption_update", "resumable": true}
+{"t": 4.185, "kind": "say", "text": "Tell me, in a lot of detail, the history of lighthouses. Take your time.", "ms": 3941}
+{"t": 9.508, "kind": "input_transcription", "text": "Tell me in a lot of detail the history of lighthouses. Take your time.", "finished": null}
+{"t": 10.09, "kind": "output_transcription", "text": "Lighthouses have a ", "finished": null}
+{"t": 10.09, "kind": "audio", "bytes": 19200, "total": 19200}
+{"t": 10.362, "kind": "audio", "bytes": 17280, "total": 36480}
+{"t": 10.725, "kind": "output_transcription", "text": "fascinating history", "finished": null}
+{"t": 10.725, "kind": "audio", "bytes": 26880, "total": 63360}
+{"t": 11.28, "kind": "audio", "bytes": 21120, "total": 84480}
+{"t": 11.724, "kind": "output_transcription", "text": " that dates back", "finished": null}
+{"t": 11.724, "kind": "audio", "bytes": 23040, "total": 107520}
+{"t": 12.202, "kind": "audio", "bytes": 19200, "total": 126720}
+{"t": 12.591, "kind": "audio", "bytes": 5760, "total": 132480}
+{"t": 12.724, "kind": "output_transcription", "text": " to ancient times.", "finished": null}
+{"t": 12.724, "kind": "audio", "bytes": 24960, "total": 157440}
+{"t": 12.773, "kind": "action", "what": "send_client_content(turns=None, turn_complete=True)"}
+{"t": 12.836, "kind": "server_content", "interrupted": true, "interaction_status": null}
+{"t": 13.229, "kind": "server_content", "turn_complete": true, "interaction_status": "IDLE"}
+{"t": 13.229, "kind": "receive_generator_ended"}
+{"t": 13.393, "kind": "audio", "bytes": 14400, "total": 171840}
+{"t": 14.298, "kind": "audio", "bytes": 7680, "total": 179520}
+{"t": 14.443, "kind": "audio", "bytes": 23040, "total": 202560}
+{"t": 14.845, "kind": "audio", "bytes": 15360, "total": 217920}
+{"t": 15.159, "kind": "audio", "bytes": 9600, "total": 227520}
+{"t": 15.363, "kind": "output_transcription", "text": "The earliest lighthouses were mostly", "finished": null}
+{"t": 15.363, "kind": "audio", "bytes": 15360, "total": 242880}
+{"t": 15.688, "kind": "audio", "bytes": 19200, "total": 262080}
+{"t": 16.082, "kind": "audio", "bytes": 13440, "total": 275520}
+{"t": 16.361, "kind": "output_transcription", "text": " bonfires built", "finished": null}
+{"t": 16.361, "kind": "audio", "bytes": 15360, "total": 290880}
+{"t": 16.684, "kind": "audio", "bytes": 19200, "total": 310080}
+{"t": 17.082, "kind": "audio", "bytes": 13440, "total": 323520}
+{"t": 17.366, "kind": "output_transcription", "text": " on high ground", "finished": null}
+{"t": 17.366, "kind": "audio", "bytes": 21120, "total": 344640}
+{"t": 17.804, "kind": "audio", "bytes": 15360, "total": 360000}
+{"t": 18.118, "kind": "audio", "bytes": 11520, "total": 371520}
+{"t": 18.366, "kind": "output_transcription", "text": " to guide ships, evolving", "finished": null}
+{"t": 18.366, "kind": "audio", "bytes": 15360, "total": 386880}
+{"t": 18.681, "kind": "audio", "bytes": 15360, "total": 402240}
+{"t": 19.003, "kind": "audio", "bytes": 15360, "total": 417600}
+{"t": 19.312, "kind": "audio", "bytes": 1920, "total": 419520}
+{"t": 19.368, "kind": "output_transcription", "text": " into tall", "finished": null}
+{"t": 19.368, "kind": "audio", "bytes": 23040, "total": 442560}
+{"t": 19.842, "kind": "audio", "bytes": 17280, "total": 459840}
+{"t": 20.196, "kind": "audio", "bytes": 7680, "total": 467520}
+{"t": 20.371, "kind": "output_transcription", "text": " masonry towers", "finished": null}
+{"t": 20.371, "kind": "audio", "bytes": 30720, "total": 498240}
+{"t": 21.002, "kind": "audio", "bytes": 15360, "total": 513600}
+{"t": 21.311, "kind": "audio", "bytes": 1920, "total": 515520}
+{"t": 21.371, "kind": "output_transcription", "text": " like the famous Lighthouse", "finished": null}
+{"t": 21.371, "kind": "audio", "bytes": 32640, "total": 548160}
+{"t": 22.041, "kind": "audio", "bytes": 15360, "total": 563520}
+{"t": 22.367, "kind": "output_transcription", "text": " of Alexandria.", "finished": null}
+{"t": 22.367, "kind": "audio", "bytes": 23040, "total": 586560}
+{"t": 22.843, "kind": "audio", "bytes": 19200, "total": 605760}
+{"t": 23.234, "kind": "audio", "bytes": 5760, "total": 611520}
+{"t": 23.364, "kind": "output_transcription", "text": " Over the centuries,", "finished": null}
+{"t": 23.364, "kind": "audio", "bytes": 19200, "total": 630720}
+{"t": 23.763, "kind": "audio", "bytes": 17280, "total": 648000}
+{"t": 24.117, "kind": "audio", "bytes": 11520, "total": 659520}
+{"t": 24.373, "kind": "output_transcription", "text": " the technology", "finished": null}
+{"t": 24.373, "kind": "audio", "bytes": 30720, "total": 690240}
+{"t": 25.003, "kind": "audio", "bytes": 15360, "total": 705600}
+{"t": 25.312, "kind": "audio", "bytes": 1920, "total": 707520}
+{"t": 25.369, "kind": "output_transcription", "text": " improved from open", "finished": null}
+{"t": 25.369, "kind": "audio", "bytes": 21120, "total": 728640}
+{"t": 25.804, "kind": "audio", "bytes": 19200, "total": 747840}
+{"t": 26.197, "kind": "audio", "bytes": 7680, "total": 755520}
+{"t": 26.363, "kind": "output_transcription", "text": " fires to oil", "finished": null}
+{"t": 26.363, "kind": "audio", "bytes": 15360, "total": 770880}
+{"t": 26.681, "kind": "audio", "bytes": 15360, "total": 786240}
+{"t": 27.001, "kind": "audio", "bytes": 15360, "total": 801600}
+{"t": 27.313, "kind": "audio", "bytes": 1920, "total": 803520}
+{"t": 27.364, "kind": "output_transcription", "text": " lamps with complex", "finished": null}
+{"t": 27.364, "kind": "audio", "bytes": 21120, "total": 824640}
+{"t": 27.802, "kind": "audio", "bytes": 17280, "total": 841920}
+{"t": 28.156, "kind": "audio", "bytes": 9600, "total": 851520}
+{"t": 28.366, "kind": "output_transcription", "text": " lenses, like", "finished": null}
+{"t": 28.366, "kind": "audio", "bytes": 19200, "total": 870720}
+{"t": 28.763, "kind": "audio", "bytes": 15360, "total": 886080}
+{"t": 29.08, "kind": "audio", "bytes": 13440, "total": 899520}
+{"t": 29.37, "kind": "output_transcription", "text": " the Fresnel lens, which", "finished": null}
+{"t": 29.37, "kind": "audio", "bytes": 34560, "total": 934080}
+{"t": 30.08, "kind": "audio", "bytes": 13440, "total": 947520}
+{"t": 30.362, "kind": "output_transcription", "text": " greatly increased", "finished": null}
+{"t": 30.362, "kind": "audio", "bytes": 17280, "total": 964800}
+{"t": 30.721, "kind": "audio", "bytes": 15360, "total": 980160}
+{"t": 31.041, "kind": "audio", "bytes": 15360, "total": 995520}
+{"t": 31.365, "kind": "output_transcription", "text": " the visibility", "finished": null}
+{"t": 31.365, "kind": "audio", "bytes": 28800, "total": 1024320}
+{"t": 31.972, "kind": "audio", "bytes": 19200, "total": 1043520}
+{"t": 33.354, "kind": "output_transcription", "text": " and efficiency of the", "finished": null}
+{"t": 33.354, "kind": "audio", "bytes": 19200, "total": 1062720}
+{"t": 33.873, "kind": "audio", "bytes": 15360, "total": 1078080}
+{"t": 33.873, "kind": "audio", "bytes": 13440, "total": 1091520}
+{"t": 33.954, "kind": "output_transcription", "text": " beam. Today,", "finished": null}
+{"t": 33.954, "kind": "audio", "bytes": 28800, "total": 1120320}
+{"t": 33.965, "kind": "audio", "bytes": 19200, "total": 1139520}
+{"t": 34.186, "kind": "budget_reached", "seconds": 30.0}
