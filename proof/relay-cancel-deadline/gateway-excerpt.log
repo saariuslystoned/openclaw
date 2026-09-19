@@ -1,0 +1,3 @@
+gateway: OpenClaw 2026.9.4 (e4ffbbb)
+2026-09-19T00:18:38.084-04:00 [gateway] talk relay: provider did not confirm output cancellation within 1000ms; keeping the session open and discarding stale output (reason=headless-proof-stop, turnId=turn-1)
+2026-09-19T00:18:38.088-04:00 [ws] ⇄ res ✓ talk.session.cancelOutput 1009ms conn=5b8bd002…65d6 id=462:575d342e…2f59

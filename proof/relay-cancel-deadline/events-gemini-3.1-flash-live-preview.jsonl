@@ -1,0 +1,239 @@
+{"t":30,"kind":"connected"}
+{"t":41,"kind":"session.created","model":"gemini-3.1-flash-live-preview","relaySessionId":"5f33be49-6679-4323-a1b5-87abadc151c7"}
+{"t":330,"kind":"event.ready","talkEventType":"session.ready"}
+{"t":3589,"kind":"user.speak","text":"Please tell me a long, detailed story about a lighthouse keeper and a storm. Take at least two minutes."}
+{"t":8076,"kind":"event.transcript","turnId":"turn-1","talkEventType":"transcript.done","role":"user","text":"Please tell me a long, detailed story about a lighthouse keeper and a storm. Take at least two minutes.","final":true}
+{"t":8996,"kind":"event.transcript","turnId":"turn-1","talkEventType":"output.text.delta","role":"assistant","text":"The old","final":false}
+{"t":8998,"kind":"event.audio","turnId":"turn-1","frame":1}
+{"t":8999,"kind":"event.mark","turnId":"turn-1","talkEventType":"output.audio.done"}
+{"t":9008,"kind":"event.mark","turnId":"turn-1","talkEventType":"output.audio.done"}
+{"t":9155,"kind":"event.transcript","turnId":"turn-1","talkEventType":"output.text.delta","role":"assistant","text":" lighthouse","final":false}
+{"t":9158,"kind":"event.audio","turnId":"turn-1","frame":25}
+{"t":9158,"kind":"event.mark","turnId":"turn-1","talkEventType":"output.audio.done"}
+{"t":9206,"kind":"cancelOutput.request","turnId":"turn-1","audioFramesBefore":46}
+{"t":9209,"kind":"event.clear","turnId":"turn-1","talkEventType":"turn.cancelled"}
+{"t":10217,"kind":"cancelOutput.result","latencyMs":1011,"result":{"ok":true,"status":"applied","turnId":"turn-1"}}
+{"t":18219,"kind":"after-cancel.window","cancelledTurnAudioFramesAfterResult":0}
+{"t":19681,"kind":"user.speak","text":"What is two plus two? Answer in one short sentence."}
+{"t":19886,"kind":"event.clear","turnId":"turn-1","talkEventType":"output.audio.done","reason":"barge-in"}
+{"t":22003,"kind":"event.transcript","turnId":"turn-2","talkEventType":"transcript.done","role":"user","text":"What is 2 + 2? Answer in one short sentence.","final":true}
+{"t":23903,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":"Two plus","final":false}
+{"t":23904,"kind":"event.audio","turnId":"turn-2","frame":1}
+{"t":23905,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":23992,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24044,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" two","final":false}
+{"t":24045,"kind":"event.audio","turnId":"turn-2","frame":25}
+{"t":24046,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24170,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" is four.","final":false}
+{"t":24175,"kind":"event.audio","turnId":"turn-2","frame":50}
+{"t":24175,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24177,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24334,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" His","final":false}
+{"t":24336,"kind":"event.audio","turnId":"turn-2","frame":75}
+{"t":24336,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24405,"kind":"event.audio","turnId":"turn-2","frame":100}
+{"t":24405,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24543,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" life","final":false}
+{"t":24545,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24675,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" pulsed","final":false}
+{"t":24677,"kind":"event.audio","turnId":"turn-2","frame":125}
+{"t":24677,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24733,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" to the","final":false}
+{"t":24735,"kind":"event.audio","turnId":"turn-2","frame":150}
+{"t":24735,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24837,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" rhythm","final":false}
+{"t":24839,"kind":"event.audio","turnId":"turn-2","frame":175}
+{"t":24840,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":24884,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" of the","final":false}
+{"t":24886,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25059,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" sea,","final":false}
+{"t":25061,"kind":"event.audio","turnId":"turn-2","frame":200}
+{"t":25062,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25196,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" its","final":false}
+{"t":25198,"kind":"event.audio","turnId":"turn-2","frame":225}
+{"t":25198,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25330,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" moods","final":false}
+{"t":25332,"kind":"event.audio","turnId":"turn-2","frame":250}
+{"t":25332,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25419,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" mirroring","final":false}
+{"t":25421,"kind":"event.audio","turnId":"turn-2","frame":275}
+{"t":25421,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25467,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25527,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" his","final":false}
+{"t":25529,"kind":"event.audio","turnId":"turn-2","frame":300}
+{"t":25529,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25643,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" own.","final":false}
+{"t":25646,"kind":"event.audio","turnId":"turn-2","frame":325}
+{"t":25646,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25646,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25811,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" But","final":false}
+{"t":25812,"kind":"event.audio","turnId":"turn-2","frame":350}
+{"t":25812,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25826,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":25897,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" this","final":false}
+{"t":25898,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26021,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" storm","final":false}
+{"t":26023,"kind":"event.audio","turnId":"turn-2","frame":375}
+{"t":26023,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26060,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" was","final":false}
+{"t":26061,"kind":"event.audio","turnId":"turn-2","frame":400}
+{"t":26061,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26183,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" different.","final":false}
+{"t":26185,"kind":"event.audio","turnId":"turn-2","frame":425}
+{"t":26185,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26218,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26360,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" The old","final":false}
+{"t":26361,"kind":"event.audio","turnId":"turn-2","frame":450}
+{"t":26361,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26417,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26464,"kind":"event.audio","turnId":"turn-2","frame":475}
+{"t":26464,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26583,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" mariners","final":false}
+{"t":26584,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26614,"kind":"event.audio","turnId":"turn-2","frame":500}
+{"t":26614,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26778,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" whispered","final":false}
+{"t":26780,"kind":"event.audio","turnId":"turn-2","frame":525}
+{"t":26780,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26780,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26864,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" about","final":false}
+{"t":26864,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":26934,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" such","final":false}
+{"t":26935,"kind":"event.audio","turnId":"turn-2","frame":550}
+{"t":26935,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27073,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" things—waterspouts","final":false}
+{"t":27076,"kind":"event.audio","turnId":"turn-2","frame":575}
+{"t":27076,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27137,"kind":"event.audio","turnId":"turn-2","frame":600}
+{"t":27137,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27235,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27345,"kind":"event.audio","turnId":"turn-2","frame":625}
+{"t":27345,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27347,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27505,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" screaming","final":false}
+{"t":27507,"kind":"event.audio","turnId":"turn-2","frame":650}
+{"t":27507,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27510,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27578,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" in the","final":false}
+{"t":27579,"kind":"event.audio","turnId":"turn-2","frame":675}
+{"t":27579,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27707,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" darkness,","final":false}
+{"t":27708,"kind":"event.audio","turnId":"turn-2","frame":700}
+{"t":27708,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27737,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27857,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" waves","final":false}
+{"t":27858,"kind":"event.audio","turnId":"turn-2","frame":725}
+{"t":27858,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27926,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":27973,"kind":"event.audio","turnId":"turn-2","frame":750}
+{"t":27973,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28082,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" tall","final":false}
+{"t":28083,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28157,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" enough","final":false}
+{"t":28159,"kind":"event.audio","turnId":"turn-2","frame":775}
+{"t":28159,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28285,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" to pluck","final":false}
+{"t":28287,"kind":"event.audio","turnId":"turn-2","frame":800}
+{"t":28287,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28288,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28402,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the moon","final":false}
+{"t":28404,"kind":"event.audio","turnId":"turn-2","frame":825}
+{"t":28404,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28446,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" from","final":false}
+{"t":28447,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28627,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the sky.","final":false}
+{"t":28630,"kind":"event.audio","turnId":"turn-2","frame":850}
+{"t":28630,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28630,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28806,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" He","final":false}
+{"t":28808,"kind":"event.audio","turnId":"turn-2","frame":875}
+{"t":28808,"kind":"event.audio","turnId":"turn-2","frame":900}
+{"t":28808,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28849,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":28966,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" felt","final":false}
+{"t":28968,"kind":"event.audio","turnId":"turn-2","frame":925}
+{"t":28968,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29120,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the vibration","final":false}
+{"t":29122,"kind":"event.audio","turnId":"turn-2","frame":950}
+{"t":29122,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29156,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29220,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" in the","final":false}
+{"t":29221,"kind":"event.audio","turnId":"turn-2","frame":975}
+{"t":29221,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29319,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" stone","final":false}
+{"t":29320,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29321,"kind":"event.audio","turnId":"turn-2","frame":1000}
+{"t":29322,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29397,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" floor","final":false}
+{"t":29398,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29476,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" before","final":false}
+{"t":29477,"kind":"event.audio","turnId":"turn-2","frame":1025}
+{"t":29477,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29591,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the first","final":false}
+{"t":29593,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29593,"kind":"event.audio","turnId":"turn-2","frame":1050}
+{"t":29594,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29689,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" wave","final":false}
+{"t":29690,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29798,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" crashed,","final":false}
+{"t":29800,"kind":"event.audio","turnId":"turn-2","frame":1075}
+{"t":29800,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29839,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":29947,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" a low","final":false}
+{"t":29948,"kind":"event.audio","turnId":"turn-2","frame":1100}
+{"t":29949,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30018,"kind":"event.audio","turnId":"turn-2","frame":1125}
+{"t":30019,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30025,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30180,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" rumble","final":false}
+{"t":30182,"kind":"event.audio","turnId":"turn-2","frame":1150}
+{"t":30182,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30183,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30261,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" that","final":false}
+{"t":30263,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30387,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" weakened","final":false}
+{"t":30389,"kind":"event.audio","turnId":"turn-2","frame":1175}
+{"t":30389,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30518,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" his knees.","final":false}
+{"t":30519,"kind":"event.audio","turnId":"turn-2","frame":1200}
+{"t":30520,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30531,"kind":"event.audio","turnId":"turn-2","frame":1225}
+{"t":30531,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30667,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" He climbed","final":false}
+{"t":30669,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30746,"kind":"event.audio","turnId":"turn-2","frame":1250}
+{"t":30746,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30843,"kind":"event.audio","turnId":"turn-2","frame":1275}
+{"t":30844,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30845,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":30999,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the spiral","final":false}
+{"t":31001,"kind":"event.audio","turnId":"turn-2","frame":1300}
+{"t":31001,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31154,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" staircase,","final":false}
+{"t":31156,"kind":"event.audio","turnId":"turn-2","frame":1325}
+{"t":31157,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31165,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31300,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" each","final":false}
+{"t":31302,"kind":"event.audio","turnId":"turn-2","frame":1350}
+{"t":31302,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31372,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" step","final":false}
+{"t":31373,"kind":"event.audio","turnId":"turn-2","frame":1375}
+{"t":31374,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31562,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" a defiance","final":false}
+{"t":31564,"kind":"event.audio","turnId":"turn-2","frame":1400}
+{"t":31564,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31569,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31653,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" against","final":false}
+{"t":31654,"kind":"event.audio","turnId":"turn-2","frame":1425}
+{"t":31655,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31770,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" the growing","final":false}
+{"t":31772,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31772,"kind":"event.audio","turnId":"turn-2","frame":1450}
+{"t":31773,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31929,"kind":"event.transcript","turnId":"turn-2","talkEventType":"output.text.delta","role":"assistant","text":" chaos.","final":false}
+{"t":31931,"kind":"event.audio","turnId":"turn-2","frame":1475}
+{"t":31931,"kind":"event.mark","turnId":"turn-2","talkEventType":"output.audio.done"}
+{"t":31935,"kind":"second-turn.answered","turnId":"turn-2","audioFrames":1477}
+{"t":31945,"kind":"event.transcript","role":"assistant","text":"Two plus two is four. His life pulsed to the rhythm of the sea, its moods mirroring his own. But this storm was different. The old mariners whispered about such things—waterspouts screaming in the dar","final":true}
+{"t":31949,"kind":"event.close","talkEventType":"session.closed","reason":"completed"}
+{"t":31950,"kind":"done","audioFramesByTurn":{"turn-1":46,"turn-2":1477}}
