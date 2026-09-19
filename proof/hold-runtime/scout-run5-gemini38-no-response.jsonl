@@ -1,0 +1,9 @@
+{"t_ms":43,"kind":"hello"}
+{"t_ms":70,"kind":"talk.session.create.ok","sessionId":"b49aec15-316f-4b75-aee4-193510a0c6d3","relaySessionId":"b49aec15-316f-4b75-aee4-193510a0c6d3","provider":"google","model":"gemini-3.8-live-extended-thinking","audio":{"inputEncoding":"pcm16","inputSampleRateHz":24000,"outputEncoding":"pcm16","outputSampleRateHz":24000}}
+{"t_ms":404,"kind":"talk.ready"}
+{"t_ms":1433,"kind":"mic.question.start","bytes":190746,"seconds":3.973875}
+{"t_ms":1437,"kind":"talk.event","type":"inputAudio","talkEvent":"turn.started"}
+{"t_ms":5905,"kind":"mic.question.end"}
+{"t_ms":156941,"kind":"summary","toolCalls":[],"toolResults":0,"audioOutBytes":0,"finals":[]}
+{"t_ms":156976,"kind":"talk.close","reason":"completed"}
+{"t_ms":156977,"kind":"talk.session.close.sent"}
