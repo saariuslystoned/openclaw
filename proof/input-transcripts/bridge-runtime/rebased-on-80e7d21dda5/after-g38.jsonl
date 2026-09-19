@@ -1,0 +1,67 @@
+{"t_ms":0,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live","commit":"3d14a357c99","micSilence":"noise-floor","extensionsGoogleDirty":false}
+{"t_ms":9363,"phase":"connect","kind":"onReady"}
+{"t_ms":10940,"phase":"utterance-1","kind":"speak","text":"Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.","audio_ms":5381}
+{"t_ms":17812,"phase":"utterance-1","kind":"onTranscript","role":"user","text":"Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","final":true}
+{"t_ms":17853,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"On a clear day, ","final":false}
+{"t_ms":17853,"phase":"utterance-1","kind":"audio","bytes":1920,"total":1920}
+{"t_ms":17915,"phase":"utterance-1","kind":"audio","bytes":15360,"total":17280}
+{"t_ms":17961,"phase":"utterance-1","kind":"audio","bytes":7680,"total":24960}
+{"t_ms":18025,"phase":"utterance-1","kind":"audio","bytes":11520,"total":36480}
+{"t_ms":18167,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"the sky is usually","final":false}
+{"t_ms":18167,"phase":"utterance-1","kind":"audio","bytes":19200,"total":55680}
+{"t_ms":18207,"phase":"utterance-1","kind":"audio","bytes":17280,"total":72960}
+{"t_ms":18418,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":" blue.","final":false}
+{"t_ms":18419,"phase":"utterance-1","kind":"audio","bytes":36480,"total":109440}
+{"t_ms":18463,"phase":"utterance-1","kind":"audio","bytes":17280,"total":126720}
+{"t_ms":18485,"phase":"utterance-1","kind":"audio","bytes":3840,"total":130560}
+{"t_ms":18513,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"On a clear day, the sky is usually blue.","final":true}
+{"t_ms":20580,"phase":"utterance-1","kind":"onResponseDone","status":"completed"}
+{"t_ms":26899,"phase":"utterance-2","kind":"speak","text":"I want to plan a small garden this spring. I have a sunny patch about four meters long, the soil is a bit sandy, and I would like easy vegetables. Which three would you suggest, briefly?","audio_ms":10757}
+{"t_ms":39401,"phase":"utterance-2","kind":"onTranscript","role":"user","text":"I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly?","final":true}
+{"t_ms":39879,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"Radishes, carrots, ","final":false}
+{"t_ms":39879,"phase":"utterance-2","kind":"audio","bytes":2,"total":130562}
+{"t_ms":39896,"phase":"utterance-2","kind":"audio","bytes":5760,"total":136322}
+{"t_ms":39956,"phase":"utterance-2","kind":"audio","bytes":9600,"total":145922}
+{"t_ms":40016,"phase":"utterance-2","kind":"audio","bytes":11520,"total":157442}
+{"t_ms":40042,"phase":"utterance-2","kind":"audio","bytes":7680,"total":165122}
+{"t_ms":40069,"phase":"utterance-2","kind":"audio","bytes":1920,"total":167042}
+{"t_ms":40184,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"and lettuce","final":false}
+{"t_ms":40184,"phase":"utterance-2","kind":"audio","bytes":17280,"total":184322}
+{"t_ms":40189,"phase":"utterance-2","kind":"audio","bytes":7680,"total":192002}
+{"t_ms":40286,"phase":"utterance-2","kind":"audio","bytes":15360,"total":207362}
+{"t_ms":40310,"phase":"utterance-2","kind":"audio","bytes":7680,"total":215042}
+{"t_ms":40484,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" are great, easy","final":false}
+{"t_ms":40485,"phase":"utterance-2","kind":"audio","bytes":30720,"total":245762}
+{"t_ms":40550,"phase":"utterance-2","kind":"audio","bytes":17280,"total":263042}
+{"t_ms":40721,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" choices for your sunny,","final":false}
+{"t_ms":40722,"phase":"utterance-2","kind":"audio","bytes":26880,"total":289922}
+{"t_ms":40784,"phase":"utterance-2","kind":"audio","bytes":15360,"total":305282}
+{"t_ms":40847,"phase":"utterance-2","kind":"audio","bytes":15360,"total":320642}
+{"t_ms":40954,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" sandy soil.","final":false}
+{"t_ms":40954,"phase":"utterance-2","kind":"audio","bytes":15360,"total":336002}
+{"t_ms":41021,"phase":"utterance-2","kind":"audio","bytes":15360,"total":351362}
+{"t_ms":41079,"phase":"utterance-2","kind":"audio","bytes":15360,"total":366722}
+{"t_ms":41171,"phase":"utterance-2","kind":"audio","bytes":15360,"total":382082}
+{"t_ms":41189,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"Radishes, carrots, and lettuce are great, easy choices for your sunny, sandy soil.","final":true}
+{"t_ms":45135,"phase":"utterance-2","kind":"onResponseDone","status":"completed"}
+{"t_ms":50643,"phase":"utterance-3","kind":"speak","text":"Thanks. Now name one fruit that is yellow, and keep it short.","audio_ms":3718}
+{"t_ms":55793,"phase":"utterance-3","kind":"onTranscript","role":"user","text":"Now name one fruit that is yellow. And keep it short.","final":true}
+{"t_ms":55793,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"A banana is ","final":false}
+{"t_ms":55793,"phase":"utterance-3","kind":"audio","bytes":2,"total":382084}
+{"t_ms":55799,"phase":"utterance-3","kind":"audio","bytes":11520,"total":393604}
+{"t_ms":55803,"phase":"utterance-3","kind":"audio","bytes":11520,"total":405124}
+{"t_ms":55805,"phase":"utterance-3","kind":"audio","bytes":7680,"total":412804}
+{"t_ms":55807,"phase":"utterance-3","kind":"audio","bytes":7680,"total":420484}
+{"t_ms":55855,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"a yellow fruit.","final":false}
+{"t_ms":55856,"phase":"utterance-3","kind":"audio","bytes":11520,"total":432004}
+{"t_ms":55897,"phase":"utterance-3","kind":"audio","bytes":9600,"total":441604}
+{"t_ms":55927,"phase":"utterance-3","kind":"audio","bytes":7680,"total":449284}
+{"t_ms":55988,"phase":"utterance-3","kind":"audio","bytes":9600,"total":458884}
+{"t_ms":56016,"phase":"utterance-3","kind":"audio","bytes":7680,"total":466564}
+{"t_ms":56077,"phase":"utterance-3","kind":"audio","bytes":11520,"total":478084}
+{"t_ms":56077,"phase":"utterance-3","kind":"audio","bytes":1920,"total":480004}
+{"t_ms":56100,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"A banana is a yellow fruit.","final":true}
+{"t_ms":57836,"phase":"utterance-3","kind":"onResponseDone","status":"completed"}
+{"t_ms":61844,"phase":"before-close","kind":"finals-before-close","user":["Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly?","Now name one fruit that is yellow. And keep it short."],"assistant":["On a clear day, the sky is usually blue.","Radishes, carrots, and lettuce are great, easy choices for your sunny, sandy soil.","A banana is a yellow fruit."]}
+{"t_ms":61844,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":61844,"phase":"close","kind":"summary","model":"gemini-3.8-live","commit":"3d14a357c99","userFinalsDuringCall":3,"userPartialsDuringCall":0,"finals":["user: Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","assistant: On a clear day, the sky is usually blue.","user: I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly?","assistant: Radishes, carrots, and lettuce are great, easy choices for your sunny, sandy soil.","user: Now name one fruit that is yellow. And keep it short.","assistant: A banana is a yellow fruit."]}
