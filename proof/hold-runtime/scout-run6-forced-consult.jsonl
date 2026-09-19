@@ -1,0 +1,86 @@
+{"t_ms":12,"kind":"hello"}
+{"t_ms":28,"kind":"talk.session.create.ok","sessionId":"839594a0-0e11-471e-af0b-adc0de01c9f2","relaySessionId":"839594a0-0e11-471e-af0b-adc0de01c9f2","provider":"google","model":"gemini-3.1-flash-live-preview","audio":{"inputEncoding":"pcm16","inputSampleRateHz":24000,"outputEncoding":"pcm16","outputSampleRateHz":24000}}
+{"t_ms":346,"kind":"talk.ready"}
+{"t_ms":1387,"kind":"mic.question.start","bytes":163146,"seconds":3.398875}
+{"t_ms":1390,"kind":"talk.event","type":"inputAudio","talkEvent":"turn.started"}
+{"t_ms":5025,"kind":"mic.question.end"}
+{"t_ms":6244,"kind":"transcript.final","role":"user","text":"What is the current date and time on the gateway machine? Please check."}
+{"t_ms":6305,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6307,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6462,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6464,"kind":"toolCall","callId":"forced-consult:1789797232000:1","name":"openclaw_agent_consult","args":{"question":"What is the current date and time on the gateway machine? Please check.","context":"The realtime provider produced a final user transcript without invoking openclaw_agent_consult, so OpenClaw is forcing the consult for realtime Talk.","responseStyle":"Reply in a concise spoken tone."},"forced":true}
+{"t_ms":6467,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6469,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6473,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6517,"kind":"toolResult","callId":"forced-consult:1789797232000:1","talkEvent":"tool.result","final":false}
+{"t_ms":6517,"kind":"submitToolResult.working","callId":"forced-consult:1789797232000:1"}
+{"t_ms":6591,"kind":"talk.client.toolCall.ok","callId":"forced-consult:1789797232000:1","runId":"talk-forced-consult:1789797232000:1-8b7331fd-dbac-4e7e-a9e0-339bb6681e9d","agentSessionKey":"agent:main:main"}
+{"t_ms":6661,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6664,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":6668,"kind":"chat","runId":"talk-forced-consult:1789797232000:1-8b7331fd-dbac-4e7e-a9e0-339bb6681e9d","state":"aborted"}
+{"t_ms":6676,"kind":"talk.event","type":"toolCallCancelled"}
+{"t_ms":6694,"kind":"chat.final","runId":"talk-forced-consult:1789797232000:1-8b7331fd-dbac-4e7e-a9e0-339bb6681e9d","state":"aborted","text":""}
+{"t_ms":6724,"kind":"event","event":"agent"}
+{"t_ms":6727,"kind":"talk.event","type":"clear","talkEvent":"output.audio.done"}
+{"t_ms":6731,"kind":"transcript.final","role":"assistant","text":"One moment, let me check"}
+{"t_ms":6738,"kind":"talk.event","type":"audioDone","talkEvent":"turn.cancelled"}
+{"t_ms":6749,"kind":"talk.event","type":"inputAudio","talkEvent":"turn.started"}
+{"t_ms":6753,"kind":"submitToolResult.final","callId":"forced-consult:1789797232000:1"}
+{"t_ms":7262,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7292,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7335,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7406,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7431,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7515,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7540,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7595,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7869,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7940,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":7954,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8018,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8047,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8102,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8141,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8184,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8191,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8254,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8297,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8340,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8368,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8496,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8540,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8543,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8605,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8710,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8713,"kind":"talk.event","type":"mark","talkEvent":"output.audio.done"}
+{"t_ms":8758,"kind":"toolCall","callId":"fc_10224076935549198132","name":"openclaw_agent_consult","args":{"question":"What is the current date and time on the gateway machine?"}}
+{"t_ms":8804,"kind":"talk.client.toolCall.ok","callId":"fc_10224076935549198132","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","agentSessionKey":"agent:main:main"}
+{"t_ms":9000,"kind":"event","event":"chat.metadata.changed"}
+{"t_ms":9351,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"status"}
+{"t_ms":9351,"kind":"event","event":"agent"}
+{"t_ms":9372,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"status"}
+{"t_ms":9372,"kind":"event","event":"agent"}
+{"t_ms":9896,"kind":"event","event":"agent"}
+{"t_ms":9920,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"status"}
+{"t_ms":9920,"kind":"event","event":"agent"}
+{"t_ms":11363,"kind":"event","event":"agent"}
+{"t_ms":11416,"kind":"event","event":"agent"}
+{"t_ms":11431,"kind":"event","event":"agent"}
+{"t_ms":11582,"kind":"event","event":"agent"}
+{"t_ms":12539,"kind":"event","event":"agent"}
+{"t_ms":12547,"kind":"event","event":"agent"}
+{"t_ms":12549,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"delta"}
+{"t_ms":12623,"kind":"event","event":"agent"}
+{"t_ms":12623,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"delta"}
+{"t_ms":12661,"kind":"event","event":"agent"}
+{"t_ms":12670,"kind":"event","event":"agent"}
+{"t_ms":12717,"kind":"event","event":"agent"}
+{"t_ms":12727,"kind":"event","event":"agent"}
+{"t_ms":12729,"kind":"chat","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"final"}
+{"t_ms":12736,"kind":"chat.final","runId":"talk-fc_10224076935549198132-883e97b2-a1f4-4336-8b2d-10caa9355614","state":"final","text":"The current date and time on the gateway machine is **Saturday, September 19, 2026, at 1:53 AM EDT** (05:53 UTC)."}
+{"t_ms":12763,"kind":"summary","toolCalls":[{"callId":"forced-consult:1789797232000:1","name":"openclaw_agent_consult","forced":true},{"callId":"fc_10224076935549198132","name":"openclaw_agent_consult"}],"toolResults":1,"audioOutBytes":293820,"finals":["user: What is the current date and time on the gateway machine? Please check.","assistant: One moment, let me check"]}
+{"t_ms":12816,"kind":"toolResult","callId":"fc_10224076935549198132","talkEvent":"tool.result","final":true}
+{"t_ms":12816,"kind":"submitToolResult.final","callId":"fc_10224076935549198132"}
+{"t_ms":12856,"kind":"transcript.final","role":"assistant","text":"I'm checking on that with OpenClaw.I'm checking with OpenClaw for you on that one."}
+{"t_ms":12858,"kind":"talk.close","reason":"completed"}
+{"t_ms":12862,"kind":"talk.session.close.sent"}

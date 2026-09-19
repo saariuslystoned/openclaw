@@ -25,10 +25,9 @@
       // Run 2: make the model speak a short filler before calling the consult tool so the
       // hold has a final to keep (the Gemini 3.8 "checking" behaviour from #150204).
       instructions: "Whenever you call the openclaw_agent_consult tool, first say out loud a short sentence such as 'One moment, let me check that.' and only then call the tool.",
-      // Run 3: Gemini 3.8 (the model from #150204); note #152413's contracts fix is not
-      // on this branch.
-      model: "gemini-3.8-live-extended-thinking",
-      providers: { google: { thinkingLevel: "high" } },
+      // Run 6: default model (gemini-3.1-flash-live-preview) with forced consult routing, so
+      // the model speaks its own "checking" response while the consult run is admitted.
+      consultRouting: "force-agent-consult",
     },
   },
 }
