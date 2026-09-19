@@ -1,0 +1,136 @@
+{"t": 0.066, "kind": "connect", "model": "gemini-3.1-flash-live-preview", "thinking": "none"}
+{"t": 4.446, "kind": "say", "text": "Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.", "ms": 5359}
+{"t": 4.448, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "d5a0e051-33b2-4965-849e-f2ba1257c343", "resumable": true}}}
+{"t": 4.694, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_START", "audio_offset": "1.160s"}}}
+{"t": 4.837, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "dbe041a9-b1f0-436b-ac6c-d9cd308f9d50", "resumable": true}}}
+{"t": 11.277, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?"}}}}
+{"t": 11.281, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_END", "audio_offset": "7.360s"}}}
+{"t": 11.281, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 11.281, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 11.281, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 11.284, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<5160 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": "On a"}}}}
+{"t": 11.287, "kind": "audio_part", "n": 1}
+{"t": 11.336, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<15360 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " clear"}}}}
+{"t": 11.339, "kind": "audio_part", "n": 1}
+{"t": 11.402, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<20480 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " day,"}}}}
+{"t": 11.43, "kind": "audio_part", "n": 1}
+{"t": 11.47, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<10240 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " the sky"}}}}
+{"t": 11.517, "kind": "audio_part", "n": 1}
+{"t": 11.529, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<12800 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " is blue."}}}}
+{"t": 11.536, "kind": "audio_part", "n": 1}
+{"t": 11.553, "kind": "audio_part", "n": 1}
+{"t": 11.56, "kind": "audio_part", "n": 1}
+{"t": 11.562, "kind": "audio_part", "n": 1}
+{"t": 11.562, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 11.593, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "91120c98-ccdd-4792-bf64-d8fdcaae5960", "resumable": true}}}
+{"t": 12.016, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "60b5e23a-eceb-4e9f-a593-677ff5d88834", "resumable": true}}}
+{"t": 12.431, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "d9ed2e0e-125d-4106-83aa-5fa75a4f5819", "resumable": true}}}
+{"t": 13.218, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "5267155d-33d7-4eb8-8757-a373657e2ef7", "resumable": true}}}
+{"t": 13.277, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 376, "response_token_count": 56, "total_token_count": 432, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 185}, {"modality": "AUDIO", "token_count": 142}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 56}]}}}
+{"t": 13.65, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "da1553e6-4f30-4407-b33c-1343688cfae7", "resumable": true}}}
+{"t": 13.905, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "a24a40db-d258-4e9c-aed6-f7b8423b7a03", "resumable": true}}}
+{"t": 14.183, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "74c14f8e-f2b6-422d-bd10-39b93f071548", "resumable": true}}}
+{"t": 14.704, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "7d65f31b-e2fa-433a-9dbe-9b6a20a287a6", "resumable": true}}}
+{"t": 15.237, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "3094fb20-8e5b-4fc5-af51-d96b756e029a", "resumable": true}}}
+{"t": 15.797, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "f9e81305-7b36-4d10-85e7-0b5c18b7067a", "resumable": true}}}
+{"t": 16.369, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "c551e0e1-ff51-49cc-9287-0af7331a2132", "resumable": true}}}
+{"t": 16.768, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "ad58e58a-4d70-480f-aa54-9484d1b50367", "resumable": true}}}
+{"t": 17.326, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "ab8d8473-96f8-48e3-a253-d2d37307bd74", "resumable": true}}}
+{"t": 17.868, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "3d557a6d-c421-4ea9-bb3d-f810d177bfab", "resumable": true}}}
+{"t": 18.469, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "505f4aab-c4a4-4a43-b3e5-dce7ded15592", "resumable": true}}}
+{"t": 19.014, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "9884ce2f-b40a-4bee-b292-bd7abba1d814", "resumable": true}}}
+{"t": 19.649, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "b470ad0f-c124-4ea6-af5e-9354030c76da", "resumable": true}}}
+{"t": 19.995, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "45fc6453-e548-4cbe-a0b1-22230c61ff40", "resumable": true}}}
+{"t": 20.571, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "2c2094ac-439b-45ee-8cf5-f6c3f78d5ba3", "resumable": true}}}
+{"t": 21.089, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "3c47f558-deb2-4ca9-afc1-e12b3e251743", "resumable": true}}}
+{"t": 21.787, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "b89755a6-7e9f-4f94-93f9-84ea9258f022", "resumable": true}}}
+{"t": 23.816, "kind": "say", "text": "Thanks. Now name one fruit that is yellow, and keep it short.", "ms": 3725}
+{"t": 23.817, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "455e2883-b6a4-41cd-abeb-fd916bf1d83b", "resumable": true}}}
+{"t": 24.326, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_START", "audio_offset": "18.600s"}}}
+{"t": 24.337, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "a2bb0d62-deff-48cd-bdd8-51996c2e0568", "resumable": true}}}
+{"t": 29.037, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "Thanks. Now name one fruit that is yellow. And keep it short."}}}}
+{"t": 29.037, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_END", "audio_offset": "22.960s"}}}
+{"t": 29.038, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 29.038, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 29.038, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 29.038, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "AAA=", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": "A banana."}}}}
+{"t": 29.044, "kind": "audio_part", "n": 1}
+{"t": 29.045, "kind": "audio_part", "n": 1}
+{"t": 29.053, "kind": "audio_part", "n": 1}
+{"t": 29.056, "kind": "audio_part", "n": 1}
+{"t": 29.056, "kind": "audio_part", "n": 1}
+{"t": 29.056, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 29.354, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "80402003-2dae-4710-b510-d2bffc4114ee", "resumable": true}}}
+{"t": 29.702, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "78fcff1a-42b0-435a-9792-304681a34297", "resumable": true}}}
+{"t": 29.838, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 575, "response_token_count": 26, "total_token_count": 601, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 210}, {"modality": "AUDIO", "token_count": 294}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 26}]}}}
+{"t": 30.103, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "ede03a32-1fd5-4669-b7e7-86850b5514e8", "resumable": true}}}
+{"t": 30.446, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "d7623f70-63d6-49ff-8460-1ed477dcc0ad", "resumable": true}}}
+{"t": 30.736, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "dbf0aac3-87aa-4e2a-890e-247e44b7e73b", "resumable": true}}}
+{"t": 31.271, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "5c51119c-f7b6-4e43-a61c-2f6e4b9f267f", "resumable": true}}}
+{"t": 31.81, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "d01cd248-329a-40bd-a4b7-6b9a460b985d", "resumable": true}}}
+{"t": 32.371, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "4af202c3-311e-41c7-b02b-3240de096cc7", "resumable": true}}}
+{"t": 33.231, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "be646d4c-c154-4a8d-af2c-3036535e4edd", "resumable": true}}}
+{"t": 33.675, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "25d19a33-fe93-4273-b4d2-7b7627294835", "resumable": true}}}
+{"t": 34.076, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "81109c22-12a3-4803-941c-440d987d98b1", "resumable": true}}}
+{"t": 34.546, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "c39477e7-bb65-4e53-b800-196d6f963f86", "resumable": true}}}
+{"t": 35.151, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "845f1be9-1715-452e-a679-da4bbaa462b9", "resumable": true}}}
+{"t": 35.614, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "38341429-5334-4a3d-841e-1238b797ee84", "resumable": true}}}
+{"t": 36.255, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "0acf9d28-9672-4c1e-8844-184c69aa9852", "resumable": true}}}
+{"t": 36.665, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "a91a2c5d-71c3-46b7-b201-e5894079f397", "resumable": true}}}
+{"t": 37.458, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "bdb1fc38-b5dc-4c44-a392-80a9b8c21b3a", "resumable": true}}}
+{"t": 37.761, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "e92c85f8-9e4e-448e-91bf-ef9c7e525b7f", "resumable": true}}}
+{"t": 38.422, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "c8e0edb7-5d87-41b7-b8e2-06aaf8f194b1", "resumable": true}}}
+{"t": 40.23, "kind": "say", "text": "Hey Gemini, what's on my calendar tomorrow?", "ms": 2539}
+{"t": 40.231, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "fbcc9a12-f703-482d-8dd1-4354a7e3688d", "resumable": true}}}
+{"t": 41.146, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "99ec5f97-a8d5-440f-a2a1-f7499b725e4a", "resumable": true}}}
+{"t": 41.593, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "a287f66f-96f1-4850-842c-2dc8af214414", "resumable": true}}}
+{"t": 41.617, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_START", "audio_offset": "33.880s"}}}
+{"t": 44.109, "kind": "msg", "msg": {"server_content": {"input_transcription": {"text": "What's on my calendar tomorrow?"}}}}
+{"t": 44.11, "kind": "msg", "msg": {"server_content": {}, "voice_activity": {"voice_activity_type": "ACTIVITY_END", "audio_offset": "36.120s"}}}
+{"t": 44.11, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 44.112, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 44.112, "kind": "msg", "msg": {"tool_call": {"function_calls": [{"id": "call_314935", "args": {"day": "2026-09-20"}, "name": "lookup_calendar"}]}}}
+{"t": 44.112, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 44.112, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 669, "response_token_count": 21, "total_token_count": 690, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 221}, {"modality": "AUDIO", "token_count": 363}]}}}
+{"t": 44.46, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "46b2e496-7d00-451f-960c-8546a8ac9e7b", "resumable": true}}}
+{"t": 44.847, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "2bbbfa00-d01a-47d9-8da7-c9de65432fae", "resumable": true}}}
+{"t": 45.098, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "146d7e61-12d1-4486-9221-641c77f8c83f", "resumable": true}}}
+{"t": 45.512, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "7408639b-8e6b-4d99-98f4-a4588eb4a289", "resumable": true}}}
+{"t": 46.009, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "f4808f88-9dff-43a1-bcf7-dab5c050dc87", "resumable": true}}}
+{"t": 46.113, "kind": "send_tool_response", "id": "call_314935"}
+{"t": 46.462, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 46.505, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "229fa71b-e36b-4ac1-baf4-2c18edbeb158", "resumable": true}}}
+{"t": 46.678, "kind": "msg", "msg": {"server_content": {}}}
+{"t": 46.678, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "AAA=", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": "You have"}}}}
+{"t": 46.728, "kind": "audio_part", "n": 1}
+{"t": 46.774, "kind": "audio_part", "n": 1}
+{"t": 46.826, "kind": "audio_part", "n": 1}
+{"t": 46.909, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<15360 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " the dentist"}}}}
+{"t": 46.935, "kind": "audio_part", "n": 1}
+{"t": 46.979, "kind": "audio_part", "n": 1}
+{"t": 47.064, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<15360 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " at ten"}}}}
+{"t": 47.064, "kind": "audio_part", "n": 1}
+{"t": 47.161, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<17920 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " tomorrow"}}}}
+{"t": 47.208, "kind": "audio_part", "n": 1}
+{"t": 47.215, "kind": "audio_part", "n": 1}
+{"t": 47.299, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<15360 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " and"}}}}
+{"t": 47.303, "kind": "audio_part", "n": 1}
+{"t": 47.386, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<15360 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " lunch"}}}}
+{"t": 47.487, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<20480 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " with Sam"}}}}
+{"t": 47.635, "kind": "msg", "msg": {"server_content": {"model_turn": {"parts": [{"inline_data": {"data": "<35840 bytes>", "mime_type": "audio/pcm;rate=24000"}}]}, "output_transcription": {"text": " at noon."}}}}
+{"t": 47.661, "kind": "audio_part", "n": 1}
+{"t": 47.714, "kind": "msg", "msg": {"server_content": {"generation_complete": true}}}
+{"t": 48.001, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "bcfab11a-cc7c-4b8e-a0e1-45efe7327386", "resumable": true}}}
+{"t": 48.237, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "6197d325-d3a8-4ef8-932d-609321d999c4", "resumable": true}}}
+{"t": 48.598, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "bc5922b2-cfab-4c3a-9e33-89ec3b51e733", "resumable": true}}}
+{"t": 49.308, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "9ca5fd86-e864-44eb-88e7-3ac9f033e507", "resumable": true}}}
+{"t": 49.777, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "670c1161-4092-43ec-b8d1-ecf60b21d331", "resumable": true}}}
+{"t": 50.235, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "b66e0eb2-358b-4b73-bba3-d2869dfbdfb8", "resumable": true}}}
+{"t": 50.316, "kind": "msg", "msg": {"server_content": {"turn_complete": true}, "usage_metadata": {"prompt_token_count": 721, "response_token_count": 96, "total_token_count": 817, "prompt_tokens_details": [{"modality": "TEXT", "token_count": 255}, {"modality": "AUDIO", "token_count": 363}], "response_tokens_details": [{"modality": "AUDIO", "token_count": 96}]}}}
+{"t": 50.633, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "b20dc83b-b48b-490b-83ee-7892b854adae", "resumable": true}}}
+{"t": 50.928, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "ae7e1bfa-09fd-4e5c-9445-3c469e5bf7ce", "resumable": true}}}
+{"t": 51.28, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "c5600103-f3a9-4834-b321-21dbd7bafc1c", "resumable": true}}}
+{"t": 51.824, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "2edd6eba-cb90-4646-9330-27fc471ecd7e", "resumable": true}}}
+{"t": 52.497, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "e7f0c316-9294-46b9-a721-812965b132dc", "resumable": true}}}
+{"t": 52.948, "kind": "msg", "msg": {"session_resumption_update": {"new_handle": "09125c45-c229-4c0d-8190-606112d46971", "resumable": true}}}
+{"t": 53.113, "kind": "end"}

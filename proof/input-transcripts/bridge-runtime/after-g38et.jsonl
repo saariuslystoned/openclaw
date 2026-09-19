@@ -1,0 +1,69 @@
+{"t_ms":1,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live-extended-thinking","commit":"87ed0f9fdd4","extensionsGoogleDirty":false}
+{"t_ms":14032,"phase":"connect","kind":"onReady"}
+{"t_ms":16562,"phase":"utterance-1","kind":"speak","text":"Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.","audio_ms":5531}
+{"t_ms":23605,"phase":"utterance-1","kind":"onTranscript","role":"user","text":"Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","final":true}
+{"t_ms":23822,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"The sky is usually ","final":false}
+{"t_ms":23823,"phase":"utterance-1","kind":"audio","bytes":25920,"total":25920}
+{"t_ms":24235,"phase":"utterance-1","kind":"audio","bytes":15360,"total":41280}
+{"t_ms":24545,"phase":"utterance-1","kind":"audio","bytes":3840,"total":45120}
+{"t_ms":24662,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"blue on a","final":false}
+{"t_ms":24663,"phase":"utterance-1","kind":"audio","bytes":23040,"total":68160}
+{"t_ms":25129,"phase":"utterance-1","kind":"audio","bytes":23040,"total":91200}
+{"t_ms":25605,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":" clear day.","final":false}
+{"t_ms":25605,"phase":"utterance-1","kind":"audio","bytes":21120,"total":112320}
+{"t_ms":26035,"phase":"utterance-1","kind":"audio","bytes":17280,"total":129600}
+{"t_ms":26384,"phase":"utterance-1","kind":"onTranscript","role":"assistant","text":"The sky is usually blue on a clear day.","final":true}
+{"t_ms":26387,"phase":"utterance-1","kind":"onResponseDone","status":"completed"}
+{"t_ms":33117,"phase":"utterance-2","kind":"speak","text":"I want to plan a small garden this spring. I have a sunny patch about four meters long, the soil is a bit sandy, and I would like easy vegetables. Which three would you suggest, briefly?","audio_ms":10757}
+{"t_ms":45605,"phase":"utterance-2","kind":"onTranscript","role":"user","text":"I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy. And I would like easy vegetables. Which three would you suggest briefly?","final":true}
+{"t_ms":46606,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"I'll find some perfect ","final":false}
+{"t_ms":46606,"phase":"utterance-2","kind":"audio","bytes":4800,"total":134400}
+{"t_ms":46680,"phase":"utterance-2","kind":"audio","bytes":15360,"total":149760}
+{"t_ms":46932,"phase":"utterance-2","kind":"audio","bytes":17280,"total":167040}
+{"t_ms":47293,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"vegetables for your","final":false}
+{"t_ms":47294,"phase":"utterance-2","kind":"audio","bytes":24960,"total":192000}
+{"t_ms":47812,"phase":"utterance-2","kind":"audio","bytes":15360,"total":207360}
+{"t_ms":48138,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":" garden.","final":false}
+{"t_ms":48139,"phase":"utterance-2","kind":"audio","bytes":34560,"total":241920}
+{"t_ms":48861,"phase":"utterance-2","kind":"audio","bytes":17280,"total":259200}
+{"t_ms":49201,"phase":"utterance-2","kind":"audio","bytes":7680,"total":266880}
+{"t_ms":49364,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"I'll find some perfect vegetables for your garden.","final":true}
+{"t_ms":49366,"phase":"utterance-2","kind":"onResponseDone","status":"completed"}
+{"t_ms":51820,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"Carrots, radishes, ","final":false}
+{"t_ms":51820,"phase":"utterance-2","kind":"audio","bytes":2,"total":266882}
+{"t_ms":51872,"phase":"utterance-2","kind":"audio","bytes":11520,"total":278402}
+{"t_ms":52011,"phase":"utterance-2","kind":"audio","bytes":7680,"total":286082}
+{"t_ms":52182,"phase":"utterance-2","kind":"audio","bytes":15360,"total":301442}
+{"t_ms":52484,"phase":"utterance-2","kind":"audio","bytes":1920,"total":303362}
+{"t_ms":52549,"phase":"utterance-2","kind":"onTranscript","role":"assistant","text":"and bush","final":false}
+{"t_ms":52549,"phase":"utterance-2","kind":"audio","bytes":19200,"total":322562}
+{"t_ms":52938,"phase":"utterance-2","kind":"audio","bytes":15360,"total":337922}
+{"t_ms":53251,"phase":"utterance-2","kind":"audio","bytes":13440,"total":351362}
+{"t_ms":54985,"phase":"utterance-3","kind":"speak","text":"Thanks. Now name one fruit that is yellow, and keep it short.","audio_ms":3718}
+{"t_ms":54985,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":" beans are 3 easy","final":false}
+{"t_ms":54986,"phase":"utterance-3","kind":"audio","bytes":24960,"total":376322}
+{"t_ms":54986,"phase":"utterance-3","kind":"audio","bytes":23040,"total":399362}
+{"t_ms":54986,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":" choices that thrive","final":false}
+{"t_ms":54987,"phase":"utterance-3","kind":"audio","bytes":28800,"total":428162}
+{"t_ms":55132,"phase":"utterance-3","kind":"audio","bytes":15360,"total":443522}
+{"t_ms":55335,"phase":"utterance-3","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":55335,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"Carrots, radishes, and bush beans are 3 easy choices that thrive","final":true}
+{"t_ms":55444,"phase":"utterance-3","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":60162,"phase":"utterance-3","kind":"onTranscript","role":"user","text":"Thanks. Now name one fruit that is yellow and keep it short.","final":true}
+{"t_ms":60782,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"A banana is a ","final":false}
+{"t_ms":60783,"phase":"utterance-3","kind":"audio","bytes":2,"total":443524}
+{"t_ms":60828,"phase":"utterance-3","kind":"audio","bytes":7680,"total":451204}
+{"t_ms":60883,"phase":"utterance-3","kind":"audio","bytes":7680,"total":458884}
+{"t_ms":61043,"phase":"utterance-3","kind":"audio","bytes":7680,"total":466564}
+{"t_ms":61215,"phase":"utterance-3","kind":"audio","bytes":7680,"total":474244}
+{"t_ms":61363,"phase":"utterance-3","kind":"audio","bytes":7680,"total":481924}
+{"t_ms":61524,"phase":"utterance-3","kind":"audio","bytes":7680,"total":489604}
+{"t_ms":61694,"phase":"utterance-3","kind":"onTranscript","role":"assistant","text":"common yellow fruit.","final":false}
+{"t_ms":61694,"phase":"utterance-3","kind":"audio","bytes":15360,"total":504964}
+{"t_ms":62010,"phase":"utterance-3","kind":"audio","bytes":15360,"total":520324}
+{"t_ms":62332,"phase":"utterance-3","kind":"audio","bytes":15360,"total":535684}
+{"t_ms":62649,"phase":"utterance-3","kind":"audio","bytes":13440,"total":549124}
+{"t_ms":62870,"phase":"before-close","kind":"finals-before-close","user":["Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy. And I would like easy vegetables. Which three would you suggest briefly?","Thanks. Now name one fruit that is yellow and keep it short."],"assistant":["The sky is usually blue on a clear day.","I'll find some perfect vegetables for your garden.","Carrots, radishes, and bush beans are 3 easy choices that thrive"]}
+{"t_ms":62870,"phase":"close","kind":"onTranscript","role":"assistant","text":"A banana is a common yellow fruit.","final":true}
+{"t_ms":62871,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":62871,"phase":"close","kind":"summary","model":"gemini-3.8-live-extended-thinking","commit":"87ed0f9fdd4","userFinalsDuringCall":3,"userPartialsDuringCall":0,"finals":["user: Hello there, please tell me in one short sentence. What color the sky usually is on a clear day?","assistant: The sky is usually blue on a clear day.","user: I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy. And I would like easy vegetables. Which three would you suggest briefly?","assistant: I'll find some perfect vegetables for your garden.","assistant: Carrots, radishes, and bush beans are 3 easy choices that thrive","user: Thanks. Now name one fruit that is yellow and keep it short.","assistant: A banana is a common yellow fruit."]}

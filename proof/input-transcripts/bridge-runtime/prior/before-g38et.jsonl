@@ -1,0 +1,13 @@
+{"t_ms":0,"phase":"connect","kind":"createBridge","model":"gemini-3.8-live-extended-thinking","commit":"22262ef39d3","extensionsGoogleDirty":true}
+{"t_ms":18148,"phase":"connect","kind":"onReady"}
+{"t_ms":20007,"phase":"utterance-1","kind":"speak","text":"Hello there. Please tell me, in one short sentence, what color the sky usually is on a clear day.","audio_ms":5381}
+{"t_ms":60021,"phase":"utterance-1","kind":"no-response-within","seconds":40}
+{"t_ms":67281,"phase":"utterance-2","kind":"speak","text":"I want to plan a small garden this spring. I have a sunny patch about four meters long, the soil is a bit sandy, and I would like easy vegetables. Which three would you suggest, briefly?","audio_ms":10757}
+{"t_ms":107312,"phase":"utterance-2","kind":"no-response-within","seconds":40}
+{"t_ms":112912,"phase":"utterance-3","kind":"speak","text":"Thanks. Now name one fruit that is yellow, and keep it short.","audio_ms":3718}
+{"t_ms":115615,"phase":"utterance-3","kind":"onTranscript","role":"user","text":"Hello there, please tell me in one short sentence. What color the sky usually is on a clear day? I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly? Thanks. Now name one fruit that is","final":false}
+{"t_ms":152921,"phase":"utterance-3","kind":"no-response-within","seconds":40}
+{"t_ms":156922,"phase":"before-close","kind":"finals-before-close","user":[],"assistant":[]}
+{"t_ms":156922,"phase":"close","kind":"onTranscript","role":"user","text":"Hello there, please tell me in one short sentence. What color the sky usually is on a clear day? I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly? Thanks. Now name one fruit that is","final":true}
+{"t_ms":156922,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":156922,"phase":"close","kind":"summary","model":"gemini-3.8-live-extended-thinking","commit":"22262ef39d3","userFinalsDuringCall":0,"userPartialsDuringCall":1,"finals":["user: Hello there, please tell me in one short sentence. What color the sky usually is on a clear day? I want to plan a small garden this spring. I have a sunny patch about 4 m long. The soil is a bit sandy and I would like easy vegetables. Which three would you suggest briefly? Thanks. Now name one fruit that is"]}
