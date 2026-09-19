@@ -2,7 +2,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createClientVoiceConfirmationReadiness } from "../../../talk/client-voice-confirmation-readiness.js";
 import { VOICE_TRANSCRIPT_QUEUE_POLICY } from "../../../talk/voice-transcript.js";
 import type { RelaySession } from "./state.js";
-import { closeRelayVoiceSession, enqueueRelayVoiceTranscript } from "./voice.js";
+import {
+  beginRelayAssistantTranscriptHold,
+  closeRelayVoiceSession,
+  enqueueRelayVoiceTranscript,
+} from "./voice.js";
 
 const voiceSessionMocks = vi.hoisted(() => ({
   appendRelayVoiceTranscript: vi.fn(),
@@ -58,6 +62,39 @@ describe("realtime relay voice transcript persistence", () => {
     voiceSessionMocks.appendRelayVoiceTranscript.mockReset();
     voiceSessionMocks.closeRelayVoiceSessionRecord.mockReset().mockResolvedValue(undefined);
     voiceSessionMocks.createOrResumeClientVoiceSession.mockReset();
+  });
+
+  it("holds assistant finals while a consult is admitted and appends them in order afterwards", async () => {
+    voiceSessionMocks.appendRelayVoiceTranscript.mockResolvedValue(undefined);
+    const { session } = createRelaySession();
+    const appended = () =>
+      voiceSessionMocks.appendRelayVoiceTranscript.mock.calls.map(([params]) => [
+        (params as { role: string }).role,
+        (params as { text: string }).text,
+      ]);
+    const release = beginRelayAssistantTranscriptHold(session);
+    const nested = beginRelayAssistantTranscriptHold(session);
+
+    expect(enqueueRelayVoiceTranscript(session, "assistant", "Let me check.")).toBe(true);
+    expect(enqueueRelayVoiceTranscript(session, "user", "thanks")).toBe(true);
+    expect(enqueueRelayVoiceTranscript(session, "assistant", "One moment.")).toBe(true);
+    await session.voiceTranscriptQueue.flush();
+    // User finals keep flowing; only assistant finals wait.
+    expect(appended()).toEqual([["user", "thanks"]]);
+
+    nested();
+    await session.voiceTranscriptQueue.flush();
+    expect(appended()).toEqual([["user", "thanks"]]);
+
+    release();
+    release();
+    await session.voiceTranscriptQueue.flush();
+    expect(appended()).toEqual([
+      ["user", "thanks"],
+      ["assistant", "Let me check."],
+      ["assistant", "One moment."],
+    ]);
+    expect(session.assistantTranscriptHold).toBeUndefined();
   });
 
   it("bounds stalled finals, drains the accepted prefix, and closes once", async () => {

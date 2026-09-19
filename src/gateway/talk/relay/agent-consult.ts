@@ -1,5 +1,7 @@
 import type { RealtimeVoiceAgentConsultRunner } from "../../../talk/provider-types.js";
 import type { TalkAgentConsultRequest } from "../client-agent-consult.types.js";
+import type { RelaySession } from "./state.js";
+import { beginRelayAssistantTranscriptHold } from "./voice.js";
 
 type RelayAgentConsultRunner = RealtimeVoiceAgentConsultRunner & {
   adoptCompletionClaims: () => void;
@@ -11,9 +13,10 @@ type RelayAgentConsultRunner = RealtimeVoiceAgentConsultRunner & {
 
 export function bindTalkRealtimeRelayAgentConsult(
   runPrompt: RelayAgentConsultRunner,
-  isCurrent: () => boolean,
+  getRelay: () => RelaySession | undefined,
   waitForTranscript: (signal?: AbortSignal) => Promise<void>,
 ) {
+  const isCurrent = () => getRelay() !== undefined;
   const runAgentConsult = async (request: TalkAgentConsultRequest) => {
     if (!isCurrent()) {
       throw new Error("Realtime gateway-relay session is closed");
@@ -22,7 +25,14 @@ export function bindTalkRealtimeRelayAgentConsult(
     if (!isCurrent()) {
       throw new Error("Realtime gateway-relay session is closed");
     }
-    return await runPrompt(request);
+    // Voice finals that land while the consult's keyed user turn awaits adoption would
+    // move the session anchor and fail the run; hold their session appends until it settles.
+    const release = beginRelayAssistantTranscriptHold(getRelay());
+    try {
+      return await runPrompt(request);
+    } finally {
+      release();
+    }
   };
   const steer = runPrompt.steer;
   const lifecycleMethods = {
@@ -48,7 +58,12 @@ export function bindTalkRealtimeRelayAgentConsult(
             if (!isCurrent()) {
               throw new Error("Realtime relay session is no longer active");
             }
-            return await steer(request);
+            const release = beginRelayAssistantTranscriptHold(getRelay());
+            try {
+              return await steer(request);
+            } finally {
+              release();
+            }
           },
         }
       : {}),

@@ -74,6 +74,7 @@ import { drainingRelaySessions, relaySessions } from "./state.js";
 import { MAX_RELAY_TOOL_CALL_IDENTITIES } from "./tool-call-ledger.js";
 
 const activeRelaySessions = new Map<string, string>();
+const relayStub = {} as never;
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 const RELAY_AUTH_ERROR =
   "Realtime provider authentication failed. Check the provider credentials and try again.";
@@ -212,7 +213,7 @@ describe("talk realtime gateway relay", () => {
     let current = true;
     const runAgentConsult = bindTalkRealtimeRelayAgentConsult(
       runPrompt as never,
-      () => current,
+      () => (current ? relayStub : undefined),
       async () => {},
     );
     (
@@ -246,7 +247,7 @@ describe("talk realtime gateway relay", () => {
     );
     const runAgentConsult = bindTalkRealtimeRelayAgentConsult(
       runPrompt as never,
-      () => true,
+      () => relayStub,
       async () => {},
     );
 

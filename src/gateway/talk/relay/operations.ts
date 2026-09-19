@@ -53,9 +53,11 @@ import {
   resolveRelayProviderToolCallId,
   type RelaySession,
 } from "./state.js";
-import { closeRelayVoiceSession, ensureRelayVoiceSession } from "./voice.js";
-
-const TURN_BOUND_CANCELLATION_DRAIN_MS = 1_000;
+import {
+  closeRelayVoiceSession,
+  ensureRelayVoiceSession,
+  releaseRelayAssistantTranscriptHold,
+} from "./voice.js";
 
 export function adoptTalkRealtimeRelaySession(
   session: RelaySession,
@@ -139,6 +141,7 @@ export function closeRelaySession(
   }
   const closing: NonNullable<RelaySession["closing"]> = { reason };
   session.closing = closing;
+  releaseRelayAssistantTranscriptHold(session);
   const disposition =
     options?.disposition ??
     (isTalkVoiceSessionReplacing(session.id, session.connId, session.sessionTarget.agentId)

@@ -255,6 +255,8 @@ export type RelaySession = {
   voiceSessionCreated: boolean;
   voiceTranscriptSeq: number;
   voiceTranscriptQueue: BoundedSerialQueue;
+  /** Assistant finals held back from the session while an agent consult is admitted. */
+  assistantTranscriptHold?: { depth: number; held: string[] };
   confirmationReadiness: ReturnType<typeof createClientVoiceConfirmationReadiness>;
   voiceSessionClose?: Promise<void>;
   closing?: { reason: "completed" | "error"; completion?: Promise<void> };

@@ -50,6 +50,10 @@ export function enqueueRelayVoiceTranscript(
   if (!normalizedText) {
     return true;
   }
+  if (role === "assistant" && session.assistantTranscriptHold && !session.closing) {
+    session.assistantTranscriptHold.held.push(normalizedText);
+    return true;
+  }
   if (!ensureRelayVoiceSession(session)) {
     session.confirmationReadiness.fail(new Error("Realtime voice session could not be recorded"));
     return true;
@@ -102,6 +106,46 @@ export function enqueueRelayVoiceTranscript(
     logRelayVoiceFailure(session, "realtime relay transcript append failed", error);
   });
   return true;
+}
+
+/**
+ * Holds assistant transcript session appends while an agent consult is admitted. A spoken
+ * filler persisted between the consult's keyed user turn and its adoption moves the
+ * session's current-turn anchor and fails the run ("keyed user is outside the current
+ * turn"). Clients, echo tracking, and spoken run control still see transcripts at once;
+ * only the durable append waits. Holds nest; the last release appends the held finals in
+ * their original order.
+ */
+export function beginRelayAssistantTranscriptHold(session: RelaySession | undefined): () => void {
+  if (!session) {
+    return () => {};
+  }
+  const hold = (session.assistantTranscriptHold ??= { depth: 0, held: [] });
+  hold.depth += 1;
+  let released = false;
+  return () => {
+    if (released) {
+      return;
+    }
+    released = true;
+    hold.depth -= 1;
+    if (hold.depth > 0 || session.assistantTranscriptHold !== hold) {
+      return;
+    }
+    releaseRelayAssistantTranscriptHold(session);
+  };
+}
+
+/** Appends every held assistant final now, in order, and clears the hold. */
+export function releaseRelayAssistantTranscriptHold(session: RelaySession): void {
+  const hold = session.assistantTranscriptHold;
+  if (!hold) {
+    return;
+  }
+  session.assistantTranscriptHold = undefined;
+  for (const text of hold.held) {
+    enqueueRelayVoiceTranscript(session, "assistant", text);
+  }
 }
 
 export function closeRelayVoiceSession(session: RelaySession): Promise<void> {
