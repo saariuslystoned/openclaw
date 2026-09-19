@@ -98,6 +98,12 @@ export class TalkRealtimeRelayOutputOwnership {
   turnId?: string;
   responseId?: string;
   drain?: { promise: Promise<void>; resolve: () => void };
+  /**
+   * Set when the provider never confirmed a cancelled response: the relay released the
+   * drain itself and drops the interrupted generation's remaining output until the
+   * provider reports that response done (or a replacement response starts).
+   */
+  discarding = false;
 
   constructor(
     private readonly activeTurnId: () => string | undefined,
@@ -105,8 +111,17 @@ export class TalkRealtimeRelayOutputOwnership {
     private readonly fail: (message: string) => void,
   ) {}
 
+  /** Output is refused while a cancellation drains or a stale generation is discarded. */
+  get suppressingOutput(): boolean {
+    return this.phase === "cancelling" || this.discarding;
+  }
+
   responseCreated(responseId: string | undefined): boolean {
     const normalizedResponseId = responseId?.trim();
+    if (this.discarding && normalizedResponseId && normalizedResponseId !== this.responseId) {
+      // A replacement response supersedes the stale generation being discarded.
+      this.discarding = false;
+    }
     if (this.phase === "unowned") {
       Object.assign(this, {
         mode: normalizedResponseId ? ("exact-response" as const) : ("turn-bound" as const),
@@ -129,6 +144,9 @@ export class TalkRealtimeRelayOutputOwnership {
   }
 
   resolve(claim: boolean): string | undefined {
+    if (this.discarding) {
+      return undefined;
+    }
     const activeTurnId = this.activeTurnId();
     if (
       this.phase !== "cancelling" &&
@@ -148,6 +166,11 @@ export class TalkRealtimeRelayOutputOwnership {
   }
 
   finish(responseId: string | undefined, cancellationEvent = false) {
+    if (this.discarding) {
+      // The stale generation finally ended; nothing was owned in the meantime.
+      this.discarding = false;
+      return "cancelled";
+    }
     const cancelled = this.phase === "cancelling";
     if (
       (cancellationEvent && !cancelled) ||
@@ -159,6 +182,20 @@ export class TalkRealtimeRelayOutputOwnership {
     this.drain?.resolve();
     Object.assign(this, { phase: "unowned" as const, turnId: undefined, responseId: undefined });
     return cancelled ? "cancelled" : "completed";
+  }
+
+  /**
+   * Completes a pending cancellation without provider confirmation. Returns false when no
+   * cancellation is pending.
+   */
+  completeCancellationLocally(): boolean {
+    if (this.phase !== "cancelling") {
+      return false;
+    }
+    this.discarding = true;
+    this.drain?.resolve();
+    Object.assign(this, { phase: "unowned" as const, turnId: undefined, responseId: undefined });
+    return true;
   }
 
   bind(provider: RelayProvider, runAgentConsult: RealtimeVoiceAgentConsultRunner): RelayProvider {

@@ -27,6 +27,7 @@ import {
   registerTalkVoiceSession,
   unregisterTalkVoiceSession,
 } from "../voice-selection.js";
+import { scheduleRelayCancellationDeadline } from "./cancellation-deadline.js";
 import {
   submitForcedTalkRealtimeRelayToolResult,
   submitRelayAgentControlProviderResults,
@@ -655,15 +656,7 @@ export async function cancelTalkRealtimeRelayTurn(params: {
   const cancellationDrained = (session.outputOwnership.drain = createDeferredCore());
   retireRelayAgentRuns(session, reason);
   cancelRelayTurn(session, turnId, reason);
-  setTimeout(() => {
-    if (
-      relaySessions.get(session.id) === session &&
-      session.toolResultEpoch === terminalEpoch &&
-      session.outputOwnership.phase === "cancelling"
-    ) {
-      void closeRelaySession(session, "completed");
-    }
-  }, TURN_BOUND_CANCELLATION_DRAIN_MS).unref?.();
+  scheduleRelayCancellationDeadline(session, { turnId, reason, terminalEpoch });
   void Promise.allSettled(
     [...rootCallIds].map(async (callId) => {
       await submitTalkRealtimeRelayToolResult({

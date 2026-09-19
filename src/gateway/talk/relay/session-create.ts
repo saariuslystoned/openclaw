@@ -241,7 +241,7 @@ export function createTalkRealtimeRelaySession(
     audioSink: {
       isOpen: () => Boolean(getActiveRelay()),
       sendAudio: (audio) => {
-        if (!getActiveRelay() || outputOwnership.phase === "cancelling") {
+        if (!getActiveRelay() || outputOwnership.suppressingOutput) {
           return;
         }
         const outputTurnId = outputOwnership.resolve(true);
@@ -419,7 +419,7 @@ export function createTalkRealtimeRelaySession(
       if (!relay || relay.voiceSessionClose) {
         return;
       }
-      if (!relay.closing && role === "assistant" && outputOwnership.phase === "cancelling") {
+      if (!relay.closing && role === "assistant" && outputOwnership.suppressingOutput) {
         return;
       }
       if (!relay.closing && role === "user" && !final) {
@@ -470,7 +470,7 @@ export function createTalkRealtimeRelaySession(
     },
     onToolCall: (toolCall) => {
       const relay = getActiveRelay();
-      if (!relay || outputOwnership.phase === "cancelling") {
+      if (!relay || outputOwnership.suppressingOutput) {
         return;
       }
       const outputTurnId = outputOwnership.resolve(true);
