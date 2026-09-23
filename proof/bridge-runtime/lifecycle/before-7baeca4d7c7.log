@@ -1,0 +1,83 @@
+{"t_ms":1,"phase":"connect","kind":"createBridge","commit":"7baeca4d7c7","extensionsDirty":false,"model":"gemini-3.8-live-extended-thinking","thinkingLevel":"high","supportsToolResultContinuation":false}
+{"t_ms":1373,"phase":"connect","kind":"wire","setupComplete":true}
+{"t_ms":1373,"phase":"connect","kind":"onReady","supportsToolResultContinuation":false}
+{"t_ms":1374,"phase":"connect","kind":"mic-pump","note":"24 kHz PCM16 noise floor every 32 ms, as a relay client would stream"}
+{"t_ms":2266,"phase":"consult","kind":"wire"}
+{"t_ms":2277,"phase":"consult","kind":"wire","audioBytes":10080,"outputTranscription":"Let me check "}
+{"t_ms":2277,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check ","final":false}
+{"t_ms":3025,"phase":"consult","kind":"wire","audioBytes":15360,"outputTranscription":"on that."}
+{"t_ms":3025,"phase":"consult","kind":"onTranscript","role":"assistant","text":"on that.","final":false}
+{"t_ms":3333,"phase":"consult","kind":"wire","generationComplete":true}
+{"t_ms":3333,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check on that.","final":true}
+{"t_ms":3337,"phase":"consult","kind":"wire","turnComplete":true,"interactionStatus":"IN_PROGRESS"}
+{"t_ms":3337,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":6797,"phase":"consult","kind":"wire"}
+{"t_ms":6804,"phase":"consult","kind":"wire","audioBytes":10080,"outputTranscription":"Checking your calendar "}
+{"t_ms":6805,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Checking your calendar ","final":false}
+{"t_ms":6937,"phase":"consult","kind":"wire","toolCall":["openclaw_agent_consult#call_126067_fc_0_0"]}
+{"t_ms":6938,"phase":"consult","kind":"onToolCall","callId":"call_126067_fc_0_0","name":"openclaw_agent_consult","args":{"prompt":"What is on my calendar for tomorrow, Thursday, September 24, 2026?"}}
+{"t_ms":6971,"phase":"consult","kind":"check-filler","filler_turnCompletes_before_toolCall":1,"filler_interactionStatus":["IN_PROGRESS"],"filler_transcripts":["Let me check on that."],"onResponseDone_before_toolCall":["completed"],"interaction_left_active":false}
+{"t_ms":7843,"phase":"consult","kind":"wire","audioBytes":7680,"outputTranscription":"details now."}
+{"t_ms":7843,"phase":"consult","kind":"onTranscript","role":"assistant","text":"details now.","final":false}
+{"t_ms":8754,"phase":"consult","kind":"wire","generationComplete":true}
+{"t_ms":8754,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Checking your calendar details now.","final":true}
+{"t_ms":8754,"phase":"consult","kind":"wire","turnComplete":true,"interactionStatus":"IN_PROGRESS"}
+{"t_ms":8754,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":9973,"phase":"consult","kind":"submitToolResult","callId":"call_126067_fc_0_0","stage":"final","scheduling":"none"}
+{"t_ms":16905,"phase":"consult","kind":"wire"}
+{"t_ms":17131,"phase":"consult","kind":"wire","audioBytes":4320,"outputTranscription":"Tomorrow you have "}
+{"t_ms":17131,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have ","final":false}
+{"t_ms":17819,"phase":"consult","kind":"wire","audioBytes":21120,"outputTranscription":"a dentist appointment"}
+{"t_ms":17820,"phase":"consult","kind":"onTranscript","role":"assistant","text":"a dentist appointment","final":false}
+{"t_ms":18826,"phase":"consult","kind":"wire","audioBytes":15360,"outputTranscription":" at 10:00 AM,"}
+{"t_ms":18826,"phase":"consult","kind":"onTranscript","role":"assistant","text":" at 10:00 AM,","final":false}
+{"t_ms":19817,"phase":"consult","kind":"wire","audioBytes":28800,"outputTranscription":" followed by lunch"}
+{"t_ms":19818,"phase":"consult","kind":"onTranscript","role":"assistant","text":" followed by lunch","final":false}
+{"t_ms":20823,"phase":"consult","kind":"wire","audioBytes":19200,"outputTranscription":" with Sam at 12:00 PM."}
+{"t_ms":20823,"phase":"consult","kind":"onTranscript","role":"assistant","text":" with Sam at 12:00 PM.","final":false}
+{"t_ms":22397,"phase":"consult","kind":"wire","generationComplete":true}
+{"t_ms":22397,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","final":true}
+{"t_ms":22398,"phase":"consult","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":22398,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":23935,"phase":"consult","kind":"check-answer","answer_turnCompletes":["IDLE"],"onResponseDone_after_result":["completed"],"answer_transcripts":["Checking your calendar details now.","Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM."],"completed_at_idle":true}
+{"t_ms":25021,"phase":"interrupt","kind":"wire"}
+{"t_ms":25292,"phase":"interrupt","kind":"wire","audioBytes":7200,"outputTranscription":"I can certainly help "}
+{"t_ms":25292,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"I can certainly help ","final":false}
+{"t_ms":25960,"phase":"interrupt","kind":"wire","audioBytes":17280,"outputTranscription":"you with that."}
+{"t_ms":25960,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"you with that.","final":false}
+{"t_ms":26957,"phase":"interrupt","kind":"wire","audioBytes":24960,"outputTranscription":" The history"}
+{"t_ms":26957,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" The history","final":false}
+{"t_ms":28024,"phase":"interrupt","kind":"wire","audioBytes":17280,"outputTranscription":" of lighthouses"}
+{"t_ms":28024,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" of lighthouses","final":false}
+{"t_ms":28056,"phase":"interrupt","kind":"handleBargeIn","audioPlaybackActive":true}
+{"t_ms":28132,"phase":"interrupt","kind":"wire","interrupted":true}
+{"t_ms":28132,"phase":"interrupt","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":28132,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"I can certainly help you with that. The history of lighthouses","final":true}
+{"t_ms":28306,"phase":"interrupt","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":28306,"phase":"interrupt","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":28798,"phase":"interrupt","kind":"wire"}
+{"t_ms":28798,"phase":"interrupt","kind":"wire","audioBytes":3,"outputTranscription":"<no "}
+{"t_ms":28798,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no ","final":false}
+{"t_ms":29464,"phase":"interrupt","kind":"wire","outputTranscription":"speech>"}
+{"t_ms":29464,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"speech>","final":false}
+{"t_ms":29464,"phase":"interrupt","kind":"wire","generationComplete":true}
+{"t_ms":29464,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no speech>","final":true}
+{"t_ms":29464,"phase":"interrupt","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":29464,"phase":"interrupt","kind":"onResponseDone","status":"completed"}
+{"t_ms":31312,"phase":"interrupt","kind":"check-interrupt","clear_after_ms":76,"clear_reason":"barge-in","response_done_after_ms":250,"response_done_status":"cancelled","interrupted_turnCompletes":[{"interrupted":false,"interactionStatus":"IDLE"},{"interrupted":false,"interactionStatus":"IDLE"}],"audio_bytes_after_done":36962,"interruption_terminated_response":true}
+{"t_ms":31947,"phase":"follow-up","kind":"wire"}
+{"t_ms":31947,"phase":"follow-up","kind":"wire","audioBytes":3,"outputTranscription":"I had just started "}
+{"t_ms":31948,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I had just started ","final":false}
+{"t_ms":32632,"phase":"follow-up","kind":"wire","audioBytes":36480,"outputTranscription":"discussing the earliest lighthouses,"}
+{"t_ms":32632,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"discussing the earliest lighthouses,","final":false}
+{"t_ms":33620,"phase":"follow-up","kind":"wire","audioBytes":15360,"outputTranscription":" like the famous"}
+{"t_ms":33620,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" like the famous","final":false}
+{"t_ms":34621,"phase":"follow-up","kind":"wire","audioBytes":15360,"outputTranscription":" Lighthouse of Alexandria."}
+{"t_ms":34621,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" Lighthouse of Alexandria.","final":false}
+{"t_ms":37449,"phase":"follow-up","kind":"wire","generationComplete":true}
+{"t_ms":37449,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I had just started discussing the earliest lighthouses, like the famous Lighthouse of Alexandria.","final":true}
+{"t_ms":37449,"phase":"follow-up","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":37449,"phase":"follow-up","kind":"onResponseDone","status":"completed"}
+{"t_ms":39954,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":39954,"phase":"close","kind":"summary","commit":"7baeca4d7c7","model":"gemini-3.8-live-extended-thinking","toolCalls":["openclaw_agent_consult"],"responsesDone":[{"t_ms":3337,"status":"completed"},{"t_ms":8754,"status":"completed"},{"t_ms":22398,"status":"completed"},{"t_ms":28306,"status":"cancelled"},{"t_ms":29464,"status":"completed"},{"t_ms":37449,"status":"completed"}],"clears":[{"t_ms":28132,"reason":"barge-in"}],"wireTurns":[{"t_ms":3337,"interactionStatus":"IN_PROGRESS","interrupted":false},{"t_ms":8754,"interactionStatus":"IN_PROGRESS","interrupted":false},{"t_ms":22398,"interactionStatus":"IDLE","interrupted":false},{"t_ms":28306,"interactionStatus":"IDLE","interrupted":false},{"t_ms":29464,"interactionStatus":"IDLE","interrupted":false},{"t_ms":37449,"interactionStatus":"IDLE","interrupted":false}],"transcripts":["assistant: Let me check on that.","assistant: Checking your calendar details now.","assistant: Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","assistant: I can certainly help you with that. The history of lighthouses","assistant: <no speech>","assistant: I had just started discussing the earliest lighthouses, like the famous Lighthouse of Alexandria."]}
+driver rc=0

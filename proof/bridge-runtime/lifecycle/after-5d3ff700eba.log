@@ -1,0 +1,79 @@
+{"t_ms":2,"phase":"connect","kind":"createBridge","commit":"5d3ff700eba","extensionsDirty":false,"model":"gemini-3.8-live-extended-thinking","thinkingLevel":"high","supportsToolResultContinuation":false}
+{"t_ms":1714,"phase":"connect","kind":"wire","setupComplete":true}
+{"t_ms":1714,"phase":"connect","kind":"onReady","supportsToolResultContinuation":false}
+{"t_ms":1715,"phase":"connect","kind":"mic-pump","note":"24 kHz PCM16 noise floor every 32 ms, as a relay client would stream"}
+{"t_ms":2363,"phase":"consult","kind":"wire"}
+{"t_ms":2532,"phase":"consult","kind":"wire","audioBytes":3,"outputTranscription":"Let me check "}
+{"t_ms":2532,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check ","final":false}
+{"t_ms":3078,"phase":"consult","kind":"wire","audioBytes":28800,"outputTranscription":"on that."}
+{"t_ms":3078,"phase":"consult","kind":"onTranscript","role":"assistant","text":"on that.","final":false}
+{"t_ms":3929,"phase":"consult","kind":"wire","generationComplete":true}
+{"t_ms":3930,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Let me check on that.","final":true}
+{"t_ms":3930,"phase":"consult","kind":"wire","turnComplete":true,"interactionStatus":"IN_PROGRESS"}
+{"t_ms":11228,"phase":"consult","kind":"wire","toolCall":["openclaw_agent_consult#call_5780_fc_0_0"]}
+{"t_ms":11228,"phase":"consult","kind":"onToolCall","callId":"call_5780_fc_0_0","name":"openclaw_agent_consult","args":{"prompt":"What is on my calendar tomorrow, Thursday, September 24, 2026?"}}
+{"t_ms":11228,"phase":"consult","kind":"check-filler","filler_turnCompletes_before_toolCall":1,"filler_interactionStatus":["IN_PROGRESS"],"filler_transcripts":["Let me check on that."],"onResponseDone_before_toolCall":[],"interaction_left_active":true}
+{"t_ms":14229,"phase":"consult","kind":"submitToolResult","callId":"call_5780_fc_0_0","stage":"final","scheduling":"none"}
+{"t_ms":16665,"phase":"consult","kind":"wire"}
+{"t_ms":16665,"phase":"consult","kind":"wire","audioBytes":3,"outputTranscription":"Tomorrow you have a "}
+{"t_ms":16665,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have a ","final":false}
+{"t_ms":17380,"phase":"consult","kind":"wire","audioBytes":13440,"outputTranscription":"dentist appointment at 10:00"}
+{"t_ms":17380,"phase":"consult","kind":"onTranscript","role":"assistant","text":"dentist appointment at 10:00","final":false}
+{"t_ms":18371,"phase":"consult","kind":"wire","audioBytes":7680,"outputTranscription":" AM, followed"}
+{"t_ms":18371,"phase":"consult","kind":"onTranscript","role":"assistant","text":" AM, followed","final":false}
+{"t_ms":19383,"phase":"consult","kind":"wire","audioBytes":21120,"outputTranscription":" by lunch with Sam"}
+{"t_ms":19383,"phase":"consult","kind":"onTranscript","role":"assistant","text":" by lunch with Sam","final":false}
+{"t_ms":20143,"phase":"consult","kind":"wire","audioBytes":28800,"outputTranscription":" at 12:00 PM."}
+{"t_ms":20143,"phase":"consult","kind":"onTranscript","role":"assistant","text":" at 12:00 PM.","final":false}
+{"t_ms":22083,"phase":"consult","kind":"wire","generationComplete":true}
+{"t_ms":22083,"phase":"consult","kind":"onTranscript","role":"assistant","text":"Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","final":true}
+{"t_ms":22084,"phase":"consult","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":22084,"phase":"consult","kind":"onResponseDone","status":"completed"}
+{"t_ms":23599,"phase":"consult","kind":"check-answer","answer_turnCompletes":["IDLE"],"onResponseDone_after_result":["completed"],"answer_transcripts":["Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM."],"completed_at_idle":true}
+{"t_ms":25444,"phase":"interrupt","kind":"wire"}
+{"t_ms":25730,"phase":"interrupt","kind":"wire","audioBytes":9600,"outputTranscription":"I can certainly go "}
+{"t_ms":25730,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"I can certainly go ","final":false}
+{"t_ms":26435,"phase":"interrupt","kind":"wire","audioBytes":24960,"outputTranscription":"over the background"}
+{"t_ms":26435,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"over the background","final":false}
+{"t_ms":27435,"phase":"interrupt","kind":"wire","audioBytes":28800,"outputTranscription":" for you."}
+{"t_ms":27435,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":" for you.","final":false}
+{"t_ms":28342,"phase":"interrupt","kind":"wire","generationComplete":true}
+{"t_ms":28342,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"I can certainly go over the background for you.","final":true}
+{"t_ms":28342,"phase":"interrupt","kind":"wire","turnComplete":true,"interactionStatus":"IN_PROGRESS"}
+{"t_ms":39709,"phase":"interrupt","kind":"wire"}
+{"t_ms":39923,"phase":"interrupt","kind":"wire","audioBytes":3,"outputTranscription":"Lighthouses have a "}
+{"t_ms":39923,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Lighthouses have a ","final":false}
+{"t_ms":40175,"phase":"interrupt","kind":"handleBargeIn","audioPlaybackActive":true}
+{"t_ms":40226,"phase":"interrupt","kind":"wire","interrupted":true}
+{"t_ms":40226,"phase":"interrupt","kind":"onClearAudio","reason":"barge-in"}
+{"t_ms":40226,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"Lighthouses have a","final":true}
+{"t_ms":40495,"phase":"interrupt","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":40496,"phase":"interrupt","kind":"onResponseDone","status":"cancelled"}
+{"t_ms":40891,"phase":"interrupt","kind":"wire"}
+{"t_ms":41051,"phase":"interrupt","kind":"wire","audioBytes":3,"outputTranscription":"<no "}
+{"t_ms":41051,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no ","final":false}
+{"t_ms":41263,"phase":"interrupt","kind":"wire","outputTranscription":"speech>"}
+{"t_ms":41263,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"speech>","final":false}
+{"t_ms":41270,"phase":"interrupt","kind":"wire","generationComplete":true}
+{"t_ms":41270,"phase":"interrupt","kind":"onTranscript","role":"assistant","text":"<no speech>","final":true}
+{"t_ms":41287,"phase":"interrupt","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":41287,"phase":"interrupt","kind":"onResponseDone","status":"completed"}
+{"t_ms":43533,"phase":"interrupt","kind":"check-interrupt","clear_after_ms":52,"clear_reason":"barge-in","response_done_after_ms":322,"response_done_status":"cancelled","interrupted_turnCompletes":[{"interrupted":false,"interactionStatus":"IDLE"},{"interrupted":false,"interactionStatus":"IDLE"}],"audio_bytes_after_done":8,"interruption_terminated_response":true}
+{"t_ms":44335,"phase":"follow-up","kind":"wire"}
+{"t_ms":44513,"phase":"follow-up","kind":"wire","audioBytes":3,"outputTranscription":"I stopped just as I "}
+{"t_ms":44513,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I stopped just as I ","final":false}
+{"t_ms":45225,"phase":"follow-up","kind":"wire","audioBytes":26880,"outputTranscription":"was beginning the overview"}
+{"t_ms":45225,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"was beginning the overview","final":false}
+{"t_ms":46222,"phase":"follow-up","kind":"wire","audioBytes":21120,"outputTranscription":" of the lighthouse's"}
+{"t_ms":46222,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" of the lighthouse's","final":false}
+{"t_ms":47225,"phase":"follow-up","kind":"wire","audioBytes":28800,"outputTranscription":" history, starting"}
+{"t_ms":47225,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" history, starting","final":false}
+{"t_ms":48224,"phase":"follow-up","kind":"wire","audioBytes":28800,"outputTranscription":" with its ancient beginnings."}
+{"t_ms":48224,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":" with its ancient beginnings.","final":false}
+{"t_ms":50533,"phase":"follow-up","kind":"wire","generationComplete":true}
+{"t_ms":50533,"phase":"follow-up","kind":"onTranscript","role":"assistant","text":"I stopped just as I was beginning the overview of the lighthouse's history, starting with its ancient beginnings.","final":true}
+{"t_ms":50533,"phase":"follow-up","kind":"wire","turnComplete":true,"interactionStatus":"IDLE"}
+{"t_ms":50533,"phase":"follow-up","kind":"onResponseDone","status":"completed"}
+{"t_ms":53051,"phase":"close","kind":"onClose","reason":"completed"}
+{"t_ms":53051,"phase":"close","kind":"summary","commit":"5d3ff700eba","model":"gemini-3.8-live-extended-thinking","toolCalls":["openclaw_agent_consult"],"responsesDone":[{"t_ms":22084,"status":"completed"},{"t_ms":40496,"status":"cancelled"},{"t_ms":41287,"status":"completed"},{"t_ms":50533,"status":"completed"}],"clears":[{"t_ms":40226,"reason":"barge-in"}],"wireTurns":[{"t_ms":3930,"interactionStatus":"IN_PROGRESS","interrupted":false},{"t_ms":22084,"interactionStatus":"IDLE","interrupted":false},{"t_ms":28342,"interactionStatus":"IN_PROGRESS","interrupted":false},{"t_ms":40495,"interactionStatus":"IDLE","interrupted":false},{"t_ms":41287,"interactionStatus":"IDLE","interrupted":false},{"t_ms":50533,"interactionStatus":"IDLE","interrupted":false}],"transcripts":["assistant: Let me check on that.","assistant: Tomorrow you have a dentist appointment at 10:00 AM, followed by lunch with Sam at 12:00 PM.","assistant: I can certainly go over the background for you.","assistant: Lighthouses have a","assistant: <no speech>","assistant: I stopped just as I was beginning the overview of the lighthouse's history, starting with its ancient beginnings."]}
+driver rc=0
