@@ -34,6 +34,7 @@ import {
   wrapPcm16MonoToWav,
 } from "./speech-synthesis.js";
 import { GOOGLE_PREBUILT_VOICES } from "./voice-catalog.js";
+import { createGoogleSpeechVoiceMethods } from "./voices.js";
 
 type GoogleTtsProviderConfig = {
   apiKey?: string;
@@ -236,7 +237,11 @@ export function buildGoogleSpeechProvider(): SpeechProviderPlugin {
         ? {}
         : { model: normalizeGoogleTtsModel(params.modelId) }),
     }),
-    listVoices: async () => GOOGLE_PREBUILT_VOICES.map((voice) => ({ id: voice, name: voice })),
+    ...createGoogleSpeechVoiceMethods({
+      readConfig: readGoogleTtsProviderConfig,
+      resolveApiKey: resolveGoogleTtsApiKey,
+      resolveBaseUrl: resolveGoogleTtsBaseUrl,
+    }),
     isConfigured: ({ cfg, providerConfig }) =>
       Boolean(resolveGoogleTtsApiKey({ cfg, providerConfig })),
     prepareSynthesis: (ctx) => {
