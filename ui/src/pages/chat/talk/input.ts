@@ -231,7 +231,11 @@ async function openRealtimeTalkInput(
 ): Promise<MediaStream> {
   const devices = globalThis.navigator?.mediaDevices;
   if (!devices?.getUserMedia) {
-    throw new Error(t("chat.composer.realtimeTalkRequiresMicrophone"));
+    throw new Error(
+      globalThis.isSecureContext === false
+        ? t("chat.composer.realtimeTalkRequiresSecureOrigin")
+        : t("chat.composer.realtimeTalkRequiresMicrophone"),
+    );
   }
   // A DOMException cause makes the shared formatter append its legacy code to this UI message.
   let acquisition: { stream: MediaStream } | { failure: string };
