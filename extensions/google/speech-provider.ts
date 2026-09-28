@@ -24,6 +24,7 @@ import {
   normalizeGooglePromptTemplate,
   normalizeGoogleTtsModel,
   normalizeGoogleTtsVoiceName,
+  resolveGoogleTtsSynthesisModel,
 } from "./speech-models.js";
 import {
   isGoogleTtsRetryableError,
@@ -181,7 +182,10 @@ async function synthesizeConfiguredGoogleTts(req: GoogleTtsSynthesisRequest): Pr
     apiKey,
     baseUrl: resolveGoogleTtsBaseUrl({ cfg: req.cfg, providerConfig: config }),
     request: sanitizeConfiguredModelProviderRequest(req.cfg?.models?.providers?.google?.request),
-    model: normalizeGoogleTtsModel(overrides.model ?? config.model),
+    model: resolveGoogleTtsSynthesisModel(
+      normalizeGoogleTtsModel(overrides.model ?? config.model),
+      normalizeGoogleTtsVoiceName(overrides.voiceName ?? config.voiceName),
+    ),
     voiceName: normalizeGoogleTtsVoiceName(overrides.voiceName ?? config.voiceName),
     audioProfile: overrides.audioProfile ?? config.audioProfile,
     speakerName: overrides.speakerName ?? config.speakerName,

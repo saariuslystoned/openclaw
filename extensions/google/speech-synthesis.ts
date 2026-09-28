@@ -10,6 +10,7 @@ import {
   assertSupportedGoogleTtsModel,
   GOOGLE_TTS_SAMPLE_RATE,
   isGoogleInteractionsTtsModel,
+  isStoredGoogleTtsVoice,
 } from "./speech-models.js";
 
 const GOOGLE_TTS_CHANNELS = 1;
@@ -69,6 +70,13 @@ function composeGoogleTtsText(params: {
   ]
     .filter((part): part is string => part !== undefined)
     .join("\n\n");
+}
+
+function googleTtsSpeechVoiceConfig(voiceName: string): Record<string, unknown> {
+  if (isStoredGoogleTtsVoice(voiceName)) {
+    return { voice: voiceName };
+  }
+  return { prebuiltVoiceConfig: { voiceName } };
 }
 
 function normalizePromptSectionText(value: string | undefined): string | undefined {
@@ -278,11 +286,7 @@ export async function synthesizeGoogleTtsPcmOnce(params: {
           generationConfig: {
             responseModalities: ["AUDIO"],
             speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: {
-                  voiceName: params.voiceName,
-                },
-              },
+              voiceConfig: googleTtsSpeechVoiceConfig(params.voiceName),
             },
           },
         },
