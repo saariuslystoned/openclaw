@@ -1,6 +1,7 @@
 import type { sanitizeConfiguredModelProviderRequest } from "openclaw/plugin-sdk/provider-http";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import type { GoogleGenerateContentResponse } from "./generate-content-response.js";
+import { googleSpeechPcm } from "./speech-audio.js";
 import {
   buildGoogleInteractionsTtsBody,
   splitGoogleTtsDialogue,
@@ -9,9 +10,7 @@ import {
 import {
   assertSupportedGoogleTtsModel,
   GOOGLE_TTS_SAMPLE_RATE,
-  isGemini38TtsModel,
   isGoogleInteractionsTtsModel,
-  isStoredGoogleTtsVoice,
 } from "./speech-models.js";
 
 const GOOGLE_TTS_CHANNELS = 1;
@@ -71,51 +70,6 @@ function composeGoogleTtsText(params: {
   ]
     .filter((part): part is string => part !== undefined)
     .join("\n\n");
-}
-
-function googleTtsSpeechStyle(params: {
-  audioProfile?: string;
-  personaPrompt?: string;
-}): string | undefined {
-  const style = [
-    normalizeOptionalString(params.audioProfile),
-    normalizeOptionalString(params.personaPrompt),
-  ]
-    .filter((part): part is string => part !== undefined)
-    .join("\n");
-  return style || undefined;
-}
-
-function googleTtsContentPart(params: {
-  text: string;
-  model: string;
-  audioProfile?: string;
-  speakerName?: string;
-  personaPrompt?: string;
-}): Record<string, unknown> {
-  if (!isGemini38TtsModel(params.model)) {
-    return { text: composeGoogleTtsText(params) };
-  }
-  const style = googleTtsSpeechStyle(params);
-  const speaker = normalizeOptionalString(params.speakerName);
-  return {
-    text: params.text,
-    ...(style || speaker
-      ? {
-          speechMetadata: {
-            ...(style ? { style } : {}),
-            ...(speaker ? { speaker } : {}),
-          },
-        }
-      : {}),
-  };
-}
-
-function googleTtsSpeechVoiceConfig(voiceName: string): Record<string, unknown> {
-  if (isStoredGoogleTtsVoice(voiceName)) {
-    return { voice: voiceName };
-  }
-  return { prebuiltVoiceConfig: { voiceName } };
 }
 
 function normalizePromptSectionText(value: string | undefined): string | undefined {
@@ -225,26 +179,6 @@ export function prepareGoogleInteractionsSynthesis(text: string): { text: string
   return transcript ? { text: transcript } : undefined;
 }
 
-function stripWavContainerToPcm(audio: Buffer): Buffer {
-  if (
-    audio.subarray(0, 4).toString("ascii") !== "RIFF" ||
-    audio.subarray(8, 12).toString("ascii") !== "WAVE"
-  ) {
-    return audio;
-  }
-  let offset = 12;
-  while (offset + 8 <= audio.length) {
-    const chunkId = audio.subarray(offset, offset + 4).toString("ascii");
-    const chunkSize = audio.readUInt32LE(offset + 4);
-    const dataStart = offset + 8;
-    if (chunkId === "data") {
-      return audio.subarray(dataStart, Math.min(dataStart + chunkSize, audio.length));
-    }
-    offset = dataStart + chunkSize + (chunkSize % 2);
-  }
-  throw new Error("Google TTS WAV response missing PCM data");
-}
-
 function readGoogleInteractionsAudioData(
   payload: GoogleInteractionsSpeechResponse,
 ): string | undefined {
@@ -325,7 +259,9 @@ export async function synthesizeGoogleTtsPcmOnce(params: {
           generationConfig: {
             responseModalities: ["AUDIO"],
             speechConfig: {
-              voiceConfig: googleTtsSpeechVoiceConfig(params.voiceName),
+              voiceConfig: params.voiceName.startsWith("voice_")
+                ? { voice: params.voiceName }
+                : { prebuiltVoiceConfig: { voiceName: params.voiceName } },
             },
           },
         },
@@ -365,7 +301,8 @@ export async function synthesizeGoogleTtsPcmOnce(params: {
       if (!canonicalAudio) {
         throw new Error("Google TTS response returned malformed base64 audio data");
       }
-      return stripWavContainerToPcm(Buffer.from(canonicalAudio, "base64"));
+      const audio = Buffer.from(canonicalAudio, "base64");
+      return googleSpeechPcm(audio);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       throw new GoogleTtsRetryableError(message);

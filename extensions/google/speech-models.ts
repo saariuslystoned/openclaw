@@ -3,8 +3,6 @@ import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runti
 // Implicit default stays on the generateContent path; Gemini 3.8 is an explicit opt-in.
 export const DEFAULT_GOOGLE_TTS_MODEL = "gemini-3.1-flash-tts-preview";
 
-const GOOGLE_STORED_TTS_MODEL = "gemini-3.8-flash-tts";
-
 const DEFAULT_GOOGLE_TTS_VOICE = "Kore";
 
 export const GOOGLE_TTS_SAMPLE_RATE = 24_000;
@@ -20,8 +18,6 @@ const GOOGLE_TTS_GENERATE_CONTENT_MODELS = [
   "gemini-3.1-flash-tts-preview",
   "gemini-2.5-flash-preview-tts",
   "gemini-2.5-pro-preview-tts",
-  "gemini-3.8-flash-tts",
-  "gemini-3.8-flash-lite-tts",
 ] as const;
 
 export const GOOGLE_TTS_MODELS = [
@@ -56,21 +52,6 @@ export function assertSupportedGoogleTtsModel(model: string): void {
       `Google TTS model ${model} is not supported. OpenClaw sends Gemini 3.8 TTS through the Interactions API; supported models: ${GOOGLE_TTS_INTERACTIONS_MODELS.join(", ")}.`,
     );
   }
-}
-
-export function isStoredGoogleTtsVoice(voiceName: string): boolean {
-  return voiceName.startsWith("voice_");
-}
-
-export function isGemini38TtsModel(model: string): boolean {
-  return model.includes("gemini-3.8");
-}
-
-export function resolveGoogleTtsSynthesisModel(model: string, voiceName: string): string {
-  if (!isStoredGoogleTtsVoice(voiceName) || isGemini38TtsModel(model)) {
-    return model;
-  }
-  return GOOGLE_STORED_TTS_MODEL;
 }
 
 export function normalizeGoogleTtsVoiceName(voiceName: unknown): string {
