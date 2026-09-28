@@ -9,6 +9,7 @@ import {
 import {
   assertSupportedGoogleTtsModel,
   GOOGLE_TTS_SAMPLE_RATE,
+  isGemini38TtsModel,
   isGoogleInteractionsTtsModel,
   isStoredGoogleTtsVoice,
 } from "./speech-models.js";
@@ -70,6 +71,30 @@ function composeGoogleTtsText(params: {
   ]
     .filter((part): part is string => part !== undefined)
     .join("\n\n");
+}
+
+function googleTtsContentPart(params: {
+  text: string;
+  model: string;
+  audioProfile?: string;
+  speakerName?: string;
+}): Record<string, unknown> {
+  if (!isGemini38TtsModel(params.model)) {
+    return { text: composeGoogleTtsText(params) };
+  }
+  const style = normalizeOptionalString(params.audioProfile);
+  const speaker = normalizeOptionalString(params.speakerName);
+  return {
+    text: params.text,
+    ...(style || speaker
+      ? {
+          speechMetadata: {
+            ...(style ? { style } : {}),
+            ...(speaker ? { speaker } : {}),
+          },
+        }
+      : {}),
+  };
 }
 
 function googleTtsSpeechVoiceConfig(voiceName: string): Record<string, unknown> {

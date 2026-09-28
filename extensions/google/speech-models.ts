@@ -54,17 +54,12 @@ export function assertSupportedGoogleTtsModel(model: string): void {
   }
 }
 
-const GOOGLE_STORED_TTS_MODEL = "gemini-3.8-flash-tts";
-
 export function isStoredGoogleTtsVoice(voiceName: string): boolean {
   return voiceName.startsWith("voice_");
 }
 
-export function resolveGoogleTtsSynthesisModel(model: string, voiceName: string): string {
-  if (!isStoredGoogleTtsVoice(voiceName) || model.includes("gemini-3.8")) {
-    return model;
-  }
-  return GOOGLE_STORED_TTS_MODEL;
+export function isGemini38TtsModel(model: string): boolean {
+  return model.includes("gemini-3.8");
 }
 
 export function normalizeGoogleTtsVoiceName(voiceName: unknown): string {
