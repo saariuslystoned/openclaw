@@ -4,6 +4,7 @@ import { applyModelRuntimeDirective } from "../../auto-reply/reply/directive-han
 import { resolveSessionAuthProfileOverrideSource } from "../../config/sessions/auth-profile-override-provenance.js";
 import { emitAgentEvent } from "../../infra/agent-events.js";
 import { clearAgentRunTerminalWriteContext } from "../../infra/agent-run-terminal-writes.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import {
   buildAgentHookContextChannelFields,
@@ -74,6 +75,8 @@ const log = createSubsystemLogger("agents/agent-command");
 const MAX_LIVE_SWITCH_RETRIES = 5;
 
 export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptParams) {
+  using observations = new DisposableStack();
+  observations.use(observeDiagnosticsTimelinePhases("agent.embedded"));
   const {
     cfg,
     body,

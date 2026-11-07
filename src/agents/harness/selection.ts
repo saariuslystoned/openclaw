@@ -10,6 +10,7 @@ import {
   getActiveDiagnosticTraceContext,
   runWithDiagnosticTraceContext,
 } from "../../infra/diagnostic-trace-context.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { hasGlobalHooks } from "../../plugins/hook-runner-global.js";
@@ -253,6 +254,9 @@ export async function runAgentHarnessAttempt(
           preparedModelProvider: params.runtimePlan?.auth !== undefined,
         });
   const harness = selection.harness;
+  using preparationPhases = observeDiagnosticsTimelinePhases(
+    `agent.harness.selected:${harness.id}`,
+  );
   // Capture this registration before any awaited preparation; IDs and dispatch methods
   // do not establish that an external sink understands separate question permission.
   const queueInputAdapter = selection.builtIn
@@ -316,6 +320,7 @@ export async function runAgentHarnessAttempt(
             readRunOperatorAuthority(params),
             params.cyberAccessProgram,
           );
+          preparationPhases.mark(`agent.harness.invoked:${harness.id}`);
           return harness.runAttempt(attempt);
         },
       );

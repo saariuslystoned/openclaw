@@ -1,3 +1,4 @@
+import { addAbortListener } from "node:events";
 import {
   GATEWAY_CLIENT_CAPS,
   hasGatewayClientCap,
@@ -16,6 +17,8 @@ import {
 import { composeSessionSourceAssertion } from "../../config/sessions/session-source-authority.js";
 import { isAbortError } from "../../infra/abort-signal.js";
 import { assertAgentRunLifecycleGenerationCurrent } from "../../infra/agent-events.js";
+import { onInternalDiagnosticEvent } from "../../infra/diagnostic-events.js";
+import { withDiagnosticsTimelineObserver } from "../../infra/diagnostics-timeline.js";
 import { adoptExecRequestSession } from "../../infra/exec-request-context.js";
 import { PluginRuntimeCloseCompletedError } from "../../plugins/runtime-close-error.js";
 import { bindGatewayContextResolver } from "../../plugins/runtime/gateway-request-scope.js";
@@ -50,6 +53,7 @@ import { withAgentRunDispatchExecutionIdentity } from "./agent-run-dispatch-exec
 import { prepareAgentRunExecutionIdentityFacts } from "./agent-run-execution-lineage.js";
 import type { StartAgentRunExecutionParams } from "./agent-run-execution-types.js";
 import { dispatchAgentRunWithMedia } from "./agent-run-media.js";
+import { createAgentRunPreparationTrace } from "./agent-run-preparation-trace.js";
 import {
   resolveGatewayPluginSubagentToolPolicy,
   settleUnstartedGatewayFollowup,
@@ -81,6 +85,13 @@ async function executeAgentRun(
   acknowledgeCleanup: () => void,
 ): Promise<void> {
   const { prepared } = params;
+  const preparationTrace = createAgentRunPreparationTrace(params.runId);
+  const abortSignal = prepared.activeRunAbort.controller.signal;
+  if (abortSignal.aborted) {
+    preparationTrace.observeAbort();
+  }
+  using abortObservation = new DisposableStack();
+  abortObservation.use(addAbortListener(abortSignal, preparationTrace.observeAbort));
   let deliverFinal: (() => void) | undefined;
   const deferFinal = (...args: Parameters<typeof params.io.emitFinal>) => {
     deliverFinal = () => params.io.emitFinal(...args);
@@ -109,6 +120,33 @@ async function executeAgentRun(
   let dispatched = false;
   let executionSettled = false;
   let runtimeDisposed = false;
+  const stopObservingModelEvents = onInternalDiagnosticEvent(
+    (event, metadata) => {
+      // Trust comes from the dispatcher, not claims in a public event payload.
+      const source = prepared.activeRunAbort.entry;
+      const identity = source ? getRpcSourceIdentity(source) : undefined;
+      const sessionId = identity?.sessionId ?? params.resolvedSessionId;
+      const sessionKey = identity?.sessionKey ?? params.resolvedSessionKey;
+      // A run ID alone is not an execution identity. Missing or foreign session
+      // metadata stays unobserved; queued diagnostics never confer authority.
+      if (
+        metadata.trusted &&
+        (event.type === "model.call.started" ||
+          event.type === "model.call.completed" ||
+          event.type === "model.call.error") &&
+        sessionId !== undefined &&
+        sessionKey !== undefined &&
+        event.sessionId === sessionId &&
+        event.sessionKey === sessionKey
+      ) {
+        preparationTrace.observeModelEvent(event);
+      }
+    },
+    {
+      include: ["model.call.started", "model.call.completed", "model.call.error"],
+      includePromptStats: false,
+    },
+  );
   try {
     await using runtimeResources = {
       stack: new AsyncDisposableStack(),
@@ -201,9 +239,14 @@ async function executeAgentRun(
         );
       }
     };
-    const dispatchAdmittedAgentRun = (dispatch: Parameters<typeof dispatchAgentRunWithMedia>[0]) =>
-      withCurrentUserTurnInput(prepared.userTurn.recorder, () =>
-        withSessionTurn(
+    const dispatchAdmittedAgentRun = (
+      dispatch: Parameters<typeof dispatchAgentRunWithMedia>[0],
+    ) => {
+      preparationTrace.enter("input_scope");
+      return withCurrentUserTurnInput(prepared.userTurn.recorder, () => {
+        preparationTrace.exit("input_scope");
+        preparationTrace.enter("session_admission");
+        return withSessionTurn(
           {
             controllerInput: abortEntry?.input,
             sessionKey: params.resolvedSessionKey,
@@ -212,19 +255,23 @@ async function executeAgentRun(
             storePath: params.resolvedSessionKey ? prepared.lifecycleStorePath : undefined,
             abortSignal: abortController.signal,
           },
-          async () =>
-            preparedModelRuntimeLease.run(() =>
+          async () => {
+            preparationTrace.exit("session_admission");
+            return preparedModelRuntimeLease.run(() =>
               withPreparedModelRuntimePluginGenerationScope(
                 replyDispatchRuntime.pluginGeneration,
                 () => {
                   dispatched = true;
+                  preparationTrace.enter("dispatch");
                   return dispatchAgentRunWithMedia(dispatch, params);
                 },
                 () => (leaseActive ? preparedModelRuntimeLease.snapshot : undefined),
               ),
-            ),
-        ),
-      );
+            );
+          },
+        );
+      });
+    };
     const execute = async () => {
       await yieldAfterAgentAcceptedAck();
       const settleUnstartedFollowup = (outcome: AgentRunTerminalOutcome) =>
@@ -243,6 +290,7 @@ async function executeAgentRun(
         createAgentRunUndispatchedOutcome({
           execution: params,
           diagnostics,
+          preparationTrace,
           captureJobSession,
           settleUnstartedFollowup,
           deferFinal,
@@ -253,12 +301,14 @@ async function executeAgentRun(
           return;
         }
 
-        if (prepared.acquireWorkspaceModelRuntime) {
+        const acquireWorkspaceModelRuntime = prepared.acquireWorkspaceModelRuntime;
+        if (acquireWorkspaceModelRuntime) {
           let entry = params.sessionEntry;
           const lifecycleStorePath = prepared.lifecycleStorePath;
+          const workspaceSessionKey = params.resolvedSessionKey;
           if (
             !entry ||
-            !params.resolvedSessionKey ||
+            !workspaceSessionKey ||
             !lifecycleStorePath ||
             entry.sessionId !==
               (abortEntry ? getRpcSourceIdentity(abortEntry).sessionId : undefined)
@@ -266,18 +316,20 @@ async function executeAgentRun(
             throw new Error("Session changed before preparing its worktree.");
           }
           params.sessionEntry = entry = { ...entry };
-          await prepareSessionWorkspaceForRun({
-            entry,
-            cfg: params.cfgForAgent ?? params.cfg,
-            agentId: params.activeSessionAgentId,
-            runId: params.runId,
-            sessionKey: params.resolvedSessionKey,
-            storePath: lifecycleStorePath,
-            context: params.context,
-            signal: abortController.signal,
-            assertCurrent: assertDispatchCurrent,
-            runSetupScript: params.client?.connect.scopes?.includes(ADMIN_SCOPE) === true,
-          });
+          await preparationTrace.measure("workspace", () =>
+            prepareSessionWorkspaceForRun({
+              entry,
+              cfg: params.cfgForAgent ?? params.cfg,
+              agentId: params.activeSessionAgentId,
+              runId: params.runId,
+              sessionKey: workspaceSessionKey,
+              storePath: lifecycleStorePath,
+              context: params.context,
+              signal: abortController.signal,
+              assertCurrent: assertDispatchCurrent,
+              runSetupScript: params.client?.connect.scopes?.includes(ADMIN_SCOPE) === true,
+            }),
+          );
           assertDispatchCurrent();
           workspaceOverride = resolveIngressWorkspaceOverrideForSessionRun({
             spawnedBy: entry.spawnedBy,
@@ -285,7 +337,9 @@ async function executeAgentRun(
             cwd: entry.spawnedCwd,
           });
           preparedModelRuntimeLease = runtimeResources.stack.use(
-            await prepared.acquireWorkspaceModelRuntime(workspaceOverride),
+            await preparationTrace.measure("model_runtime", () =>
+              acquireWorkspaceModelRuntime(workspaceOverride),
+            ),
           );
           assertDispatchCurrent();
           replyDispatchRuntime = Object.freeze({
@@ -377,25 +431,28 @@ async function executeAgentRun(
           params.client?.connect.scopes?.includes("operator.admin") === true &&
           hasGatewayClientCap(clientCaps, GATEWAY_CLIENT_CAPS.TASK_SUGGESTIONS);
         const gatewayContext = params.context.resolveGatewayContext?.();
+        const skillAuthoringSessionKey = params.resolvedSessionKey;
         const skillLibraryAuthoring =
-          gatewayContext && params.resolvedSessionKey
-            ? await prepareGatewaySkillAuthoring(
-                {
-                  client: params.client,
-                  context: gatewayContext,
-                  sessionMutationCommitGuard: params.assertGatewayLifetimeCurrent,
-                },
-                params.resolvedSessionKey,
-                !params.inputProvenance &&
-                  !params.restoredCronContinuation &&
-                  !params.isOneShotModelRun &&
-                  !params.request.internalEvents &&
-                  !params.request.internalRuntimeHandoffId &&
-                  !params.request.execApprovalFollowupExpectedSessionId &&
-                  params.sessionEffects !== "internal" &&
-                  !params.request.suppressPromptPersistence &&
-                  !params.request.swarmCollector &&
-                  params.request.lane !== "subagent",
+          gatewayContext && skillAuthoringSessionKey
+            ? await preparationTrace.measure("skill_authoring", () =>
+                prepareGatewaySkillAuthoring(
+                  {
+                    client: params.client,
+                    context: gatewayContext,
+                    sessionMutationCommitGuard: params.assertGatewayLifetimeCurrent,
+                  },
+                  skillAuthoringSessionKey,
+                  !params.inputProvenance &&
+                    !params.restoredCronContinuation &&
+                    !params.isOneShotModelRun &&
+                    !params.request.internalEvents &&
+                    !params.request.internalRuntimeHandoffId &&
+                    !params.request.execApprovalFollowupExpectedSessionId &&
+                    params.sessionEffects !== "internal" &&
+                    !params.request.suppressPromptPersistence &&
+                    !params.request.swarmCollector &&
+                    params.request.lane !== "subagent",
+                ),
               )
             : undefined;
         finalizePreparedAgentRunUserTurn(prepared.userTurn);
@@ -575,6 +632,7 @@ async function executeAgentRun(
                     )
                 : undefined,
               io: { ...params.io, emitFinal: deferFinal },
+              preparationTrace,
               context: params.context,
               isIncognito: diagnostics.incognito,
               followupCompletion: prepared.followupCompletion,
@@ -609,12 +667,15 @@ async function executeAgentRun(
         }
       }
     };
-    await (prepared.activeGatewayWorkAdmission
-      ? prepared.activeGatewayWorkAdmission.run(execute)
-      : execute());
+    await withDiagnosticsTimelineObserver(preparationTrace.observeSpan, () =>
+      prepared.activeGatewayWorkAdmission
+        ? prepared.activeGatewayWorkAdmission.run(execute)
+        : execute(),
+    );
     executionSettled = true;
     deliverFinal?.();
   } finally {
+    stopObservingModelEvents();
     // Shutdown joins the execution through asynchronous runtime disposal, not just bookkeeping.
     try {
       prepared.releaseCallerAuthority?.();

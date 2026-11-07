@@ -17,6 +17,16 @@ import {
   clearAgentRunContext,
   getAgentRunLifecycleGeneration,
 } from "../../infra/agent-run-registry.js";
+import {
+  hasInternalDiagnosticEventInterest,
+  hasModelCallPromptStatsInterest,
+} from "../../infra/diagnostic-event-listener-presence.js";
+import {
+  emitDiagnosticEvent,
+  emitTrustedDiagnosticEventWithPrivateData,
+  resetDiagnosticEventsForTest,
+  waitForDiagnosticEventsDrained,
+} from "../../infra/diagnostic-events.js";
 import { PluginRuntimeCloseCompletedError } from "../../plugins/runtime-close-error.js";
 import {
   getCurrentSessionControllerOwner,
@@ -112,6 +122,99 @@ describe("startAgentRunExecution Gateway ownership", () => {
   });
 
   afterEach(() => resetSessionControllerStateForTest());
+
+  it.each([false, true])(
+    "observes only trusted same-run model metadata through dispatch (incognito: %s)",
+    async (incognito) => {
+      resetDiagnosticEventsForTest();
+      onTestFinished(resetDiagnosticEventsForTest);
+      const execution = createExecution();
+      await bindRegisteredExecution(execution, "agent:main:diagnostic-owner", "diagnostic-owner");
+      execution.params.sessionEntry = {
+        sessionId: "diagnostic-owner",
+        updatedAt: 0,
+        ...(incognito ? { incognito: true } : {}),
+      };
+      const readPrivateData = vi.fn(() => "synthetic-private-model-content");
+      const privateData = {
+        get errorMessage() {
+          return readPrivateData();
+        },
+      };
+      const event = {
+        type: "model.call.started" as const,
+        runId: execution.params.runId,
+        callId: "synthetic-call",
+        sessionKey: execution.params.resolvedSessionKey,
+        sessionId: execution.params.resolvedSessionId,
+        provider: "synthetic-private-provider",
+        model: "synthetic-private-model",
+      };
+      const { dispatchAgentRunFromGateway: dispatch } =
+        await vi.importActual<typeof import("./agent-run-dispatch.js")>("./agent-run-dispatch.js");
+      dispatchAgentRunFromGateway.mockImplementationOnce(dispatch);
+      agentCommand.mockImplementationOnce(async () => {
+        expect(hasInternalDiagnosticEventInterest("model.usage", true)).toBe(false);
+        expect(hasInternalDiagnosticEventInterest("model.call.started", true)).toBe(true);
+        expect(hasModelCallPromptStatsInterest()).toBe(false);
+        // Public payload claims cannot manufacture dispatcher-owned trust.
+        const spoofed = { ...event, trusted: true, internal: true };
+        emitDiagnosticEvent(spoofed);
+        emitTrustedDiagnosticEventWithPrivateData({ ...event, runId: "other-run" }, privateData);
+        emitTrustedDiagnosticEventWithPrivateData(
+          {
+            type: "model.usage",
+            sessionKey: event.sessionKey,
+            provider: event.provider,
+            model: event.model,
+            usage: {},
+          },
+          privateData,
+        );
+        emitTrustedDiagnosticEventWithPrivateData(
+          { ...event, sessionId: "other-session" },
+          privateData,
+        );
+        emitTrustedDiagnosticEventWithPrivateData({ ...event, sessionKey: undefined }, privateData);
+        emitTrustedDiagnosticEventWithPrivateData(event, privateData);
+        emitTrustedDiagnosticEventWithPrivateData(
+          { ...event, type: "model.call.completed", durationMs: 1 },
+          privateData,
+        );
+        emitTrustedDiagnosticEventWithPrivateData(
+          { ...event, type: "model.call.error", durationMs: 2, errorCategory: "synthetic" },
+          privateData,
+        );
+        await waitForDiagnosticEventsDrained();
+        if (incognito) {
+          throw new Error("synthetic model failure");
+        }
+        return { payloads: [] };
+      });
+
+      await startAgentRunExecution(execution.params);
+      expect(agentCommand).toHaveBeenCalledOnce();
+      const [frame] = vi.mocked(execution.params.io.emitFinal).mock.calls[0] ?? [];
+      expect(frame?.[1]).toMatchObject({
+        preparationTrace: {
+          points: expect.arrayContaining([
+            { stage: "provider_call", event: "enter", elapsedMs: expect.any(Number) },
+            { stage: "provider_call", event: "exit", elapsedMs: expect.any(Number) },
+            { stage: "provider_call", event: "error", elapsedMs: expect.any(Number) },
+          ]),
+        },
+      });
+      const serialized = JSON.stringify(frame?.[1]);
+      // Exact count rejects unrelated runs and spoofed public lifecycle events.
+      expect(serialized?.match(/provider_call/g)).toHaveLength(3);
+      expect(serialized).not.toContain("synthetic-private");
+      expect(readPrivateData).not.toHaveBeenCalled();
+      for (const type of ["model.call.started", "model.call.completed", "model.call.error"]) {
+        expect(hasInternalDiagnosticEventInterest(type, true)).toBe(false);
+        expect(hasInternalDiagnosticEventInterest(type, false)).toBe(false);
+      }
+    },
+  );
 
   it.each([
     "success",
@@ -725,6 +828,14 @@ describe("startAgentRunExecution Gateway ownership", () => {
       ).toBe(true);
       const [replayFrame, replayMetadata] = emitAcceptance.mock.calls[0] ?? [];
       expect(replayFrame).toEqual(frame);
+      expect(frame?.[1]).toMatchObject({
+        preparationTrace: {
+          dispatched: false,
+          points: [],
+          truncated: false,
+          elapsedMs: expect.any(Number),
+        },
+      });
       const replayDiagnostics = { errorMessage: replayFrame?.[2]?.message, ...replayMetadata };
       if (incognito) {
         expect(JSON.stringify(replayDiagnostics)).not.toContain(privateMessage);

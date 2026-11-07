@@ -1,3 +1,4 @@
+import { addAbortListener } from "node:events";
 // Covers agent harness selection, fallback behavior, and compaction routing.
 import path from "node:path";
 import { asOptionalRecord } from "@openclaw/normalization-core/record-coerce";
@@ -15,12 +16,17 @@ import {
 import type { TranscriptEntryAnchor } from "../../config/sessions/transcript-entry-anchor.js";
 import { OPENCLAW_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
 import type { ContextEngine } from "../../context-engine/types.js";
+import { dispatchAgentRunFromGateway } from "../../gateway/agent-turn/agent-run-dispatch.js";
+import { createTrackedDispatch } from "../../gateway/agent-turn/agent-run-dispatch.test-support.js";
+import { createAgentRunPreparationTrace } from "../../gateway/agent-turn/agent-run-preparation-trace.js";
+import { testRpcSourceController } from "../../gateway/agent-turn/rpc-source.test-support.js";
 import type { GatewayRequestContext } from "../../gateway/server-methods/types.js";
 import {
   resetAgentRunRegistryForTest,
   rotateAgentRunRegistryLifecycleGeneration,
 } from "../../infra/agent-run-registry.js";
 import { sha256HexPrefixCore } from "../../infra/crypto-digest.js";
+import { withDiagnosticsTimelineObserver } from "../../infra/diagnostics-timeline.js";
 import { createOpenClawCodingTools } from "../../plugin-sdk/agent-harness.js";
 import { createPluginRecord } from "../../plugins/loader-records.js";
 import { getActivePluginRegistry } from "../../plugins/runtime.js";
@@ -119,6 +125,11 @@ import type {
 type TestNativeCompactionParams = AgentHarnessCompactParams & {
   nativeCompactionRequest: "required_preflight" | "after_context_engine";
 };
+
+const diagnosticCommand = vi.hoisted(() =>
+  vi.fn<typeof import("../../commands/agent.js").agentCommandFromGatewayIngress>(),
+);
+vi.mock("../../commands/agent.js", () => ({ agentCommandFromGatewayIngress: diagnosticCommand }));
 
 const agentRunAttempt = vi.fn<AgentHarness["runAttempt"]>(async () =>
   createAttemptResult("openclaw"),
@@ -480,6 +491,78 @@ function registerTestCompactor(
 }
 
 describe("runAgentHarnessAttempt", () => {
+  it.each(["selected", "invoked"] as const)(
+    "observes the actual %s harness through Gateway dispatch",
+    async (stage) => {
+      const { context, entry, runId } = createTrackedDispatch();
+      const controller = testRpcSourceController(entry);
+      const trace = createAgentRunPreparationTrace(runId);
+      const entered = createDeferredCore();
+      const release = createDeferredCore();
+      const pending = async () => {
+        entered.resolve();
+        await release.promise;
+      };
+      const runAttempt = vi.fn<AgentHarness["runAttempt"]>(async () => {
+        await pending();
+        return createAttemptResult("codex");
+      });
+      registerHarness({ id: "codex", label: "Codex", runAttempt });
+      const params = createAttemptParams();
+      params.abortSignal = controller.signal;
+      if (stage === "selected") {
+        params.awaitSessionDiffBaseline = pending;
+      }
+      diagnosticCommand.mockImplementationOnce(async () => {
+        await runAgentHarnessAttempt(params);
+        return { payloads: [], meta: { durationMs: 0 } };
+      });
+      trace.enter("dispatch");
+      using observations = new DisposableStack();
+      observations.use(addAbortListener(controller.signal, trace.observeAbort));
+      const emitFinal = vi.fn();
+      const completion = withDiagnosticsTimelineObserver(trace.observeSpan, () =>
+        dispatchAgentRunFromGateway({
+          runId,
+          context,
+          admittedRunEntry: entry,
+          dedupeKeys: [],
+          abortController: controller,
+          cleanupAbortController: () => {},
+          preparationTrace: trace,
+          ingressOpts: { message: "synthetic prompt", allowModelOverride: false },
+          io: { emitAcceptance: vi.fn(), emitFinal },
+        }),
+      );
+      try {
+        await awaitGateBeforeSettlement(
+          entered.promise,
+          completion,
+          "Harness did not reach expected boundary",
+        );
+        controller.abort();
+      } finally {
+        release.resolve();
+        await completion;
+        diagnosticCommand.mockReset();
+      }
+      expect(emitFinal.mock.calls[0]?.[0]?.[1]).toMatchObject({
+        preparationTrace: {
+          abortSnapshot: {
+            active: expect.arrayContaining([
+              { stage: "harness_" + stage, harnessId: "codex", elapsedMs: expect.any(Number) },
+            ]),
+          },
+        },
+      });
+      if (stage === "selected") {
+        expect(runAttempt).not.toHaveBeenCalled();
+      } else {
+        expect(runAttempt).toHaveBeenCalledOnce();
+      }
+    },
+  );
+
   registerSelectionContextCases({
     createAttemptParams,
     registerHarness,

@@ -1,4 +1,5 @@
 import { normalizeAgentRunTimeoutPhase } from "@openclaw/normalization-core/agent-run-terminal-outcome";
+import { isRecord } from "@openclaw/normalization-core/record-coerce";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
 import { withAgentCommandExecutionIdentitySpawnFacts } from "../../agents/agent-command-execution-identity-spawn.js";
 import {
@@ -29,6 +30,7 @@ import {
   clearAgentRunContext,
   validateAgentRunDelegatedAuthority,
 } from "../../infra/agent-run-registry.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import { formatErrorMessage, toErrorObject } from "../../infra/errors.js";
 import { withExecRequestTurn } from "../../infra/exec-request-context.js";
 import {
@@ -60,6 +62,7 @@ import {
   resolveGatewayAgentAbortStopReason,
   resolveResolvedAgentTimeoutStopReason,
 } from "./agent-run-dispatch-outcome.js";
+import type { createAgentRunPreparationTrace } from "./agent-run-preparation-trace.js";
 import type { AgentTurnContext, AgentTurnIo } from "./types.js";
 
 type AgentRunMediaCustody = Pick<
@@ -89,6 +92,7 @@ export function dispatchAgentRunFromGateway(params: {
   abortController: Pick<AbortController, "signal" | "abort">;
   cleanupAbortController: () => void | Promise<void>;
   io: AgentTurnIo;
+  preparationTrace?: ReturnType<typeof createAgentRunPreparationTrace>;
   context: AgentTurnContext;
   commandRuntimeContext?: PreparedAgentCommandRuntimeContext;
   /** Privacy classification carried from the resolved session entry. */
@@ -115,12 +119,16 @@ export function dispatchAgentRunFromGateway(params: {
         : params.ingressOpts,
     );
   let runOwnerSettled = false;
-  const projectInputOutcome = (payload: unknown) =>
-    projectWithdrawnAgentInput(
+  const projectInputOutcome = (payload: unknown) => {
+    const projected = projectWithdrawnAgentInput(
       payload,
       readWithdrawnUserTurnInputId(params.ingressOpts.userTurnTranscriptRecorder),
       registeredRunEntry?.adapter.abortStopReason,
     );
+    return params.preparationTrace && isRecord(projected)
+      ? { ...projected, preparationTrace: params.preparationTrace.finish(true) }
+      : projected;
+  };
   let pendingReplay: DedupeEntry | undefined;
   const publishReplay = (entry: DedupeEntry) => {
     if (!runOwnerSettled) {
@@ -311,7 +319,9 @@ export function dispatchAgentRunFromGateway(params: {
       }
     },
   };
+  const preparationPhases = observeDiagnosticsTimelinePhases("agent.media.load");
   const activateAgent = (media?: AgentRunMediaCustody) => {
+    preparationPhases.mark("agent.media.activate");
     assertCurrent();
     const ingressOptsWithSpawnFacts = withAgentCommandExecutionIdentitySpawnFacts(
       {
@@ -331,8 +341,9 @@ export function dispatchAgentRunFromGateway(params: {
       },
       readAgentRunDispatchExecutionIdentity(params),
     );
-    const invoke = () =>
-      agentCommandFromGatewayIngress(
+    const invoke = () => {
+      preparationPhases.mark("agent.command");
+      return agentCommandFromGatewayIngress(
         cronCreatorAuthorityCapability
           ? { ...ingressOptsWithSpawnFacts, cronCreatorAuthorityCapability }
           : ingressOptsWithSpawnFacts,
@@ -340,6 +351,7 @@ export function dispatchAgentRunFromGateway(params: {
         params.context.deps,
         params.commandRuntimeContext,
       );
+    };
     if (followupCompletion) {
       if (
         !registeredRunEntry ||
@@ -399,6 +411,7 @@ export function dispatchAgentRunFromGateway(params: {
       producerError = error;
       throw error;
     } finally {
+      preparationPhases.mark("agent.dispatch.settlement");
       await terminalProducer.complete(producerError);
     }
   })();
@@ -504,7 +517,7 @@ export function dispatchAgentRunFromGateway(params: {
           error,
         });
         await cleanupRunOwner();
-        params.io.emitFinal([false, failedPayload, error], {
+        params.io.emitFinal([false, projectInputOutcome(failedPayload), error], {
           runId: params.runId,
           error: summary,
         });
@@ -602,6 +615,7 @@ export function dispatchAgentRunFromGateway(params: {
       try {
         await cleanupRunOwner();
       } finally {
+        preparationPhases[Symbol.dispose]();
         followupCompletion?.finishExecution(params.runId);
       }
     }

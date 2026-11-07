@@ -9,6 +9,7 @@ import {
   captureAgentRunLifecycleGeneration,
   withAgentRunLifecycleGeneration,
 } from "../infra/agent-events.js";
+import { observeDiagnosticsTimelinePhases } from "../infra/diagnostics-timeline.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { withPluginRuntimeGenerationScope } from "../plugins/runtime/generation-scope.js";
@@ -75,6 +76,7 @@ async function agentCommandInternal(
   watchSkills = false,
 ) {
   let maintenanceRequest: SessionMaintenanceRequest | undefined;
+  using preparationPhases = observeDiagnosticsTimelinePhases("agent.command.admission");
   return await withSessionTurn(
     {
       sessionKey: prepared.sessionKey,
@@ -85,6 +87,7 @@ async function agentCommandInternal(
       detached: prepared.opts.sessionEffects === "internal",
     },
     async (_operation, abortSignal) => {
+      preparationPhases.mark("agent.command.owned");
       return await agentCommandInternalOwned(
         { ...prepared, opts: { ...prepared.opts, abortSignal } },
         admissionIngress,
@@ -594,11 +597,13 @@ async function agentCommandFromIngressInternal(
   const generation = runtimeContext?.pluginGeneration;
   const executeIngress = () =>
     withAgentRunLifecycleGeneration(lifecycleGeneration, async () => {
+      using preparationPhases = observeDiagnosticsTimelinePhases("agent.command.prepare");
       const prepared = await prepareAgentCommandExecution(
         { ...opts, lifecycleGeneration, senderIsOwner: opts.senderIsOwner === true },
         ingressRuntime,
         runtimeContext,
       );
+      preparationPhases.mark("agent.command.runtime");
       try {
         const preparedAgentDir = prepared.agentDir;
         const run = async () =>

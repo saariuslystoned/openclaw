@@ -7,6 +7,7 @@ import { createTestRegistry } from "../../test-utils/channel-plugins.js";
 import { replayAgentTurnIfCached } from "./agent-dedupe.js";
 import { dispatchAgentRunFromGateway } from "./agent-run-dispatch.js";
 import { createTrackedDispatch } from "./agent-run-dispatch.test-support.js";
+import { createAgentRunPreparationTrace } from "./agent-run-preparation-trace.js";
 import { setTestRpcSourceIdentity, testRpcSourceController } from "./rpc-source.test-support.js";
 
 const mocks = vi.hoisted(() => ({
@@ -128,7 +129,9 @@ describe.each(sessionCases)(
       const dedupeKeys = [`agent:${params.runId}`];
       mocks.command.mockRejectedValueOnce(new Error(privateReply));
 
-      await dispatchAgentRunFromGateway({ ...params, dedupeKeys });
+      const preparationTrace = createAgentRunPreparationTrace(params.runId, () => 0);
+      preparationTrace.enter("dispatch");
+      await dispatchAgentRunFromGateway({ ...params, dedupeKeys, preparationTrace });
 
       const [frame, diagnostics] = params.io.emitFinal.mock.calls[0] ?? [];
       expect(frame?.[1]).toMatchObject({ status: "error", summary: privateReply });
@@ -147,6 +150,15 @@ describe.each(sessionCases)(
       ).toBe(true);
       const [replayFrame, replayMetadata] = emitAcceptance.mock.calls[0] ?? [];
       expect(replayFrame).toEqual(frame);
+      expect(frame?.[1]).toMatchObject({
+        preparationTrace: {
+          dispatched: true,
+          points: [
+            { stage: "dispatch", event: "enter", elapsedMs: 0 },
+            { stage: "dispatch", event: "exit", elapsedMs: 0 },
+          ],
+        },
+      });
       const replayDiagnostics = { errorMessage: replayFrame?.[2]?.message, ...replayMetadata };
       expectDiagnostics(replayDiagnostics, isPrivate, { cached: true, errorMessage: privateReply });
     });

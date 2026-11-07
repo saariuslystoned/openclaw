@@ -11,17 +11,20 @@ import type { captureAgentJobSession } from "./agent-job.js";
 import type { createAgentRunDiagnostics } from "./agent-run-diagnostics.js";
 import { projectWithdrawnAgentInput } from "./agent-run-dispatch-outcome.js";
 import type { StartAgentRunExecutionParams } from "./agent-run-execution-types.js";
+import type { createAgentRunPreparationTrace } from "./agent-run-preparation-trace.js";
 
 /** Settle admitted input before queuing the undispatched result for post-cleanup publication. */
 export function createAgentRunUndispatchedOutcome({
   execution,
   diagnostics,
+  preparationTrace,
   captureJobSession,
   settleUnstartedFollowup,
   deferFinal,
 }: {
   execution: StartAgentRunExecutionParams;
   diagnostics: ReturnType<typeof createAgentRunDiagnostics>;
+  preparationTrace: ReturnType<typeof createAgentRunPreparationTrace>;
   captureJobSession: () => ReturnType<typeof captureAgentJobSession>;
   settleUnstartedFollowup: (outcome: AgentRunTerminalOutcome) => Promise<void> | undefined;
   deferFinal: StartAgentRunExecutionParams["io"]["emitFinal"];
@@ -40,7 +43,12 @@ export function createAgentRunUndispatchedOutcome({
       }
     }
     await settleUnstartedFollowup(outcome);
-    const payload = { runId: execution.runId, status: "error" as const, summary: renderedErr };
+    const payload = {
+      runId: execution.runId,
+      status: "error" as const,
+      summary: renderedErr,
+      preparationTrace: preparationTrace.finish(false),
+    };
     publishAfterCleanup = () => {
       setGatewayDedupeEntries({
         dedupe: execution.context.dedupe,
@@ -73,9 +81,14 @@ export function createAgentRunUndispatchedOutcome({
     await settleUnstartedFollowup(outcome);
     publishAfterCleanup = () => {
       const payload = projectWithdrawnAgentInput(
-        buildAbortedAgentPayload(execution.runId, stopReason, {
-          agentId: execution.activeSessionAgentId,
-        }),
+        {
+          ...buildAbortedAgentPayload(execution.runId, stopReason, {
+            agentId: execution.activeSessionAgentId,
+          }),
+          timeoutPhase: outcome.timeoutPhase,
+          providerStarted: outcome.providerStarted,
+          preparationTrace: preparationTrace.finish(false),
+        },
         readWithdrawnUserTurnInputId(prepared.userTurn.recorder),
       );
       setGatewayDedupeEntries({
