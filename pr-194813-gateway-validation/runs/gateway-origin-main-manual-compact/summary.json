@@ -1,0 +1,14 @@
+{
+  "label": "origin-main-manual",
+  "checkoutHead": "1ad3ec3d2081f3c7228b5bed8ae95e3821cd609f",
+  "contextWindow": 64000,
+  "compactionTurn": -1,
+  "stubRequests": {
+    "primaryChat": 2,
+    "primarySummary429": 3,
+    "fallbackSummary": 0,
+    "fallbackChat": 0
+  },
+  "fallbackSummaryInHistory": false,
+  "sessionsCompactionCount": null
+}

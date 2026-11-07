@@ -1,0 +1,8 @@
+      [provider-transport-fetch] [model-fetch] response provider=stuba api=openai-completions model=m status=429 contentType=application/json requestNumber=1
+      [provider-transport-fetch] [model-fetch] response provider=stuba api=openai-completions model=m status=429 contentType=application/json requestNumber=2
+      [provider-transport-fetch] [model-fetch] response provider=stuba api=openai-completions model=m status=429 contentType=application/json requestNumber=3
+      [compaction-safeguard] Compaction summarization failed; cancelling compaction to preserve history.
+      [agent/embedded] [compaction-diag] end trigger=manual provider=stuba/m attempt=1 maxAttempts=1 outcome=failed reason=guard_blocked
+      [model-fallback/decision] decision=candidate_failed candidate=stuba/m reason=rate_limit status=429 code=429 next=stubb/m outcome=next_fallback
+      [compaction-safeguard] Compaction safeguard: final quality attempt failed; reasonCodes=missing_section reasonCount=5; using degraded summary; reasonCode=quality_guard_degraded_fallback
+      [model-fallback/decision] decision=candidate_succeeded candidate=stubb/m outcome=succeeded

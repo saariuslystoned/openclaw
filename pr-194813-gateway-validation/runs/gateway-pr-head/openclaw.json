@@ -1,0 +1,90 @@
+{
+  "logging": {
+    "file": "<pr-checkout>/proof/gateway-pr-head/root/logs/openclaw-YYYY-MM-DD.log"
+  },
+  "models": {
+    "mode": "replace",
+    "providers": {
+      "stuba": {
+        "baseUrl": "http://127.0.0.1:53645/v1",
+        "apiKey": "test",
+        "api": "openai-completions",
+        "request": {
+          "allowPrivateNetwork": true
+        },
+        "models": [
+          {
+            "id": "m",
+            "name": "m",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 64000,
+            "maxTokens": 2048
+          }
+        ]
+      },
+      "stubb": {
+        "baseUrl": "http://127.0.0.1:53646/v1",
+        "apiKey": "test",
+        "api": "openai-completions",
+        "request": {
+          "allowPrivateNetwork": true
+        },
+        "models": [
+          {
+            "id": "m",
+            "name": "m",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 64000,
+            "maxTokens": 2048
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "<pr-checkout>/proof/gateway-pr-head/root/workspace",
+      "model": {
+        "primary": "stuba/m",
+        "fallbacks": [
+          "stubb/m"
+        ]
+      },
+      "models": {
+        "stuba/m": {},
+        "stubb/m": {}
+      },
+      "compaction": {
+        "mode": "safeguard"
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "port": 53647,
+    "auth": {
+      "mode": "none"
+    }
+  }
+}

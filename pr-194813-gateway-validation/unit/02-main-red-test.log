@@ -1,0 +1,184 @@
+$ node scripts/test-projects.mts src/agents/embedded-agent-runner/compact.hooks.test.ts --maxWorkers=1 -t 'keeps model fallback boundaries'
+[vitest-workers] local cache miss after 5405ms
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m48 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m12 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+[vitest-workers] prepared 60f44b2abfba in 44729ms (18856 inputs, 24039 outputs)
+[test] starting test/vitest/vitest.infra.config.ts
+
+ RUN  v5.0.5 <main-checkout>
+
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > never retries a recorded terminal failure
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > restricts endpoint tools and excludes private skills
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > applies the routed peer's account history window
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > cancels direct compaction while prepared runtime admission is waiting
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > refreshes the delegated watchdog before post-compaction hooks
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > refreshes the delegated watchdog before delayed fallback setup
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > preserves timeouts after summary generation
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > rejects generic compaction of a native-locked session
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > discards the prepared runtime plan when compaction falls back across providers
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > discards the source-provider auth profile when compaction falls back across providers
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > rematerializes the downstream model for a resolved backup profile
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > isolates sandbox policy without host session reads
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > renders the compaction bootstrap notice only for omitted files (false)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > renders the compaction bootstrap notice only for omitted files (true)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > uses the final read-only permission policy for compaction tools
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > uses the final guarded permission policy for compaction tools
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > uses the final full permission policy for compaction tools
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > uses the final workspace permission policy for compaction tools
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > keeps manifest-profiled plugin tools executable during compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > skips tools for models without tool support
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > quarantines unsupported tool schemas before session creation
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > preserves configured fallback identity through credential refresh
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > carries pending input and undefined urgency into safeguard recovery
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > carries pending input and normal urgency into safeguard recovery
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > carries pending input and foreground urgency into safeguard recovery
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps workspace rules in explicit compaction when the Gateway cwd differs
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > returns a structured automatic retention skip without reporting compaction failure
+(node:14224) [DEP_SESSION_PERSISTENCE] DeprecationWarning: Plugin SDK: SessionManager.appendMessage is deprecated; use appendMessageAsync instead. Synchronous calls retain their return values and commit before returning. Final compatibility day: 2026-12-31. Removal ships in the first January 2027 stable release; no SDK major is required.
+(Use `bun --trace-warnings ...` to show where the warning was created)
+ ✓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for provider timeout 2889ms
+ × |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for provider quota 429 1487ms
+   → {"ok":false,"compacted":false,"reason":"Compaction safeguard could not summarize the session: <redacted len=135>","failure":{"code":"summarization_failed","rawError":"Summarization failed for 2 messages: Summarization failed: Provider API error (429): daily token quota exhausted"}}: expected [ 'summary-primary' ] to deeply equal [ 'summary-primary', 'summary-backup' ]
+ ✓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for intentional quality rejection 68ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for explicit model timeout 65ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for corrective 408 1559ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for reasoning-mandatory rejection 1682ms
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > progress-aware compaction watchdog > keeps a request alive while it streams for longer than the window
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > progress-aware compaction watchdog > stops at the inactivity despite empty keepalives boundary
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > progress-aware compaction watchdog > stops at the operation ceiling despite continuous output boundary
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > progress-aware compaction watchdog > commits automatic reduction at the operation ceiling
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > plans canonical fallback plugins from the configured alias
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > revalidates immutable Ultra for each fallback
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > preserves Codex OAuth across OpenAI fallbacks
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > forwards internal compaction hook messages to the caller
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > treats pre-compaction token estimation failures as a no-op sanity check
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > skips sync in await mode when postCompactionForce is false
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > awaits an asynchronous caller authority check before native refresh
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > compacts an overflow transcript anchored by a compaction summary
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > never falls back from an explicit compaction.model
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > preserves an explicit sandbox in queued provider refresh authority
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > cancels native compaction before the session queue admits it
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > cancels context-engine compaction before the global queue admits it
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > cancels context-engine compaction before the injected queue admits it
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > drains committed maintenance before reporting a failed manual request pinned to its predecessor
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > cancels only the target during runtime admission
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > stops preparation at admission after authority expires (budget cancellation: false)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > stops preparation at context-engine after authority expires (budget cancellation: false)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > stops preparation at model after authority expires (budget cancellation: false)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > stops preparation at context-engine after authority expires (budget cancellation: true)
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > resolves the durable session key before invoking an owning context engine
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > does not require an implicit default owner for queued compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > disposes the context engine once when route materialization rejects
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > preserves native failures when engine disposal also throws
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > shipped /compact waits for the active session lane before native compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > shipped /compact rejects a replaced writer claim before native compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > delegates summaryless server-endpoint results
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > allows cross-route direct fallback through queued compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > cancels in-flight native CLI compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > checks writer authority before native CLI compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > materializes the subscription route before queued compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > materializes the custom endpoint route before queued compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > reports deferred compaction scheduling failures
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > permits locked codex preflight fallback only after native capability use
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > permits locked copilot preflight fallback only after native capability use
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > fails a native lock when auto has no compaction result
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > fails a native lock when codex has no compaction result
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > runs native manual compaction before generic auth
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > holds the lane until secondary native compaction terminates
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > sweeps past faulty probes to cancel live compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > aborts primary native harness compaction through the registered handle
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > aborts secondary native harness compaction through the registered handle
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > borrows the exact active reply operation for manual preflight compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > scopes manual compaction against an active session key
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > scopes manual compaction against an active incarnation alias
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > scopes manual compaction against an active foreign store
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > rejects a session-key successor that contradicts its stored identity
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > rejects a SQLite marker successor that contradicts its stored identity
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > catches and logs hook exceptions without aborting compaction
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > prepares native harness auth without a host profile
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > keeps a SQLite marker successor in the active store for legacy maintenance
+ ↓ |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSession hooks (ownsCompaction engine) > keeps a partial structured target successor in the active store for legacy maintenance
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |infra| src/agents/embedded-agent-runner/compact.hooks.test.ts > compactEmbeddedAgentSessionDirect hooks > safeguard failure provenance > keeps model fallback boundaries for provider quota 429
+AssertionError: {"ok":false,"compacted":false,"reason":"Compaction safeguard could not summarize the session: <redacted len=135>","failure":{"code":"summarization_failed","rawError":"Summarization failed for 2 messages: Summarization failed: Provider API error (429): daily token quota exhausted"}}: expected [ 'summary-primary' ] to deeply equal [ 'summary-primary', 'summary-backup' ]
+
+- Expected
++ Received
+
+  [
+    "summary-primary",
+-   "summary-backup",
+  ]
+
+ ❯ src/agents/embedded-agent-runner/compact.hooks.safeguard.test-support.ts:323:71
+    321|         });
+    322|
+    323|         expect([...new Set(requestedModels)], JSON.stringify(result)).…
+       |                                                                       ^
+    324|           fallback ? [primary, backup] : [primary],
+    325|         );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed | 82 skipped (88)
+   Start at  17:36:34
+   Duration  30.46s (transform 49%, tests 41%, import 8%, setup 2%)
+
+[vitest-workers] verifying completed generation before cleanup
+[vitest-workers] retained completed compiler outputs for reuse
+[test] failed 1 Vitest shard in 81.12s
+[test] FAILED (exit 1)
+[ELIFECYCLE] Test failed. See above for more details.
+exit=1

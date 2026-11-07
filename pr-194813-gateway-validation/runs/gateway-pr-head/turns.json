@@ -1,0 +1,305 @@
+[
+  {
+    "turn": 1,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091599741,
+      "endedAt": 1794091599915,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:39.819Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 92683
+      }
+    ]
+  },
+  {
+    "turn": 2,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091600063,
+      "endedAt": 1794091600099,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:40.083Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 113077
+      }
+    ]
+  },
+  {
+    "turn": 3,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091600190,
+      "endedAt": 1794091600222,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:40.207Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 133471
+      }
+    ]
+  },
+  {
+    "turn": 4,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091600340,
+      "endedAt": 1794091600373,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:40.357Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 153865
+      }
+    ]
+  },
+  {
+    "turn": 5,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091600456,
+      "endedAt": 1794091600493,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:40.479Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 174259
+      }
+    ]
+  },
+  {
+    "turn": 6,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091602455,
+      "endedAt": 1794091602493,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:46:40.602Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:46:41.115Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:46:42.309Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:46:42.368Z",
+        "provider": "stubb",
+        "model": "m",
+        "kind": "summary",
+        "status": 200,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:46:42.371Z",
+        "provider": "stubb",
+        "model": "m",
+        "kind": "summary",
+        "status": 200,
+        "stream": true,
+        "bytes": 20671
+      },
+      {
+        "ts": "2026-11-07T22:46:42.479Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 137682
+      }
+    ]
+  }
+]

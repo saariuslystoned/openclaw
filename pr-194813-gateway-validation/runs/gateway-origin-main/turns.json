@@ -1,0 +1,256 @@
+[
+  {
+    "turn": 1,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091757717,
+      "endedAt": 1794091758037,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:17.859Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 92846
+      }
+    ]
+  },
+  {
+    "turn": 2,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091758301,
+      "endedAt": 1794091758369,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:18.338Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 113240
+      }
+    ]
+  },
+  {
+    "turn": 3,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091758502,
+      "endedAt": 1794091758569,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:18.547Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 133634
+      }
+    ]
+  },
+  {
+    "turn": 4,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091758684,
+      "endedAt": 1794091758724,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:18.705Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 154028
+      }
+    ]
+  },
+  {
+    "turn": 5,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "ok",
+      "startedAt": 1794091758822,
+      "endedAt": 1794091758861,
+      "terminalReceipt": {
+        "runId": "<uuid>",
+        "sessionId": "<uuid>",
+        "turnId": "<uuid>",
+        "requested": {
+          "provider": "stuba",
+          "model": "m"
+        },
+        "effective": {
+          "provider": "stuba",
+          "model": "m",
+          "responseModel": "m"
+        },
+        "successfulToolNames": [],
+        "sourceReplyDelivered": true,
+        "rerouted": false,
+        "terminalDisposition": "visible"
+      },
+      "terminalReply": {
+        "disposition": "visible",
+        "text": "Acknowledged by stuba. Turn noted."
+      }
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:18.843Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "chat",
+        "status": 200,
+        "stream": true,
+        "bytes": 174422
+      }
+    ]
+  },
+  {
+    "turn": 6,
+    "runId": "<run>",
+    "wait": {
+      "runId": "<uuid>",
+      "status": "error",
+      "endedAt": 1794091760613,
+      "error": "⚠️ This conversation is too long, and OpenClaw couldn't shorten it. Try again, use /compact, or use /new to start a fresh session."
+    },
+    "newRequests": [
+      {
+        "ts": "2026-11-07T22:49:19.049Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:49:19.559Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      },
+      {
+        "ts": "2026-11-07T22:49:20.572Z",
+        "provider": "stuba",
+        "model": "m",
+        "kind": "summary",
+        "status": 429,
+        "stream": true,
+        "bytes": 58285
+      }
+    ]
+  }
+]

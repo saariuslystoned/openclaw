@@ -1,0 +1,5 @@
+{"ts":"2026-11-07T22:50:26.924Z","provider":"stuba","model":"m","kind":"chat","status":200,"stream":true,"bytes":92951}
+{"ts":"2026-11-07T22:50:27.180Z","provider":"stuba","model":"m","kind":"chat","status":200,"stream":true,"bytes":113345}
+{"ts":"2026-11-07T22:50:27.344Z","provider":"stuba","model":"m","kind":"summary","status":429,"stream":true,"bytes":39957}
+{"ts":"2026-11-07T22:50:27.915Z","provider":"stuba","model":"m","kind":"summary","status":429,"stream":true,"bytes":39957}
+{"ts":"2026-11-07T22:50:28.806Z","provider":"stuba","model":"m","kind":"summary","status":429,"stream":true,"bytes":39957}

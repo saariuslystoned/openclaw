@@ -1,0 +1,14 @@
+{
+  "label": "pr-head-manual-generic",
+  "checkoutHead": "30ff6a55d5b755cf4f677b9a579e684c72f7282e",
+  "contextWindow": 64000,
+  "compactionTurn": -1,
+  "stubRequests": {
+    "primaryChat": 2,
+    "primarySummary429": 3,
+    "fallbackSummary": 4,
+    "fallbackChat": 0
+  },
+  "fallbackSummaryInHistory": false,
+  "sessionsCompactionCount": null
+}

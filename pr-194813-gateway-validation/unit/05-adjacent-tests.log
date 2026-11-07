@@ -1,0 +1,202 @@
+$ node scripts/test-projects.mts src/agents/embedded-agent-runner/compact.summary-fallback.test.ts src/agents/failover-error.test.ts src/agents/embedded-agent-subscribe.handlers.compaction.test.ts src/agents/embedded-agent-runner/run.overflow-compaction.test.ts --maxWorkers=1
+[vitest-workers] local cache miss after 4654ms
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m48 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m12 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[vitest-workers] prepared 602f069d19ed in 34278ms (18856 inputs, 24039 outputs)
+[test] starting test/vitest/vitest.infra.config.ts
+
+ RUN  v5.0.5 <pr-checkout>
+
+(node:28004) [DEP_SESSION_PERSISTENCE] DeprecationWarning: Plugin SDK: SessionManager.open is deprecated; use openAsync instead. Synchronous calls retain their return values and commit before returning. Final compatibility day: 2026-12-31. Removal ships in the first January 2027 stable release; no SDK major is required.
+(Use `bun --trace-warnings ...` to show where the warning was created)
+(node:28004) [DEP_SESSION_PERSISTENCE] DeprecationWarning: Plugin SDK: SessionManager.appendMessage is deprecated; use appendMessageAsync instead. Synchronous calls retain their return values and commit before returning. Final compatibility day: 2026-12-31. Removal ships in the first January 2027 stable release; no SDK major is required.
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > trims a refused summary once with a visible notice (manual, safeguard=true) 4245ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > trims a refused summary once with a visible notice (budget, safeguard=true) 2233ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > trims a refused summary once with a visible notice (budget, safeguard=false) 2433ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > commits a deterministic reduction after a bodyless 408 summary timeout 2148ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > commits provider-timeout reduction (safeguard=false) 2052ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > commits bare-408 reduction (safeguard=true) 3424ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > uses the fallback model's runtime only for unlocked native sessions (locked=false) 2763ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > uses the fallback model's runtime only for unlocked native sessions (locked=true) 2139ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > keeps a caller Stop as a failed compaction 1925ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > keeps a non-timeout summary error as a failed compaction 1848ms
+ ✓ |infra| src/agents/embedded-agent-runner/compact.summary-fallback.test.ts > keeps a fast 500 summary error as a failed compaction 1841ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > preserves local compaction facts under default subscription floor 1605ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > preserves local compaction facts under caller-owned accounting 761ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > preserves local compaction facts under detached subscription 69ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > failed usage is preserved 3ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > aborted usage is preserved 1ms
+ ✓ |infra| src/agents/embedded-agent-subscribe.handlers.compaction.test.ts > compaction handlers > legacy ordering 2ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed (17)
+   Start at  17:52:23
+   Duration  40.21s (tests 74%, transform 17%, import 8%, setup 1%)
+
+[test] starting test/vitest/vitest.agents-core.config.ts
+
+ RUN  v5.0.5 <pr-checkout>
+
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > preserves transcript admission conflicts through error wrappers 19ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > preserves an Ollama model-retirement error instead of coercing it to a timeout 3ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > does not promote a direct preflight into a provider failure 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > finds structured CLI timeout context through aggregate wrappers 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > infers failover reason from HTTP status 6ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies certificate failures separately from timeouts 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > infers timeout from node network codes and failover-specific codes 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > infers rate-limit and overload from symbolic error codes 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies context overflow 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies invalid model 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies revoked key 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > stops on cyclic cause chains 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > lets provider-attributed billing evidence refine ambiguous HTTP 429 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > treats structured quota failures as billing instead of generic HTTP policy 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > uses structured OpenAI-compatible param detail for model-not-found 400s 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > keeps 402 wrappers aligned with status-split payloads: Monthly spend limit reached. Please visit your billing settings. 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > keeps HTTP 402 wrappers aligned with status-split payloads: Your usage limit has been reached. Please upgrade your plan. 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > treats AbortError reason=abort as timeout 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies abort-wrapped RESOURCE_EXHAUSTED as rate_limit 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > lets wrapped causes override parent context-overflow classifications 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > preserves provider text when enriching exhaustion (rawError=undefined) 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > preserves provider text when enriching exhaustion (rawError=429 raw provider detail. Retry in 221ms.) 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > preserves typed failure facts and diagnostics when adding the active auth mode 4ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > adds a recorded timeout without replacing attribution 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > coerces JSON-wrapped OpenRouter stealth-model 404s into FailoverError 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > Codex deactivated workspace marker returns auth_permanent 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > classifies OpenAI-compatible server_error payloads at the error boundary 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover-error > describes non-Error values consistently 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > normalizes local-profile HTTP status from a raw error without changing its owner 3ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > normalizes local-profile HTTP status from a serialized error without changing its owner 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > retains a genuine provider HTTP 401 and its recovery hint 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > keeps supplemental process diagnostics out of failure policy 7ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > findLocalWorkerTaskFailure > ignores local worker code failed 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > findLocalWorkerTaskFailure > ignores local worker code unavailable 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > findLocalWorkerTaskFailure > defers to an HTTP fact anywhere in the graph 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > findLocalWorkerTaskFailure > ignores provider timeouts and untyped values 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > does not suppress provider failover for non-timeout worker failures 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > local worker task timeout attribution > keeps local deadlines out of provider classification through wrappers 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > local worker task timeout attribution > keeps provider attribution when an HTTP timeout fact is present 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > local worker task overloaded attribution > keeps local deadlines out of provider classification through wrappers 1ms
+stderr | unknown test
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] src/agents/failover-error.test.ts: retiring openclaw.pluginStateNamespaceOwner
+
+ ✓ |agents-core| src/agents/failover-error.test.ts > failover diagnostic isolation > local worker task overloaded attribution > keeps provider attribution when an HTTP timeout fact is present 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > buildFailoverRemediationHint > routes Gemini CLI auth failures to supported recovery paths 4ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > buildFailoverRemediationHint > quotes provider ids that contain shell metacharacters 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > buildFailoverRemediationHint > refuses control characters in rendered provider commands 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > buildFailoverRemediationHint > returns undefined for non-auth reasons 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > buildFailoverRemediationHint > returns undefined when provider is not attributed 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > keeps native PostgreSQL cancellation out of provider fallback after actor projection 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > returns true for stale gateway lifecycle ownership loss 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > does not read a SQLite worker code as a provider overload 1ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > treats superseded prepared runtime publication as coordination (#156975) 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > returns true for Codex missing tool-result local execution failures 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > isNonProviderRuntimeCoordinationError > returns false for plain timeouts and provider errors 2ms
+ ✓ |agents-core| src/agents/failover-error.test.ts > does not treat an AbortError matching transport timeout wording as a signal timeout 1ms
+
+ Test Files  1 passed (1)
+      Tests  53 passed (53)
+   Start at  17:53:04
+   Duration  9.84s (transform 80%, import 12%, worker 5%, tests 1%, setup 1%)
+
+[test] starting test/vitest/vitest.agents-embedded-agent-overflow-compaction.config.ts
+
+ RUN  v5.0.5 <pr-checkout>
+
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > carries locked model, auth, fallback, cache, and overflow facts into compaction 17ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > lets delegated native timeout recovery use its progress-aware watchdog 5ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > does not trust the active run fallback during recovery compaction 174ms
+stderr | unknown test
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] src/agents/embedded-agent-runner/run.overflow-compaction.test.ts: retiring openclaw.sessionGroupCatalog
+
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > keeps committed context chronology when the backend is failed 3ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > keeps committed context chronology when the backend is cancelled 2ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > compactEmbeddedRunForRecovery > keeps committed context chronology when the backend is failed-result 2ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > createEmbeddedRunCompactionRuntime > adopts a partial successor target and fires hooks against the rotated transcript 12ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > createEmbeddedRunCompactionRuntime > retires MCP predecessors when an in-memory compaction rotates identity 40ms
+ ✓ |agents-embedded-agent-overflow-compaction| src/agents/embedded-agent-runner/run.overflow-compaction.test.ts > createEmbeddedRunCompactionRuntime > forwards non-empty compaction hook messages as agent events 2ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  17:53:14
+   Duration  15.82s (transform 82%, import 13%, worker 3%, tests 2%, setup 1%)
+
+[vitest-workers] verifying completed generation before cleanup
+[vitest-workers] retained completed compiler outputs for reuse
+[test] passed 3 Vitest shards in 106.56s
+exit=0

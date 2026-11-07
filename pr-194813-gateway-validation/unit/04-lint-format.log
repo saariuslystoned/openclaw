@@ -1,0 +1,10 @@
+$ node scripts/run-oxlint.mjs src/agents/embedded-agent-runner/compact-reasons.ts src/agents/embedded-agent-runner/direct-compaction-preparation.ts src/agents/embedded-agent-runner/compact.hooks.safeguard.test-support.ts
+[plugin-sdk boundary dts] emitted 14196 files
+No files found to lint. Please check your paths and ignore patterns.
+[oxlint] FAILED (exit 1)
+exit=1
+$ node scripts/run-format.mts --check src/agents/embedded-agent-runner/compact-reasons.ts src/agents/embedded-agent-runner/direct-compaction-preparation.ts src/agents/embedded-agent-runner/compact.hooks.safeguard.test-support.ts
+Checking formatting...
+
+error: Expected at least one target file. All matched files may have been excluded by ignore rules.
+exit=2

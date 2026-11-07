@@ -1,0 +1,75 @@
+{
+  "transcriptEvents": 14,
+  "compactions": [],
+  "timeline": [
+    {
+      "seq": 0,
+      "type": "session"
+    },
+    {
+      "seq": 1,
+      "type": "message",
+      "role": "user"
+    },
+    {
+      "seq": 2,
+      "type": "thinking_level_change"
+    },
+    {
+      "seq": 3,
+      "type": "custom",
+      "customType": "model-snapshot",
+      "provider": "stuba"
+    },
+    {
+      "seq": 4,
+      "type": "custom_message",
+      "customType": "openclaw.runtime-context"
+    },
+    {
+      "seq": 5,
+      "type": "custom",
+      "customType": "openclaw.system-prompt"
+    },
+    {
+      "seq": 6,
+      "type": "message",
+      "role": "assistant"
+    },
+    {
+      "seq": 7,
+      "type": "custom",
+      "customType": "openclaw:bootstrap-context:full"
+    },
+    {
+      "seq": 8,
+      "type": "message",
+      "role": "user"
+    },
+    {
+      "seq": 9,
+      "type": "custom_message",
+      "customType": "openclaw.runtime-context"
+    },
+    {
+      "seq": 10,
+      "type": "message",
+      "role": "assistant"
+    },
+    {
+      "seq": 11,
+      "type": "custom",
+      "customType": "openclaw:bootstrap-context:full"
+    },
+    {
+      "seq": 12,
+      "type": "message",
+      "role": "user"
+    },
+    {
+      "seq": 13,
+      "type": "message",
+      "role": "assistant"
+    }
+  ]
+}
