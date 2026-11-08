@@ -56,7 +56,11 @@ function resolveBundleMcpConfigPaths(params: {
   if (params.bundleFormat === "agent") {
     return pluginCacheExistsSync(path.join(params.rootDir, "mcp.json")) ? ["mcp.json"] : [];
   }
-  return resolveBundleComponentPaths(params.raw.mcpServers, params.rootDir, [".mcp.json"]);
+  return resolveBundleComponentPaths(
+    params.raw.mcpServers,
+    params.rootDir,
+    params.bundleFormat === "cursor" ? ["mcp.json", ".mcp.json"] : [".mcp.json"],
+  );
 }
 
 export function extractMcpServerMap(raw: unknown): Record<string, BundleMcpServerConfig> {

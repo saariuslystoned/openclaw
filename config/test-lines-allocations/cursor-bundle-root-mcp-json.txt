@@ -1,0 +1,2 @@
+# Cursor bundles: root mcp.json without a manifest mcpServers entry.
+41

@@ -3,6 +3,7 @@ import path from "node:path";
 import { afterEach, assert, describe, expect, it as baseIt } from "vitest";
 import type { OpenClawConfig } from "../config/config.js";
 import { loadEnabledBundleLspConfig } from "./bundle-lsp.js";
+import { loadBundleManifest } from "./bundle-manifest.js";
 import { inspectBundleMcpRuntimeSupport, loadEnabledBundleMcpConfig } from "./bundle-mcp.js";
 import {
   createEnabledPluginEntries,
@@ -65,6 +66,18 @@ function writeClaude(homeDir: string, pluginId: string, manifest: Record<string,
     pluginId,
     manifest: { name: pluginId, ...manifest },
   });
+}
+
+async function writeCursorBundle(
+  homeDir: string,
+  pluginId: string,
+  manifest: Record<string, unknown>,
+) {
+  const pluginRoot = resolveBundlePluginRoot(homeDir, pluginId);
+  await writeBundleTextFiles(pluginRoot, {
+    ".cursor-plugin/plugin.json": JSON.stringify({ name: pluginId, ...manifest }),
+  });
+  return pluginRoot;
 }
 
 const AGENT_PLUGIN_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json";
@@ -137,6 +150,34 @@ describe("loadEnabledBundleMcpConfig", () => {
       remote: { transport: "streamable-http", url: "https://example.test/mcp" },
       events: { transport: "sse", url: "https://example.test/sse" },
     });
+  });
+
+  it("loads root mcp.json from a published-layout Cursor bundle without a manifest declaration", async ({
+    homeDir,
+    workspaceDir,
+  }) => {
+    const pluginRoot = await writeCursorBundle(homeDir, "cursor-cloudflare", {});
+    await writeBundleTextFiles(pluginRoot, {
+      "mcp.json": JSON.stringify({
+        mcpServers: {
+          cloudflare: stdio({ args: ["./server.mjs"] }),
+        },
+      }),
+      "server.mjs": "export {};\n",
+    });
+
+    const loaded = loadEnabled(workspaceDir, "cursor-cloudflare");
+
+    expectNoDiagnostics(loaded.diagnostics);
+    expect(loaded.config.mcpServers.cloudflare).toEqual({
+      transport: "stdio",
+      command: "node",
+      args: [path.join(pluginRoot, "server.mjs")],
+      cwd: pluginRoot,
+    });
+    const manifest = loadBundleManifest({ rootDir: pluginRoot, bundleFormat: "cursor" });
+    assert(manifest.ok);
+    expect(manifest.manifest.capabilities).toContain("mcpServers");
   });
 
   it("normalizes Claude transports and paths while skipping disabled bundles", async ({

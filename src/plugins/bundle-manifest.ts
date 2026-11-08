@@ -169,14 +169,14 @@ function resolveCursorComponents(
     ...(commands.length > 0 ? ["commands"] : []),
     ...(agents.length > 0 ? ["agents"] : []),
   ];
-  for (const [capability, defaultPath] of [
-    ["hooks", ".cursor/hooks.json"],
-    ["rules", ".cursor/rules"],
-    ["mcpServers", ".mcp.json"],
+  for (const [capability, defaultPaths] of [
+    ["hooks", [".cursor/hooks.json"]],
+    ["rules", [".cursor/rules"]],
+    ["mcpServers", ["mcp.json", ".mcp.json"]],
   ] as const) {
     if (
       hasInlineCapabilityValue(raw[capability]) ||
-      pluginCacheExistsSync(path.join(rootDir, defaultPath))
+      defaultPaths.some((defaultPath) => pluginCacheExistsSync(path.join(rootDir, defaultPath)))
     ) {
       capabilities.push(capability);
     }
