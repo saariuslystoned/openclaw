@@ -14,6 +14,7 @@ import {
   getAgentRunContext,
   retainQueuedAgentRunContext,
 } from "../../../infra/agent-run-registry.js";
+import { observeDiagnosticsTimelinePhases } from "../../../infra/diagnostics-timeline.js";
 import { isBackgroundWorkLane } from "../../../process/background-work.js";
 import {
   CommandLaneTaskTimeoutError,
@@ -321,6 +322,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
     task: () => Promise<EmbeddedAgentRunResult>,
     opts?: CommandQueueEnqueueOptions,
   ) => {
+    using phases = observeDiagnosticsTimelinePhases("agent.runner.global-admission");
     let capacityHeld = false;
     // Global-lane admission is healthy waiting, not run execution. Keep reply
     // staleness and stuck recovery fenced until this queue grants capacity.
@@ -379,6 +381,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
       }
       // Queue waits can outlive durable harness and placement bindings.
       // Recheck and claim only after lifecycle admission, before context or hooks execute.
+      phases.mark("agent.runner.writer");
       const writerClaim = await claimAgentSessionWriter(params);
       if (writerClaim) {
         params = {
@@ -392,6 +395,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
         options.setParams(params);
         options.onSessionWriterClaimed?.(writerClaim.entry);
       }
+      phases.mark("agent.runner.turn-admission");
       const laneExecution = withAgentRunLifecycleGeneration(lifecycleGeneration, () =>
         withSessionPlacementTurnAdmission(
           {
@@ -402,6 +406,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
           },
           params,
           (signal) => {
+            phases[Symbol.dispose]();
             params = { ...params, abortSignal: signal };
             options.setParams(params);
             assertPlacementCurrent = resolveSessionPlacementTurnSettlementAssertion();
@@ -534,6 +539,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
     operation?.markWaitingForDeferredMaintenance();
     let releaseForeground: (() => void) | undefined;
     try {
+      using _ = observeDiagnosticsTimelinePhases("agent.runner.foreground-maintenance");
       releaseForeground =
         sessionLanePolicy.priority === "foreground"
           ? await beginForegroundSessionMaintenance(
@@ -619,6 +625,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
   };
 
   const enqueueSession = async <T>(task: () => Promise<T>, opts?: CommandQueueEnqueueOptions) => {
+    using phases = observeDiagnosticsTimelinePhases("agent.runner.session-admission");
     const params = options.getParams();
     // Retain queued context before mailbox admission, not only after a lane starts.
     releaseQueuedRunContext = retainQueuedAgentRunContext(
@@ -645,6 +652,7 @@ export function createEmbeddedRunLaneController<TParams extends LaneParams>(opti
           abortSignal,
         },
         async (operation, turnSignal) => {
+          phases[Symbol.dispose]();
           options.setParams({
             ...options.getParams(),
             replyOperation: operation,

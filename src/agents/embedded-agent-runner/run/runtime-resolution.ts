@@ -4,10 +4,12 @@ import {
 } from "@openclaw/normalization-core/string-coerce";
 import type { ThinkLevel } from "../../../auto-reply/thinking.js";
 import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import { loadPluginMetadataSnapshot } from "../../../plugins/plugin-metadata-snapshot.js";
 import type { PluginMetadataSnapshot } from "../../../plugins/plugin-metadata-snapshot.types.js";
 import { resolveRunModelFallbacksOverride } from "../../agent-scope.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../../defaults.js";
 import type { AgentHarnessPluginSelection } from "../../harness/runtime-plugin-load-plan.js";
+import { resolveLegacyInheritedAuthDir } from "../../legacy-inherited-auth-dir.js";
 import { resolveModelCandidateChain } from "../../model-fallback-candidates.js";
 import {
   buildModelAliasIndex,
@@ -181,5 +183,48 @@ export function resolveInitialEmbeddedRunModel(params: {
   return {
     provider: explicitProvider ?? defaultProvider,
     modelId: configuredDefault.model || DEFAULT_MODEL,
+  };
+}
+
+/** Resolve the same static preparation facts before acquiring a runtime lease. */
+export function resolveEmbeddedRunRuntimeInput(
+  params: RunEmbeddedAgentParamsWithSessionFile,
+  config: OpenClawConfig,
+  agentId: string,
+  agentDir: string,
+  runtimeWorkspace: { workspaceDir: string; isCanonicalWorkspace: boolean },
+): PreparedModelRuntimeInput {
+  const requestedRuntimeSelection = resolveInitialEmbeddedRunModel({
+    config,
+    agentId,
+    provider: params.provider,
+    model: params.model,
+  });
+  const pluginMetadataSnapshot =
+    params.pluginGeneration?.pluginMetadataSnapshot ??
+    loadPluginMetadataSnapshot({
+      config,
+      workspaceDir: runtimeWorkspace.workspaceDir,
+      env: process.env,
+    });
+  const runtimePluginSelections = resolveEmbeddedRuntimePluginSelections({
+    run: params,
+    config,
+    agentId,
+    manifestPlugins: pluginMetadataSnapshot,
+    requestedModel: requestedRuntimeSelection,
+  });
+  return {
+    config,
+    agentId,
+    agentDir,
+    // Shared credential inheritance stays anchored to its compatibility owner;
+    // the selected session agent already owns this prepared runtime.
+    inheritedAuthDir: resolveLegacyInheritedAuthDir(config),
+    workspaceDir: runtimeWorkspace.workspaceDir,
+    preserveWorkspaceDirOnRefresh: !runtimeWorkspace.isCanonicalWorkspace,
+    ...(params.allowGatewaySubagentBinding ? { allowGatewaySubagentBinding: true } : {}),
+    ...resolveEmbeddedRuntimePluginPreparation(params),
+    runtimePluginSelections,
   };
 }

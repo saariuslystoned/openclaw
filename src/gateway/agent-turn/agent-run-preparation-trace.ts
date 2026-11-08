@@ -24,6 +24,24 @@ type PreparationStage =
   | "entry_fallback"
   | "candidate_setup"
   | "candidate_attempt"
+  | "candidate_auth_profile"
+  | "candidate_accounting"
+  | "runner_session_prepare"
+  | "runner_placement"
+  | "runner_maintenance"
+  | "runner_projection"
+  | "runner_cli_dispatch"
+  | "runner_generation"
+  | "runner_runtime_acquire"
+  | "runner_projects"
+  | "runner_execution_start"
+  | "runner_before_reply"
+  | "runner_loop"
+  | "runner_global_admission"
+  | "runner_writer"
+  | "runner_turn_admission"
+  | "runner_foreground_maintenance"
+  | "runner_session_admission"
   | "harness_selected"
   | "harness_invoked"
   | "dispatch_settlement"
@@ -68,6 +86,24 @@ const phases = new Map<string, PreparationStage>([
   ["agent.entry.fallback", "entry_fallback"],
   ["agent.candidate.setup", "candidate_setup"],
   ["agent.candidate.attempt", "candidate_attempt"],
+  ["agent.candidate.auth-profile", "candidate_auth_profile"],
+  ["agent.candidate.accounting", "candidate_accounting"],
+  ["agent.runner.session-prepare", "runner_session_prepare"],
+  ["agent.runner.placement", "runner_placement"],
+  ["agent.runner.maintenance", "runner_maintenance"],
+  ["agent.runner.projection", "runner_projection"],
+  ["agent.runner.cli-dispatch", "runner_cli_dispatch"],
+  ["agent.runner.generation", "runner_generation"],
+  ["agent.runner.runtime-acquire", "runner_runtime_acquire"],
+  ["agent.runner.projects", "runner_projects"],
+  ["agent.runner.execution-start", "runner_execution_start"],
+  ["agent.runner.before-reply", "runner_before_reply"],
+  ["agent.runner.loop", "runner_loop"],
+  ["agent.runner.global-admission", "runner_global_admission"],
+  ["agent.runner.writer", "runner_writer"],
+  ["agent.runner.turn-admission", "runner_turn_admission"],
+  ["agent.runner.foreground-maintenance", "runner_foreground_maintenance"],
+  ["agent.runner.session-admission", "runner_session_admission"],
   ["agent.dispatch.settlement", "dispatch_settlement"],
 ]);
 const startupStages = new Map<string, PreparationStage>([

@@ -11,6 +11,7 @@ import {
   captureAgentRunLifecycleGeneration,
   withAgentRunLifecycleGeneration,
 } from "../../infra/agent-events.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import { captureExecRequestOwners, withExecRequestTurn } from "../../infra/exec-request-context.js";
 import {
   buildHandledBeforeAgentReplyPayloads,
@@ -21,7 +22,6 @@ import {
   buildAgentHookContextIdentityFields,
 } from "../../plugins/hook-agent-context.js";
 import { getGlobalHookRunner } from "../../plugins/hook-runner-global.js";
-import { loadPluginMetadataSnapshot } from "../../plugins/plugin-metadata-snapshot.js";
 import { withPluginRetentionOwner } from "../../plugins/plugin-retention-diagnostics.js";
 import {
   runOutsidePluginRuntimeGenerationScope,
@@ -43,7 +43,6 @@ import {
   runBestEffortCallback,
   serializeAgentEventCallback,
 } from "../embedded-agent-subscribe.callback.js";
-import { resolveLegacyInheritedAuthDir } from "../legacy-inherited-auth-dir.js";
 import { resolveModelFallbackAvailability } from "../model-selection-config.js";
 import {
   getPreparedModelRuntimePluginGeneration,
@@ -91,8 +90,7 @@ import {
 import { createEmbeddedRunProgressController } from "./run/progress-controller.js";
 import { createRecoveryMessageActionTurnCapability } from "./run/recovery-message-action-capability.js";
 import {
-  resolveEmbeddedRuntimePluginPreparation,
-  resolveEmbeddedRuntimePluginSelections,
+  resolveEmbeddedRunRuntimeInput,
   resolveInitialEmbeddedRunModel,
 } from "./run/runtime-resolution.js";
 import { prepareEmbeddedRunSession } from "./run/session-bootstrap.js";
@@ -124,12 +122,14 @@ export function runEmbeddedAgent(
     },
     () =>
       withAgentRunLifecycleGeneration(lifecycleGeneration, async () => {
+        using phases = observeDiagnosticsTimelinePhases("agent.runner.session-prepare");
         const prepared = await prepareEmbeddedRunSession({
           ...internalParamsInput,
           config,
           lifecycleGeneration,
           ...(pluginGeneration ? { pluginGeneration } : {}),
         });
+        phases.mark("agent.runner.placement");
         return await withRequiredSessionPlacement(
           prepared.runSessionTarget,
           {
@@ -137,7 +137,10 @@ export function runEmbeddedAgent(
             assertCurrent: prepared.params.preparedRunAdmission?.assertSourceCurrent,
             signal: prepared.params.abortSignal,
           },
-          () => runEmbeddedAgentForSession(prepared),
+          () => {
+            phases[Symbol.dispose]();
+            return runEmbeddedAgentForSession(prepared);
+          },
         );
       }),
   );
@@ -218,9 +221,11 @@ async function runEmbeddedAgentForSession(
     if (!params.sessionManager || params.sessionManager.getSessionTarget()) {
       params.replyOperation?.markWaitingForDeferredMaintenance();
       try {
+        using phases = observeDiagnosticsTimelinePhases("agent.runner.maintenance");
         await waitForSessionMaintenance(params.sessionKey);
         // Maintenance can finish while its transcript projection is still rebuilding.
         // Settle that projection before the next attempt reads the bounded history.
+        phases.mark("agent.runner.projection");
         await waitForSessionTranscriptProjection(runSessionTarget, laneController.abortSignal);
       } finally {
         params.replyOperation?.markDeferredMaintenanceWaitEnded();
@@ -247,6 +252,7 @@ async function runEmbeddedAgentForSession(
         // Subscription-scoped claude-cli auth executes via the CLI backend;
         // resolved post-admission so dispatched runs obey the same lifecycle,
         // placement, and concurrency gates as native embedded runs.
+        using phases = observeDiagnosticsTimelinePhases("agent.runner.cli-dispatch");
         const cliDispatched = await runEmbeddedAgentViaCliBackendIfEligible({
           ...params,
           // Preserve the admitted writer claim alongside the already resolved storage identity.
@@ -256,6 +262,7 @@ async function runEmbeddedAgentForSession(
           return cliDispatched;
         }
         const preReplyTarget = { ...runSessionTarget, ...params.sessionTarget };
+        phases.mark("agent.runner.generation");
         const preReplyGeneration = await prepareCronRootSessionGeneration(
           {
             ...preReplyTarget,
@@ -270,6 +277,7 @@ async function runEmbeddedAgentForSession(
           laneController.assertCurrent();
           preReplyGeneration?.assertCurrent();
         };
+        phases[Symbol.dispose]();
         const startupStages = createStageTimingTracker(Date.now);
         const {
           requestedWorkspaceResolution,
@@ -281,39 +289,13 @@ async function runEmbeddedAgentForSession(
         const requestedAgentDir =
           params.agentDir ?? resolveAgentDir(config, requestedWorkspaceResolution.agentId);
         const retainIdleRunOwner = params.config === undefined;
-        const requestedRuntimeSelection = resolveInitialEmbeddedRunModel({
+        const preparedInput = resolveEmbeddedRunRuntimeInput(
+          params,
           config,
-          agentId: requestedWorkspaceResolution.agentId,
-          provider: params.provider,
-          model: params.model,
-        });
-        const pluginMetadataSnapshot =
-          params.pluginGeneration?.pluginMetadataSnapshot ??
-          loadPluginMetadataSnapshot({
-            config,
-            workspaceDir: runtimeWorkspaceResolution.workspaceDir,
-            env: process.env,
-          });
-        const runtimePluginSelections = resolveEmbeddedRuntimePluginSelections({
-          run: params,
-          config,
-          agentId: requestedWorkspaceResolution.agentId,
-          manifestPlugins: pluginMetadataSnapshot,
-          requestedModel: requestedRuntimeSelection,
-        });
-        const preparedInput = {
-          config,
-          agentId: requestedWorkspaceResolution.agentId,
-          agentDir: requestedAgentDir,
-          // Shared credential inheritance stays anchored to its compatibility owner;
-          // the selected session agent already owns this prepared runtime.
-          inheritedAuthDir: resolveLegacyInheritedAuthDir(config),
-          workspaceDir: runtimeWorkspaceResolution.workspaceDir,
-          preserveWorkspaceDirOnRefresh: !runtimeWorkspaceResolution.isCanonicalWorkspace,
-          ...(params.allowGatewaySubagentBinding ? { allowGatewaySubagentBinding: true } : {}),
-          ...resolveEmbeddedRuntimePluginPreparation(params),
-          runtimePluginSelections,
-        };
+          requestedWorkspaceResolution.agentId,
+          requestedAgentDir,
+          runtimeWorkspaceResolution,
+        );
         startupStages.mark("harness-selection");
         const callerResult = createDeferredCore<EmbeddedAgentRunResult>();
         const generationCleanupSettlement = createDeferredCore();
@@ -327,6 +309,7 @@ async function runEmbeddedAgentForSession(
         let initialWriterResource: AsyncDisposable | undefined;
         let initialWriterCleanup = Promise.resolve();
         const runPreparedCandidate = async () => {
+          using runtimePhases = observeDiagnosticsTimelinePhases("agent.runner.runtime-acquire");
           // Configless direct hosts reuse one idle generation. The prepared-runtime lifecycle keeps
           // gateway run generations in its own bounded cache so one-off paths cannot accumulate.
           // Runtime acquisition owns its build bound before the attempt budget starts.
@@ -388,6 +371,7 @@ async function runEmbeddedAgentForSession(
             });
             params = rebound.runParams;
             const workspaceResolution = rebound.workspaceResolution;
+            runtimePhases.mark("agent.runner.projects");
             const projects = await prepareAgentPromptProjects({
               config: params.config,
               workspaceDir: workspaceResolution.workspaceDir,
@@ -417,6 +401,7 @@ async function runEmbeddedAgentForSession(
                 sessionId: params.sessionId,
                 tracker: startupStages,
               });
+              runtimePhases.mark("agent.runner.execution-start");
               await params.onExecutionStarted?.({ lifecycleGeneration });
               preReplyAssertCurrent();
               notifyExecutionPhase("runner_entered");
@@ -477,6 +462,7 @@ async function runEmbeddedAgentForSession(
                 ...buildAgentHookContextChannelFields(params),
                 ...buildAgentHookContextIdentityFields(params),
               };
+              runtimePhases.mark("agent.runner.before-reply");
               const hookResult = await runBeforeAgentReplyForTurn({
                 awaitSessionDiffBaseline: params.awaitSessionDiffBaseline,
                 assertCurrent: preReplyAssertCurrent,
@@ -523,6 +509,7 @@ async function runEmbeddedAgentForSession(
                         }),
                     });
               const runTerminal = terminal;
+              runtimePhases.mark("agent.runner.loop");
               return await runPreparedEmbeddedLoop(refresh, {
                 preReplyGeneration,
                 onInitialWriterPrepared: (resource) => {
@@ -589,6 +576,7 @@ async function runEmbeddedAgentForSession(
                 )
               : await runWithPreparedRuntime();
           } finally {
+            runtimePhases[Symbol.dispose]();
             const initialWriter = initialWriterResource;
             if (initialWriter) {
               initialWriterCleanup = context(() =>

@@ -2,6 +2,7 @@ import { resolveMergedModelProviderConfig } from "../../config/model-provider-co
 import { resolveCollapsedSessionAuthPinSource } from "../../config/sessions/auth-profile-override-provenance.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import type { PluginMetadataSnapshot } from "../../plugins/plugin-metadata-snapshot.types.js";
 import { resolveAuthProfileOrder } from "../auth-profiles/order.js";
 import { ensureAuthProfileStoreAsync } from "../auth-profiles/store-runtime.js";
@@ -64,6 +65,7 @@ export async function resolveHarnessAuthProfileSelection(params: {
   providerAuthAliasesEnabled?: boolean;
   allowHarnessAuthProfileForwarding: boolean;
 }): Promise<HarnessAuthProfileSelection> {
+  using _ = observeDiagnosticsTimelinePhases("agent.candidate.auth-profile");
   const sessionAuthProfileId = params.sessionAuthProfileId?.trim();
   // A command-owned provider must not acquire the Codex harness’s default OpenAI account.
   // Explicit pins still reach auth preparation, which rejects mixed credential ownership.

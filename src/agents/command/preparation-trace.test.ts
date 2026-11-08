@@ -3,6 +3,7 @@ import path from "node:path";
 import { expectDefined } from "@openclaw/normalization-core/expect";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { awaitGateBeforeSettlement, createDeferred } from "../../../test/helpers/promise.js";
+import * as sessionUpdates from "../../auto-reply/reply/session-updates.js";
 import {
   setRuntimeConfigSnapshot,
   clearRuntimeConfigSnapshot,
@@ -20,6 +21,7 @@ import {
   registerAgentCommandCompactionTestHooks,
   requireCompactionStorePath,
 } from "../agent-command.compaction.test-support.js";
+import * as authStore from "../auth-profiles/store-runtime.js";
 import * as entryModel from "../embedded-agent-runner/run-entry-model-selection.js";
 import * as contextEngine from "../harness/context-engine-logical-turn.js";
 import * as placement from "../session-placement-admission.js";
@@ -57,6 +59,8 @@ it.each([
   "entry_context_engine",
   "entry_worker_inference",
   "candidate_setup",
+  "candidate_auth_profile",
+  "candidate_accounting",
 ] as const)("keeps the actual %s boundary active through dispatch cancellation", async (stage) => {
   failures.length = 0;
   const withSessionTurnOriginal = admission.withSessionTurn;
@@ -95,6 +99,45 @@ it.each([
     throw new Error("synthetic cancelled runtime");
   };
   state.runAgentAttemptMock.mockImplementationOnce(stall);
+  if (stage === "candidate_auth_profile") {
+    const actual =
+      await vi.importActual<typeof import("./attempt-execution.js")>("./attempt-execution.js");
+    // The real command and auth-selection owner execute; only the store read is held.
+    state.runAgentAttemptMock.mockReset().mockImplementation(actual.runAgentAttempt);
+    await runtime.patchSessionEntryCore(target, () => ({
+      authProfileOverride: "synthetic-profile",
+      authProfileOverrideSource: "user",
+    }));
+  }
+  const accountingSpy =
+    stage === "candidate_accounting"
+      ? vi.spyOn(sessionUpdates, "incrementCompactionCount").mockImplementationOnce(stall)
+      : undefined;
+  if (stage === "candidate_accounting") {
+    state.runAgentAttemptMock.mockReset().mockImplementation(async (params) => {
+      params.onCompactionAccounting?.({
+        kind: "durable",
+        count: 1,
+        target: {
+          ...target,
+          lifecycleRevision: params.sessionEntry?.lifecycleRevision,
+          activeWriterRunId: params.runId,
+        },
+      });
+      throw new Error("synthetic candidate failure");
+    });
+  }
+  const ensureAuthStore = authStore.ensureAuthProfileStoreAsync;
+  const authStoreSpy =
+    stage === "candidate_auth_profile"
+      ? vi
+          .spyOn(authStore, "ensureAuthProfileStoreAsync")
+          .mockImplementation((...args) =>
+            Array.from(args[1]?.externalCliProfileIds ?? []).includes("synthetic-profile")
+              ? stall()
+              : ensureAuthStore(...args),
+          )
+      : undefined;
   const boundarySpy =
     stage === "embedded_trajectory"
       ? vi.spyOn(trajectory, "createTrajectoryRuntimeRecorder")
@@ -158,6 +201,8 @@ it.each([
     await Promise.all([completion, owner]);
     innerAdmission.mockRestore();
     boundarySpy?.mockRestore();
+    accountingSpy?.mockRestore();
+    authStoreSpy?.mockRestore();
   }
   expect(emitFinal.mock.calls[0]?.[0]?.[1]).toMatchObject({
     preparationTrace: {
@@ -166,15 +211,24 @@ it.each([
       },
     },
   });
-  if (stage !== "embedded") {
+  if (
+    stage !== "embedded" &&
+    stage !== "candidate_auth_profile" &&
+    stage !== "candidate_accounting"
+  ) {
     expect(state.runAgentAttemptMock).not.toHaveBeenCalled();
-  } else {
+  } else if (stage === "embedded") {
     expect(state.runAgentAttemptMock).toHaveBeenCalledOnce();
     expect(emitFinal.mock.calls[0]?.[0]?.[1]?.preparationTrace.abortSnapshot.active).toEqual(
       expect.arrayContaining([
         { stage: "candidate_attempt", elapsedMs: expect.any(Number) },
         { stage: "entry_fallback", elapsedMs: expect.any(Number) },
       ]),
+    );
+  }
+  if (stage === "candidate_accounting") {
+    expect(trace.finish(true).abortSnapshot?.active.map((point) => point.stage)).not.toContain(
+      "candidate_attempt",
     );
   }
   const finalSnapshot = JSON.stringify(trace.finish(true));

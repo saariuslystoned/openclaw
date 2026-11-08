@@ -545,6 +545,7 @@ export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptPar
               model: modelOverride,
             });
           } finally {
+            candidatePhases.mark("agent.candidate.accounting");
             await candidateAccounting.finish(sessionEntry);
           }
         },
