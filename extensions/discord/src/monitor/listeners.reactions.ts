@@ -3,6 +3,7 @@ import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
 import { danger, logVerbose, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { enqueueRoutedSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+import { mergeDiscordAccountConfig } from "../accounts.js";
 import {
   ChannelType,
   type Client,
@@ -11,6 +12,7 @@ import {
   type User,
 } from "../internal/discord.js";
 import type { DiscordReactionIngressEvent } from "../internal/listeners.js";
+import { withDiscordRequestAuthority } from "../internal/request-authority.js";
 import {
   hasConfiguredDiscordChannels,
   isDiscordGroupAllowedByPolicy,
@@ -133,10 +135,25 @@ export async function runDiscordReactionHandler(params: {
   };
   try {
     const { data, client, action, botUserId, guildEntries } = eventParams;
+    const accountConfig = mergeDiscordAccountConfig(eventParams.cfg, eventParams.accountId);
+    const conversationsEnabled =
+      accountConfig.capabilities?.includes("reaction-conversations") === true;
+    if (accountConfig.enabled === false) {
+      return;
+    }
     if (!("user" in data)) {
       return;
     }
-    const user = data.user;
+    const assertAuthority = () => {
+      if (eventParams.isPolicyCurrent?.() === false) {
+        throw new Error("Discord reaction authorization changed before effect");
+      }
+    };
+    const eventUser = data.user;
+    const user =
+      conversationsEnabled && eventUser && eventUser.id !== botUserId && !eventUser.username
+        ? await withDiscordRequestAuthority(assertAuthority, () => client.fetchUser(eventUser.id))
+        : eventUser;
     if (!user || user.bot) {
       return;
     }
@@ -155,7 +172,15 @@ export async function runDiscordReactionHandler(params: {
     if (isGuildMessage && guildEntries && Object.keys(guildEntries).length > 0 && !guildInfo) {
       return;
     }
-    const memberRoleIds = Array.isArray(data.rawMember?.roles) ? data.rawMember.roles.slice() : [];
+    const memberRoleIds = Array.isArray(data.rawMember?.roles)
+      ? data.rawMember.roles.slice()
+      : conversationsEnabled && data.guild_id
+        ? (
+            await withDiscordRequestAuthority(assertAuthority, () =>
+              client.fetchMember(data.guild_id!, user.id),
+            )
+          ).roles
+        : [];
     const reactionMode = guildInfo?.reactionNotifications ?? "own";
     const shouldSkipGuildReactionBeforeChannelFetch = () => {
       if (reactionMode === "off" || eventParams.groupPolicy === "disabled") {
@@ -346,7 +371,7 @@ export async function runDiscordReactionHandler(params: {
     const authorLabel = message?.author ? formatDiscordUserTag(message.author) : undefined;
     const text = authorLabel ? `${baseText} from ${authorLabel}` : baseText;
     const contextKey = `discord:reaction:${action}:${data.message_id}:${user.id}:${emojiLabel}${data.burst ? ":burst" : ""}`;
-    if (params.dispatchConversation && params.occurrenceId) {
+    if (params.dispatchConversation && params.occurrenceId && conversationsEnabled) {
       const { resolveDiscordPreflightRoute } =
         await import("./message-handler.routing-preflight.js");
       const { effectiveRoute, boundSessionKey } = await resolveDiscordPreflightRoute({
@@ -368,11 +393,6 @@ export async function runDiscordReactionHandler(params: {
       // Fetch original content only after ingress authorization. A missing/deleted
       // target retains its exact identity, never a fabricated body.
       message ??= await data.message.fetch().catch(() => null);
-      const assertAuthority = () => {
-        if (eventParams.isPolicyCurrent?.() === false) {
-          throw new Error("Discord reaction authorization changed before dispatch");
-        }
-      };
       assertAuthority();
       await params.dispatchConversation({
         cfg: eventParams.cfg,

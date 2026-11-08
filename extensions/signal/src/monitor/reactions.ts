@@ -5,6 +5,18 @@ import { normalizeE164 } from "openclaw/plugin-sdk/text-utility-runtime";
 import { isSignalSenderAllowed, type SignalSender } from "../identity.js";
 import type { SignalReactionMessage } from "./event-handler.types.js";
 
+export function buildSignalReactionSystemEventText(params: {
+  emojiLabel: string;
+  actorLabel: string;
+  messageId: string;
+  targetLabel?: string;
+  groupLabel?: string;
+}) {
+  const base = `Signal reaction added: ${params.emojiLabel} by ${params.actorLabel} msg ${params.messageId}`;
+  const withTarget = params.targetLabel ? `${base} from ${params.targetLabel}` : base;
+  return params.groupLabel ? `${withTarget} in ${params.groupLabel}` : withTarget;
+}
+
 type SignalReactionTarget = {
   kind: "phone" | "uuid";
   id: string;

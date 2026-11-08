@@ -3,6 +3,7 @@ import {
   dispatchChannelInboundTurn,
 } from "openclaw/plugin-sdk/channel-inbound";
 import { bindIngressLifecycleToReplyOptions } from "openclaw/plugin-sdk/channel-outbound";
+import { withDiscordRequestAuthority } from "../internal/request-authority.js";
 import type { DiscordIngressLifecycle } from "./ingress.js";
 import type { DiscordReactionConversation } from "./listeners.reactions.js";
 import { deliverDiscordReply } from "./reply-delivery.js";
@@ -44,7 +45,7 @@ export async function dispatchDiscordReactionConversation(
       routeSessionKey: route.sessionKey,
       accountId: context.accountId,
     },
-    reply: { to: target, originatingTo: target },
+    reply: { to: target, originatingTo: target, replyToId: context.target.messageId },
     message: {
       inboundEventKind: "room_event",
       body: text,
@@ -55,40 +56,43 @@ export async function dispatchDiscordReactionConversation(
     access: { commands: { authorized: false } },
     extra: { Reaction: context },
   });
-  const result = await dispatchChannelInboundTurn({
-    cfg,
-    channel: "discord",
-    accountId: context.accountId,
-    route,
-    ctxPayload,
-    assertAuthority: assertCurrent,
-    turnAdoptionLifecycle: options.lifecycle,
-    replyOptions: bindIngressLifecycleToReplyOptions(options.lifecycle),
-    sessionInitRetry: { delaysMs: [] },
-    delivery: {
-      deliver: async (payload, info) => {
-        assertCurrent();
-        return await deliverDiscordReply({
-          cfg,
-          replies: [payload],
-          target,
-          token: options.token,
-          accountId: context.accountId,
-          textLimit: options.textLimit,
-          sessionKey: route.sessionKey,
-          kind: info.kind,
-        });
+  const result = await withDiscordRequestAuthority(assertCurrent, () =>
+    dispatchChannelInboundTurn({
+      cfg,
+      channel: "discord",
+      accountId: context.accountId,
+      route,
+      ctxPayload,
+      assertAuthority: assertCurrent,
+      turnAdoptionLifecycle: options.lifecycle,
+      replyOptions: bindIngressLifecycleToReplyOptions(options.lifecycle),
+      sessionInitRetry: { delaysMs: [] },
+      delivery: {
+        deliver: async (payload, info) => {
+          assertCurrent();
+          return await deliverDiscordReply({
+            cfg,
+            replies: [payload],
+            target,
+            token: options.token,
+            accountId: context.accountId,
+            textLimit: options.textLimit,
+            sessionKey: route.sessionKey,
+            kind: info.kind,
+            assertPlatformSendAuthorized: assertCurrent,
+          });
+        },
+        onError: (error) => {
+          throw error;
+        },
       },
-      onError: (error) => {
-        throw error;
+      record: {
+        onRecordError: (error) => {
+          throw error;
+        },
       },
-    },
-    record: {
-      onRecordError: (error) => {
-        throw error;
-      },
-    },
-    replyPipeline: {},
-  });
+      replyPipeline: {},
+    }),
+  );
   return result.dispatched;
 }

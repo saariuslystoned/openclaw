@@ -1,0 +1,6 @@
+# Fork continuation: 306 additional net test lines beyond the original 678-line
+# allocation. Required regressions prove opt-in/off/default, native targets,
+# actual Signal RPC, queued Discord revocation (source-red/fixed-green), bot
+# suppression, retained receipts at capacity/reopen and expired authority.
+# No shared scalar, per-file cap, API surface baseline or ignore is raised.
+306

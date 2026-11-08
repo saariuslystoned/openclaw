@@ -1,5 +1,55 @@
 # Reaction conversation proof
 
+## Current fork-only continuation
+
+This packet is source preparation, not accepted delivery. Earlier results below
+are historical. Both channels now require explicit account-level
+`capabilities: ["reaction-conversations"]`; omission/empty preserves passive
+notifications. The initially proposed boolean field hit the enforced config
+surface cap at commit preflight. It was removed in favor of this maintained
+capability seam; no budget/baseline was raised or hook bypassed.
+Occurrences remain distinct from native targets, and opted-in Signal observations
+never enter approval resolution. No task or approval service is mutated.
+
+Current focused proof: 16 cases pass across the two durable suites and REST
+authority siblings. The Discord reaction source callback, real sender, queued POST
+and final REST fetch are exercised with admitted channel metadata and dispatch
+scheduling injected. Revocation before queue release produces zero extra fetches.
+Removing the source authority binding and final-send guard makes that exact test
+fail (the revoked send resolves). Both red and green results are retained by the
+coordinator. This is not a full Gateway/model execution claim.
+
+Signal proof now traverses durable ingress, ordinary dispatch, channel threading,
+actual action adapter, sender, native RPC client and disposable loopback HTTP.
+It verifies original target/account/author and no repeat sends after replay/reopen.
+Native preparation tests also preserve an inherited incoming assertion across an
+await and reject revocation before HTTP I/O. Provider/model fixtures do not prove
+live phone delivery or a real-agent Gateway run; that requested proof remains open.
+Receipt tests preserve confirmed and uncertain data at capacity/reopen, refuse a
+third key without transport, and refuse cached confirmation to expired authority.
+Existing schema/options are unchanged; no receipt deletion/rotation is recovery.
+Ordinary text remains available at the explicit 5,000-row limit.
+
+Current local checks: full build EXIT=0; production core and extension types
+EXIT=0; extension-test types EXIT=0; touched source lint and generated channel
+metadata validation EXIT=0; max-lines and test-line ratchets EXIT=0. The latter
+uses the documented per-change allocation for 306 net additional regression lines,
+not a shared scalar/API/cap baseline change. A broad focused sibling command
+completed prefix (14), message-tool completion (68), Discord (63) and durable
+integration (10) shards, but then timed out in the unchanged Signal UNIX
+preparation test. That command is NOT a pass; its log/failure is retained. The
+UNIX test, native client and shared transport test helper are unchanged from the
+provisioned base. The default root typecheck was the wrong all-project entrypoint
+(JSX not enabled); supported production/extension-test lanes above pass. SDK API
+rendering, full Gateway proof, CI and fresh independent reviews remain pending.
+
+Publication gate: the verified fork main is ancestor `c3eab7ef86637474d5de3a702bf7d83a643ed9bf`,
+but the provisioned source already contains 27,089 additional commits. A PR to that
+main would propose 64,276 files, not this feature. No main sync or alternative base
+branch is implicitly authorized. Current signed Saari native target registry also
+does not enroll this fork. Resolve a qualified narrow fork PR/review surface before
+claiming CI/review delivery. No upstream resubmission or service setup is included.
+
 ## Boundaries
 
 - Discord: gateway session/sequence identity survives resume, separates fresh sessions and omits history lacking an occurrence; the existing durable queue feeds authorized add/remove listeners, original target lookup, native conversation routing and ordinary dispatch. Replacement monitor and concurrent replay do not start duplicate turns.

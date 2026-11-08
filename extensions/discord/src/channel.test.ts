@@ -292,30 +292,42 @@ it.each([
 });
 
 describe("discordPlugin outbound", () => {
-  it("builds tool context with separate native and routable DM targets", () => {
-    const buildToolContext = discordPlugin.threading?.buildToolContext;
-    assert(buildToolContext);
-    const hasRepliedRef = { value: false };
+  it.each([
+    { CurrentMessageId: "message-1", ReplyToId: undefined, expected: "message-1" },
+    {
+      CurrentMessageId: "reaction:occurrence-1",
+      ReplyToId: "native-target",
+      expected: "native-target",
+    },
+    { CurrentMessageId: "reaction:occurrence-2", ReplyToId: undefined, expected: undefined },
+  ])(
+    "keeps native targets distinct from occurrences ($CurrentMessageId)",
+    ({ CurrentMessageId, ReplyToId, expected }) => {
+      const buildToolContext = discordPlugin.threading?.buildToolContext;
+      assert(buildToolContext);
+      const hasRepliedRef = { value: false };
 
-    expect(
-      buildToolContext({
-        cfg: {},
-        context: {
-          To: "user:123456789",
-          NativeChannelId: "987654321",
-          ChatType: "direct",
-          CurrentMessageId: "message-1",
-        },
+      expect(
+        buildToolContext({
+          cfg: {},
+          context: {
+            To: "user:123456789",
+            NativeChannelId: "987654321",
+            ChatType: "direct",
+            CurrentMessageId,
+            ReplyToId,
+          },
+          hasRepliedRef,
+        }),
+      ).toEqual({
+        currentChannelId: "channel:987654321",
+        currentChatType: "direct",
+        currentMessagingTarget: "user:123456789",
+        currentMessageId: expected,
         hasRepliedRef,
-      }),
-    ).toEqual({
-      currentChannelId: "channel:987654321",
-      currentChatType: "direct",
-      currentMessagingTarget: "user:123456789",
-      currentMessageId: "message-1",
-      hasRepliedRef,
-    });
-  });
+      });
+    },
+  );
 
   it("resolves the current thread only for sends addressed to that thread's channel", () => {
     const resolveAutoThreadId = discordPlugin.threading?.resolveAutoThreadId;

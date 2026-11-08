@@ -29,6 +29,8 @@ export async function runReactionReplyWithReceipt<T>(params: {
     throw new Error("Reaction reply key already binds another account, target or reaction");
   }
   if (previous.state === "confirmed") {
+    // A historical transport receipt is not a new caller's live authority.
+    params.assertAuthority();
     return previous;
   }
   if (previous.state === "claimed" || previous.state === "uncertain") {

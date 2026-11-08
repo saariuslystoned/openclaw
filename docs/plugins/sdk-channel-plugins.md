@@ -1108,14 +1108,23 @@ never reported as unsent or replayed.
 
 ## Conversational reactions
 
-Discord and Signal's existing reaction-notification settings also govern reaction
-conversation turns. Authorized add/remove events enter ordinary channel dispatch
+Discord and Signal keep passive reaction notifications by default. Add
+`"reaction-conversations"` to the existing `channels.discord.capabilities` or
+`channels.signal.capabilities` array (also supported per account) to opt into
+conversation turns. Preserve any other capability entries. Omitting this entry
+keeps notifications passive; no new configuration key or schema budget is needed. Existing reaction-notification settings and access
+policy still filter eligible events. Authorized add/remove events enter ordinary channel dispatch
 as `room_event` observations, with command authorization disabled. They can wake
 the routed agent without requiring a text answer. The bounded `MsgContext.Reaction`
 (`ChannelReactionContext` from `openclaw/plugin-sdk/channel-inbound`) identifies
 the actor, account, conversation, transport occurrence, action, emoji and original
 target. Original text is included only when available and permitted by the
 channel's context policy; missing content is not reconstructed or invented.
+Occurrence IDs stay ingress identities. Native reply/reaction targets use the
+original message ID, never the occurrence ID. Conversation authority is retained
+through provider preparation, queueing, retries and the final network handoff.
+Signal conservatively rejects effects after any runtime-config snapshot change;
+a fresh admission is required, not reuse of an old allow decision.
 
 Discord uses gateway-session/sequence identity and the same durable ingress owner
 as messages. Signal uses its existing sender/timestamp ingress identity. Reconnect
@@ -1130,12 +1139,18 @@ A stable `idempotencyKey` binds the account, destination, exact target and mutat
 Receipt states distinguish `pending`, `claimed`, `uncertain`, `confirmed` and
 `not-sent`. Only a confirmed provider response completes a conversational reaction
 reply (`message` tool `react` with `final: true`); it never accepts a task or clears
-an approval gate. Removal is not a terminal conversational answer.
+an approval gate. Opted-in observations do not enter native approval resolution;
+legacy explicitly bound native approval controls are unchanged when opt-in is off.
+Removal is not a terminal conversational answer.
 
 A timeout or interrupted claim remains uncertain and cannot automatically resend.
 A proven pre-transport authority refusal records `not-sent`, permitting a later
 authorized retry under the same key. Receipt namespaces retain up to 5,000 rows
-and reject new entries at capacity rather than evict dedupe evidence. Direct
+and reject new entries at capacity rather than evict dedupe evidence. At capacity,
+use an ordinary text reply; do not delete receipts, switch namespaces, or retry
+with another key to circumvent the refusal. Existing receipts remain readable and
+settle normally. Increasing capacity requires a separately reviewed store-option
+migration; it is not a runtime reset or an automatic recovery action. Direct
 legacy calls without an idempotency key retain their existing non-durable API.
 Tests with injected model/provider boundaries do not establish live channel or
 phone delivery; deployment and real sends remain separate operator actions.
