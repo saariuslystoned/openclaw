@@ -1,0 +1,2 @@
+# Preserve inline and fenced Discord mention literals in the existing owner regression table.
+18
