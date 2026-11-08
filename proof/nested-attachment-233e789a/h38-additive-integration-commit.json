@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-08T14:26:56.805076+00:00",
+  "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "parents": [
+    "0d3f88d56881af8d0aa45978d9d6d6de6739703b",
+    "0566b7771956f0f5dcb1a1ce32a729e7c5f5d9e7"
+  ],
+  "oldOwnPatchSha256": "e0554fe2e62fdc08d6ba67a0558083b945df5ea287595884750b1d4f63132ca5",
+  "newOwnPatchSha256": "e0554fe2e62fdc08d6ba67a0558083b945df5ea287595884750b1d4f63132ca5",
+  "ownPatchByteIdenticalAfterExplicitDiffPrefixes": true,
+  "realConfiguredGitIdentityUsed": true,
+  "status": "COMMITTED_LOCAL_NOT_PUSHED_VALIDATION_PENDING",
+  "sourceHunksUnchanged": true,
+  "proofBinding": "old7f306b9d proof retained; newhead not yet runtime tested"
+}

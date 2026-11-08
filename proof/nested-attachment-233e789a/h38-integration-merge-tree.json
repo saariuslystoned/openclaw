@@ -1,0 +1,27 @@
+{
+  "main": "0566b7771956f0f5dcb1a1ce32a729e7c5f5d9e7",
+  "oldHead": "0d3f88d56881af8d0aa45978d9d6d6de6739703b",
+  "conflicts": "",
+  "files": [
+    {
+      "path": "config/test-lines-allocations/195052-nested-attachment.txt",
+      "mode": "100644",
+      "sameBytesAsOld": true,
+      "sha256": "34737c9c163138bb51d24e5c6311d74bcc8cf3686f7e0bde7739f809b274fbf7"
+    },
+    {
+      "path": "extensions/knowledge/src/evidence-read.test.ts",
+      "mode": "100644",
+      "sameBytesAsOld": true,
+      "sha256": "439c5b1ff25a06f6fa390b1eb57effd490c773bda8350289b908600e0538f638"
+    },
+    {
+      "path": "extensions/knowledge/src/vault.ts",
+      "mode": "100644",
+      "sameBytesAsOld": true,
+      "sha256": "dcc8badc33f4c1e4e9c6f261885876025f8119d10e9d06986ea26b55ff52d099"
+    }
+  ],
+  "ownContentPreserved": true,
+  "diffFormattingIdentical": false
+}

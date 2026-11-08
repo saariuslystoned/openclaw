@@ -1,0 +1,52 @@
+{
+  "sourceHead": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "base": "0566b7771956f0f5dcb1a1ce32a729e7c5f5d9e7",
+  "proofType": "actual integration validation; limits in PROOF.md",
+  "files": [
+    {
+      "path": "PROOF.md",
+      "bytes": 3353,
+      "sha256": "829ce1f547ca924bc89f4fe250e009d1d2bea8a94cd134599017002411e82fba"
+    },
+    {
+      "path": "TERMINAL.txt",
+      "bytes": 27908,
+      "sha256": "8cf5599c08f0545b39bd133b5544da9478e77c93a0f8871a2b80b00d304dd5f0"
+    },
+    {
+      "path": "h38-additive-integration-commit.json",
+      "bytes": 670,
+      "sha256": "1fd000538c621a78cdb6e8933926b88e8603df53722e0b1473db4eeea1416473"
+    },
+    {
+      "path": "h38-integration-checks.json",
+      "bytes": 8659,
+      "sha256": "4e6f18bf47e081c28e9385263e7fa70ad0e043cc1b1f2e35e515069e09abb565"
+    },
+    {
+      "path": "h38-integration-consumer-acceptance.json",
+      "bytes": 3781,
+      "sha256": "3674a2b4215e4ef72da3359045c337c9c9d7b39da76887d5522800b2ea7b5e28"
+    },
+    {
+      "path": "h38-integration-dependencies.json",
+      "bytes": 2222,
+      "sha256": "2dc4ed8ab7389bbff96074e51481683063ea63fd4c55beedba9a9e8cb80da20a"
+    },
+    {
+      "path": "h38-integration-merge-tree.json",
+      "bytes": 858,
+      "sha256": "973388d9489c456172a4426ce03ac5f9696f6b06d94e6cf47615f10d3c78a838"
+    },
+    {
+      "path": "h38-integration-tests.json",
+      "bytes": 2533,
+      "sha256": "c4bf6182548c6dc4e8d8526a67325a4bb6f6582aecc0fc1a0123d44a3e1cc918"
+    },
+    {
+      "path": "original-fixture.ts.txt",
+      "bytes": 9948,
+      "sha256": "d2dcde6999896ed4f46f93ea4fe37e54b231df50e487f65fc2d1f032d74f6b4b"
+    }
+  ]
+}

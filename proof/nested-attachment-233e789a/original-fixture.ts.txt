@@ -1,0 +1,167 @@
+import { createHash, randomUUID } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import type { FeatureInput, FeatureOutput } from "openclaw/plugin-sdk/feature-contract";
+import type { OpenClawPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
+import { Check } from "typebox/value";
+import { expect, it } from "vitest";
+import { parseDocument } from "yaml";
+import { contract } from "./contract.js";
+import plugin from "./index.js";
+import { sessionActions, storeFixture, toolContext, useTestTempDirs } from "./test-support.js";
+
+// Supporting boundary proof only: synthetic host authority, real registered tools/store.
+// Install only in an independently admitted disposable exact-base proof checkout.
+const tempDirs = useTestTempDirs();
+type Operation = keyof typeof contract.operations;
+const sha256 = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
+
+it("portable nested annotation evidence retains original-file access without unrelated access", async () => {
+  const factories = new Map<string, OpenClawPluginToolFactory>();
+  const f = await storeFixture(tempDirs.make("public-portable-annotation-"), {
+    policy: { writesEnabled: true, operatorRead: true },
+    extra: {
+      ...sessionActions(),
+      registerTool(factory: OpenClawPluginToolFactory, options: { name: string }) {
+        factories.set(options.name, factory);
+      },
+    },
+  });
+  plugin.register(f.api);
+  const context = toolContext(f.api).tool;
+  async function call<K extends Operation>(operation: K, input: FeatureInput<typeof contract, K>): Promise<FeatureOutput<typeof contract, K>> {
+    const factory = factories.get("knowledge_" + operation);
+    if (!factory) throw new Error("Tool was not registered: " + operation);
+    const tool = factory(context);
+    if (!tool || Array.isArray(tool)) throw new Error("Expected one registered tool");
+    const value: unknown = (await tool.execute(randomUUID(), input)).details;
+    if (!Check(contract.operations[operation].output, value)) throw new Error("Invalid tool output: " + operation);
+    // The operation's real output schema was checked, not replaced by a test implementation.
+    return value as FeatureOutput<typeof contract, K>;
+  }
+  const original = "Fictional Prism orchard source.\nThe document names an uncertain candidate.";
+  const upload = await call("attach", {
+    requestId: randomUUID(), filename: "prism.txt", mediaType: "text/plain",
+    attribution: "Wholly fictional Prism orchard document", offset: 0,
+    data: Buffer.from(original).toString("base64"), final: true,
+  });
+  if (upload.state !== "complete" || !upload.evidence) throw new Error("Fixture upload did not complete");
+  const evidence = upload.evidence;
+  const candidate = await call("save_page", {
+    requestId: randomUUID(), title: "Fictional Prism candidate", type: "project",
+    body: "This wholly fictional candidate is not a resolved identity.",
+  });
+  const subjectBody = "This wholly fictional page preserves an uncertain source attribution.";
+  const subject = await call("save_page", {
+    requestId: randomUUID(), title: "Fictional Prism subject", type: "project", body: subjectBody,
+    identity: {
+      status: "partial", context: "Unresolved fictional document label",
+      candidates: [{ id: candidate.id, basis: "Possible fictional label match only", evidence: [evidence] }],
+    },
+  });
+  const control = await call("save_page", {
+    requestId: randomUUID(), title: "Fictional Prism supported control", type: "note",
+    body: "A separate source-backed fictional page.", attachments: [evidence],
+  });
+  const unrelated = await call("save_page", {
+    requestId: randomUUID(), title: "Fictional Prism unrelated control", type: "note",
+    body: "A fictional page that does not reference the source.",
+  });
+  for (const saved of [candidate, subject, control, unrelated]) expect(saved.state).toBe("published");
+  expect(new Set([candidate.id, subject.id, control.id, unrelated.id]).size).toBe(4);
+  const detailInput = { id: subject.id, metadataView: "full" as const, includeEvidence: true, includeReferences: true };
+  const first = await call("record", detailInput);
+  if (!first.record) throw new Error("Fixture subject is absent");
+  const recordPath = path.join(f.root, "private", first.record.path);
+  const initialRaw = await readFile(recordPath, "utf8");
+  const header = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(initialRaw);
+  if (!header) throw new Error("Fixture has no Markdown frontmatter");
+  const initialHeader = header[1]!;
+  const initialBody = initialRaw.slice(header[0].length);
+  const initialRevision = first.record.revision;
+  const initialDate = parseDocument(initialHeader).get("updated_at");
+  if (typeof initialDate !== "string" || !Number.isFinite(Date.parse(initialDate))) throw new Error("Fixture updated_at is invalid");
+  const unchanged = await Promise.all([candidate, control, unrelated].map(async ({ id }) => {
+    const detail = await call("record", { id });
+    if (!detail.record) throw new Error("Fixture control is absent");
+    const filename = path.join(f.root, "private", detail.record.path);
+    return { id, filename, bytes: await readFile(filename) };
+  }));
+  const sourcePath = path.join(f.root, "private", evidence.path);
+  const originalBytes = Buffer.from(original);
+  const locator = (id: string) => ({ id, path: evidence.path, sha256: evidence.sha256 });
+
+  async function inspect(stage: string, topLevelCount: number, revision: number) {
+    const detail = await call("record", detailInput);
+    if (!detail.record?.metadata) throw new Error(stage + ": full subject metadata is absent");
+    const record = detail.record;
+    const metadata = detail.record.metadata;
+    // Hard preconditions: invalid or unreachable portable records are setup failure, not this hypothesis.
+    expect(record.id).toBe(subject.id);
+    expect(record.valid).toBe(true);
+    expect(record.revision).toBe(revision);
+    expect(record.body).toBe(subjectBody);
+    expect(detail.issues).toEqual([]);
+    expect(metadata.evidence ?? []).toHaveLength(topLevelCount);
+    expect(metadata.identity?.candidates).toHaveLength(1);
+    expect(metadata.identity?.candidates?.[0]?.id).toBe(candidate.id);
+    expect(metadata.identity?.candidates?.[0]?.evidence?.[0]?.sha256).toBe(evidence.sha256);
+    expect(detail.identityEvidence).toHaveLength(1);
+    expect(detail.identityEvidence?.[0]?.id).toBe(candidate.id);
+    const shown = detail.identityEvidence?.[0]?.evidence;
+    expect(shown).toHaveLength(1);
+    expect(shown?.[0]?.verified).toBe(true);
+    expect(shown?.[0]?.path).toBe(evidence.path);
+    expect(shown?.[0]?.sha256).toBe(evidence.sha256);
+    const passage = await call("evidence_read", locator(subject.id));
+    expect(passage.text).toBe(original);
+    expect(passage.nextCursor).toBeNull();
+    const download = await call("attachment", locator(subject.id)).then(
+      (result) => ({ ok: true as const, result }),
+      (error: unknown) => ({ ok: false as const, error: error instanceof Error ? error.message : String(error) }),
+    );
+    const supported = await call("attachment", locator(control.id));
+    expect(supported.sha256).toBe(evidence.sha256);
+    expect(supported.nextOffset).toBeNull();
+    expect(Buffer.from(supported.data, "base64")).toEqual(originalBytes);
+    await expect(call("attachment", locator(unrelated.id))).rejects.toThrow(/unavailable/i);
+    await expect(call("evidence_read", locator(unrelated.id))).rejects.toThrow(/unavailable/i);
+    for (const item of unchanged) expect(await readFile(item.filename)).toEqual(item.bytes);
+    expect(await readFile(sourcePath)).toEqual(originalBytes);
+    const raw = await readFile(recordPath, "utf8");
+    console.info("PUBLIC_PORTABLE_ANNOTATION_PROOF", JSON.stringify({
+      stage, subjectId: subject.id, candidateId: candidate.id, controlId: control.id, unrelatedId: unrelated.id,
+      topLevelCount, revision, valid: record.valid, verified: shown?.[0]?.verified,
+      source: locator(subject.id), passageSha256: sha256(passage.text), recordSha256: sha256(raw),
+      bodySha256: sha256(initialBody), controlSha256: sha256(Buffer.from(supported.data, "base64")),
+      originalDownload: download.ok ? { ok: true, sha256: download.result.sha256, nextOffset: download.result.nextOffset } : download,
+    }));
+    // One soft assertion lets restoration run if the suspected download asymmetry is observed.
+    expect.soft(download.ok, stage + ": verified annotation source must retain original-file access").toBe(true);
+    if (download.ok) {
+      expect(download.result.nextOffset).toBeNull();
+      expect(Buffer.from(download.result.data, "base64")).toEqual(originalBytes);
+    }
+  }
+
+  async function externalEdit(nestedOnly: boolean, increment: number) {
+    const doc = parseDocument(initialHeader);
+    if (doc.errors.length) throw new Error("Fixture frontmatter parse failed");
+    if (nestedOnly) doc.set("evidence", []);
+    doc.set("revision", initialRevision + increment);
+    doc.set("updated_at", new Date(Date.parse(initialDate) + increment).toISOString());
+    const raw = "---\n" + doc.toString() + "---\n" + initialBody;
+    // Only evidence and coherent revision/date differ semantically; source, scope and annotation stay intact.
+    const checked = parseDocument(doc.toString());
+    const expected = parseDocument(initialHeader);
+    for (const key of ["evidence", "revision", "updated_at"]) { checked.delete(key); expected.delete(key); }
+    expect(checked.toJS()).toEqual(expected.toJS());
+    expect(raw.slice(raw.indexOf("\n---\n", 4) + 5)).toBe(initialBody);
+    await writeFile(recordPath, raw);
+  }
+  await inspect("canonical", 1, initialRevision);
+  await externalEdit(true, 1);
+  await inspect("portable-nested-only", 0, initialRevision + 1);
+  await externalEdit(false, 2);
+  await inspect("restored-top-level", 1, initialRevision + 2);
+}, 20000);
