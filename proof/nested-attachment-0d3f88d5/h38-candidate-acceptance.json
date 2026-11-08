@@ -1,0 +1,121 @@
+{
+  "at": "2026-11-08T06:24:38.701717+00:00",
+  "base": "4022f2d26eee88af6d1357701fb76b745cd758a2",
+  "result": "accepted independent candidate green afterfresh-original andowningbase reds",
+  "tests": 52,
+  "files": 6,
+  "wrapper_seconds": 167.33,
+  "total_seconds": 167.982,
+  "all_original3stages_and_controls_held": true,
+  "stage_rows": [
+    {
+      "stage": "canonical",
+      "subjectId": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+      "candidateId": "b87e07af-5eed-45be-8f9b-91da71a27de6",
+      "controlId": "d410fd85-0186-41a5-95e5-f9681b55fcb3",
+      "unrelatedId": "658d6049-e74d-4dbe-b5d5-a7311096a803",
+      "topLevelCount": 1,
+      "revision": 1,
+      "valid": true,
+      "verified": true,
+      "source": {
+        "id": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+        "path": "artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "passageSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "recordSha256": "817b34659365f5987c1094b18cec3b432570d34390366f83f1da8355fb91fbd9",
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "controlSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "originalDownload": {
+        "ok": true,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "nextOffset": null
+      }
+    },
+    {
+      "stage": "portable-nested-only",
+      "subjectId": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+      "candidateId": "b87e07af-5eed-45be-8f9b-91da71a27de6",
+      "controlId": "d410fd85-0186-41a5-95e5-f9681b55fcb3",
+      "unrelatedId": "658d6049-e74d-4dbe-b5d5-a7311096a803",
+      "topLevelCount": 0,
+      "revision": 2,
+      "valid": true,
+      "verified": true,
+      "source": {
+        "id": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+        "path": "artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "passageSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "recordSha256": "07c24589db68b760509e4b5e1a4172d02e5a5ae8e76c5a989b1b42c1d5741d7a",
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "controlSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "originalDownload": {
+        "ok": true,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "nextOffset": null
+      }
+    },
+    {
+      "stage": "restored-top-level",
+      "subjectId": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+      "candidateId": "b87e07af-5eed-45be-8f9b-91da71a27de6",
+      "controlId": "d410fd85-0186-41a5-95e5-f9681b55fcb3",
+      "unrelatedId": "658d6049-e74d-4dbe-b5d5-a7311096a803",
+      "topLevelCount": 1,
+      "revision": 3,
+      "valid": true,
+      "verified": true,
+      "source": {
+        "id": "adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6",
+        "path": "artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "passageSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "recordSha256": "bf902b3dc59720b3da986a4bfb33fe61cef4a91e8126a0ad0e84b44c106e4762",
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "controlSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+      "originalDownload": {
+        "ok": true,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "nextOffset": null
+      }
+    }
+  ],
+  "owning_regression": [
+    {
+      "name": "externally edited nested citations retain record-scoped downloads",
+      "ms": 2712
+    }
+  ],
+  "test_times_emitted": {
+    "extensions/knowledge/src/evidence-read.test.ts": {
+      "tests": 14,
+      "test_ms": 36751
+    },
+    "extensions/knowledge/src/attachments.test.ts": {
+      "tests": 16,
+      "test_ms": 34048
+    },
+    "extensions/knowledge/src/source-descriptor-integration.test.ts": {
+      "tests": 6,
+      "test_ms": 951
+    },
+    "extensions/knowledge/src/context-annotations.test.ts": {
+      "tests": 7,
+      "test_ms": 38478
+    },
+    "extensions/knowledge/src/public-portable-annotation-proof.test.ts": {
+      "tests": 1,
+      "test_ms": 3808
+    },
+    "extensions/knowledge/src/vault.test.ts": {
+      "tests": 8,
+      "test_ms": 1218
+    }
+  },
+  "source_candidate_bytes_unchanged": true,
+  "limits": "realregistered/nativeSQLite/syntheticauthority; no liveGateway/UI/model/fullCI/exactheadreviewclaim; originalfixtureuntracked only"
+}

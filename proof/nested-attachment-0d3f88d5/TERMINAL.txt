@@ -1,0 +1,487 @@
+=== h38-fresh-base-red-retry1.log ===
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+[vitest] still running with no output for 30000ms.
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+[vitest-workers] prepared d431566b9741 in 31272ms (15060 inputs, 24049 outputs)
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"canonical","subjectId":"57e67c52-96de-4735-b0b7-616bdaf65656","candidateId":"46b03d70-aad7-4278-b5e6-f48902ec240e","controlId":"40086502-1838-466d-af05-721e84db1f42","unrelatedId":"856a56a1-9347-49c6-bea9-274bbc7b0ec9","topLevelCount":1,"revision":1,"valid":true,"verified":true,"source":{"id":"57e67c52-96de-4735-b0b7-616bdaf65656","path":"artifacts/4c39efc1-a16c-48a4-9c39-0a5700787831/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"8de638d5f1a7aa305b4228af14d38d77e107ff85f67e67de448bb0adc9a6b1cc","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":true,"sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","nextOffset":null}}
+
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"portable-nested-only","subjectId":"57e67c52-96de-4735-b0b7-616bdaf65656","candidateId":"46b03d70-aad7-4278-b5e6-f48902ec240e","controlId":"40086502-1838-466d-af05-721e84db1f42","unrelatedId":"856a56a1-9347-49c6-bea9-274bbc7b0ec9","topLevelCount":0,"revision":2,"valid":true,"verified":true,"source":{"id":"57e67c52-96de-4735-b0b7-616bdaf65656","path":"artifacts/4c39efc1-a16c-48a4-9c39-0a5700787831/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"8eb63d1c1b1d2e963cddb3b7d358e732359dbeee48ed3fdbe07b9840f0804423","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":false,"error":"Attachment unavailable in this record and scope"}}
+
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"restored-top-level","subjectId":"57e67c52-96de-4735-b0b7-616bdaf65656","candidateId":"46b03d70-aad7-4278-b5e6-f48902ec240e","controlId":"40086502-1838-466d-af05-721e84db1f42","unrelatedId":"856a56a1-9347-49c6-bea9-274bbc7b0ec9","topLevelCount":1,"revision":3,"valid":true,"verified":true,"source":{"id":"57e67c52-96de-4735-b0b7-616bdaf65656","path":"artifacts/4c39efc1-a16c-48a4-9c39-0a5700787831/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"8ea1b494299bef9e96016fd4970077e64d25b8cd301d3775e0526adb416932d3","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":true,"sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","nextOffset":null}}
+
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ×  extensions  extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access 5926ms
+   → portable-nested-only: verified annotation source must retain original-file access: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+AssertionError: portable-nested-only: verified annotation source must retain original-file access: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ inspect extensions/knowledge/src/public-portable-annotation-proof.test.ts:140:103
+    138|     }));
+    139|     // One soft assertion lets restoration run if the suspected downlo…
+    140|     expect.soft(download.ok, stage + ": verified annotation source mus…
+       |                                                                                                       ^
+    141|     if (download.ok) {
+    142|       expect(download.result.nextOffset).toBeNull();
+ ❯ extensions/knowledge/src/public-portable-annotation-proof.test.ts:164:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  06:16:41
+   Duration  105.70s (transform 85%, import 8%, tests 6%, worker 2%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 108.36s
+[test] FAILED (exit 1)
+
+=== h38-owning-base-red.log ===
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+[vitest] still running with no output for 30000ms.
+[vitest-workers] prepared 5a4ffcbbd312 in 30067ms (15060 inputs, 24049 outputs)
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > short and empty passages expose exact identity, inclusive lines, normalization and completion
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > long Unicode lines paginate in UTF-16 units without scalar splits or range leakage
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > streaming normalizes boundary-spanning CRLF and decodes split UTF-8 scalars
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > invalid schema bounds and nonexistent or reversed line ranges fail closed
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > malformed, cross-source, cross-record and changed-range cursors are rejected
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > only a source referenced by the authorized record can be read
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > private and conversation passages cannot share access or continuation cursors
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > every continuation rechecks live invocation and audience authority
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > withdrawal blocks new and continuing reads even after stale record restoration
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > source tampering beyond the requested range invalidates first and continuation pages
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > binary and malformed UTF-8 are rejected even beyond a selected passage
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > a linked parent directory cannot expose retained bytes
+ ↓  extensions  extensions/knowledge/src/evidence-read.test.ts > annotation-only identity and attribution sources are readable
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ×  extensions  extensions/knowledge/src/evidence-read.test.ts > externally edited nested citations retain record-scoped downloads 4372ms
+   → Attachment unavailable in this record and scope
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   extensions  extensions/knowledge/src/evidence-read.test.ts > externally edited nested citations retain record-scoped downloads
+Error: Attachment unavailable in this record and scope
+ ❯ StorageClient.receive extensions/knowledge/src/storage-client.ts:191:11
+    189|       call.revoked && message.message === AUTHORITY_REVOKED
+    190|         ? call.revoked
+    191|         : new Error(message.message),
+       |           ^
+    192|     );
+    193|   }
+ ❯ Worker.<anonymous> extensions/knowledge/src/storage-client.ts:134:59
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  06:19:30
+   Duration  53.51s (transform 78%, import 12%, tests 8%, worker 1%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 56.26s
+[test] FAILED (exit 1)
+
+=== h38-candidate-green.log ===
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+[vitest] still running with no output for 30000ms.
+[vitest-workers] prepared d9bb7b6ee1b2 in 30626ms (15060 inputs, 24049 outputs)
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > short and empty passages expose exact identity, inclusive lines, normalization and completion 4037ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > long Unicode lines paginate in UTF-16 units without scalar splits or range leakage 3178ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > streaming normalizes boundary-spanning CRLF and decodes split UTF-8 scalars 3635ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > invalid schema bounds and nonexistent or reversed line ranges fail closed 1677ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > malformed, cross-source, cross-record and changed-range cursors are rejected 2585ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > only a source referenced by the authorized record can be read 2141ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > private and conversation passages cannot share access or continuation cursors 2322ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > every continuation rechecks live invocation and audience authority 1626ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > withdrawal blocks new and continuing reads even after stale record restoration 3358ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > source tampering beyond the requested range invalidates first and continuation pages 1787ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > binary and malformed UTF-8 are rejected even beyond a selected passage 3535ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > a linked parent directory cannot expose retained bytes 1498ms
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > annotation-only identity and attribution sources are readable 2660ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/evidence-read.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/evidence-read.test.ts > externally edited nested citations retain record-scoped downloads 2712ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > large Unicode source survives chunking, bounded preview, restart, search and byte-exact download 2966ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > binary/PDF originals are never coerced into UTF-8; media remains outside automatic Git 1808ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > more than twenty sources save and enumerate without truncating stored evidence 2948ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > upload resumes across reload, exact chunks replay, divergent chunks and metadata fail closed 2038ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > attachment authority, record-scoped reads, tampering, paths and links are enforced 1570ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > source files are independent of the catalog scan byte budget; legacy large text is retained 4333ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > attachment filesystem work and live authority checks leave the SQLite writer unlocked 126ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-after-chunk recovers without overwriting the original 1813ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-after-stage recovers without overwriting the original 1903ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-after-link recovers without overwriting the original 1904ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-descriptor-after-link recovers without overwriting the original 1903ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-before-receipt recovers without overwriting the original 1911ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > file installation interruption at attachment-after-receipt recovers without overwriting the original 1880ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > conversation uploads and downloads cannot reach private originals or receipts 2445ms
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > native feature adapter accepts full-size upload and download chunks 1688ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/attachments.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/attachments.test.ts > agent download JSON survives the dynamic-tool response budget with continuation intact 2812ms
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > same source deduplicates across records and a multi-source batch retains every descriptor 522ms
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > encoding preserves exact body, unknown YAML, and all supported annotation evidence fields 14ms
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > descriptor tamper, deletion and reappearance invalidate whole-scan and parsed-file caches without touching the record 123ms
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > scope is checked before hydration and a descriptor cannot resolve from a sibling partition 54ms
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > guarded descriptor reads reject hard links, file symlinks and directory symlinks 38ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/source-descriptor-integration.test.ts: retiring openclaw.agentDatabaseReaders
+
+ ✓  extensions  extensions/knowledge/src/source-descriptor-integration.test.ts > interrupted publication fences a reused descriptor and refuses completion without overwriting tampering 200ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > context annotations preserve assertion text/lifecycle, append evidence, and fence retries/conflicts 2796ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > uncertain identity and attribution retain evidence; cross-scope guesses and forged evidence are rejected 3504ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > fixture classification consistently removes records from current views without erasing exact/history access 2577ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > new records with shared annotation evidence serialize without YAML aliases and remain readable 5272ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > source groups are counted before pagination; repeated saves and new activity do not split a source group 10611ms
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > Recent batches attendee summaries only for the current group page 9768ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/context-annotations.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/context-annotations.test.ts > entity annotations link a claim by ID without changing its assertion, and reject non-pages, withdrawn pages and page targets 3950ms
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"canonical","subjectId":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","candidateId":"b87e07af-5eed-45be-8f9b-91da71a27de6","controlId":"d410fd85-0186-41a5-95e5-f9681b55fcb3","unrelatedId":"658d6049-e74d-4dbe-b5d5-a7311096a803","topLevelCount":1,"revision":1,"valid":true,"verified":true,"source":{"id":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","path":"artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"817b34659365f5987c1094b18cec3b432570d34390366f83f1da8355fb91fbd9","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":true,"sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","nextOffset":null}}
+
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"portable-nested-only","subjectId":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","candidateId":"b87e07af-5eed-45be-8f9b-91da71a27de6","controlId":"d410fd85-0186-41a5-95e5-f9681b55fcb3","unrelatedId":"658d6049-e74d-4dbe-b5d5-a7311096a803","topLevelCount":0,"revision":2,"valid":true,"verified":true,"source":{"id":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","path":"artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"07c24589db68b760509e4b5e1a4172d02e5a5ae8e76c5a989b1b42c1d5741d7a","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":true,"sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","nextOffset":null}}
+
+stdout | extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access
+PUBLIC_PORTABLE_ANNOTATION_PROOF {"stage":"restored-top-level","subjectId":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","candidateId":"b87e07af-5eed-45be-8f9b-91da71a27de6","controlId":"d410fd85-0186-41a5-95e5-f9681b55fcb3","unrelatedId":"658d6049-e74d-4dbe-b5d5-a7311096a803","topLevelCount":1,"revision":3,"valid":true,"verified":true,"source":{"id":"adb9e576-52cd-4c1d-9bad-0cdbb3bda9c6","path":"artifacts/39a64ebb-de3a-4fa2-9cfd-d8731b3ae6cb/prism.txt","sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"},"passageSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","recordSha256":"bf902b3dc59720b3da986a4bfb33fe61cef4a91e8126a0ad0e84b44c106e4762","bodySha256":"8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9","controlSha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","originalDownload":{"ok":true,"sha256":"dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914","nextOffset":null}}
+
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/public-portable-annotation-proof.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/public-portable-annotation-proof.test.ts > portable nested annotation evidence retains original-file access without unrelated access 3808ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > representative vault: records, ontology, diagnostics, citations, and zero writes 205ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > lists canonical München titles 177ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > lists canonical München titles 176ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > rename preserves identity and metadata; duplicate IDs never pick a winner 159ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > changed source invalidates evidence without serving unverified content 36ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > file symlinks and path traversal are not followed 34ms
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > duplicate keys, unknown scope, YAML alias expansion and oversize records are diagnosed 40ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/vault.test.ts: retiring openclaw.agentDatabaseReaders
+
+ ✓  extensions  extensions/knowledge/src/vault.test.ts > total partition size does not cap a scan; every record is cataloged 391ms
+
+ Test Files  6 passed (6)
+      Tests  52 passed (52)
+   Start at  06:21:11
+   Duration  164.64s (tests 70%, transform 25%, import 4%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] passed 1 Vitest shard in 167.33s
+
+=== h38-check-local-format.log ===
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 5ms on 2 files using 20 threads.
+
+=== h38-check-local-type-aware-lint.log ===
+[plugin-sdk boundary dts] emitted 14201 files
+Found 0 warnings and 0 errors.
+Finished in 16.5s on 2 files with 293 rules using 1 threads.
+
+=== h38-check-publishable-extension-test-types.log ===
+
+=== h38-check-publishable-test-line-ratchet.log ===
+Test lines OK: 6573784; ceiling: 6573827; slack: 43.

@@ -1,0 +1,72 @@
+{
+  "source_head": "0d3f88d56881af8d0aa45978d9d6d6de6739703b",
+  "base": "4022f2d26eee88af6d1357701fb76b745cd758a2",
+  "source_files": [
+    {
+      "path": "extensions/knowledge/src/vault.ts",
+      "baseBytes": 14526,
+      "baseSha256": "b40cda5341c165e073078d61d4a4795f746ed5db33aae29face1c5935ca01524",
+      "baseGitBlob": "0de352b183b87505ab52ba91df10edfd7233b3f1",
+      "bytes": 14607,
+      "sha256": "dcc8badc33f4c1e4e9c6f261885876025f8119d10e9d06986ea26b55ff52d099",
+      "lineDelta": 0
+    },
+    {
+      "path": "extensions/knowledge/src/evidence-read.test.ts",
+      "baseBytes": 19377,
+      "baseSha256": "39744beec3090e5ff6335ea1926a5c199dbbe97a86645db438002ac825e089ce",
+      "baseGitBlob": "5b12f630ae1de7b86a1f166c0ed4a38d8d4caa06",
+      "bytes": 21618,
+      "sha256": "439c5b1ff25a06f6fa390b1eb57effd490c773bda8350289b908600e0538f638",
+      "lineDelta": 46
+    },
+    {
+      "path": "config/test-lines-allocations/195052-nested-attachment.txt",
+      "baseBytes": 0,
+      "baseSha256": null,
+      "baseGitBlob": null,
+      "bytes": 89,
+      "sha256": "34737c9c163138bb51d24e5c6311d74bcc8cf3686f7e0bde7739f809b274fbf7",
+      "lineDelta": 2
+    }
+  ],
+  "provenance": "same frozen author candidate; independent coordinator local proof; synthetic public corpus only",
+  "redaction": "selected text logs ANSI stripped, local host paths redacted; no media/credentials/private records",
+  "files": [
+    {
+      "path": "proof/nested-attachment-0d3f88d5/PROOF.md",
+      "bytes": 4701,
+      "sha256": "9765afd178d2cfa417f1e1df7ddc560a280ff4b3d21238df88d5f3a5662d63cb"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/TERMINAL.txt",
+      "bytes": 48552,
+      "sha256": "3d83f0d923b1e6bc190730fd3a9da9577b7de8395b3dcbaa4778b80aff49de01"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/h38-candidate-acceptance.json",
+      "bytes": 4816,
+      "sha256": "d8becaa744fcdd9af1f455f9c79649d2ac45fe6f934ed23885a09bc9122956f4"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/h38-fresh-base-acceptance.json",
+      "bytes": 175,
+      "sha256": "4c4b37723c57236f0fee532e7277213d41d158234d51c0feb92dc29c3664a6d8"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/h38-owning-base-acceptance.json",
+      "bytes": 344,
+      "sha256": "8a4791d7c1761f270e69939f5da2970b81aad199c313a4cb1645b1b79aa82280"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/h38-proof-overlay-typecheck-reconciliation.json",
+      "bytes": 47,
+      "sha256": "9c0fc1965b9b9021738172bc6ddd1fab831b8a8973d6db4fc643f70a08d8d77d"
+    },
+    {
+      "path": "proof/nested-attachment-0d3f88d5/original-fixture.ts.txt",
+      "bytes": 9948,
+      "sha256": "d2dcde6999896ed4f46f93ea4fe37e54b231df50e487f65fc2d1f032d74f6b4b"
+    }
+  ]
+}

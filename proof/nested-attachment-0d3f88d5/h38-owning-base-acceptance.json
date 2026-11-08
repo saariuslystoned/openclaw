@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-08T06:21:09.908381+00:00",
+  "base": "4022f2d26eee88af6d1357701fb76b745cd758a2",
+  "result": "accepted owning-test-only base-red at actual attachment rejection after hard validity/passage/positive/negative controls",
+  "tests": "1failed13skipped; no setup/type error",
+  "wrapper_seconds": 56.26,
+  "total_seconds": 56.944
+}
