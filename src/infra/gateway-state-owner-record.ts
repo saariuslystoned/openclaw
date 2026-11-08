@@ -33,6 +33,7 @@ import {
   StateDatabaseOfflineMaintenanceError,
 } from "./gateway-state-owner-errors.js";
 import { inspectStaleLockOwner } from "./stale-lock-file.js";
+import { withPostCoreMaintenanceRefusalOrigin } from "./update-post-core-diagnostics.js";
 
 const ownerInspections = new AsyncLocalStorage<{ deadOwner?: { path: string; raw: string } }>();
 
@@ -136,10 +137,11 @@ export function assertPersistedStateDatabaseAccessAllowed(params: {
     return;
   }
   const maintenancePending = `OpenClaw state at ${databasePath} is undergoing offline maintenance by ${role} process ${owner.pid}, started ${owner.createdAt}; retry when it finishes. For update progress, run \`openclaw update status --json\`. ${describeGatewayLockHolder(owner, ownerPath, namespace === "same" ? "live" : "unknown")}`;
+  const refusal = withPostCoreMaintenanceRefusalOrigin(maintenancePending, owner, namespace);
   if (owner.stateOwnerKind === "schema" && owner.role === "sqlite-maintenance") {
-    throw new StateDatabaseAdmissionPendingError(databasePath, maintenancePending);
+    throw new StateDatabaseAdmissionPendingError(databasePath, refusal);
   }
-  throw new StateDatabaseOfflineMaintenanceError(databasePath, maintenancePending);
+  throw new StateDatabaseOfflineMaintenanceError(databasePath, refusal);
 }
 
 export function defaultPayload(databasePath: string): LockPayload {

@@ -10,6 +10,7 @@ import {
   createUpdateDoctorDatabaseWriteCapture,
   DoctorMaintenanceRefusalError,
 } from "../infra/update-doctor-result.js";
+import { markPostCoreMaintenanceStage } from "../infra/update-post-core-diagnostics.js";
 import { hasCommandProcessCleanupError } from "../process/exec-result.js";
 import {
   createOpenClawDatabaseMaintenanceScope,
@@ -196,7 +197,9 @@ export async function createDoctorMaintenanceState(options: {
         deadlineOwnedByCaller: false,
       });
     } catch (error) {
+      markPostCoreMaintenanceStage("owner_release_begin");
       await acquired.release();
+      markPostCoreMaintenanceStage("owner_release_done");
       setOwner(undefined);
       throw error;
     }
@@ -260,6 +263,7 @@ export async function createDoctorMaintenanceState(options: {
           signal: options.signal,
         },
       );
+      markPostCoreMaintenanceStage("owner_acquired");
       await enterResources(acquired, assertAdmission);
     },
     async prepareRepair(assertAdmission?: () => void) {
@@ -300,7 +304,9 @@ export async function createDoctorMaintenanceState(options: {
       await owner!.run(() => closeOpenClawStateDatabaseByPathAsync(sourceDatabase));
       await settleCapture();
       // In-tree locks cannot survive a path rename. Service stop custody remains held.
+      markPostCoreMaintenanceStage("owner_release_begin");
       await owner!.release();
+      markPostCoreMaintenanceStage("owner_release_done");
       setOwner(undefined);
       options.assertCurrent?.();
       assertAdmission?.();
@@ -422,7 +428,9 @@ export async function createDoctorMaintenanceState(options: {
       let readersRetired: boolean;
       let brokerRetired: boolean;
       try {
+        markPostCoreMaintenanceStage("close_resources_begin");
         await closeResources();
+        markPostCoreMaintenanceStage("close_resources_done");
         readersRetired = await retireIdleOpenClawStateReadWorkers(nativeSource);
         brokerRetired = await nativeSource.retireIdleBroker();
       } catch (cause) {
@@ -457,7 +465,9 @@ export async function createDoctorMaintenanceState(options: {
     async release(): Promise<Error | undefined> {
       const failures: unknown[] = [];
       try {
+        markPostCoreMaintenanceStage("close_resources_begin");
         await closeResources();
+        markPostCoreMaintenanceStage("close_resources_done");
       } catch (error) {
         // Uncertain command cleanup or a still-open scope can keep writing: retain
         // process ownership and publish no receipt.
@@ -467,7 +477,9 @@ export async function createDoctorMaintenanceState(options: {
         failures.push(error);
       }
       try {
+        markPostCoreMaintenanceStage("capture_settle_begin");
         await settleCapture();
+        markPostCoreMaintenanceStage("capture_settle_done");
       } catch (error) {
         if (hasCommandProcessCleanupError(error)) {
           throw error;
@@ -475,8 +487,15 @@ export async function createDoctorMaintenanceState(options: {
         failures.push(error);
       }
       try {
+        const hadOwner = owner !== undefined;
+        if (hadOwner) {
+          markPostCoreMaintenanceStage("owner_release_begin");
+        }
         await owner?.release();
         setOwner(undefined);
+        if (hadOwner) {
+          markPostCoreMaintenanceStage("owner_release_done");
+        }
       } catch (error) {
         failures.push(error);
       }

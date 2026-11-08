@@ -7,7 +7,9 @@ import {
   installPrivateUpdateHandoffStore,
   writePrivateUpdateHandoffChildGuard,
 } from "../../../test/helpers/private-update-handoff-store.js";
+import { sanitizeTriageUpdateFailure } from "../../commands/triage-update.js";
 import type { OpenClawConfig } from "../../config/types.js";
+import { resolveStateOwnerIdentity } from "../../infra/gateway-state-owner-directory.js";
 import {
   encodePackageActivationLauncher,
   openPackageActivationJournal,
@@ -18,18 +20,24 @@ import { packageActivationRuntimeForTest } from "../../infra/package-update-acti
 import { createPackageIntegrityReader } from "../../infra/package-update-integrity.js";
 import { createPublicationOwner } from "../../infra/package-update-publication-owner.js";
 import { writePackageRoot } from "../../infra/package-update-steps.test-support.js";
+import { SQLITE_READONLY_CHILD_ARG } from "../../infra/runtime-process-entrypoints.js";
+import { readDatabasePathIdentitySync } from "../../infra/sqlite-worker-identity.js";
 import { createManagedHandoffLeaseStore } from "../../infra/update-managed-service-handoff-lease.js";
+import { parsePostCoreMaintenanceDiagnostics } from "../../infra/update-post-core-diagnostics.js";
 import { readUpdateRunDriver } from "../../infra/update-run-driver.js";
 import { createUpdateRun, getUpdateRun } from "../../infra/update-run-ledger.js";
+import type { UpdateRunResult } from "../../infra/update-runner-types.js";
 import { resolveInstalledPluginIndexStateDatabaseOptions } from "../../plugins/installed-plugin-index-store-path.js";
 import { readPluginMetadataStateRow } from "../../plugins/plugin-metadata-state-worker.js";
 import { seedInstalledPluginIndex } from "../../plugins/test-helpers/installed-plugin-index.js";
 import { CommandProcessCleanupError } from "../../process/exec-result.js";
 import * as processRunner from "../../process/exec.js";
+import { resolveOpenClawStateSqlitePath } from "../../state/openclaw-state-db.paths.js";
 import {
   createOpenClawTestState,
   type OpenClawTestState,
 } from "../../test-utils/openclaw-test-state.js";
+import { prepareResult } from "./progress.js";
 import { prepareCandidateAuthorityRuntime } from "./update-command-candidate-authority.test-support.js";
 import { withUpdateCommandExecutor } from "./update-command-executor.js";
 import { continuePostCoreUpdateInFreshProcess } from "./update-command-post-core.js";
@@ -97,10 +105,72 @@ await import("./entry.js");
     // and all authority/result owners remain real.
     await wrapWorker(
       fileURLToPath(runtime.worker),
-      `import { appendFileSync, existsSync } from "node:fs";
+      `import fs, { appendFileSync, existsSync } from "node:fs";
 import fsp from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 `,
       `const resultPath = process.env.OPENCLAW_UPDATE_POST_CORE_RESULT_PATH;
+// Observe successful physical operations only; never replace owner decisions.
+const ownerPath = ${JSON.stringify(resolveStateOwnerIdentity(resolveOpenClawStateSqlitePath(state.env)).ownerPath)};
+const refusalFlag = ${JSON.stringify(state.path("force-foreign-read"))};
+const databasePath = ${JSON.stringify(resolveOpenClawStateSqlitePath(state.env))};
+const observationPath = ${JSON.stringify(state.path("owner-observations.jsonl"))};
+const observe = (event, fields = {}) => appendFileSync(observationPath, JSON.stringify({ event, pid: process.pid, ppid: process.ppid, ...fields }) + String.fromCharCode(10));
+if (process.argv[2] === "--post-core") {
+  const descriptors = new Set();
+  const open = fs.openSync;
+  const write = fs.writeFileSync;
+  const close = fs.closeSync;
+  const remove = fs.rmSync;
+  const rename = fsp.rename;
+  observe("child_enter");
+  fs.openSync = (...args) => {
+    const fd = open(...args);
+    if (String(args[0]) === ownerPath) descriptors.add(fd);
+    return fd;
+  };
+  fs.writeFileSync = (...args) => {
+    const result = write(...args);
+    if (descriptors.has(args[0])) {
+      const owner = JSON.parse(String(args[1]));
+      observe("owner_published", { holderPid: owner.pid, holderParentPid: owner.parentPid ?? null, kind: owner.stateOwnerKind === "schema" ? "schema" : "process" });
+      if (existsSync(refusalFlag)) {
+        const identity = fs.readFileSync(refusalFlag, "utf8");
+        remove(refusalFlag);
+        // A real child tries to read while the actual post-core owner is held.
+        // Its production admission error, not a fixture-created error, propagates.
+        const child = spawnSync(process.execPath, [
+          fileURLToPath(new URL("./sqlite-readonly-location.worker.js", import.meta.url)),
+          ${JSON.stringify(SQLITE_READONLY_CHILD_ARG)}, "metadata", databasePath, "", identity,
+        ], { encoding: "utf8", env: process.env, timeout: 30000, maxBuffer: 1024 * 1024 });
+        const response = JSON.parse(child.stdout);
+        observe("foreign_refusal", { readerPid: child.pid, ok: response.ok });
+        if (child.status !== 1 || response.ok !== false || typeof response.message !== "string") {
+          throw new Error("Foreign reader did not return its expected refusal protocol");
+        }
+        throw new Error(response.message);
+      }
+    }
+    return result;
+  };
+  fs.closeSync = (fd) => {
+    const result = close(fd);
+    descriptors.delete(fd);
+    return result;
+  };
+  fs.rmSync = (...args) => {
+    const result = remove(...args);
+    if (String(args[0]) === ownerPath) observe("owner_removed");
+    return result;
+  };
+  fsp.rename = async (...args) => {
+    const result = await rename(...args);
+    if (String(args[1]) === resultPath + ".pending") observe("result_pending", { ownerPresent: existsSync(ownerPath) });
+    return result;
+  };
+  process.on("exit", () => observe("child_exit", { ownerPresent: existsSync(ownerPath) }));
+}
 if (process.argv[2] === "--post-core" && resultPath && existsSync(${JSON.stringify(state.path("fail-response-publication"))})) {
   const rename = fsp.rename;
   fsp.rename = async (from, to) => {
@@ -209,6 +279,36 @@ it.skipIf(process.platform === "win32")(
         // the journal before resume. No fixture supplies the child's fence/result.
         const healthy = await invoke();
         expect(healthy).toMatchObject({ resumed: true, pluginUpdate: { status: "ok" } });
+        const observations: Array<{
+          event: string;
+          pid: number;
+          ppid: number;
+          holderPid?: number;
+          kind?: string;
+          ownerPresent?: boolean;
+        }> = fs
+          .readFileSync(state.path("owner-observations.jsonl"), "utf8")
+          .trim()
+          .split("\n")
+          .map((line) => JSON.parse(line));
+        const acquired = observations.findIndex(
+          (entry) => entry.event === "owner_published" && entry.kind === "process",
+        );
+        expect(acquired).toBeGreaterThan(-1);
+        const owner = observations[acquired];
+        assert(owner, "The fresh child must publish its actual maintenance owner");
+        expect(owner.holderPid).toBe(owner.pid);
+        expect(owner.pid).not.toBe(process.pid);
+        expect(owner.ppid).toBe(process.pid);
+        const removed = observations.findIndex(
+          (entry, index) => index > acquired && entry.event === "owner_removed",
+        );
+        const pending = observations.findIndex((entry) => entry.event === "result_pending");
+        expect(removed).toBeGreaterThan(acquired);
+        expect(pending).toBeGreaterThan(removed);
+        expect(observations[pending]?.ownerPresent).toBe(false);
+        expect(observations.at(-1)).toMatchObject({ event: "child_exit", ownerPresent: false });
+        console.log("POST_CORE_OWNER_OBSERVATIONS", JSON.stringify(observations));
         expect(JSON.parse(fs.readFileSync(state.configPath, "utf8")).update.channel).toBe("beta");
         expect(getUpdateRun(runId, { env: state.env })).toMatchObject({
           status: "running",
@@ -216,6 +316,113 @@ it.skipIf(process.platform === "win32")(
             expect.objectContaining({ step: "finalize:installed-candidate", status: "completed" }),
           ]),
         });
+        fence.assertCurrent();
+
+        await fs.promises.writeFile(
+          state.path("force-foreign-read"),
+          JSON.stringify(readDatabasePathIdentitySync(resolveOpenClawStateSqlitePath(state.env))),
+        );
+        const refused = await invoke();
+        expect(refused).toMatchObject({ resumed: false, exitCode: 1 });
+        const diagnostic = parsePostCoreMaintenanceDiagnostics(refused.error ?? "", runId);
+        assert(diagnostic, "The real parent error must preserve the complete diagnostic envelope");
+        assert(diagnostic.firstRefusal, "The real read-only child must report its own origin");
+        const origin = diagnostic.firstRefusal;
+        expect(origin.pid).not.toBe(origin.holderPid);
+        expect(origin.pid).not.toBe(process.pid);
+        expect(origin.parentPid).toBe(origin.holderPid);
+        const refusedObservations = fs
+          .readFileSync(state.path("owner-observations.jsonl"), "utf8")
+          .trim()
+          .split("\n")
+          .map((line) => JSON.parse(line));
+        // Owner records may omit ancestry; compare the captured field to the
+        // physical record, and establish actual OS ancestry independently.
+        expect(refusedObservations).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              event: "owner_published",
+              pid: origin.holderPid,
+              ppid: process.pid,
+              holderParentPid: origin.holderParentPid,
+            }),
+            expect.objectContaining({
+              event: "foreign_refusal",
+              pid: origin.holderPid,
+              readerPid: origin.pid,
+              ok: false,
+            }),
+            expect.objectContaining({
+              event: "child_exit",
+              pid: origin.holderPid,
+              ownerPresent: false,
+            }),
+          ]),
+        );
+        expect(origin).toMatchObject({
+          mainThread: true,
+          threadId: 0,
+          holderKind: "process",
+          namespace: "same",
+        });
+        expect(diagnostic.events[0]).toMatchObject({
+          stage: "post_core_enter",
+          pid: origin.holderPid,
+        });
+        expect(diagnostic.events.at(-1)?.stage).toBe("post_core_settled");
+        expect(Buffer.byteLength(JSON.stringify(diagnostic))).toBeLessThanOrEqual(8192);
+        expect(JSON.stringify(diagnostic)).not.toContain(state.stateDir);
+        expect(
+          fs.existsSync(
+            resolveStateOwnerIdentity(resolveOpenClawStateSqlitePath(state.env)).ownerPath,
+          ),
+        ).toBe(false);
+        // Report excerpts are deliberately lossy: capture the validated envelope
+        // from the normal parent error before feeding the unchanged artifact owner.
+        const failureResult: UpdateRunResult = {
+          status: "error",
+          mode: "unknown",
+          runId,
+          steps: [
+            {
+              name: "post-update verification",
+              command: "openclaw update",
+              cwd: packageRoot,
+              durationMs: 0,
+              exitCode: 1,
+              stderrTail: refused.error,
+            },
+          ],
+          durationMs: 0,
+        };
+        const emit = await prepareResult(
+          failureResult,
+          { json: true },
+          {
+            readHistory: false,
+            writeArtifacts: false,
+          },
+        );
+        const stdout = vi.spyOn(process.stdout, "write").mockReturnValue(true);
+        let encoded: string;
+        try {
+          emit();
+          encoded = String(stdout.mock.calls.at(-1)?.[0]);
+        } finally {
+          stdout.mockRestore();
+        }
+        // Decode the actual normal CLI JSON serialization before report projection.
+        const output = JSON.parse(encoded);
+        expect(parsePostCoreMaintenanceDiagnostics(output.steps[0].stderrTail, runId)).toEqual(
+          diagnostic,
+        );
+        const report = sanitizeTriageUpdateFailure(
+          { result: failureResult },
+          { env: state.env, stateDir: state.stateDir },
+          "artifact",
+        );
+        expect(parsePostCoreMaintenanceDiagnostics(JSON.stringify(report), runId)).toBeUndefined();
+        console.log("POST_CORE_REFUSAL_DIAGNOSTICS", JSON.stringify(diagnostic));
         fence.assertCurrent();
 
         const snapshot = async () => ({

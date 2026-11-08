@@ -48,6 +48,10 @@ import {
   POST_CORE_UPDATE_STARTED_AT_ENV,
   type PreUpdateConfigRestoreInput,
 } from "../../infra/update-post-core-context.js";
+import {
+  POST_CORE_DIAGNOSTIC_PREFIX,
+  type PostCoreMaintenanceDiagnostics,
+} from "../../infra/update-post-core-diagnostics.js";
 import { UpdateFailureFactSchema } from "../../infra/update-run-schema.js";
 import type { UpdateRunResult } from "../../infra/update-runner-types.js";
 import {
@@ -116,6 +120,7 @@ export async function resolvePostCoreUpdateHandoff(params: {
 export async function writePostCoreUpdateFailureFile(
   filePath: string | undefined,
   error: unknown,
+  diagnostics?: PostCoreMaintenanceDiagnostics,
 ): Promise<void> {
   if (filePath) {
     const failureFacts = collectUpdateDoctorFailureFacts(error);
@@ -130,7 +135,11 @@ export async function writePostCoreUpdateFailureFile(
       filePath,
       {
         status: "failed",
-        error: failure.error,
+        // The private parent keeps error text; report excerpts may truncate it.
+        // Append only fixed metadata after prose sanitization.
+        error: diagnostics
+          ? failure.error + "\n" + POST_CORE_DIAGNOSTIC_PREFIX + JSON.stringify(diagnostics)
+          : failure.error,
         ...(failureFacts.length ? { failureFacts } : {}),
       },
       { trailingNewline: true, dirMode: 0o700 },

@@ -71,6 +71,7 @@ import {
   POST_CORE_UPDATE_ENV,
   POST_CORE_UPDATE_RESULT_PATH_ENV,
 } from "./update-post-core-context.js";
+import { createPostCoreMaintenanceDiagnostics } from "./update-post-core-diagnostics.js";
 import {
   createDelegatedUpdateRequesterAuthority,
   UpdateRequesterRevokedError,
@@ -305,40 +306,46 @@ async function runDelegatedPostCore(input: DecodedUpdatePostCoreInput): Promise<
   // Keep the existing handoff directory/metadata, but do not expose completion
   // to the waiting parent until this executor and every descendant have settled.
   process.env[POST_CORE_UPDATE_RESULT_PATH_ENV] = `${resultPath}.pending`;
-  try {
-    await withDelegatedUpdateCommandExecutor(
-      input.executor,
-      input.runId,
-      input.root,
-      async (fence) => {
-        const requesterAuthority = input.requester
-          ? await createDelegatedUpdateRequesterAuthority(input.requester, input.runId, fence)
-          : undefined;
-        const { updateCommand } = await import("../cli/update-cli/update-command.js");
-        fence.assertCurrent();
-        if (requesterAuthority?.isCurrent() === false) {
-          throw new UpdateRequesterRevokedError();
-        }
-        await updateCommand({
-          ...input.opts,
-          run: {
-            runId: input.runId,
-            originalRecoveryCapture: input.originalRecoveryCapture,
-            busyTimeoutMs: input.busyTimeoutMs,
-            env: { ...process.env },
-            executorFence: fence,
-            ...(requesterAuthority ? { requesterAuthority } : {}),
-          },
-        });
-      },
-    );
-    await fs.rename(`${resultPath}.pending`, resultPath);
-  } catch (error) {
-    if (!hasCommandProcessCleanupError(error)) {
-      await writePostCoreUpdateFailureFile(resultPath, error);
+  const diagnostics = createPostCoreMaintenanceDiagnostics();
+  await diagnostics.run(async () => {
+    try {
+      await withDelegatedUpdateCommandExecutor(
+        input.executor,
+        input.runId,
+        input.root,
+        async (fence) => {
+          diagnostics.start(input.runId);
+          const requesterAuthority = input.requester
+            ? await createDelegatedUpdateRequesterAuthority(input.requester, input.runId, fence)
+            : undefined;
+          const { updateCommand } = await import("../cli/update-cli/update-command.js");
+          fence.assertCurrent();
+          if (requesterAuthority?.isCurrent() === false) {
+            throw new UpdateRequesterRevokedError();
+          }
+          await updateCommand({
+            ...input.opts,
+            run: {
+              runId: input.runId,
+              originalRecoveryCapture: input.originalRecoveryCapture,
+              busyTimeoutMs: input.busyTimeoutMs,
+              env: { ...process.env },
+              executorFence: fence,
+              ...(requesterAuthority ? { requesterAuthority } : {}),
+            },
+          });
+        },
+      );
+      diagnostics.finish();
+      await fs.rename(`${resultPath}.pending`, resultPath);
+    } catch (error) {
+      const snapshot = diagnostics.finish(error);
+      if (!hasCommandProcessCleanupError(error)) {
+        await writePostCoreUpdateFailureFile(resultPath, error, snapshot);
+      }
+      throw error;
     }
-    throw error;
-  }
+  });
 }
 
 async function runDelegatedDoctor(input: DecodedUpdateDoctorInput): Promise<void> {

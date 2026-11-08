@@ -23,6 +23,10 @@ import {
   type PreUpdateConfigRestoreInput,
 } from "../../infra/update-post-core-context.js";
 import {
+  markPostCoreMaintenanceStage,
+  recordPostCoreMaintenanceFailure,
+} from "../../infra/update-post-core-diagnostics.js";
+import {
   createManagedUpdateRequesterAuthority,
   createManagedUpdateRequesterContinuationAuthority,
   resolveManagedUpdateRequester,
@@ -221,6 +225,7 @@ export async function resumePostCoreUpdate(params: ResumePostCoreUpdateParams): 
       defaultRuntime.writeJson(result);
     }
   } catch (error) {
+    recordPostCoreMaintenanceFailure(error);
     // Publish only after phase cleanup releases its leases. The parent owns
     // recovery and triage; inherited TTY output cannot serve as its error record.
     await writePostCoreUpdateFailureFile(
@@ -340,6 +345,7 @@ async function resumePostCoreUpdateInternal(
         });
         const { beginDoctorMaintenance } = await import("../../commands/doctor-maintenance.js");
         assertCurrent?.();
+        markPostCoreMaintenanceStage("maintenance_begin");
         maintenance = await beginDoctorMaintenance({
           // Parent-owned completion retains native service custody, not state admission.
           root: parentOwnsCompletion ? null : params.root,
@@ -347,9 +353,12 @@ async function resumePostCoreUpdateInternal(
           runtime: { ...defaultRuntime, log: defaultRuntime.error },
           ...(params.opts.run ? { assertCurrent } : {}),
         });
+        markPostCoreMaintenanceStage("maintenance_ready");
         // Each fresh Doctor holds its own database fences after admission. Release
         // this scope before unscoped requester policy reads reopen shared state.
+        markPostCoreMaintenanceStage("release_state_begin");
         await maintenance?.releaseState();
+        markPostCoreMaintenanceStage("release_state_done");
         assertCurrent?.();
         await completeSourceUpdateRuntime({
           root: params.root,
@@ -423,6 +432,7 @@ async function resumePostCoreUpdateInternal(
       }),
     };
   } catch (error) {
+    recordPostCoreMaintenanceFailure(error);
     outcome =
       error instanceof DoctorMaintenanceRefusalError && error.refusal.kind === "deferred"
         ? {
