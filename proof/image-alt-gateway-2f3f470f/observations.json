@@ -1,0 +1,511 @@
+{
+  "at": "2026-11-08T09:29:49.089169+00:00",
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "fixture_sha256": "9473a8a0ffa50dda2dc05fa6b8c88588af8639a6050f09192581aac6802c83df",
+  "status": "FULL_FEATURE_TRANSITION_WITNESSED; TEST_RED_STRICT_SHUTDOWN_CODE_ASSERTION",
+  "run_once": true,
+  "exit_code": 1,
+  "elapsed_seconds": 129.547,
+  "commands": 55,
+  "publication_receipts": [
+    {
+      "kind": "publication",
+      "payloadSha256": "5d63acddad44c4cbff7ca465d4518e730b89be1501c3c1fcedebf41df5df7da8",
+      "receipt": {
+        "requestId": "6d680da7-4fa0-4100-be91-408d690c3396",
+        "state": "published",
+        "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+        "path": "notes/jade-lantern.md",
+        "revision": 1,
+        "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+        "at": "2026-11-08T09:27:28.719Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "784cc182120998ce114d96eee8084f02be2a67a8",
+          "message": "Local Git history recorded."
+        }
+      }
+    },
+    {
+      "kind": "publication",
+      "payloadSha256": "0375923713429bc22f6e132963a347f4cf0fc3718029188d6f2a29ff8e6dfbed",
+      "receipt": {
+        "requestId": "5d315986-a956-45a9-a526-09c449938aa7",
+        "state": "published",
+        "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+        "path": "notes/copper-kite.md",
+        "revision": 1,
+        "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+        "at": "2026-11-08T09:27:29.646Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "4cbd789d32ef3a60f6127a81159902cee61a032c",
+          "message": "Local Git history recorded."
+        }
+      }
+    },
+    {
+      "kind": "publication",
+      "payloadSha256": "dce06e44820ad55a64e99cc9bfaa1564b753faef2d7b2b774b67251150b416c8",
+      "receipt": {
+        "requestId": "613db052-91c3-4a78-9784-24f8970417f6",
+        "state": "published",
+        "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+        "path": "notes/visible-navigation-control.md",
+        "revision": 1,
+        "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+        "at": "2026-11-08T09:27:30.583Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "34ee9dacf5c46f992f1bbca7b6cfd2161981e0da",
+          "message": "Local Git history recorded."
+        }
+      }
+    },
+    {
+      "kind": "publication",
+      "payloadSha256": "e441a146ecbc764d1bb1633fa82336d65aa900706e5799fb748a61e3e540f273",
+      "receipt": {
+        "requestId": "34b9a93e-61f9-4076-8792-b9b060955a65",
+        "state": "published",
+        "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+        "path": "notes/diagram-note.md",
+        "revision": 1,
+        "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841",
+        "at": "2026-11-08T09:27:31.465Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "f6705a629fc6663c4abe3950c59c8a5fcc27cfe8",
+          "message": "Local Git history recorded."
+        }
+      }
+    },
+    {
+      "kind": "publication",
+      "payloadSha256": "29129888096239be881680df51e53b9dfc00f98c732cfce18d9d22c25d61c3ac",
+      "receipt": {
+        "requestId": "c5320640-9982-49d7-b66b-01147b147839",
+        "state": "published",
+        "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+        "path": "notes/diagram-note.md",
+        "revision": 2,
+        "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7",
+        "at": "2026-11-08T09:27:41.380Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "24ed6d64f7af7e6eeb57817692c83c4f241127aa",
+          "message": "Local Git history recorded."
+        }
+      }
+    },
+    {
+      "kind": "publication",
+      "payloadSha256": "e9bcaaf0e38b9a62e5646a61a4a34b76f4476822ca8d15fc455d13f1a180d284",
+      "receipt": {
+        "requestId": "c9e53142-2f55-4534-9424-ec5d7de45ebb",
+        "state": "published",
+        "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+        "path": "notes/diagram-note.md",
+        "revision": 3,
+        "hash": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a",
+        "at": "2026-11-08T09:27:51.597Z",
+        "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.",
+        "indexed": false,
+        "git": {
+          "state": "committed",
+          "commit": "4bcc4a29774b4e947e2a59b882183aa3fe10c027",
+          "message": "Local Git history recorded."
+        }
+      }
+    }
+  ],
+  "record_observations": [
+    {
+      "kind": "record",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "title": "Jade Lantern",
+      "body": "A wholly fictional target page.",
+      "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "revision": 1,
+      "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "title": "Copper Kite",
+      "body": "A wholly fictional unrelated page.",
+      "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "revision": 1,
+      "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "title": "Visible navigation control",
+      "body": "[[Jade Lantern]]",
+      "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "revision": 1,
+      "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "title": "Diagram note",
+      "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)",
+      "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841",
+      "revision": 1,
+      "rawSha256": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "title": "Diagram note",
+      "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)",
+      "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841",
+      "revision": 1,
+      "rawSha256": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "title": "Jade Lantern",
+      "body": "A wholly fictional target page.",
+      "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "revision": 1,
+      "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "title": "Copper Kite",
+      "body": "A wholly fictional unrelated page.",
+      "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "revision": 1,
+      "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "title": "Visible navigation control",
+      "body": "[[Jade Lantern]]",
+      "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "revision": 1,
+      "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "title": "Diagram note",
+      "body": "Fictional navigation: [[Jade Lantern]]",
+      "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7",
+      "revision": 2,
+      "rawSha256": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "title": "Diagram note",
+      "body": "Fictional navigation: [[Jade Lantern]]",
+      "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7",
+      "revision": 2,
+      "rawSha256": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "title": "Jade Lantern",
+      "body": "A wholly fictional target page.",
+      "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "revision": 1,
+      "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "title": "Copper Kite",
+      "body": "A wholly fictional unrelated page.",
+      "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "revision": 1,
+      "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "title": "Visible navigation control",
+      "body": "[[Jade Lantern]]",
+      "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "revision": 1,
+      "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56",
+      "valid": true
+    },
+    {
+      "kind": "record",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "title": "Diagram note",
+      "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)",
+      "hash": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a",
+      "revision": 3,
+      "rawSha256": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a",
+      "valid": true
+    }
+  ],
+  "connections": [
+    {
+      "kind": "connections",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "direction": "links",
+      "ids": [],
+      "total": 0,
+      "nextOffset": null,
+      "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"
+    },
+    {
+      "kind": "connections",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "direction": "backlinks",
+      "ids": [
+        "d36cf276-4f40-4460-8001-6fbedca6f395"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"
+    },
+    {
+      "kind": "connections",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "direction": "links",
+      "ids": [
+        "21519e50-33c7-4bbc-a478-59316b3b268c"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"
+    },
+    {
+      "kind": "connections",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "direction": "backlinks",
+      "ids": [],
+      "total": 0,
+      "nextOffset": null,
+      "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"
+    },
+    {
+      "kind": "connections",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "direction": "links",
+      "ids": [
+        "21519e50-33c7-4bbc-a478-59316b3b268c"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"
+    },
+    {
+      "kind": "connections",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "direction": "backlinks",
+      "ids": [
+        "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+        "d36cf276-4f40-4460-8001-6fbedca6f395"
+      ],
+      "total": 2,
+      "nextOffset": null,
+      "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"
+    },
+    {
+      "kind": "connections",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "direction": "links",
+      "ids": [
+        "21519e50-33c7-4bbc-a478-59316b3b268c"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"
+    },
+    {
+      "kind": "connections",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "direction": "backlinks",
+      "ids": [],
+      "total": 0,
+      "nextOffset": null,
+      "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"
+    },
+    {
+      "kind": "connections",
+      "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4",
+      "direction": "links",
+      "ids": [],
+      "total": 0,
+      "nextOffset": null,
+      "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"
+    },
+    {
+      "kind": "connections",
+      "id": "21519e50-33c7-4bbc-a478-59316b3b268c",
+      "direction": "backlinks",
+      "ids": [
+        "d36cf276-4f40-4460-8001-6fbedca6f395"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"
+    },
+    {
+      "kind": "connections",
+      "id": "d36cf276-4f40-4460-8001-6fbedca6f395",
+      "direction": "links",
+      "ids": [
+        "21519e50-33c7-4bbc-a478-59316b3b268c"
+      ],
+      "total": 1,
+      "nextOffset": null,
+      "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"
+    },
+    {
+      "kind": "connections",
+      "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e",
+      "direction": "backlinks",
+      "ids": [],
+      "total": 0,
+      "nextOffset": null,
+      "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"
+    }
+  ],
+  "transition_stages": [
+    {
+      "kind": "transition-stage",
+      "stage": 0,
+      "outgoing": 0,
+      "backlinks": 1,
+      "controls": "verified"
+    },
+    {
+      "kind": "transition-stage",
+      "stage": 1,
+      "outgoing": 1,
+      "backlinks": 2,
+      "controls": "verified"
+    },
+    {
+      "kind": "transition-stage",
+      "stage": 2,
+      "outgoing": 0,
+      "backlinks": 1,
+      "controls": "verified"
+    }
+  ],
+  "owner_preparation": {
+    "kind": "owner-preparation",
+    "generation": ".artifacts/vitest-workers/run-V2Jr7v",
+    "descriptorObserved": false,
+    "manifestSha256": "ebfb9ae5301002910ad69a3940114ecf1cf699bfae06f12f4eaf4cc233038c6a",
+    "identity": "a7a826c40e2a56a7d2b7472c4a5490e703e022bfb1d962fc08f64d63d4fcf33f",
+    "preparationDurationMs": 30471.102493000002,
+    "inputCount": 15060,
+    "outputCount": 24049,
+    "cacheSignaturePresent": false,
+    "selectedOwnerSha256": "04e0c18f9cfc89f1b3ce8c3d2abfe51e89731f6a403775da920425425fdb57d8",
+    "declarationSha256": "2e3f91c364b8aebf033f5a8e66765762308670db3d0b28de9a81bbfc4ac4508b",
+    "selectedOwnerBytes": 3197906,
+    "verification": "two observed outputs match owner manifest; full verification and borrower join belong to runner"
+  },
+  "owner_selection": {
+    "kind": "owner-selection",
+    "inherited": false,
+    "generationObserved": true,
+    "selectedInGeneration": true,
+    "loaderFree": true,
+    "declarationRelativeUrl": ".artifacts/vitest-workers/run-V2Jr7v/dist/runtime-process-entrypoints-CCxGC6dl.js",
+    "selectedRelativeUrl": ".artifacts/vitest-workers/run-V2Jr7v/dist/process/supervisor/service-child-group-anchor.js",
+    "argvShape": [
+      "entry"
+    ]
+  },
+  "gateway_terminal": {
+    "kind": "gateway-terminal",
+    "normalExit": false,
+    "stopped": true,
+    "launchAttempted": true,
+    "handleCreated": true,
+    "startedResolved": true,
+    "exitObserved": true,
+    "closeObserved": true,
+    "spawnState": "fulfilled",
+    "pidObserved": true,
+    "code": null,
+    "signal": "SIGTERM"
+  },
+  "terminal": {
+    "kind": "terminal",
+    "complete": true,
+    "proofComplete": false,
+    "cleanupOK": false,
+    "listenerClosed": true,
+    "claimReleased": true,
+    "launchAttempted": true,
+    "handleCreated": true,
+    "startedResolved": true,
+    "exitObserved": true,
+    "closeObserved": true,
+    "spawnState": "fulfilled",
+    "pidObserved": true,
+    "code": null,
+    "signal": "SIGTERM",
+    "retainedCase": "/cases/h12-gateway-fg50Ur",
+    "commands": 55,
+    "stderrBytes": 0,
+    "gatewayStdoutBytes": 0,
+    "gatewayStderrBytes": 12852
+  },
+  "primary_failure": {
+    "kind": "primary-failure",
+    "stage": "status",
+    "category": "proof-constraint",
+    "check": "cleanup-not-qualified"
+  },
+  "runner_generation_disposed": true,
+  "source_and_staged_fixture_unchanged": true,
+  "claim_limit": "actualbuiltGateway/CLIfullfeaturestages observed throughrealoperatorauthority; no wholeproofgreen/normalcode0claim; strictshutdownpredicate needsowningcontractqualification",
+  "publication_status": "BOUNDED_FEATURE_AND_CANONICAL_CUSTODY_EVIDENCE; ORIGINAL_TEST_RED_RETAINED",
+  "command_kind_counts": {
+    "setup-baseline": 1,
+    "writer-metadata": 1,
+    "canonical-config-patch": 1,
+    "config-validate": 1,
+    "empty-fixture": 1,
+    "stores-snapshot": 1,
+    "status": 2,
+    "ontology": 1,
+    "save_page": 6,
+    "record": 28,
+    "connections": 12
+  },
+  "owned_child_commands": 55,
+  "built_cli_calls": 54,
+  "empty_fixture_child_calls": 1
+}

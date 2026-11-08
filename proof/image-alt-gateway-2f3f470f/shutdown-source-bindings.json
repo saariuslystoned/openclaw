@@ -1,0 +1,150 @@
+{
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "status": "ALL24_FULL_BYTES_SHA256_GITBLOBS_INDEPENDENTLY_VERIFIED",
+  "files": [
+    {
+      "path": "src/index.ts",
+      "bytes": 8310,
+      "sha256": "2ab4b3b3b3e6c6af92c931d9b10111e89018323f1ac986ba147457fea64b1b91",
+      "git_blob": "ae8bbd9634808381408fdbed98b24e2ff88d8f97"
+    },
+    {
+      "path": "tsdown.config.ts",
+      "bytes": 45573,
+      "sha256": "761cba90a2e5c8c0528c1a83b1449c21141a2f53061a271195e5d6bd5ae68f99",
+      "git_blob": "9541ae8d00295f31b55cf67440891381d74a81b6"
+    },
+    {
+      "path": "node-compile-cache.mjs",
+      "bytes": 11940,
+      "sha256": "37fad2195b4f03da1d385f1a9b89f63688babc4b9f875cbf271104c39230a235",
+      "git_blob": "46d68fa215dfc61c7e7be1b8f51f7f4a8af27f2c"
+    },
+    {
+      "path": "node-runtime-recovery.mjs",
+      "bytes": 27156,
+      "sha256": "6b4de18b5980c14f74cbc7d85457c8293ee6dca558415090809840c644b58433",
+      "git_blob": "f11603ad8d9e5ff410c489e118ac68974687fe1b"
+    },
+    {
+      "path": "cli-invocation.mjs",
+      "bytes": 10384,
+      "sha256": "79e79059a2aea014b0e5aee9e23eb2c2bc9d29829bd12e6edabf4383370fec99",
+      "git_blob": "3ca050a16c31fa95119421995fd58fbe5ee22bc4"
+    },
+    {
+      "path": "src/cli/gateway-run-argv.ts",
+      "bytes": 3208,
+      "sha256": "582fa926e98b0e5dbe2c144c503619bb582b908a5a2b8d05bc654d32feb2ccad",
+      "git_blob": "51c927f5078c793363eacc59538561feefc41ba8"
+    },
+    {
+      "path": "src/cli/one-shot-exit.ts",
+      "bytes": 6040,
+      "sha256": "4fefba914144333035058bdf74a862c8a03bf0084fa88b88a22a6af3b7cdc387",
+      "git_blob": "c85fd76427cf71818e4d8e924c9f32881417c3e5"
+    },
+    {
+      "path": "src/cli/signal-exit-barrier.ts",
+      "bytes": 9201,
+      "sha256": "cd6151fb91b33076a0a660b41a7bbd4f0d3401458b5b4a1247b8a11ef58f7bd5",
+      "git_blob": "b0d7d534deb22f7f054ef992d047b8010c5733cd"
+    },
+    {
+      "path": "src/cli/gateway-cli/run.ts",
+      "bytes": 35278,
+      "sha256": "305d20c71359e2c8cc2af7d93ca86bdfef0da7b80ad36ce88e4485737e3e9945",
+      "git_blob": "2cf915345a5d4b976aa39c413414ccc6f4a0497e"
+    },
+    {
+      "path": "src/cli/gateway-cli/run-loop.ts",
+      "bytes": 52992,
+      "sha256": "d6e3fc8ea9c0030775481d747f96b4569469b42b65408f009a3e570e93419334",
+      "git_blob": "e8f72df06e564a1ad0829cd0f3ab7731c178c590"
+    },
+    {
+      "path": "src/cli/gateway-cli/run-loop-terminal.ts",
+      "bytes": 8676,
+      "sha256": "9f061c19f2f00969d7120b48bb28245821d81bb4a8963d273eb08edf102546a5",
+      "git_blob": "faa815cece17384eabfc64bd932157f886533964"
+    },
+    {
+      "path": "src/cli/gateway-cli/run-loop-cleanup.ts",
+      "bytes": 11899,
+      "sha256": "7319168609ed03ba403646ed99e02fe6b39a5d9101efaa50cb307d236719926f",
+      "git_blob": "75600a8a07f4c99af8f7ffc25cb4bdf37b124de6"
+    },
+    {
+      "path": "src/cli/gateway-cli/run-loop-shutdown-format.ts",
+      "bytes": 3251,
+      "sha256": "9d889e7c074470783c8ff67a080b64feb49d68e7cb378261a6c0e969f90b10a2",
+      "git_blob": "6d776cb34c1747655e6af90338204432cef62443"
+    },
+    {
+      "path": "src/cli/gateway-cli/shutdown-hard-exit.ts",
+      "bytes": 2569,
+      "sha256": "d1067c0c3ed5bd67ab72bd8947e6c8af676968db1183a7a46d976ac22204ae87",
+      "git_blob": "107ac872b88f3a5e89df0676ad7673de6208984b"
+    },
+    {
+      "path": "src/cli/gateway-cli/run-loop-shutdown-completion.test-support.ts",
+      "bytes": 13953,
+      "sha256": "d28bd15b03c85f347afbe7a57c408972a497dc4fbb5943884fafd01498c24e71",
+      "git_blob": "c0c942902873284a7e974fcc85cd84e0511df27d"
+    },
+    {
+      "path": "test/helpers/openclaw-test-process.ts",
+      "bytes": 5130,
+      "sha256": "9173de3d45616d9885da91015401eca9892c3497bdf9bcae780246c962ef61e7",
+      "git_blob": "379449915715efbf3d0d1a8df2d4cfb9d5ec5b1d"
+    },
+    {
+      "path": "test/helpers/openclaw-test-instance.ts",
+      "bytes": 53286,
+      "sha256": "e9376db22bb85778d3a84821cc5d335a457d4e1177a6f37ca324f1c063cbeb33",
+      "git_blob": "0079286a55d4a8e7c632a10434321db6e8157406"
+    },
+    {
+      "path": "src/process/supervisor/adapters/child.ts",
+      "bytes": 25875,
+      "sha256": "d8de779b05e83dd36a84153f6bb7b6bb4b58ea6b6f9e7e361fc9f9ec114d811e",
+      "git_blob": "be715c1fd1de8b068680134649dd320c5e255870"
+    },
+    {
+      "path": "src/process/supervisor/service-child-relay-host.ts",
+      "bytes": 27941,
+      "sha256": "ea6d4593cd85736119989ebe0441435f0fd880eeeba8c9a8327ba87571926558",
+      "git_blob": "43973d64fef8cf1426c7b99fcdfad0a997b02b6c"
+    },
+    {
+      "path": "src/process/supervisor/service-child-group-anchor.ts",
+      "bytes": 28102,
+      "sha256": "07a8ed0239f3bf6b8b527868cb3ec18fc32f603f3db9634b11bddb9289773e46",
+      "git_blob": "d20ab6137e4a8316830b04d54f555c172c7ab494"
+    },
+    {
+      "path": "src/infra/gateway-boot-lifecycle.ts",
+      "bytes": 11843,
+      "sha256": "f453cf02fe14d06d80777787af2b09c76759a312faa96689719948b2dd0423a7",
+      "git_blob": "d915c73d9c38f5c9ae5e7e5a9d0d3351e304ec49"
+    },
+    {
+      "path": "src/infra/gateway-boot-lifecycle.kernel.ts",
+      "bytes": 6524,
+      "sha256": "486c7b299e6ea15427b0ea88d16d4f2f645a906b6aa50b708be82d48f8e3320c",
+      "git_blob": "14dd040f966b7517a70c53be7b9dd8ba83935198"
+    },
+    {
+      "path": "gateway-run-argv.mjs",
+      "bytes": 1451,
+      "sha256": "b564a671dfe48a0c81bc799cb489783d2949e8795264926cf338c1b5fcdb02e3",
+      "git_blob": "3aeead91ec1c46343da9f910054924bce903f4a5"
+    },
+    {
+      "path": "src/cli/gateway-cli/runtime-hooks.ts",
+      "bytes": 894,
+      "sha256": "36d1db5b987b3610898b36960e94189d75660dd38ccd82353dab137ce934b4b4",
+      "git_blob": "8afb0ea7d299507c9c1c94853ae38d04f63ee793"
+    }
+  ]
+}

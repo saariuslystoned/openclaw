@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-08T09:52:30.172837+00:00",
+  "source_repo": "openclaw/openclaw",
+  "PR": 195027,
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "fixture_packet_bytes": 40947,
+  "fixture_packet_sha256": "9a271ade0191b5e9536690ec4a85bc3f6a216fa024d0a11510cdd6100294dc74",
+  "fixture_bytes": 29743,
+  "fixture_sha256": "9473a8a0ffa50dda2dc05fa6b8c88588af8639a6050f09192581aac6802c83df",
+  "shutdown_packet_bytes": 11603,
+  "shutdown_packet_sha256": "600fe6401c0d60021422b5d33f766c998bff9c118494e3b333e459c51c86a37c",
+  "shutdown_memo_sha256": "1c84d0504cc67d8043af9cfc1f8db826df4bab1f94f286fe060315a0a8a4a763",
+  "original_allowlisted_terminal_sha256": "fa1cf0f416bac6c09da5f4cf28e772bb8c1fe40678c133ef88d6677f06f09b7c",
+  "privacy": "publicsource+fictionalobservations only; no case/config/authstore/rawCLI-Gateway-authlogs/privatehostpaths/internalgoalconversationIDs",
+  "transformations": "coordinator prose/metadata states updated for acceptedboundedpublication; code/log/sourcebindings unchanged from verifiedlocalpacket",
+  "destination": "authoritativetextproof in publicproductrepofork saariuslystoned/openclaw; no media/assets publication",
+  "source_mutation": "NONE; proof-onlyNEWref, sourcePRheadunchanged/no newPR/merge",
+  "failed_verdict": "exit1/normalExitfalse/proofCompletefalse/cleanupOKfalse preserved"
+}

@@ -1,0 +1,439 @@
+// H12 one-off normal-runner proof. Artifact only; root admits execution separately.
+// No content is written below the Gateway; the child fixture provisions an EMPTY store.
+import fs from "node:fs/promises";
+import path from "node:path";
+import net from "node:net";
+import { fileURLToPath } from "node:url";
+import { createHash, randomUUID } from "node:crypto";
+import { setTimeout as delay } from "node:timers/promises";
+
+import { test } from "vitest";
+import { Check } from "typebox/value";
+import { runManagedCommand, hasUnjoinedWork } from "../../../scripts/lib/managed-child-process.mts";
+import { BUILD_STAMP_FILE, RUNTIME_POSTBUILD_STAMP_FILE } from "../../../scripts/lib/local-build-metadata-paths.mts";
+import { getVitestWorkerDescriptor } from "../../../scripts/lib/vitest-worker-descriptor.mts";
+import { createOpenClawTestProcess } from "../../../test/helpers/openclaw-test-process.js";
+import { testing } from "../../../test/helpers/openclaw-test-instance.js";
+import { reserveTestPortListener } from "../../../src/test-utils/port-claims.js";
+import { resolveRuntimeProcessDistRoot } from "../../../runtime-process-bootstrap.generated.mjs";
+import { runtimeProcessEntrypoints } from "../../../src/infra/runtime-process-entrypoints.js";
+import { resolveRuntimeProcessEntrypointUrl } from "../../../src/infra/runtime-process-url.js";
+import { resolveRuntimeWorkerArgv } from "../../../src/infra/runtime-worker-url.js";
+import { getInheritedNativeProcessOwner } from "../../../src/process/supervisor/inherited-process-lineage.js";
+import { contract } from "./contract.js";
+
+const HEAD = "2f3f470f17424a40e86f8beaafd06b422dec8d2c";
+const companion = path.join(process.cwd(), "local-proof/h12-gateway-driver-v2");
+const repo = await fs.realpath(process.cwd());
+const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const emit = (kind, value) => console.log("H12 " + JSON.stringify({ kind, ...value }));
+let stage = "preflight";
+class ProofStop extends Error {
+  code: string;
+  constructor(code: string) { super(code); this.code = code; }
+}
+// Only literal categories leave this observer; no message/stack/cause serialization.
+let primaryFailure;
+const errorCodes = new Set(["ENOENT", "EACCES", "EPERM", "EADDRINUSE", "EADDRNOTAVAIL", "ESRCH", "EPIPE",
+  "ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "ABORT_ERR", "ERR_SERVER_NOT_RUNNING", "ERR_MODULE_NOT_FOUND",
+  "ERR_UNKNOWN_FILE_EXTENSION", "ERR_INVALID_ARG_TYPE", "ERR_INVALID_ARG_VALUE", "ERR_SPAWN_BROKER_UNAVAILABLE",
+  "EPROCESSGROUP_CLEANUP_FAILED", "EPROCESS_TREE_VERIFICATION_UNSUPPORTED"]);
+function errorKind(e) {
+  if (e instanceof ProofStop) return "proof-constraint";
+  if (errorCodes.has(e?.code)) return e.code;
+  if (e?.name === "GatewayAgentAdmissionError") return "gateway-agent-admission-refused";
+  if (e instanceof AggregateError) return "aggregate-error";
+  if (e instanceof TypeError) return "type-error";
+  if (e instanceof ReferenceError) return "reference-error";
+  if (e instanceof SyntaxError) return "syntax-error";
+  if (e instanceof RangeError) return "range-error";
+  return "owner-operation-failed";
+}
+function safeError(e) {
+  return { category: errorKind(e),
+    ...(e instanceof ProofStop ? { check: e.code.split(":")[0] } : {}),
+    ...(e instanceof AggregateError ? { members: e.errors.slice(0, 4).map(errorKind),
+      omittedMembers: Math.max(0, e.errors.length - 4) } : {}) };
+}
+function rememberFailure(e, at = stage) {
+  if (!primaryFailure) { primaryFailure = { stage: at, ...safeError(e) }; emit("primary-failure", primaryFailure); }
+}
+function exitFacts(p) {
+  return { pidObserved: Number.isSafeInteger(p?.pid) && p.pid > 0,
+    code: Number.isSafeInteger(p?.exitCode) ? p.exitCode : null,
+    signal: p?.signalCode == null ? null :
+      ["SIGTERM", "SIGKILL", "SIGINT", "SIGHUP", "SIGABRT", "SIGSEGV", "SIGBUS"].includes(p.signalCode) ? p.signalCode : "other" };
+}
+function requireFact(value, code) { if (!value) throw new ProofStop(code); }
+function same(actual, expected, code) {
+  requireFact(JSON.stringify(actual) === JSON.stringify(expected), code);
+}
+function inside(parent, child) {
+  const rel = path.relative(parent, child);
+  return rel !== "" && !rel.startsWith(".." + path.sep) && rel !== ".." && !path.isAbsolute(rel);
+}
+async function absent(filename) {
+  try { await fs.lstat(filename); return false; }
+  catch (e) { if (e.code === "ENOENT") return true; throw e; }
+}
+async function bindSources() {
+  const manifestBytes = await fs.readFile(path.join(companion, "source-bindings.json"));
+  requireFact(sha(manifestBytes) === "fc89521caac0947087c94aab04aa034185c4c1a31f55c1b16ca6cfd2ce51478b", "companion-manifest-hash");
+  const manifest = JSON.parse(manifestBytes.toString("utf8"));
+  requireFact(manifest.head === HEAD, "manifest-head");
+  for (const [p, bytes, hash, oid] of manifest.files) {
+    const data = await fs.readFile(path.join(repo, p));
+    const blob = createHash("sha1").update("blob " + data.length + "\0").update(data).digest("hex");
+    requireFact(data.length === bytes && sha(data) === hash && blob === oid, "source-binding:" + p);
+  }
+  return manifest.files.length;
+}
+
+// These imports are ordinary declarations. The repository plugin, not this fixture,
+// prepares/lends their compiled generation. Observation never installs a descriptor.
+async function observeNormalRunnerOwner() {
+  stage = "normal-runner-owner-preflight";
+  requireFact(process.platform === "linux" && !process.versions.bun, "requires-qualified-linux-node");
+  const declared = runtimeProcessEntrypoints.serviceChildGroupAnchor;
+  const declarationUrl = new URL(declared.currentModuleUrl);
+  const inherited = getInheritedNativeProcessOwner();
+  const selectedUrl = inherited ? new URL(inherited) : resolveRuntimeProcessEntrypointUrl("serviceChildGroupAnchor");
+  requireFact(declarationUrl.protocol === "file:" && selectedUrl.protocol === "file:", "owner-file-url-required");
+  const declarationFile = fileURLToPath(declarationUrl);
+  const selectedFile = fileURLToPath(selectedUrl);
+  const distRoot = resolveRuntimeProcessDistRoot(declarationFile);
+  if (distRoot === undefined) throw new ProofStop("declared-runtime-dist-not-observed");
+  // The owning resolver handles both flat emitted chunks and nested declarations.
+  const declaredDist = path.resolve(distRoot);
+  const generation = path.dirname(declaredDist);
+  const generations = path.join(repo, ".artifacts/vitest-workers");
+  const generationObserved = path.basename(declaredDist) === "dist" &&
+    path.dirname(generation) === generations && path.basename(generation).startsWith("run-");
+  const inGeneration = generationObserved && inside(declaredDist, selectedFile);
+  const workerArgv = resolveRuntimeWorkerArgv(selectedUrl, process.execPath);
+  const loaderFree = workerArgv.length === 1 && workerArgv[0] === selectedFile && /\.m?js$/.test(selectedFile);
+  emit("owner-selection", {
+    inherited: inherited !== undefined, generationObserved, selectedInGeneration: inGeneration, loaderFree,
+    declarationRelativeUrl: inside(repo, declarationFile) ? path.relative(repo, declarationFile) : "outside-repository",
+    selectedRelativeUrl: inside(repo, selectedFile) ? path.relative(repo, selectedFile) : "outside-repository",
+    argvShape: workerArgv.map(a => a === selectedFile ? "entry" : a === "--import" ? "--import" : "other"),
+  });
+  requireFact(generationObserved && inGeneration && loaderFree, "normal-compiled-owner-not-observed");
+  // This getter is optional in a pool process: bootstrap installs the descriptor
+  // in the config process. The transformed declaration is the actual supplied path.
+  const descriptor = getVitestWorkerDescriptor();
+  requireFact(!descriptor || path.resolve(descriptor.directory) === generation, "runner-descriptor-mismatch");
+  const manifestBytes = await fs.readFile(path.join(generation, "manifest.json"));
+  const manifest = JSON.parse(manifestBytes.toString("utf8"));
+  const selectedBytes = await fs.readFile(selectedFile);
+  const declarationBytes = await fs.readFile(declarationFile);
+  const selectedHash = sha(selectedBytes), declarationHash = sha(declarationBytes);
+  const selectedKey = path.relative(declaredDist, selectedFile).replaceAll(path.sep, "/");
+  const declarationKey = path.relative(declaredDist, declarationFile).replaceAll(path.sep, "/");
+  requireFact(manifest.outputs?.[selectedKey] === selectedHash &&
+    manifest.outputs?.[declarationKey] === declarationHash, "observed-owner-manifest-mismatch");
+  requireFact(typeof manifest.identity === "string" && /^[a-f0-9]{64}$/.test(manifest.identity) &&
+    Number.isFinite(manifest.durationMs) && manifest.durationMs >= 0, "runner-manifest-incomplete");
+  emit("owner-preparation", { generation: path.relative(repo, generation), descriptorObserved: Boolean(descriptor),
+    manifestSha256: sha(manifestBytes), identity: manifest.identity, preparationDurationMs: manifest.durationMs,
+    inputCount: Object.keys(manifest.inputs).length, outputCount: Object.keys(manifest.outputs).length,
+    cacheSignaturePresent: typeof manifest.cacheSignature === "string",
+    selectedOwnerSha256: selectedHash, declarationSha256: declarationHash, selectedOwnerBytes: selectedBytes.length,
+    verification: "two observed outputs match owner manifest; full verification and borrower join belong to runner" });
+}
+
+async function gatewayProof() {
+  requireFact(process.env.VITEST && process.env.OPENCLAW_TEST_RUNTIME_LOG === "1", "required-runtime-flags-missing");
+  requireFact(process.versions.node.split(".")[0] === "26", "requires-qualified-node26");
+  const count = await bindSources();
+  const emptyChild = path.join(companion, "gateway-proof.mjs");
+  requireFact(sha(await fs.readFile(emptyChild)) === "c9ddbc8b698dc4270ed47d98d0d41854a8b0c1ac8b65669e484712111529856b", "companion-driver-hash");
+  await observeNormalRunnerOwner();
+  const parent = await fs.realpath(process.env.H12_CASE_PARENT);
+  const root = await fs.mkdtemp(path.join(parent, "h12-gateway-"));
+  const profile = "h12-" + randomUUID();
+  const home = path.join(root, "home");
+  const stateDir = path.join(root, "state");
+  const configPath = path.join(stateDir, "openclaw.json");
+  for (const p of [home, stateDir, "tmp", "logs", "workspace", "xdg-config", "xdg-cache", "xdg-data", "xdg-runtime"])
+    await fs.mkdir(path.isAbsolute(p) ? p : path.join(root, p), { recursive: true, mode: 0o700 });
+  // Root owns secretless/network-unshared admission, including /tmp/openclaw; preserve its descriptors.
+  const env = { ...process.env, HOME: home, USERPROFILE: home, OPENCLAW_HOME: home,
+    OPENCLAW_STATE_DIR: stateDir, OPENCLAW_CONFIG_PATH: configPath, OPENCLAW_PROFILE: profile,
+    TMPDIR: path.join(root, "tmp"), XDG_CONFIG_HOME: path.join(root, "xdg-config"),
+    XDG_CACHE_HOME: path.join(root, "xdg-cache"), XDG_DATA_HOME: path.join(root, "xdg-data"),
+    XDG_RUNTIME_DIR: path.join(root, "xdg-runtime"), H12_ROOT: root,
+    OPENCLAW_GATEWAY_TOKEN: randomUUID() + randomUUID() };
+  const cliEntry = path.join(repo, "dist", "index.js");
+  const buildFacts = [];
+  for (const p of [cliEntry, path.join(repo, "dist", BUILD_STAMP_FILE), path.join(repo, "dist", RUNTIME_POSTBUILD_STAMP_FILE)]) {
+    const bytes = await fs.readFile(p);
+    if (p !== cliEntry) {
+      const stamp = JSON.parse(bytes.toString("utf8"));
+      requireFact(stamp.head === HEAD && stamp.inputsClean === true, "unqualified-build-stamp");
+    }
+    buildFacts.push({ file: path.relative(repo, p), bytes: bytes.length, sha256: sha(bytes) });
+  }
+  // No call to the helper's auto-build, writeConfig, minimal Gateway or --allow-unconfigured path.
+  const reservation = await reserveTestPortListener({ offsets: [0, 1], createListener: () => net.createServer(s => s.destroy()) });
+  const port = reservation.claim.port;
+  env.OPENCLAW_GATEWAY_PORT = String(port);
+  const cliPrefix = [cliEntry, "--profile", profile];
+  let reservationReleased = false, gateway, spawnCleanup, unsafeCommand = false;
+  let gatewayExit, closeObserved = false, exitObserved = false, processError = false;
+  let launchAttempted = false, startedResolved = false, spawnState = "not-published", spawnFailure;
+  let bodyError;
+  const custody = () => ({ launchAttempted, handleCreated: Boolean(gateway), startedResolved,
+    exitObserved, closeObserved, spawnState, ...(spawnFailure ? { spawnFailure } : {}), ...exitFacts(gateway?.process) });
+  let complete = false, cleanupOK = false;
+  const requests = [];
+  const stats = { commands: 0, stderrBytes: 0, gatewayStdoutBytes: 0, gatewayStderrBytes: 0 };
+  async function command(args, label, timeoutMs = 60000) {
+    stage = label;
+    let output = [], bytes = 0, overflow = false, stderrBytes = 0, code;
+    const started = Date.now();
+    try {
+      code = await runManagedCommand({ bin: process.execPath, args, cwd: repo, env,
+        stdio: ["ignore", "pipe", "pipe"], timeoutMs, requireProcessTreeExit: true,
+        onReady(child) {
+          child.stdout.on("data", chunk => {
+            bytes += chunk.length;
+            if (bytes <= 2 * 1024 * 1024) output.push(Buffer.from(chunk)); else overflow = true;
+          });
+          child.stderr.on("data", chunk => { stderrBytes += chunk.length; });
+        } });
+    } catch (e) {
+      unsafeCommand ||= hasUnjoinedWork(e);
+      rememberFailure(e);
+      emit("command-failed", { label, ...safeError(e), custodyUnsettled: unsafeCommand,
+        elapsedMs: Date.now() - started, stdoutBytes: bytes, stderrBytes });
+      // Do not echo error objects, argv, Gateway logs or authentication material.
+      throw new ProofStop(unsafeCommand ? "command-custody-unsettled" : "command-execution-refused-or-timeout");
+    } finally { stats.commands++; stats.stderrBytes += stderrBytes; }
+    emit("command-terminal", { label, code, elapsedMs: Date.now() - started, stdoutBytes: bytes, stderrBytes });
+    requireFact(!overflow, "command-output-bound");
+    requireFact(code === 0, "command-nonzero:" + label);
+    return Buffer.concat(output).toString("utf8");
+  }
+  async function cli(args, label) { return command([...cliPrefix, ...args], label); }
+  async function cliJSON(args, label) {
+    const raw = await cli(args, label);
+    try { return JSON.parse(raw); } catch { throw new ProofStop("command-not-json:" + label); }
+  }
+  async function proxy(agent, operation, input, kind = "query") {
+    const definition = contract.operations[operation];
+    requireFact(definition && definition.kind === kind && Check(definition.input, input), "invalid-proof-input:" + operation);
+    const payload = { pluginId: "knowledge", actionId: kind === "action" ? "agent_action" : "agent_query",
+      payload: { agent, operation, input } };
+    const answer = await cliJSON(["gateway", "call", "plugins.sessionAction", "--port", String(port),
+      "--expect-url", "ws://127.0.0.1:" + port, "--params", JSON.stringify(payload), "--timeout", "30000", "--json"], operation);
+    requireFact(answer && answer.ok === true, "operator-action-refused:" + operation);
+    requireFact(Check(definition.output, answer.result), "invalid-proof-output:" + operation);
+    return answer.result;
+  }
+  async function receipt(agent, input) {
+    const frozen = JSON.stringify(input);
+    requests.push(input);
+    await fs.writeFile(path.join(root, "requests.json"), JSON.stringify(requests) + "\n", { mode: 0o600 });
+    let value;
+    try { value = await proxy(agent, "save_page", input, "action"); }
+    catch (e) {
+      rememberFailure(e);
+      // Unknown outcome: inspect the SAME ID once; no resend. Hard operator refusal stops.
+      if (!unsafeCommand && !(e instanceof ProofStop && e.code.startsWith("operator-action-refused:"))) {
+        try {
+          const observed = await proxy(agent, "mutation", { requestId: input.requestId, includeFiles: false });
+          emit("uncertain-mutation", { requestId: input.requestId, payloadSha256: sha(frozen), receipt: observed.receipt });
+        } catch { emit("uncertain-mutation", { requestId: input.requestId, payloadSha256: sha(frozen), reconciliation: "unavailable" }); }
+      }
+      throw e;
+    }
+    const settleUntil = Date.now() + 30000;
+    while (value.state === "accepted" && Date.now() < settleUntil) {
+      await delay(250);
+      const observed = await proxy(agent, "mutation", { requestId: input.requestId, includeFiles: false });
+      requireFact(observed.receipt, "accepted-receipt-missing");
+      value = observed.receipt;
+    }
+    emit("publication", { payloadSha256: sha(frozen), receipt: value });
+    requireFact(value.requestId === input.requestId && value.state === "published", "publication-not-published");
+    requireFact(value.id && value.hash && value.revision >= 1 && value.indexed === false, "publication-incomplete");
+    return value;
+  }
+  async function record(agent, saved, title, body) {
+    const output = await proxy(agent, "record", { id: saved.id, metadataView: "full" });
+    const r = output.record;
+    requireFact(r && r.valid && r.kind === "page" && r.type === "note", "record-invalid");
+    requireFact(r.id === saved.id && r.title === title && r.body === body && r.revision === saved.revision && r.hash === saved.hash,
+      "record-content-identity");
+    requireFact(output.content.offset === 0 && output.content.totalChars === body.length && output.content.nextOffset === null,
+      "record-content-incomplete");
+    const raw = await proxy(agent, "record", { id: saved.id, view: "raw", metadataView: "none" });
+    requireFact(raw.record && typeof raw.record.raw === "string" && raw.content.nextOffset === null,
+      "record-raw-incomplete");
+    requireFact(sha(raw.record.raw) === saved.hash && raw.record.hash === saved.hash && raw.record.revision === saved.revision,
+      "record-byte-hash");
+    emit("record", { id: r.id, title, body, hash: r.hash, revision: r.revision, rawSha256: sha(raw.record.raw), valid: r.valid });
+  }
+  async function links(agent, id, direction, expected) {
+    const output = await proxy(agent, "connections", { id, direction, limit: 100 });
+    const ids = output.connections.map(c => c.record.id).sort();
+    emit("connections", { id, direction, ids, total: output.total, nextOffset: output.nextOffset, snapshot: output.snapshot });
+    same(ids, [...expected].sort(), "connections-membership:" + direction);
+    requireFact(output.total === expected.length && output.nextOffset === null, "connections-completeness");
+  }
+  try {
+    emit("begin", { head: HEAD, boundSourceFiles: count, buildFacts, versions: { node: process.versions.node, sqlite: process.versions.sqlite },
+      proof: "empty-owner-fixture then real authenticated Gateway content operations", root });
+    requireFact(await absent(configPath), "new-config-already-exists");
+    const setup = await cliJSON(["setup", "--baseline", "--skip-bootstrap", "--workspace", path.join(root, "workspace"), "--json"], "setup-baseline");
+    requireFact(setup.ok === true && setup.configStatus === "created" && setup.configPath === configPath && setup.workspaceDir === path.join(root, "workspace"), "canonical-setup-result");
+    same(await cliJSON(["config", "get", "meta.migrations.skillWorkshopPlugin", "--json"], "writer-metadata"), true, "writer-metadata-absent");
+    const patch = { cron: { enabled: false }, gateway: { mode: "local", port, bind: "loopback", auth: { mode: "token" }, controlUi: { enabled: false } },
+      plugins: { slots: { memory: "knowledge" }, entries: { knowledge: { enabled: true, config: { maintenance: { enabled: false } } },
+        "skill-workshop": { config: { autonomous: { mode: "off" } } } } }, hooks: { enabled: false }, logging: { file: path.join(root, "logs", "gateway.log") } };
+    const patchPath = path.join(root, "case.patch.json");
+    await fs.writeFile(patchPath, JSON.stringify(patch) + "\n", { flag: "wx", mode: 0o600 });
+    await cli(["config", "patch", "--file", patchPath], "canonical-config-patch");
+    const validation = await cliJSON(["config", "validate", "--json"], "config-validate");
+    requireFact(validation.valid === true, "config-invalid");
+    // Separate real-owner fixture process; no content writes.
+    const fixture = await command(["--import", path.join(repo, "scripts", "tsx.mjs"), emptyChild, "empty-store"], "empty-fixture", 120000);
+    const messages = fixture.split("\n").filter(s => s.startsWith("H12 ")).map(s => JSON.parse(s.slice(4)));
+    requireFact(messages.length === 1 && messages[0].kind === "empty-store" && messages[0].registryWorkerExited, "fixture-terminal-receipt");
+    emit("empty-store", messages[0]);
+    const prepared = JSON.parse(await fs.readFile(path.join(root, "empty-store-receipt.json"), "utf8"));
+    const agent = prepared.agent;
+    stage = "reservation-listener-release";
+    emit("lifecycle", { stage, ...custody() });
+    await reservation.releaseListener(); reservationReleased = true;
+    stage = "gateway-construction"; launchAttempted = true;
+    emit("lifecycle", { stage, ...custody() });
+    gateway = await createOpenClawTestProcess({ argv: [process.execPath, ...cliPrefix, "gateway", "run", "--port", String(port), "--bind", "loopback"],
+      cwd: repo, env, gracefulShutdownTimeoutMs: 60000,
+      onError(e) {
+        if (!processError) emit("process-error", { stage, ...safeError(e) });
+        processError = true;
+      }, onSpawnCleanup(p) {
+        spawnCleanup = p; spawnState = "pending";
+        void p.then(() => { spawnState = "fulfilled"; }, e => { spawnState = "rejected"; spawnFailure = safeError(e); });
+      } });
+    gateway.process.stdout.on("data", c => { stats.gatewayStdoutBytes += c.length; });
+    gateway.process.stderr.on("data", c => { stats.gatewayStderrBytes += c.length; });
+    gatewayExit = new Promise(resolve => gateway.process.once("exit", (code, signal) => { exitObserved = true; resolve({ code, signal }); }));
+    gateway.process.once("close", () => { closeObserved = true; });
+    stage = "gateway-started-wait"; emit("lifecycle", { stage, ...custody() });
+    await gateway.started; startedResolved = true;
+    stage = "gateway-readiness"; emit("lifecycle", { stage, ...custody() });
+    await testing.waitForGatewayReady(gateway.process, [], [], port, 120000, fetch, undefined, d => {
+      emit("readiness", { outcome: d.outcome, attempts: d.attempts, elapsedMs: d.elapsedMs,
+        last: d.lastProbe ? { status: d.lastProbe.status, ready: d.lastProbe.ready, uptimeMs: d.lastProbe.uptimeMs } : null });
+    });
+    requireFact(!processError, "gateway-process-error");
+    const stores = await cliJSON(["gateway", "call", "plugins.sessionAction", "--port", String(port), "--expect-url", "ws://127.0.0.1:" + port,
+      "--params", JSON.stringify({ pluginId: "knowledge", actionId: "stores_snapshot", payload: { includeRecordCounts: false } }), "--timeout", "30000", "--json"], "stores-snapshot");
+    requireFact(stores.ok === true && Check(contract.operations.stores_snapshot.output, stores.result), "stores-snapshot-refused");
+    requireFact(stores.result.agents.some(a => a.id === agent && a.supported && a.binding === prepared.binding), "gateway-binding-mismatch");
+    requireFact(stores.result.grants.entries.length === 0 && stores.result.stores.some(s => s.binding === prepared.binding && s.state === "ready"), "gateway-store-not-ready");
+    const status = await proxy(agent, "status", {});
+    requireFact(status.store === "ready" && status.agent === agent && status.vault === prepared.vaultId && status.writesEnabled && status.records === 0,
+      "gateway-not-empty-ready-writable");
+    const ontology = await proxy(agent, "ontology", { view: "definitions", name: "note", kind: "page" });
+    requireFact(ontology.available && ontology.totalIssues === 0 && ontology.definitions?.some(d => d.name === "note" && d.kind === "page"), "bundled-note-unavailable");
+    emit("operator-preflight", { agent, vaultId: status.vault, store: status.store, records: status.records,
+      writesEnabled: status.writesEnabled, ontologyFingerprint: ontology.fingerprint, grants: stores.result.grants.entries.length });
+    const pages = [
+      { title: "Jade Lantern", body: "A wholly fictional target page." },
+      { title: "Copper Kite", body: "A wholly fictional unrelated page." },
+      { title: "Visible navigation control", body: "[[Jade Lantern]]" },
+      { title: "Diagram note", body: "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)" },
+    ];
+    const saved = [];
+    for (const page of pages) saved.push(await receipt(agent, { requestId: randomUUID(), title: page.title, body: page.body, type: "note" }));
+    requireFact(new Set(saved.map(r => r.id)).size === 4, "page-identities-not-distinct");
+    const bodies = [pages[3].body, "Fictional navigation: [[Jade Lantern]]", pages[3].body];
+    for (let i = 0; i < bodies.length; i++) {
+      if (i) {
+        await record(agent, saved[3], pages[3].title, bodies[i - 1]);
+        const before = saved[3];
+        saved[3] = await receipt(agent, { requestId: randomUUID(), id: before.id, expectedRevision: before.revision,
+          expectedHash: before.hash, title: pages[3].title, body: bodies[i], type: "note" });
+        requireFact(saved[3].id === before.id && saved[3].revision === before.revision + 1 && saved[3].hash !== before.hash,
+          "edit-revision-not-advanced");
+      }
+      for (let j = 0; j < pages.length; j++) await record(agent, saved[j], pages[j].title, j === 3 ? bodies[i] : pages[j].body);
+      await links(agent, saved[3].id, "links", i === 1 ? [saved[0].id] : []);
+      await links(agent, saved[0].id, "backlinks", i === 1 ? [saved[2].id, saved[3].id] : [saved[2].id]);
+      await links(agent, saved[2].id, "links", [saved[0].id]);
+      await links(agent, saved[1].id, "backlinks", []);
+      emit("transition-stage", { stage: i, outgoing: i === 1 ? 1 : 0, backlinks: i === 1 ? 2 : 1, controls: "verified" });
+    }
+    const finalStatus = await proxy(agent, "status", {});
+    requireFact(finalStatus.records === 4 && finalStatus.validRecords === 4 && finalStatus.vault === prepared.vaultId, "final-record-count");
+    complete = true;
+  } catch (e) {
+    bodyError = e; rememberFailure(e);
+    emit("failure-custody", custody());
+  } finally {
+    // Preserve body stage/error; each cleanup owner settles independently.
+    let normalExit = false, stopped = false, listenerClosed = false, claimReleased = false;
+    let cleanupFailed = false;
+    async function clean(step, action) {
+      emit("cleanup-step", { step, state: "started" });
+      try { await action(); emit("cleanup-step", { step, state: "fulfilled" }); }
+      catch (e) {
+        cleanupFailed = true; rememberFailure(e, "cleanup:" + step);
+        emit("cleanup-step", { step, state: "rejected", ...safeError(e) });
+      }
+    }
+    if (gateway) {
+      await clean("gateway-drain", async () => {
+        if (gateway.process.exitCode === null && gateway.process.signalCode === null) gateway.process.kill("SIGTERM");
+        const timeout = new AbortController();
+        try {
+          const exit = gateway.process.exitCode !== null || gateway.process.signalCode !== null
+            ? { code: gateway.process.exitCode, signal: gateway.process.signalCode }
+            : await Promise.race([gatewayExit, delay(60000, null, { signal: timeout.signal })]);
+          normalExit = Boolean(exit && exit.code === 0 && exit.signal === null);
+        } finally { timeout.abort(); }
+      });
+      await clean("gateway-stop", async () => { stopped = await gateway.stop(Date.now() + 30000, () => {}); });
+      // stop joins completion and extinction. A rejected completion need not emit close.
+      emit("gateway-terminal", { normalExit, stopped, ...custody() });
+    } else if (spawnCleanup) {
+      await clean("construction-cleanup", async () => { await spawnCleanup; });
+    }
+    if (!reservationReleased && reservation.listener.listening) {
+      await clean("reservation-listener", async () => { await reservation.releaseListener(); reservationReleased = true; });
+    }
+    const probe = net.createServer(s => s.destroy());
+    await clean("listener-rebind", async () => {
+      await new Promise((resolve, reject) => { probe.once("error", reject); probe.listen(port, "127.0.0.1", resolve); });
+      listenerClosed = true;
+    });
+    if (probe.listening) await clean("probe-close", () => new Promise((resolve, reject) => probe.close(e => e ? reject(e) : resolve())));
+    const custodySettled = !unsafeCommand && (!launchAttempted || (gateway ? stopped : spawnState === "fulfilled"));
+    if (custodySettled && listenerClosed && !probe.listening && !reservation.listener.listening) {
+      await clean("port-claim", async () => { await reservation.claim.release(); claimReleased = true; });
+    } else emit("cleanup-step", { step: "port-claim", state: "retained-unsettled" });
+    cleanupOK = !cleanupFailed && custodySettled && (!gateway || normalExit) && listenerClosed && claimReleased;
+    emit("terminal", { complete, proofComplete: complete && cleanupOK && !primaryFailure,
+      cleanupOK, listenerClosed, claimReleased, ...custody(), retainedCase: root, ...stats });
+  }
+  if (bodyError !== undefined) throw bodyError;
+  requireFact(cleanupOK, "cleanup-not-qualified");
+  requireFact(complete, "proof-incomplete");
+}
+
+// Await the complete proof and cleanup inside one test. Never turn a failure into exitCode-only success.
+test("H12 built Gateway excludes image captions and updates visible connections", async () => {
+  try {
+    await gatewayProof();
+  } catch (e) {
+    rememberFailure(e);
+    const safe = { ...primaryFailure, proofComplete: false };
+    emit("stopped", safe);
+    // Only our safe enumeration reaches Vitest's error renderer; never the original cause.
+    throw new Error("H12 proof failed: " + JSON.stringify(safe));
+  }
+}, 900000);

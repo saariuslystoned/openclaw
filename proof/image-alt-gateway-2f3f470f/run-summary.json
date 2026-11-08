@@ -1,0 +1,56 @@
+{
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "fixture_sha256": "9473a8a0ffa50dda2dc05fa6b8c88588af8639a6050f09192581aac6802c83df",
+  "command": "node scripts/run-vitest.mjs extensions/knowledge/src/h12-gateway-transition.proof.test.ts --maxWorkers=1",
+  "run_once": true,
+  "exit_code": 1,
+  "elapsed_seconds": 129.547,
+  "watchdog_fired": false,
+  "source_unchanged": true,
+  "fixture_unchanged": true,
+  "generation_disposed": true,
+  "runtime_versions": {
+    "node": "26.13.0",
+    "sqlite": "3.54.0"
+  },
+  "built_artifact_facts": [
+    {
+      "file": "dist/index.js",
+      "bytes": 6733,
+      "sha256": "e269862929470b8fa432f06ff00680294109b64fc9bf1967714972764b31b3da"
+    },
+    {
+      "file": "dist/.buildstamp",
+      "bytes": 179,
+      "sha256": "a9539889fc2d44606f95d5af3f6cf511128d4afd05289d81befaec3821d2c598"
+    },
+    {
+      "file": "dist/.runtime-postbuildstamp",
+      "bytes": 221,
+      "sha256": "cc93c766a2e63417bd51b4bed49933698cd9e3096263051ebeb5ca76ce4429e2"
+    }
+  ],
+  "command_count": 55,
+  "published_receipts": 6,
+  "record_observations": 14,
+  "connection_queries": 12,
+  "nonallowlisted_stdout_stderr_suppressed_bytes": 26186,
+  "original_allowlisted_log_sha256": "fa1cf0f416bac6c09da5f4cf28e772bb8c1fe40678c133ef88d6677f06f09b7c",
+  "wholeproof_verdict": "ORIGINAL_EXIT1_PRESERVED; feature/canonicalcustody accepted; applicationgracefuldrain and noescalation unproved",
+  "command_kind_counts": {
+    "setup-baseline": 1,
+    "writer-metadata": 1,
+    "canonical-config-patch": 1,
+    "config-validate": 1,
+    "empty-fixture": 1,
+    "stores-snapshot": 1,
+    "status": 2,
+    "ontology": 1,
+    "save_page": 6,
+    "record": 28,
+    "connections": 12
+  },
+  "owned_child_commands": 55,
+  "built_cli_calls": 54,
+  "empty_fixture_child_calls": 1
+}

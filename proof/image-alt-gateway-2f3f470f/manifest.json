@@ -1,0 +1,67 @@
+{
+  "at": "2026-11-08T09:52:30.172837+00:00",
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "status": "BOUNDED_PUBLIC_FEATURE_CUSTODY_PROOF; ORIGINAL_RED_PRESERVED",
+  "files": [
+    {
+      "path": "PROOF.md",
+      "bytes": 6426,
+      "sha256": "ce588d9c34dbbcb145c6ace3651b93dc6abfc26bc5d26a75416d99df57b8f41e"
+    },
+    {
+      "path": "SHUTDOWN-ADJUDICATION.md",
+      "bytes": 7184,
+      "sha256": "7c2cea589c76d17960ac846b5456b2deaa7d312f4f83c6e033ff0005652cbece"
+    },
+    {
+      "path": "companion-source-bindings.json",
+      "bytes": 9442,
+      "sha256": "fc89521caac0947087c94aab04aa034185c4c1a31f55c1b16ca6cfd2ce51478b"
+    },
+    {
+      "path": "empty-store-companion.mjs.txt",
+      "bytes": 28335,
+      "sha256": "c9ddbc8b698dc4270ed47d98d0d41854a8b0c1ac8b65669e484712111529856b"
+    },
+    {
+      "path": "fixture.test.ts.txt",
+      "bytes": 29743,
+      "sha256": "9473a8a0ffa50dda2dc05fa6b8c88588af8639a6050f09192581aac6802c83df"
+    },
+    {
+      "path": "observations.json",
+      "bytes": 18028,
+      "sha256": "65ff569d1d80c8ed1df314b920e659eb210853d5d1f31fe9563fc2e0c8ddd961"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 1335,
+      "sha256": "8c14dbb731961b0239f6d54d496bc2388172e772efb783eb4104650e46b8a1e6"
+    },
+    {
+      "path": "qualification-disposition.json",
+      "bytes": 1035,
+      "sha256": "f59197428a240fbda2413baf4c5ecb0629e6cc0f5e52d5de699f868b4fd57955"
+    },
+    {
+      "path": "run-summary.json",
+      "bytes": 1802,
+      "sha256": "bf623f7755f6a6d0ee1d2b529579a709109ee35f2c6b789411e7fea2a39ac727"
+    },
+    {
+      "path": "shutdown-source-bindings.json",
+      "bytes": 5697,
+      "sha256": "c3e5500336812e67bb5816abc991fb57702b1cedc7ad7e95e6a585921077c9d4"
+    },
+    {
+      "path": "source-bindings.json",
+      "bytes": 19740,
+      "sha256": "931243269c9acad53bbeb723406657860fddd1e08d6177195f1d018bff23e661"
+    },
+    {
+      "path": "terminal.txt",
+      "bytes": 24190,
+      "sha256": "fa1cf0f416bac6c09da5f4cf28e772bb8c1fe40678c133ef88d6677f06f09b7c"
+    }
+  ]
+}

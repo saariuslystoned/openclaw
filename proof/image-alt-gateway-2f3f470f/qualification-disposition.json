@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-08T09:44:08.532601+00:00",
+  "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c",
+  "source_qualification_complete": true,
+  "feature_observation_acceptance": "PROVEN",
+  "canonical_managed_custody_acceptance": "PROVEN_WITHOUT_NO_ESCALATION_OR_APP_DRAIN_CLAIM",
+  "zero_only_oracle": "NOT_UNIVERSAL/sourcepermittedcleanSIGTERM",
+  "actual_settled_self_SIGTERM_branch": "UNPROVEN",
+  "application_graceful_drain": "UNPROVEN",
+  "whole_test_exit": 1,
+  "rewrite_or_rerun_authorized": false,
+  "publiccomment_or_native_review_admitted": "evidencepublication authorized; one rereview only afteractualartifact/commentreadback/currenthead/no pendinggeneration",
+  "raw_logs_credentials_or_state_read": "NONE",
+  "recommendation": "retain validfeature/custodyfacts and originalredrun; do notinferdefect or fullgreen; no automaticjourneyrerun; coordinatoradjudicatescoverage",
+  "publication_scope": "ACCEPTED boundedfeature+canonicalmanagedcustody; preserveoriginalred/appdrainunknown",
+  "gateway_replay_admitted": false
+}

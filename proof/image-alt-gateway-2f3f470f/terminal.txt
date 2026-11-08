@@ -1,0 +1,122 @@
+[test] starting test/vitest/vitest.extensions.config.ts
+[vitest-workers] prepared a7a826c40e2a in 30471ms (15060 inputs, 24049 outputs)
+H12 {"kind": "owner-selection", "inherited": false, "generationObserved": true, "selectedInGeneration": true, "loaderFree": true, "declarationRelativeUrl": ".artifacts/vitest-workers/run-V2Jr7v/dist/runtime-process-entrypoints-CCxGC6dl.js", "selectedRelativeUrl": ".artifacts/vitest-workers/run-V2Jr7v/dist/process/supervisor/service-child-group-anchor.js", "argvShape": ["entry"]}
+H12 {"kind": "owner-preparation", "generation": ".artifacts/vitest-workers/run-V2Jr7v", "descriptorObserved": false, "manifestSha256": "ebfb9ae5301002910ad69a3940114ecf1cf699bfae06f12f4eaf4cc233038c6a", "identity": "a7a826c40e2a56a7d2b7472c4a5490e703e022bfb1d962fc08f64d63d4fcf33f", "preparationDurationMs": 30471.102493000002, "inputCount": 15060, "outputCount": 24049, "cacheSignaturePresent": false, "selectedOwnerSha256": "04e0c18f9cfc89f1b3ce8c3d2abfe51e89731f6a403775da920425425fdb57d8", "declarationSha256": "2e3f91c364b8aebf033f5a8e66765762308670db3d0b28de9a81bbfc4ac4508b", "selectedOwnerBytes": 3197906, "verification": "two observed outputs match owner manifest; full verification and borrower join belong to runner"}
+H12 {"kind": "begin", "head": "2f3f470f17424a40e86f8beaafd06b422dec8d2c", "boundSourceFiles": 60, "buildFacts": [{"file": "dist/index.js", "bytes": 6733, "sha256": "e269862929470b8fa432f06ff00680294109b64fc9bf1967714972764b31b3da"}, {"file": "dist/.buildstamp", "bytes": 179, "sha256": "a9539889fc2d44606f95d5af3f6cf511128d4afd05289d81befaec3821d2c598"}, {"file": "dist/.runtime-postbuildstamp", "bytes": 221, "sha256": "cc93c766a2e63417bd51b4bed49933698cd9e3096263051ebeb5ca76ce4429e2"}], "versions": {"node": "26.13.0", "sqlite": "3.54.0"}, "proof": "empty-owner-fixture then real authenticated Gateway content operations", "root": "/cases/h12-gateway-fg50Ur"}
+H12 {"kind": "command-terminal", "label": "setup-baseline", "code": 0, "elapsedMs": 2881, "stdoutBytes": 241, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "writer-metadata", "code": 0, "elapsedMs": 1156, "stdoutBytes": 5, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "canonical-config-patch", "code": 0, "elapsedMs": 1875, "stdoutBytes": 59, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "config-validate", "code": 0, "elapsedMs": 1161, "stdoutBytes": 84, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "empty-fixture", "code": 0, "elapsedMs": 20710, "stdoutBytes": 170, "stderrBytes": 0}
+H12 {"kind": "empty-store", "agent": "main", "vaultId": "f34755b4-463f-49eb-9b20-f3fe2e19a002", "generation": 0, "registryWorkerExited": true, "contentRecords": 0, "grantEntries": 0}
+H12 {"kind": "lifecycle", "stage": "reservation-listener-release", "launchAttempted": false, "handleCreated": false, "startedResolved": false, "exitObserved": false, "closeObserved": false, "spawnState": "not-published", "pidObserved": false, "code": null, "signal": null}
+H12 {"kind": "lifecycle", "stage": "gateway-construction", "launchAttempted": true, "handleCreated": false, "startedResolved": false, "exitObserved": false, "closeObserved": false, "spawnState": "not-published", "pidObserved": false, "code": null, "signal": null}
+H12 {"kind": "lifecycle", "stage": "gateway-started-wait", "launchAttempted": true, "handleCreated": true, "startedResolved": false, "exitObserved": false, "closeObserved": false, "spawnState": "pending", "pidObserved": false, "code": null, "signal": null}
+H12 {"kind": "lifecycle", "stage": "gateway-readiness", "launchAttempted": true, "handleCreated": true, "startedResolved": true, "exitObserved": false, "closeObserved": false, "spawnState": "pending", "pidObserved": true, "code": null, "signal": null}
+H12 {"kind": "readiness", "outcome": "ready", "attempts": 19, "elapsedMs": 6914, "last": {"status": 200, "ready": true, "uptimeMs": 3331}}
+H12 {"kind": "command-terminal", "label": "stores-snapshot", "code": 0, "elapsedMs": 730, "stdoutBytes": 737, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "status", "code": 0, "elapsedMs": 941, "stdoutBytes": 925, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "ontology", "code": 0, "elapsedMs": 641, "stdoutBytes": 1104, "stderrBytes": 0}
+H12 {"kind": "operator-preflight", "agent": "main", "vaultId": "f34755b4-463f-49eb-9b20-f3fe2e19a002", "store": "ready", "records": 0, "writesEnabled": true, "ontologyFingerprint": "5bf32c5f3ea6eb1a64a113d84a59643f874533d2b999911cb3e33204c67ec4e9", "grants": 0}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 908, "stdoutBytes": 650, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "5d63acddad44c4cbff7ca465d4518e730b89be1501c3c1fcedebf41df5df7da8", "receipt": {"requestId": "6d680da7-4fa0-4100-be91-408d690c3396", "state": "published", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "path": "notes/jade-lantern.md", "revision": 1, "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "at": "2026-11-08T09:27:28.719Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "784cc182120998ce114d96eee8084f02be2a67a8", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 954, "stdoutBytes": 649, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "0375923713429bc22f6e132963a347f4cf0fc3718029188d6f2a29ff8e6dfbed", "receipt": {"requestId": "5d315986-a956-45a9-a526-09c449938aa7", "state": "published", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "path": "notes/copper-kite.md", "revision": 1, "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "at": "2026-11-08T09:27:29.646Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "4cbd789d32ef3a60f6127a81159902cee61a032c", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 888, "stdoutBytes": 664, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "dce06e44820ad55a64e99cc9bfaa1564b753faef2d7b2b774b67251150b416c8", "receipt": {"requestId": "613db052-91c3-4a78-9784-24f8970417f6", "state": "published", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "path": "notes/visible-navigation-control.md", "revision": 1, "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "at": "2026-11-08T09:27:30.583Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "34ee9dacf5c46f992f1bbca7b6cfd2161981e0da", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 912, "stdoutBytes": 650, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "e441a146ecbc764d1bb1633fa82336d65aa900706e5799fb748a61e3e540f273", "receipt": {"requestId": "34b9a93e-61f9-4076-8792-b9b060955a65", "state": "published", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "path": "notes/diagram-note.md", "revision": 1, "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841", "at": "2026-11-08T09:27:31.465Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "f6705a629fc6663c4abe3950c59c8a5fcc27cfe8", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 669, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 684, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "title": "Jade Lantern", "body": "A wholly fictional target page.", "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "revision": 1, "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 631, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 606, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "title": "Copper Kite", "body": "A wholly fictional unrelated page.", "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "revision": 1, "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 589, "stdoutBytes": 1334, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 602, "stdoutBytes": 973, "stderrBytes": 0}
+H12 {"kind": "record", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "title": "Visible navigation control", "body": "[[Jade Lantern]]", "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "revision": 1, "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 662, "stdoutBytes": 1191, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 616, "stdoutBytes": 974, "stderrBytes": 0}
+H12 {"kind": "record", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "title": "Diagram note", "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)", "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841", "revision": 1, "rawSha256": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841", "valid": true}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 650, "stdoutBytes": 182, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "direction": "links", "ids": [], "total": 0, "nextOffset": null, "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 633, "stdoutBytes": 457, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "direction": "backlinks", "ids": ["d36cf276-4f40-4460-8001-6fbedca6f395"], "total": 1, "nextOffset": null, "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 686, "stdoutBytes": 436, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "direction": "links", "ids": ["21519e50-33c7-4bbc-a478-59316b3b268c"], "total": 1, "nextOffset": null, "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 669, "stdoutBytes": 182, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "direction": "backlinks", "ids": [], "total": 0, "nextOffset": null, "snapshot": "8840484fdfcfee10d66af7daee4003a59f10a5a24e6844a496ce42b53085e41d"}
+H12 {"kind": "transition-stage", "stage": 0, "outgoing": 0, "backlinks": 1, "controls": "verified"}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 626, "stdoutBytes": 1191, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 589, "stdoutBytes": 974, "stderrBytes": 0}
+H12 {"kind": "record", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "title": "Diagram note", "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)", "hash": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841", "revision": 1, "rawSha256": "07782b83065039591c278f495ae6a28195cf64c4fdf815a21a6b2658ef2c3841", "valid": true}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 964, "stdoutBytes": 650, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "29129888096239be881680df51e53b9dfc00f98c732cfce18d9d22c25d61c3ac", "receipt": {"requestId": "c5320640-9982-49d7-b66b-01147b147839", "state": "published", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "path": "notes/diagram-note.md", "revision": 2, "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7", "at": "2026-11-08T09:27:41.380Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "24ed6d64f7af7e6eeb57817692c83c4f241127aa", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 747, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 584, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "title": "Jade Lantern", "body": "A wholly fictional target page.", "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "revision": 1, "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 712, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 663, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "title": "Copper Kite", "body": "A wholly fictional unrelated page.", "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "revision": 1, "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 614, "stdoutBytes": 1334, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 647, "stdoutBytes": 973, "stderrBytes": 0}
+H12 {"kind": "record", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "title": "Visible navigation control", "body": "[[Jade Lantern]]", "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "revision": 1, "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 628, "stdoutBytes": 1314, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 674, "stdoutBytes": 953, "stderrBytes": 0}
+H12 {"kind": "record", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "title": "Diagram note", "body": "Fictional navigation: [[Jade Lantern]]", "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7", "revision": 2, "rawSha256": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7", "valid": true}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 669, "stdoutBytes": 436, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "direction": "links", "ids": ["21519e50-33c7-4bbc-a478-59316b3b268c"], "total": 1, "nextOffset": null, "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 664, "stdoutBytes": 714, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "direction": "backlinks", "ids": ["55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "d36cf276-4f40-4460-8001-6fbedca6f395"], "total": 2, "nextOffset": null, "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 697, "stdoutBytes": 436, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "direction": "links", "ids": ["21519e50-33c7-4bbc-a478-59316b3b268c"], "total": 1, "nextOffset": null, "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 618, "stdoutBytes": 182, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "direction": "backlinks", "ids": [], "total": 0, "nextOffset": null, "snapshot": "c0ad412105cb5c6410d28346bf698b1cd5cf72e3e9c816562960e7aa4725cfc5"}
+H12 {"kind": "transition-stage", "stage": 1, "outgoing": 1, "backlinks": 2, "controls": "verified"}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 662, "stdoutBytes": 1314, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 655, "stdoutBytes": 953, "stderrBytes": 0}
+H12 {"kind": "record", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "title": "Diagram note", "body": "Fictional navigation: [[Jade Lantern]]", "hash": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7", "revision": 2, "rawSha256": "42a412a723cd8bf165deaad3bc3eade866a0d30898539e83f4db81ebfe9b7ca7", "valid": true}
+H12 {"kind": "command-terminal", "label": "save_page", "code": 0, "elapsedMs": 950, "stdoutBytes": 650, "stderrBytes": 0}
+H12 {"kind": "publication", "payloadSha256": "e9bcaaf0e38b9a62e5646a61a4a34b76f4476822ca8d15fc455d13f1a180d284", "receipt": {"requestId": "c9e53142-2f55-4534-9424-ec5d7de45ebb", "state": "published", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "path": "notes/diagram-note.md", "revision": 3, "hash": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a", "at": "2026-11-08T09:27:51.597Z", "message": "Published and available to exact reads; keyword indexing is pending until the next search reconciles this scope.", "indexed": false, "git": {"state": "committed", "commit": "4bcc4a29774b4e947e2a59b882183aa3fe10c027", "message": "Local Git history recorded."}}}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 686, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 585, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "title": "Jade Lantern", "body": "A wholly fictional target page.", "hash": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "revision": 1, "rawSha256": "d724dc74eccaafe91002545a58a027fb5c6476d77da72fa886cf93864beee2ce", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 621, "stdoutBytes": 1163, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 633, "stdoutBytes": 946, "stderrBytes": 0}
+H12 {"kind": "record", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "title": "Copper Kite", "body": "A wholly fictional unrelated page.", "hash": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "revision": 1, "rawSha256": "4c9174f175d420f6597a3c106745bce13c5167ec30ffeafcae1003672253a786", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 696, "stdoutBytes": 1334, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 649, "stdoutBytes": 973, "stderrBytes": 0}
+H12 {"kind": "record", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "title": "Visible navigation control", "body": "[[Jade Lantern]]", "hash": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "revision": 1, "rawSha256": "7a0a9105495f8e6a4c3fa365e8d1d87835b82d509f590faa7c40483a7bee7d56", "valid": true}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 682, "stdoutBytes": 1191, "stderrBytes": 0}
+H12 {"kind": "command-terminal", "label": "record", "code": 0, "elapsedMs": 632, "stdoutBytes": 974, "stderrBytes": 0}
+H12 {"kind": "record", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "title": "Diagram note", "body": "Fictional diagram: ![Caption [[Jade Lantern]]](diagram.png)", "hash": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a", "revision": 3, "rawSha256": "bd19f0da4ba5db5208dd00fb9d15a70649c3caf33349c115b5472bc4191f647a", "valid": true}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 612, "stdoutBytes": 182, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "55bc9b14-2306-46c2-9b2c-08b2bb87aba4", "direction": "links", "ids": [], "total": 0, "nextOffset": null, "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 689, "stdoutBytes": 457, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "21519e50-33c7-4bbc-a478-59316b3b268c", "direction": "backlinks", "ids": ["d36cf276-4f40-4460-8001-6fbedca6f395"], "total": 1, "nextOffset": null, "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 658, "stdoutBytes": 436, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "d36cf276-4f40-4460-8001-6fbedca6f395", "direction": "links", "ids": ["21519e50-33c7-4bbc-a478-59316b3b268c"], "total": 1, "nextOffset": null, "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"}
+H12 {"kind": "command-terminal", "label": "connections", "code": 0, "elapsedMs": 650, "stdoutBytes": 182, "stderrBytes": 0}
+H12 {"kind": "connections", "id": "e2af9ba8-77a9-4b9b-962c-fc25aff9366e", "direction": "backlinks", "ids": [], "total": 0, "nextOffset": null, "snapshot": "a24ea8f31833c81118a7a007c1fcb1fa654f771d565dda4322b9c1a3fad281e4"}
+H12 {"kind": "transition-stage", "stage": 2, "outgoing": 0, "backlinks": 1, "controls": "verified"}
+H12 {"kind": "command-terminal", "label": "status", "code": 0, "elapsedMs": 686, "stdoutBytes": 925, "stderrBytes": 0}
+H12 {"kind": "cleanup-step", "step": "gateway-drain", "state": "started"}
+H12 {"kind": "cleanup-step", "step": "gateway-drain", "state": "fulfilled"}
+H12 {"kind": "cleanup-step", "step": "gateway-stop", "state": "started"}
+H12 {"kind": "cleanup-step", "step": "gateway-stop", "state": "fulfilled"}
+H12 {"kind": "gateway-terminal", "normalExit": false, "stopped": true, "launchAttempted": true, "handleCreated": true, "startedResolved": true, "exitObserved": true, "closeObserved": true, "spawnState": "fulfilled", "pidObserved": true, "code": null, "signal": "SIGTERM"}
+H12 {"kind": "cleanup-step", "step": "listener-rebind", "state": "started"}
+H12 {"kind": "cleanup-step", "step": "listener-rebind", "state": "fulfilled"}
+H12 {"kind": "cleanup-step", "step": "probe-close", "state": "started"}
+H12 {"kind": "cleanup-step", "step": "probe-close", "state": "fulfilled"}
+H12 {"kind": "cleanup-step", "step": "port-claim", "state": "started"}
+H12 {"kind": "cleanup-step", "step": "port-claim", "state": "fulfilled"}
+H12 {"kind": "terminal", "complete": true, "proofComplete": false, "cleanupOK": false, "listenerClosed": true, "claimReleased": true, "launchAttempted": true, "handleCreated": true, "startedResolved": true, "exitObserved": true, "closeObserved": true, "spawnState": "fulfilled", "pidObserved": true, "code": null, "signal": "SIGTERM", "retainedCase": "/cases/h12-gateway-fg50Ur", "commands": 55, "stderrBytes": 0, "gatewayStdoutBytes": 0, "gatewayStderrBytes": 12852}
+H12 {"kind": "primary-failure", "stage": "status", "category": "proof-constraint", "check": "cleanup-not-qualified"}
+H12 {"kind": "stopped", "stage": "status", "category": "proof-constraint", "check": "cleanup-not-qualified", "proofComplete": false}
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Duration  126.50s (tests 63%, transform 34%, import 1%, worker 1%)
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 128.78s
+[test] FAILED (exit 1)
