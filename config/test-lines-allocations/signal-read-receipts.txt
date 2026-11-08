@@ -1,0 +1,2 @@
+# Signal read receipts: handler cases (read receipt -> system context; delivery, unallowed and own receipts -> none) and the ingress read-receipt dispatch case.
+65
