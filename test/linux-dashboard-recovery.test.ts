@@ -123,7 +123,11 @@ test("automatic setup failure returns to Gateway choices with the native error",
 
 test("discovered gateway connect failure shows the native reason until the next attempt", async () => {
   const reason = "The discovered gateway does not have a safe resolved address.";
-  const discovery = Promise.resolve([{ name: "lan", host: "gw.local", port: 18789, tls: false }]);
+  // A non-TLS LAN gateway that advertises direct transport: the card is enabled, but the native
+  // connect check rejects it when it also resolves to a public address.
+  const discovery = Promise.resolve([
+    { name: "lan", host: "gw.local", port: 18789, tls: false, directReachable: true },
+  ]);
   const connects = [createDeferred(), createDeferred()];
   let attempt = 0;
   const h = await mountDashboard("", undefined, undefined, (command) => {
@@ -138,6 +142,7 @@ test("discovered gateway connect failure shows the native reason until the next 
   await settle(discovery);
   const [card] = h.element("#gateway-list").children as Array<ReturnType<typeof fakeElement>>;
   assert.ok(card);
+  assert.equal(card.disabled, false);
 
   card.click();
   connects[0].reject(reason);

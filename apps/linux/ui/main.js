@@ -209,8 +209,14 @@ function gatewayHost(gateway) {
   return (gateway.host || "").trim().replace(/\.$/, "");
 }
 
+function hideDiscoveryFeedback() {
+  elements.discoveryFeedback.textContent = "";
+  show(elements.discoveryFeedback, false);
+}
+
 function renderGateways(gateways) {
   elements.gatewayList.replaceChildren();
+  hideDiscoveryFeedback();
   elements.discoveryStatus.textContent = gateways.length ? `${gateways.length} FOUND` : "SEARCHING";
   elements.remoteSubtitle.textContent = gateways.length
     ? `${gateways.length} nearby Gateway${gateways.length === 1 ? "" : "s"} found on your network.`
@@ -249,6 +255,7 @@ function renderGateways(gateways) {
     badge.textContent = gateway.tls ? "TLS" : "HTTP";
     button.append(copy, badge);
     button.addEventListener("click", () => {
+      hideDiscoveryFeedback();
       if (
         selectedConnection === "remote" &&
         !elements.connectionChoices.classList.contains("hidden")
@@ -261,7 +268,6 @@ function renderGateways(gateways) {
         return;
       }
       button.disabled = true;
-      show(elements.discoveryFeedback, false);
       void invoke("connect_discovered_gateway", {
         host: gateway.host,
         port: gateway.port,
