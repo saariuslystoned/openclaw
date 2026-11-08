@@ -1,0 +1,19 @@
+diff --git a/docs/plugins/knowledge/evidence.md b/docs/plugins/knowledge/evidence.md
+index e55e5c96e..8dc4c776c 100644
+--- a/docs/plugins/knowledge/evidence.md
++++ b/docs/plugins/knowledge/evidence.md
+@@ -53,6 +53,14 @@ The chunk size bounds each call, not the file.
+ decoded; follow `nextOffset`. Downloads require a matching reference and hash on
+ a record in the authorized partition.
+ 
++For programmatic downloads, keep the same authorized record `id`, evidence
++`path`, and `sha256`, starting at `offset: 0`. Check each response's `offset`
++and `sha256` against the request, then base64-decode its `data` separately and
++append the decoded bytes in order. Do not concatenate base64 strings or convert
++bytes to text. Use `nextOffset` unchanged as the next original-file byte offset
++(not a base64 character count), and stop when it is `null`. Handle the bytes
++directly in code; do not ask a model to copy or regenerate them.
++
+ No tool accepts an arbitrary host path. Retained-file reads reject symlinks,
+ hardlinks, unsafe paths, non-regular files, and files that change while being read.
+ Originals are hashed with streaming reads.

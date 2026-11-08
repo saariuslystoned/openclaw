@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-08T14:57:57.423024+00:00",
+  "base": "61093f1d32cb0042c858796f87f86920f910bd6d",
+  "candidateSha256": "160b20f8c3759dc7e17aae518099056c36b1d844a0b02315bd08999ef90979b6",
+  "changes": "exact author8-line paragraph only",
+  "sources": [
+    {
+      "path": "extensions/knowledge/src/attachment-contract.ts",
+      "bytes": 2437,
+      "sha256": "2d2fb172fa23ba9b702353b7e9e1c5cdb13e77d71506309c3ad2241ba748015d",
+      "sameAsPreviouslyVerifiedRetainedSource": true
+    },
+    {
+      "path": "extensions/knowledge/src/vault.ts",
+      "bytes": 14526,
+      "sha256": "b40cda5341c165e073078d61d4a4795f746ed5db33aae29face1c5935ca01524",
+      "sameAsPreviouslyVerifiedRetainedSource": true
+    },
+    {
+      "path": "extensions/knowledge/src/evidence-view.ts",
+      "bytes": 13431,
+      "sha256": "580adaa65082052f937b14dc8948ed9054466a148c52b505be30febc22ffeb0e",
+      "sameAsPreviouslyVerifiedRetainedSource": true
+    }
+  ],
+  "checks": {
+    "fullSourceFidelity": true,
+    "headingAndLinkSetsUnchanged": true,
+    "diffCheck": true,
+    "format": "oxfmt0.74.0 pass read-only standalone"
+  },
+  "testSelection": "No runtime/regression tests for documentation-only source clarification; no runtime changes",
+  "ownership": "no matchingCODEOWNERS rule; bounded relatedPRlists43/42 exclude target, not blanket humanownershipclaim",
+  "head": "8afafb352787dd7a3b8b102fce946191c036573b",
+  "formatResult": {
+    "at": "2026-11-08T14:57:40.240297+00:00",
+    "base": "61093f1d32cb0042c858796f87f86920f910bd6d",
+    "command": [
+      "bwrap",
+      "--unshare-all",
+      "--die-with-parent",
+      "--clearenv",
+      "--ro-bind",
+      "/usr",
+      "/usr",
+      "--symlink",
+      "usr/lib",
+      "/lib",
+      "--symlink",
+      "usr/lib64",
+      "/lib64",
+      "--proc",
+      "/proc",
+      "--dev",
+      "/dev",
+      "--tmpfs",
+      "/tmp",
+      "--ro-bind",
+      "<operator>/.local/share/mise/installs/node/26.13.0",
+      "/opt/node",
+      "--ro-bind",
+      "<task-proof-root>/h38-repair-worktrees/public-main-review-codex-knowledge-nested-attachment-195052/node_modules",
+      "/tools/node_modules",
+      "--ro-bind",
+      "<task-proof-root>/docs-guidance-worktrees/public-main-review-codex-knowledge-nested-attachment-195052-codex-knowledge-download-assembly-guide-20261108",
+      "/work",
+      "--chdir",
+      "/work",
+      "--setenv",
+      "PATH",
+      "/opt/node/bin:/usr/bin",
+      "--setenv",
+      "HOME",
+      "/tmp",
+      "/opt/node/bin/node",
+      "/tools/node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "docs/plugins/knowledge/evidence.md"
+    ],
+    "tool": "existing frozen oxfmt0.74.0 matches newcheckout package pin; standalone formatter read-only, no borrowed product runtime/install",
+    "exit": 0,
+    "stdout": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 3ms on 1 files using 20 threads.\n",
+    "stderr": ""
+  }
+}
