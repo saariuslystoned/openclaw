@@ -148,6 +148,35 @@ afterEach(async () => {
 describe("prepareEmbeddedAttemptPromptContext", () => {
   registerParityHostLifecycle();
 
+  it("sizes tool-result truncation from the model window when contextTokenBudget is omitted", async () => {
+    const { input } = createInput({
+      attempt: createAttempt({
+        contextTokenBudget: undefined,
+        model: { contextWindow: 8_192 } as EmbeddedRunAttemptParams["model"],
+      }),
+    });
+    await prepareContext(input);
+    expect(hoisted.resolveLiveToolResultMaxChars).toHaveBeenCalledWith({
+      contextWindowTokens: 8_192,
+    });
+    expect(hoisted.resolveLiveToolResultAggregateMaxChars).toHaveBeenCalledWith(
+      expect.objectContaining({ contextWindowTokens: 8_192 }),
+    );
+  });
+
+  it("lets an explicit contextTokenBudget override a different model window", async () => {
+    const { input } = createInput({
+      attempt: createAttempt({
+        contextTokenBudget: 8_192,
+        model: { contextWindow: 200_000 } as EmbeddedRunAttemptParams["model"],
+      }),
+    });
+    await prepareContext(input);
+    expect(hoisted.resolveLiveToolResultMaxChars).toHaveBeenCalledWith({
+      contextWindowTokens: 8_192,
+    });
+  });
+
   it("preserves fallback context envelopes and canonical input across route switches and replay", async () => {
     const original = "Describe the attached landscape.";
     const recorder = createUserTurnTranscriptRecorder({
