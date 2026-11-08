@@ -1,0 +1,78 @@
+{
+  "observedAt": "2026-11-08T08:21:15.630444+00:00",
+  "baselineRef": "0622e93a295d4721344d77ae67f7b0c5bac859ea",
+  "publicOwner": {
+    "pr": "https://github.com/openclaw/openclaw/pull/195092",
+    "owner": "Linux2010",
+    "head": "696aba6b90d5d7e8a373ca7605dda1a016fe7787",
+    "path": "extensions/knowledge/src/retrieval.ts",
+    "bytes": 24916,
+    "sha256": "98eebd73f7dce7ed7c9b4dce348885646c76376ba1b68f7a03f2383c964bec18",
+    "gitBlobOid": "e2447601402bc09e7a46038241e84bc19f86c900"
+  },
+  "files": [
+    {
+      "path": "extensions/knowledge/src/index.ts",
+      "bytes": 1410,
+      "sha256": "bc6fac66b3ef7e8bf365051e6b01a51700df4c8ccdf6691f33fbca08ac6a2a1e",
+      "gitBlobOid": "93f79293b687dca741a371d546b34271780be9ab",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/contract.ts",
+      "bytes": 40503,
+      "sha256": "b261aad99574b1dbdb6ff5649849e321c47e315670cadab5519040021728e5d1",
+      "gitBlobOid": "5a9ae43258accd8f4ace7b2af4ffe2b0d68d51c3",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/service.ts",
+      "bytes": 23436,
+      "sha256": "c551e60852be5277e2d4afd5e4130f7587c883a074f771717fdf5c7ae033ee39",
+      "gitBlobOid": "88cca4bc3a531fd0ad6466b94b1aa8dde8ff3ad8",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/storage.ts",
+      "bytes": 12327,
+      "sha256": "9fc8dcb16852b4c4e66003cca341e937ef517c48b36fafd826a664788949af54",
+      "gitBlobOid": "74af9e0d2929cca1b86a69bce6116a3adae1595c",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval.ts",
+      "bytes": 24082,
+      "sha256": "a558b8f30ea9f8e17a95d8477aa457ee51cac1624cb40fe434ae36dd2f285a9e",
+      "gitBlobOid": "0ed68516ad9fee644069f9dcb44b47fd0a69cf26",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval-contract.ts",
+      "bytes": 5691,
+      "sha256": "032b5b44712cb1465d5e93506ded17a7e1dbea882be6959e8328ede3c0f258f0",
+      "gitBlobOid": "1f120200e5021c4b65601da123c8d6945edf6097",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval-hit.ts",
+      "bytes": 233,
+      "sha256": "da51ec217a96802a57d61fc0c5ef7a1824d8e244fb8f8648f79c4259620522e3",
+      "gitBlobOid": "4bdaf01a345f4eab71718f23d37363cfaeb1fdc7",
+      "equalsPinnedF6": true
+    },
+    {
+      "path": "extensions/knowledge/src/test-support.ts",
+      "bytes": 10852,
+      "sha256": "aa61f3518d9c6f1f43afaeb48144ba2a0186ad82b06621b7a448d8e4a1524974",
+      "gitBlobOid": "e800f4575c17f21e44d06b431949e7aca636cc38",
+      "equalsPinnedF6": true
+    }
+  ],
+  "bindingLimit": "Complete bytes fetched from immutable public raw URLs and Git blob OIDs computed; baseline rows equal locally committed preimages. Root independently verified public Git OIDs. Not a complete dependency closure or whole-PR build claim.",
+  "existingReviewerEvidence": {
+    "url": "https://github.com/openclaw/openclaw/pull/195092#issuecomment-6718823955",
+    "reviewedHead": "696aba6b90d5d7e8a373ca7605dda1a016fe7787",
+    "sourceRevisionReportedByRoot": "148820909d35c3c006fdbff4c3bae4e823e1e6ed2c6181281dd01a41c9d1ac51",
+    "inspected": "P2 Korean literal regression, P3 missing allocation, shipped-proof hold; comment excerpt read, full comment was truncated; no new finding or review clearance inferred"
+  }
+}

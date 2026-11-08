@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-11-08T08:40:03.424509+00:00",
+  "external_owner_head": "696aba6b90d5d7e8a373ca7605dda1a016fe7787",
+  "consumer_base": "0622e93a295d4721344d77ae67f7b0c5bac859ea",
+  "scope": "independent registered-operation/nativeSQLite composition diagnostic; not wholePR/Gateway proof; publicsource/fictionaldata only",
+  "sanitization": "ANSI and unrelated static lifecycle shutdown inventory removed from logs; no behavior/assertions removed; rawloghashes in observations.json",
+  "files": [
+    {
+      "path": "PROOF.md",
+      "bytes": 6777,
+      "sha256": "616c6dd8df3eb78af3f5de14c68a45b3d2f57a6c8f5437ecee4565b1399734d1"
+    },
+    {
+      "path": "base-terminal.txt",
+      "bytes": 34623,
+      "sha256": "df83e47e5ded1c9ccbd4324dcd9843151467a77d2a5ba7450ae242f01bb8243b"
+    },
+    {
+      "path": "external-terminal.txt",
+      "bytes": 41664,
+      "sha256": "a9d0df5ae25b30178f66b01cf838f62a10a8c22fb2f61443daaf500b680de482"
+    },
+    {
+      "path": "observations.json",
+      "bytes": 6491,
+      "sha256": "85ae175e2c97606a2e948fa882c0e527dac881c3f90cb202fd4dfcb1d501a421"
+    },
+    {
+      "path": "owner-before.ts.txt",
+      "bytes": 24082,
+      "sha256": "a558b8f30ea9f8e17a95d8477aa457ee51cac1624cb40fe434ae36dd2f285a9e"
+    },
+    {
+      "path": "owner-external.ts.txt",
+      "bytes": 24916,
+      "sha256": "98eebd73f7dce7ed7c9b4dce348885646c76376ba1b68f7a03f2383c964bec18"
+    },
+    {
+      "path": "registered-diagnostic.test.ts.txt",
+      "bytes": 12667,
+      "sha256": "b174fc4b175993ba0e79c9339df0f887a93a4ad393626936ff40feaa0c662c79"
+    },
+    {
+      "path": "source-bindings.json",
+      "bytes": 3390,
+      "sha256": "191c856fdea5f67b440d9160ee333b061998eced3a77c49eddf9522bd3f8d7f5"
+    }
+  ]
+}

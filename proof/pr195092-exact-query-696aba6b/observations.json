@@ -1,0 +1,241 @@
+{
+  "at": "2026-11-08T08:36:34.762465+00:00",
+  "result": "CONFIRMED three exact-match retention failures with all hardcontrols and predictiontables holding",
+  "external_PR": 195092,
+  "external_owner": "Linux2010",
+  "external_head": "696aba6b90d5d7e8a373ca7605dda1a016fe7787",
+  "comparison_base": "0622e93a295d4721344d77ae67f7b0c5bac859ea",
+  "artifact_packet_sha256": "e2af104af5139ff3f6228cd1fef06d5f6df02a57ffc5fde15381ee55092c8982",
+  "fixture_sha256": "b174fc4b175993ba0e79c9339df0f887a93a4ad393626936ff40feaa0c662c79",
+  "execution": "onebasepass109.014s/oneexternal3softfail110.364s; normalworkersstopped/runnerterminal",
+  "observations": {
+    "base": {
+      "phase": "base",
+      "observations": [
+        {
+          "mode": "all",
+          "query": "mixed",
+          "ids": [
+            "mixedform_mixed"
+          ]
+        },
+        {
+          "mode": "all",
+          "query": "nfc",
+          "ids": [
+            "mixedform_nfc"
+          ]
+        },
+        {
+          "mode": "all",
+          "query": "nfd",
+          "ids": [
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "mixed",
+          "ids": [
+            "mixedform_mixed"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "nfc",
+          "ids": [
+            "mixedform_nfc"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "nfd",
+          "ids": [
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "mixed",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "nfc",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfc"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "nfd",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfd"
+          ]
+        }
+      ],
+      "koreanIds": [
+        "mixedform_korean"
+      ],
+      "ascii": [
+        {
+          "mode": "all",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        },
+        {
+          "mode": "any",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        }
+      ],
+      "unrelated": [],
+      "sourceHashes": {
+        "mixedform_nfc": "1c7f2355a8042aef82e0797a4c0557c8e9d9ef48b2b4439556f0f709a3ba013c",
+        "mixedform_nfd": "c6d5708cda893f3985e46ebec39cdb2de2fb194ce63a5614aff60914e12aa083",
+        "mixedform_mixed": "f4e1f6169e94dac92382c9816246eab5897aa100ac0ba108bcbd5df5da20bc00",
+        "mixedform_ascii": "a3bdf1fac746ed365471be6b3d1e5e6c2d6b133a5cbf913f60f3d84a8d5ed19f",
+        "mixedform_korean": "1e1f72319824c38e7edabad6079ff1c80d4cbc47c63326cd9d8a794e7a534cb4"
+      },
+      "recordsUnchanged": true
+    },
+    "external": {
+      "phase": "external",
+      "observations": [
+        {
+          "mode": "all",
+          "query": "mixed",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "all",
+          "query": "nfc",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "all",
+          "query": "nfd",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "mixed",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "nfc",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "query": "nfd",
+          "ids": [
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "mixed",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "nfc",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        },
+        {
+          "mode": "any",
+          "query": "nfd",
+          "ids": [
+            "mixedform_mixed",
+            "mixedform_nfc",
+            "mixedform_nfd"
+          ]
+        }
+      ],
+      "koreanIds": [],
+      "ascii": [
+        {
+          "mode": "all",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        },
+        {
+          "mode": "phrase",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        },
+        {
+          "mode": "any",
+          "ids": [
+            "mixedform_ascii"
+          ]
+        }
+      ],
+      "unrelated": [],
+      "sourceHashes": {
+        "mixedform_nfc": "1c7f2355a8042aef82e0797a4c0557c8e9d9ef48b2b4439556f0f709a3ba013c",
+        "mixedform_nfd": "c6d5708cda893f3985e46ebec39cdb2de2fb194ce63a5614aff60914e12aa083",
+        "mixedform_mixed": "f4e1f6169e94dac92382c9816246eab5897aa100ac0ba108bcbd5df5da20bc00",
+        "mixedform_ascii": "a3bdf1fac746ed365471be6b3d1e5e6c2d6b133a5cbf913f60f3d84a8d5ed19f",
+        "mixedform_korean": "1e1f72319824c38e7edabad6079ff1c80d4cbc47c63326cd9d8a794e7a534cb4"
+      },
+      "recordsUnchanged": true
+    }
+  },
+  "versions": {
+    "node": "26.13.0",
+    "sqlite": "3.54.0",
+    "icu": "78.3",
+    "unicode": "17.0"
+  },
+  "hard_controls": "14queries/5exactlookups/actualscalars/no backslashes/validready/nonlaggingindex/coverage/recordbytes/hash/revision/citations/originalsnippets/ASCII/unrelated/normalstop/modulehashes; allheld",
+  "five_input_source_hashes_identical_acrossphases": true,
+  "attribution": "Korean3scalarcase is existingreviewerP2, not newfinding; Greek two-wordmixedcase gives actualexisting-literal regression within statedgap",
+  "claim_limit": "exact full externalowner module in pinned062 registered-service/nativeSQLite projection; synthetichostauthority, NOT wholePRbuild/Gateway/model/reviewerclearance",
+  "raw_log_sha256": {
+    "base": "507bc21d9f18994e4039cb29a2da475d0a92e4d3bd62fdd97117d25651250c2e",
+    "external": "39454753f28b715c7fa9967b1d6916ba5f49501239fff552100fac0d374f580c"
+  }
+}
