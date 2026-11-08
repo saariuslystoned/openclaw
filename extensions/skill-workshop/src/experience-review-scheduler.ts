@@ -4,6 +4,7 @@ import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { isIncognitoSessionKey } from "openclaw/plugin-sdk/routing";
 import {
+  agentSkillsDisabled,
   isExpectedRunCancellation,
   isInternalSessionEffectsKey,
   resolveFailoverReasonFromError,
@@ -319,7 +320,10 @@ export function createSkillExperienceReviewScheduler(deps: ExperienceReviewSched
         );
         return;
       }
-      if (resolveSkillWorkshopConfig(params.config).autonomous.mode === "off") {
+      if (
+        resolveSkillWorkshopConfig(params.config).autonomous.mode === "off" ||
+        agentSkillsDisabled(params.config, params.ctx.agentId)
+      ) {
         cancel(key);
         return;
       }

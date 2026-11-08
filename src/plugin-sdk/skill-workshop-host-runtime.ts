@@ -3,6 +3,7 @@
 // the plugin records and lists rows here. The other exports are read-only host facts that have
 // no public SDK contract yet.
 import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { resolveEffectiveAgentSkillFilter } from "../skills/discovery/agent-filter.js";
 
 export { listWorkshopChanges, recordWorkshopChange } from "../skills/workshop-changes/changes.js";
 export type {
@@ -16,6 +17,14 @@ export { canonicalizePath } from "../agents/utils/paths.js";
 export { resolveEffectiveAgentRuntime } from "../agents/thinking-runtime.js";
 /** Classifies a review failure; `rate_limit` backs off every queued review. */
 export { resolveFailoverReasonFromError } from "../agents/failover-error.js";
+
+/**
+ * True when the agent's effective skill allowlist is empty (`skills: []`), so it loads no skills,
+ * learned Workshop skills included. A review for it would spend a model call on nothing usable.
+ */
+export function agentSkillsDisabled(config: OpenClawConfig, agentId: string): boolean {
+  return resolveEffectiveAgentSkillFilter(config, agentId)?.length === 0;
+}
 
 /** True while any session run is active on this host; background reviews wait for quiet. */
 export async function hasActiveSessionRuns(): Promise<boolean> {

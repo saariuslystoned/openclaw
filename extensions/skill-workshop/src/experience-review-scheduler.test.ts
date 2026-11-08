@@ -167,3 +167,9 @@ it("still queues reviews while Workshop proposes drafts", () => {
 it("never reviews ACP child sessions", () => {
   countedTurn(20, 0, { sessionKey: "agent:main:acp:child-1" });
 });
+it("skips reviews for agents that load no skills, including after a paused goal turn", () => {
+  const pausedTurn = { messages: [], success: false, modelIterations: 10 };
+  const agentSkills = (skills: string[]) => ({ agents: { entries: { main: { skills } } } });
+  countedTurn(10, 0, { event: pausedTurn, config: agentSkills([]) });
+  countedTurn(10, 1, { event: pausedTurn, config: agentSkills(["docs-search"]) });
+});
