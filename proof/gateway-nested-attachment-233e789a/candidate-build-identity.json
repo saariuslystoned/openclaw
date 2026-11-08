@@ -1,0 +1,32 @@
+{
+  "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "trackedClean": true,
+  "files": [
+    {
+      "path": "dist/index.js",
+      "bytes": 6733,
+      "sha256": "0f0c8621c18d302dee76ac43ebaa7c39422de95a661781d05fb4dcb6a44ef4bd"
+    },
+    {
+      "path": "dist/.buildstamp",
+      "bytes": 179,
+      "sha256": "3908886270294d8fd691a2374b7cf557603db88e2957e1171e3b051c4067b0af",
+      "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+      "inputsClean": true
+    },
+    {
+      "path": "dist/.runtime-postbuildstamp",
+      "bytes": 221,
+      "sha256": "67343741a65b6a8017a37c359fa9480b108471fb9bbb42acd3c9714613a50f6a",
+      "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+      "inputsClean": true
+    }
+  ],
+  "packageVersion": "2026.11.1",
+  "buildInfo": {
+    "version": "2026.11.1",
+    "commit": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+    "builtAt": "2026-11-08T16:30:45.915Z",
+    "buildId": "2026.11.1-233e789a0210-2026-11-08T16-30-45.915Z"
+  }
+}

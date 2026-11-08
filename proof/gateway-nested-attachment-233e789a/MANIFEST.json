@@ -1,0 +1,58 @@
+{
+  "source": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "bodySha256": "67bc2f44b33e56bcb4380d1b3edfe51d40f73136d306c3bd50f85edb9f06d526",
+  "status": "PREPARED_UNPUBLISHED",
+  "claim": "actualGateway download stages and canonical custody; beta lifecycle separate; limits in PROOF.md",
+  "files": [
+    {
+      "path": "INDEPENDENT-ACCEPTANCE.json",
+      "bytes": 5915,
+      "sha256": "289e34a6ef02e38d0f930d85b2bbefeefa2aba87e680bdf4b5b8e00933ce8c47"
+    },
+    {
+      "path": "PROOF.md",
+      "bytes": 8006,
+      "sha256": "ac72a01df18ea0dc9e36ac79e990cae9d6797a86c540355d1dd6e75cfa0c710c"
+    },
+    {
+      "path": "beta-lifecycle.jsonl",
+      "bytes": 5687,
+      "sha256": "558a87bb18f6d5b03760b747339bde6c685f795b7a459d45b1fc0b23ea20e024"
+    },
+    {
+      "path": "candidate-build-identity.json",
+      "bytes": 977,
+      "sha256": "cc218d1f1f518a39fe671f167d0b6829e12100c8e9e363865e367ff29deebdc5"
+    },
+    {
+      "path": "candidate-run.json",
+      "bytes": 812,
+      "sha256": "cc3cc5f36be1e49419240fa5e97d70ad775874259b96ab35de7198b7077b7e25"
+    },
+    {
+      "path": "empty-owner.mjs",
+      "bytes": 7887,
+      "sha256": "4018d1463fe5176f65f9e4a28edd71e442aecf55c64c988238c1b713f7a4f62c"
+    },
+    {
+      "path": "fixture.proof.test.ts.txt",
+      "bytes": 38135,
+      "sha256": "def927a3ed0cd5db2ca3f2c2f96d53f688709ae4da98f79c57f66cf3a4609ce6"
+    },
+    {
+      "path": "gateway-events.jsonl",
+      "bytes": 17693,
+      "sha256": "5602ee2ae0329287f7f8706fa3acf4aef982adc970484f65075fd9e98d47625a"
+    },
+    {
+      "path": "pr-source-readback.json",
+      "bytes": 340,
+      "sha256": "a83d06159fb742d8521e13024ac287d9b781713236f47dc2167d979c2e04fc1b"
+    },
+    {
+      "path": "source-bindings.json",
+      "bytes": 10083,
+      "sha256": "eebfe50244d575febc6c5dae8973f8112b57a9fec0a61f194167ad251ec8cb8c"
+    }
+  ]
+}

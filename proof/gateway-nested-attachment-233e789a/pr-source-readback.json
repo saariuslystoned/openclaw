@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-11-08T16:56:30.020587+00:00",
+  "pr": 195244,
+  "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "base": "0566b7771956f0f5dcb1a1ce32a729e7c5f5d9e7",
+  "state": "open",
+  "merged": false,
+  "bodySha256": "67bc2f44b33e56bcb4380d1b3edfe51d40f73136d306c3bd50f85edb9f06d526",
+  "updatedAt": "2026-11-08T14:53:38Z"
+}

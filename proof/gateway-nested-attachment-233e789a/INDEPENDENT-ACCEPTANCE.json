@@ -1,0 +1,160 @@
+{
+  "at": "2026-11-08T16:56:30.165276+00:00",
+  "result": "PASS_LOCAL_ACTUAL_GATEWAY_FEATURE_AND_CANONICAL_CUSTODY",
+  "source": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "beta": "2026.11.5-beta.1",
+  "betaSource": "bc061f935bfd79ad09e3e98c6df9f2e8f1e28bea",
+  "betaPorts": [
+    8024,
+    8032
+  ],
+  "betaLifecycle": "startup/authenticatedhealth/stop0, samecase restart/authenticatedhealth/stop0; two canonicalcustody passes",
+  "candidateRunExit": 0,
+  "candidateElapsedSeconds": 179.17759605399624,
+  "sourceBytes": 74,
+  "sourceSha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+  "stages": [
+    {
+      "kind": "download-stage",
+      "stage": "canonical",
+      "subjectId": "c5417d82-85f1-4432-b884-b71069364fe1",
+      "controlId": "c5bdd301-0d9b-429c-b24f-7614e75eb197",
+      "unrelatedId": "a0693669-c645-413d-a2e6-23809c59e6ef",
+      "topLevelCount": 1,
+      "revision": 1,
+      "valid": true,
+      "verified": true,
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "recordSha256": "66f2bea378a4402f39c518da08c38f7aa0c620dc2ce83a9ef76dc0297435f613",
+      "source": {
+        "id": "c5417d82-85f1-4432-b884-b71069364fe1",
+        "path": "artifacts/e19728ba-eda0-4f56-9a26-b63aee5a991f/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "downloaded": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "ordinary": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "unrelatedDenied": true
+    },
+    {
+      "kind": "download-stage",
+      "stage": "portable-nested-only",
+      "subjectId": "c5417d82-85f1-4432-b884-b71069364fe1",
+      "controlId": "c5bdd301-0d9b-429c-b24f-7614e75eb197",
+      "unrelatedId": "a0693669-c645-413d-a2e6-23809c59e6ef",
+      "topLevelCount": 0,
+      "revision": 2,
+      "valid": true,
+      "verified": true,
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "recordSha256": "7b490748e7075dc96c4c66654c162d1abc628b1cbbf48ad8e488a4f649574883",
+      "source": {
+        "id": "c5417d82-85f1-4432-b884-b71069364fe1",
+        "path": "artifacts/e19728ba-eda0-4f56-9a26-b63aee5a991f/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "downloaded": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "ordinary": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "unrelatedDenied": true
+    },
+    {
+      "kind": "download-stage",
+      "stage": "restored-top-level",
+      "subjectId": "c5417d82-85f1-4432-b884-b71069364fe1",
+      "controlId": "c5bdd301-0d9b-429c-b24f-7614e75eb197",
+      "unrelatedId": "a0693669-c645-413d-a2e6-23809c59e6ef",
+      "topLevelCount": 1,
+      "revision": 3,
+      "valid": true,
+      "verified": true,
+      "bodySha256": "8a50dc4e02d4fbbdf10feef15a602525db5331fc4f98bced41a9844ad1bd8ca9",
+      "recordSha256": "4aaad256af6eb6f76f76127525933cde19b60aacff235f1836dfe80d205d2503",
+      "source": {
+        "id": "c5417d82-85f1-4432-b884-b71069364fe1",
+        "path": "artifacts/e19728ba-eda0-4f56-9a26-b63aee5a991f/prism.txt",
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914"
+      },
+      "downloaded": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "ordinary": {
+        "bytes": 74,
+        "sha256": "dd063402beaa8dbc0358074598c471d0aaff82e0543acfca8277b279caf9e914",
+        "pages": 1,
+        "nextOffset": null
+      },
+      "unrelatedDenied": true
+    }
+  ],
+  "negativeCalls": 6,
+  "sourceBindingsIndependentlyMatched": 64,
+  "fixtureSha256": "def927a3ed0cd5db2ca3f2c2f96d53f688709ae4da98f79c57f66cf3a4609ce6",
+  "candidateTerminal": {
+    "kind": "terminal",
+    "epoch": "candidate",
+    "applicationGracefulDrain": "unproven",
+    "cleanupAcceptance": "canonical-managed-custody",
+    "complete": true,
+    "proofComplete": true,
+    "cleanupOK": true,
+    "listenerClosed": true,
+    "claimReleased": true,
+    "launchAttempted": true,
+    "handleCreated": true,
+    "startedResolved": true,
+    "exitObserved": true,
+    "closeObserved": true,
+    "spawnState": "fulfilled",
+    "pidObserved": true,
+    "code": null,
+    "signal": "SIGTERM",
+    "retainedCase": "/cases/h38-gateway-EV6EBg",
+    "commands": 46,
+    "stderrBytes": 0,
+    "gatewayStdoutBytes": 0,
+    "gatewayStderrBytes": 13007
+  },
+  "generationDisposed": [
+    {
+      "path": ".artifacts/vitest-workers/run-YfDsMr",
+      "existsAfterWrapper": false
+    }
+  ],
+  "candidateTarget": {
+    "host": "127.0.0.1",
+    "port": 3024,
+    "namespacePid": 487,
+    "closed": true
+  },
+  "limits": [
+    "Gateway API proof, no browserUI/model claim",
+    "Generic public plugin-action refusal hides internal exception reason; verified evidence-free unrelatedrecord and byteexact positive controls before/after",
+    "Small74-byte source, no multi-page/browser-cancellation coverage claim",
+    "Application graceful-drain/selfSIGTERM/no-escalation remain UNPROVEN; canonical process/output/tree/listener/claim joins PASS",
+    "Earlier failedattempts and H12 originalstrictFAILED remain unchanged",
+    "No beta-only exact233e clearance; full233e matchingruntime supplied",
+    "Nativeproofhold/comprehensive/humanmerge gates not cleared by local execution alone"
+  ]
+}

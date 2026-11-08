@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-08T16:52:40.617914+00:00",
+  "status": "TERMINAL",
+  "head": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "beta": "2026.11.5-beta.1",
+  "watchdogSeconds": 900,
+  "ownedProcessGroup": 943970,
+  "exit": 0,
+  "elapsedSeconds": 179.17759605399624,
+  "watchdog": false,
+  "totalOutputBytes": 36329,
+  "allowlistedEvents": 80,
+  "sanitizedRunnerLines": [
+    "Test Files  1 passed (1)",
+    "Tests  1 passed (1)",
+    "Duration  174.97s (tests 62%, transform 34%, import 2%, worker 2%)"
+  ],
+  "generations": [
+    {
+      "path": ".artifacts/vitest-workers/run-YfDsMr",
+      "existsAfterWrapper": false
+    }
+  ],
+  "trackedClean": true,
+  "sourceHeadAfter": "233e789a02100b6c4f78afb6fe50c393f8d4402d",
+  "fixtureSha256After": "def927a3ed0cd5db2ca3f2c2f96d53f688709ae4da98f79c57f66cf3a4609ce6"
+}
