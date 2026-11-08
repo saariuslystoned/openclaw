@@ -1,0 +1,159 @@
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+[vitest] still running with no output for 30000ms.
+[vitest-workers] prepared bb4c8f92320b in 30598ms (15062 inputs, 24050 outputs)
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > UI and tool share FTS title/alias/body retrieval, literal modes and stable citation contracts
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > exact ID/name/alias lookup normalizes names, exposes ambiguity and never selects arbitrarily
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > all saved records are discoverable regardless of legacy approval metadata; lifecycle filters still apply
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > scope isolates results, counts, exact identity, snippets, corpus statistics and cached projections
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > invalid, duplicate, broken evidence and unavailable dependent records cannot leak through retrieval
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > observed withdrawals persist across stale-file reappearance, restart and projection rebuild
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > external edits, rename, deletion, malformed replacement and ontology changes replace the projection
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > failed index updates return unavailable, not empty/stale; exact lookup and listing still work; retry rebuilds
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > revoked authority rejects retrieval without cached fallback
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > hardlinks and symlinks cannot import another scope into the keyword corpus
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > bounded contextual snippets have truthful original Markdown lines
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > FTS operators are literal words, malformed/oversized input is rejected, Unicode terms work
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > ranking preserves pagination and scope without rereading the filtered corpus
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > published pages are immediately searchable without approval; restored generations cannot serve a newer index
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > empty conversations return a ready empty scope without materializing a directory
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > editing a legacy page removes approval metadata through journaled publication and preserves authored material
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > an index built before row tracking is repopulated, never left empty and ready
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > an active search follows superseded wording to the current replacement after direct matches
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > superseded wording ranks only among histories whose current records pass the filters
+ ↓  extensions  extensions/knowledge/src/retrieval.test.ts > superseded-record edits update the persistent history index and the search snapshot
+ ×  extensions  extensions/knowledge/src/retrieval.test.ts > canonical queries share original citations across current, filtered and historical corpora 2884ms
+   → expected [] to deeply equal [ 'nfc_title' ]
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ×  extensions  extensions/knowledge/src/retrieval.test.ts > NFC highlight origins retain original UTF-16 snippets through composition and reordering 1002ms
+   → expected [] to deeply equal [ 'jamo_origin' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   extensions  extensions/knowledge/src/retrieval.test.ts > canonical queries share original citations across current, filtered and historical corpora
+AssertionError: expected [] to deeply equal [ 'nfc_title' ]
+
+- Expected
++ Received
+
+- [
+-   "nfc_title",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/retrieval.test.ts:678:29
+    676|         );
+    677|         expect(result.index.state).toBe("ready");
+    678|         expect(ids(result)).toEqual([sample.id]);
+       |                             ^
+    679|         const hit = result.hits.find(isFullHit)!;
+    680|         const text =
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL   extensions  extensions/knowledge/src/retrieval.test.ts > NFC highlight origins retain original UTF-16 snippets through composition and reordering
+AssertionError: expected [] to deeply equal [ 'jamo_origin' ]
+
+- Expected
++ Received
+
+- [
+-   "jamo_origin",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/retrieval.test.ts:761:25
+    759|     );
+    760|     expect(result.index.state).toBe("ready");
+    761|     expect(ids(result)).toEqual([sample.id]);
+       |                         ^
+    762|     const hit = result.hits.find(isFullHit)!;
+    763|     const start = lead.length + sample.at - 100;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 20 skipped (22)
+   Start at  07:34:07
+   Duration  103.58s (transform 87%, import 8%, tests 4%, worker 1%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 105.97s
+[test] FAILED (exit 1)

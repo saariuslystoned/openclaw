@@ -1,0 +1,97 @@
+import { randomUUID } from "node:crypto";
+import type { FeatureInput, FeatureOutput } from "openclaw/plugin-sdk/feature-contract";
+import type { OpenClawPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
+import { Check } from "typebox/value";
+import { expect, it } from "vitest";
+import { contract } from "./contract.js";
+import plugin from "./index.js";
+import { hostApi, sessionActions, toolContext, useTestTempDirs } from "./test-support.js";
+
+const dirs = useTestTempDirs();
+type Operation = keyof typeof contract.operations;
+
+it("registered keyword search preserves canonical Greek equivalence and advertised accent matching", async () => {
+  const factories = new Map<string, OpenClawPluginToolFactory>();
+  const host = hostApi(dirs.make("public-canonical-text-"), {
+    extra: {
+      ...sessionActions(),
+      registerTool(factory: OpenClawPluginToolFactory, options: { name: string }) {
+        factories.set(options.name, factory);
+      },
+    },
+  });
+  plugin.register(host.api);
+  const context = toolContext(host.api).tool;
+  async function call<K extends Operation>(operation: K, input: FeatureInput<typeof contract, K>): Promise<FeatureOutput<typeof contract, K>> {
+    const tool = factories.get("knowledge_" + operation)?.(context);
+    if (!tool || Array.isArray(tool)) throw new Error("Missing registered tool: " + operation);
+    const result = await tool.execute(randomUUID(), input);
+    const value: unknown = result.details;
+    if (!Check(contract.operations[operation].output, value)) throw new Error("Invalid registered tool output");
+    return value as FeatureOutput<typeof contract, K>;
+  }
+  const composed = "άλφα";
+  const decomposed = "άλφα";
+  const plain = "αλφα";
+  expect(composed.normalize("NFD")).toBe(decomposed);
+  const bodyFor = (word: string) => "Fictional glossary token: " + word + ".";
+  const note = await call("save_page", {
+    requestId: randomUUID(), type: "project", title: "Fictional Greek glossary", body: bodyFor(composed),
+  });
+  const control = await call("save_page", {
+    requestId: randomUUID(), type: "project", title: "Fictional Latin control", body: "Café cobaltmarker.",
+  });
+  expect(note.state).toBe("published");
+  expect(control.state).toBe("published");
+  const controlBefore = (await call("record", { id: control.id })).record!;
+  async function observe(stage: string, word: string) {
+    const before = (await call("record", { id: note.id })).record!;
+    expect(before.body).toBe(bodyFor(word));
+    async function search(query: string) {
+      const result = await call("grep", { query, detail: "full" });
+      expect(result.index.state).toBe("ready");
+      expect(result.index.lag).toBe(false);
+      expect(result.coverage.complete).toBe(true);
+      expect(result.total).toBe(result.hits.length);
+      return result.hits.map(hit => hit.record.id).sort();
+    }
+    const exact = await search(word);
+    const nfc = await search(composed);
+    const nfd = await search(decomposed);
+    const unaccented = await search(plain);
+    const latin = await search("CAFE");
+    const unrelated = await search("cobaltmarker");
+    const after = (await call("record", { id: note.id })).record!;
+    const controlAfter = (await call("record", { id: control.id })).record!;
+    expect(exact).toEqual([note.id]);
+    expect(latin).toEqual([control.id]);
+    expect(unrelated).toEqual([control.id]);
+    expect(after.body).toBe(before.body);
+    expect(after.hash).toBe(before.hash);
+    expect(after.revision).toBe(before.revision);
+    expect(controlAfter.body).toBe(controlBefore.body);
+    expect(controlAfter.hash).toBe(controlBefore.hash);
+    expect(controlAfter.revision).toBe(controlBefore.revision);
+    console.info("PUBLIC_CANONICAL_TEXT_PROOF", JSON.stringify({
+      stage, noteId: note.id, controlId: control.id, body: before.body, exact, nfc, nfd, unaccented, latin, unrelated,
+      bodyHash: before.hash, revision: before.revision, sourceUnchanged: after.hash === before.hash,
+    }));
+    // Keep all controls and restoration observable on a failing baseline.
+    expect.soft(nfc).toEqual([note.id]);
+    expect.soft(nfd).toEqual([note.id]);
+    expect.soft(unaccented).toEqual([note.id]);
+  }
+  async function replace(word: string) {
+    const before = (await call("record", { id: note.id })).record!;
+    const saved = await call("save_page", {
+      requestId: randomUUID(), id: note.id, type: "project", title: "Fictional Greek glossary", body: bodyFor(word),
+      expectedRevision: before.revision, expectedHash: before.hash,
+    });
+    expect(saved.state).toBe("published");
+  }
+  await observe("composed", composed);
+  await replace(decomposed);
+  await observe("canonically-equivalent-decomposed", decomposed);
+  await replace(composed);
+  await observe("composed-restored", composed);
+});

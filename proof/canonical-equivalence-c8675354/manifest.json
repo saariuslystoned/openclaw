@@ -1,0 +1,68 @@
+{
+  "source_base": "0622e93a295d4721344d77ae67f7b0c5bac859ea",
+  "source_head": "c867535489f22295faa42cebd6c843cb8b18d0eb",
+  "generated_at": "2026-11-08T07:50:27.238495+00:00",
+  "scope": "public source and wholly fictional stores; sanitized text proof; no media/credentials/private memories; ANSI removed only from logs",
+  "files": [
+    {
+      "path": "PROOF.md",
+      "bytes": 8470,
+      "sha256": "55a64dc823f4ae65b5b08f9c9d129e6d48c44888ec72f88e345bf9f4360b0545"
+    },
+    {
+      "path": "actual-old-index-base-red.txt",
+      "bytes": 48597,
+      "sha256": "e304e013796729ac035defa648dc75aa6c794c816897ee4d44d348d69be0f5d4"
+    },
+    {
+      "path": "final-57-tests-pass.txt",
+      "bytes": 20753,
+      "sha256": "a7961f56efeca3b765e0165b9882610e8e1c827af1ebdf4d8f34d85453e89569"
+    },
+    {
+      "path": "final-lint-pass.txt",
+      "bytes": 134,
+      "sha256": "a710b5c6b118698e200f9ea5aba2cf0ba587ceac9610a0e12b039356400b3004"
+    },
+    {
+      "path": "format-only.patch",
+      "bytes": 1416,
+      "sha256": "bb353c46faff5919843fb5cd7c1ea70ce892667981d8b1010bace9091b50040b"
+    },
+    {
+      "path": "optional-debt-grant-NOT-APPLIED.diff",
+      "bytes": 95,
+      "sha256": "43e49a6a89c88167f2cdf5e8c6f1b7cfb124d4cc428276f220a846fc58646929"
+    },
+    {
+      "path": "original-diagnostic-three-policy-failures.txt",
+      "bytes": 12081,
+      "sha256": "c59e28ee0c87c4e5360f04aad1e38492089f3e23e7c487182cef486f883db084"
+    },
+    {
+      "path": "original-fixture.ts.txt",
+      "bytes": 4817,
+      "sha256": "e4aabdee893aceb7457797f1115f81eeed037c60658035d786300125ac9fd4ac"
+    },
+    {
+      "path": "owning-base-red.txt",
+      "bytes": 11560,
+      "sha256": "08b11b6ea178f3df91e5314ab0787ded8c4c612609103e8e008e42d996aee000"
+    },
+    {
+      "path": "ratchet-fail-12.txt",
+      "bytes": 215,
+      "sha256": "8bd24520be9e450b88b659ae04dc95cd302a71d154f0b0d48653cec6bd4c8e84"
+    },
+    {
+      "path": "same-path-migration-pass.txt",
+      "bytes": 47263,
+      "sha256": "b7b679cda322179e333a66bb6a85ea602d006821cec059a6289328c069fd1d34"
+    },
+    {
+      "path": "upgrade-driver-v2.ts.txt",
+      "bytes": 11441,
+      "sha256": "6c344f173fa8812349e20c14287522f29d1e43f0c349e6a67cfe9471be760409"
+    }
+  ]
+}

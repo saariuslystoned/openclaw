@@ -1,0 +1,186 @@
+import { createHash, randomUUID } from "node:crypto";
+import { mkdir, readFile, readdir, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
+import type { FeatureInput } from "openclaw/plugin-sdk/feature-contract";
+import type { OpenClawPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
+import { Check } from "typebox/value";
+import { expect, it } from "vitest";
+import { stringify } from "yaml";
+import { contract } from "./contract.js";
+import plugin from "./index.js";
+import { isFullHit } from "./retrieval-hit.js";
+import { hostApi, sessionActions, storeFixture, toolContext } from "./test-support.js";
+
+// The exported schema, not a handwritten response envelope, validates every tool result.
+type SearchInput = FeatureInput<typeof contract, "grep">;
+const sha = (bytes: string | Buffer) => createHash("sha256").update(bytes).digest("hex");
+const PREFIX = "Fictional introduction.\n".repeat(190);
+const cases = [
+  { id: "canonical_title", title: "άλφα", body: "title field only", aliases: [], query: "άλφα", stored: "άλφα", field: "title", mode: "all" },
+  { id: "canonical_alias", title: "Alias example", body: "alias field only", aliases: ["βη\u0301τα"], query: "βήτα", stored: "βη\u0301τα", field: "aliases", mode: "any" },
+  { id: "canonical_body", title: "Body example", body: PREFIX + "γα\u0301μμα marker", aliases: [], query: "γάμμα", stored: "γα\u0301μμα", field: "body", mode: "phrase" },
+] as const;
+
+type IndexImage = ReturnType<typeof inspectIndex>;
+function inspectIndex(filename: string) {
+  // EXCLUSIVE PROOF CUSTODY ONLY: call after normal registered service stop has joined workers.
+  const db = new DatabaseSync(filename, { readOnly: true });
+  try {
+    const names = db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()
+      .map((r) => String(r.name));
+    const corpora = names.filter((n) => /^keyword_(history_)?fts_v1_[a-f0-9]+$/.test(n));
+    const tracked = names.filter((n) => /^keyword_(history_)?rows_v1_[a-f0-9]+$/.test(n));
+    return {
+      state: db.prepare("SELECT binding,snapshot,indexed_at FROM keyword_state_v1 ORDER BY binding").all(),
+      corpora: Object.fromEntries(corpora.map((n) => [n, db.prepare('SELECT id,title,aliases,body FROM "' + n + '" ORDER BY id').all()])),
+      tracked: Object.fromEntries(tracked.map((n) => [n, db.prepare('SELECT id,hash,fts_rowid FROM "' + n + '" ORDER BY id').all()])),
+    };
+  } finally { db.close(); }
+}
+
+it("registered grep upgrades the actual old same-path canonical projection without editing records", async () => {
+  const phase = process.env.H21_UPGRADE_PHASE;
+  const supplied = process.env.H21_UPGRADE_ROOT;
+  if ((phase !== "base" && phase !== "candidate") || !supplied || !path.isAbsolute(supplied)) {
+    throw new Error("Set H21_UPGRADE_PHASE=base|candidate and an absolute disposable H21_UPGRADE_ROOT");
+  }
+  const base = await realpath(supplied);
+  const receiptPath = path.join(base, "h21-old-index.json");
+  const services: { stop?: () => unknown }[] = [];
+  const factories = new Map<string, OpenClawPluginToolFactory>();
+  const extra = {
+    ...sessionActions(),
+    registerService(service: { stop?: () => unknown }) { services.push(service); },
+    registerTool(factory: OpenClawPluginToolFactory, options: { name: string }) { factories.set(options.name, factory); },
+  };
+  async function stop() {
+    // Do not remove the root: candidate must consume this exact retained database.
+    for (const service of services.splice(0)) await service.stop?.();
+  }
+  type Seed = { root: string; statePath: string; sourceHashes: Record<string, string>; oldIndex: IndexImage };
+  let seed: Seed;
+  let api: ReturnType<typeof hostApi>["api"];
+  if (phase === "base") {
+    expect(await readdir(base)).toEqual([]);
+    const f = await storeFixture(base, { writesEnabled: false, policy: { writesEnabled: false }, extra });
+    api = f.api;
+    const sourceHashes: Record<string, string> = {};
+    async function put(id: string, title: string, body: string, metadata: Record<string, unknown> = {}) {
+      const rel = path.join("private", "notes", id + ".md");
+      const raw = "---\n" + stringify({
+        format: "knowledge-record-v1", id, revision: 1, kind: "page", type: "note", fields: {},
+        title, scope: { visibility: "private" }, recorded_at: "2026-09-23T00:00:00Z",
+        updated_at: "2026-09-23T00:00:00Z", lifecycle: "active", ...metadata,
+      }) + "---\n" + body;
+      await mkdir(path.dirname(path.join(f.root, rel)), { recursive: true });
+      await writeFile(path.join(f.root, rel), raw);
+      sourceHashes[rel] = sha(raw);
+    }
+    for (const c of cases) await put(c.id, c.title, c.body, { aliases: c.aliases, tags: ["chosen"] });
+    await put("canonical_now", "Current plan", "current answer", { tags: ["chosen"] });
+    await put("canonical_old", "Earlier plan", "δε\u0301λτα", { lifecycle: "superseded", superseded_by: "canonical_now", tags: ["chosen"] });
+    await put("outside_now", "Other current", "outside answer");
+    await put("outside_old", "Other earlier", "unrelated history", { lifecycle: "superseded", superseded_by: "outside_now" });
+    await put("canonical_control", "Latin control", "Café cobaltmarker");
+    seed = { root: f.root, statePath: f.config.statePath, sourceHashes, oldIndex: { state: [], corpora: {}, tracked: {} } };
+  } else {
+    seed = JSON.parse(await readFile(receiptPath, "utf8"));
+    expect(seed.root).toBe(path.join(base, "vault"));
+    expect(seed.statePath).toBe(path.join(base, "vault.sqlite"));
+    expect(inspectIndex(seed.statePath)).toEqual(seed.oldIndex);
+    api = hostApi(base, { policy: { writesEnabled: false }, extra }).api;
+  }
+  async function sourcesUnchanged() {
+    for (const [rel, hash] of Object.entries(seed.sourceHashes)) expect(sha(await readFile(path.join(seed.root, rel)))).toBe(hash);
+  }
+  await sourcesUnchanged();
+  plugin.register(api);
+  let context = toolContext(api).tool;
+  async function grep(input: SearchInput) {
+    const tool = factories.get("knowledge_grep")?.(context);
+    if (!tool || Array.isArray(tool)) throw new Error("Registered knowledge_grep missing");
+    const output = (await tool.execute(randomUUID(), input)).details;
+    if (!Check(contract.operations.grep.output, output)) throw new Error("Invalid registered grep response");
+    expect(output.index.state).toBe("ready");
+    expect(output.coverage.complete).toBe(true);
+    return output;
+  }
+  try {
+    // Controls must succeed on old and new code; soft canonical assertions retain the whole baseline.
+    expect((await grep({ query: "CAFE" })).hits.map((h) => h.record.id)).toEqual(["canonical_control"]);
+    expect((await grep({ query: "absentzircon" })).total).toBe(0);
+    for (const c of cases) {
+      expect((await grep({ query: c.stored, detail: "full" })).hits.map((h) => h.record.id)).toEqual([c.id]);
+      for (const query of [c.query, c.query.normalize("NFD")]) {
+        {
+          const mode = c.mode;
+          const full = await grep({ query, mode, detail: "full" });
+          const filtered = await grep({ query, mode, tag: "chosen", detail: "full" });
+          console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id: c.id, query, mode, full, filtered }));
+          expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id]);
+          expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([c.id]);
+          const h = full.hits.find(isFullHit);
+          if (h) {
+            const original = c.field === "body" ? c.body : c.field === "title" ? c.title : c.aliases.join("\n");
+            expect(h.snippet.field).toBe(c.field);
+            expect(h.snippet.text).toBe(original.slice(h.snippet.start, h.snippet.end));
+            expect(h.citation.hash).toBe(seed.sourceHashes[path.join("private", "notes", c.id + ".md")]);
+            expect(h.citation.revision).toBe(1);
+          }
+        }
+      }
+    }
+    for (const lifecycle of ["active", "superseded", "all"] as const) {
+      for (const tag of [undefined, "chosen"]) {
+        const result = await grep({ query: "δέλτα", lifecycle, ...(tag === undefined ? {} : { tag }), detail: "full" });
+        console.info("H21_UPGRADE_HISTORY", JSON.stringify({ phase, lifecycle, tag, result }));
+        expect.soft(result.hits.map((h) => h.record.id)).toEqual([lifecycle === "active" ? "canonical_now" : "canonical_old"]);
+        if (lifecycle === "active" && result.hits.length) expect(result.hits[0]!.via?.id).toBe("canonical_old");
+      }
+    }
+    const full = await grep({ query: "γάμμα", detail: "full" });
+    const compact = await grep({ query: "γάμμα" });
+    if (phase === "candidate") {
+      const h = full.hits.find(isFullHit)!;
+      const at = PREFIX.length;
+      expect(h.snippet.start).toBe(at - 100);
+      expect(h.snippet.text).toContain("γα\u0301μμα");
+      expect(compact.hits[0]!.snippet.text).toContain("γα\u0301μμα");
+      const raw = await readFile(path.join(seed.root, "private/notes/canonical_body.md"), "utf8");
+      const bodyStart = raw.length - cases[2].body.length;
+      expect(h.snippet.startLine).toBe(raw.slice(0, bodyStart + h.snippet.start).split("\n").length);
+      expect(h.snippet.endLine).toBe(raw.slice(0, bodyStart + h.snippet.end - 1).split("\n").length);
+    }
+    // End both phases on the same active corpus, rather than the historical projection.
+    await grep({ query: "cobaltmarker" });
+  } finally { await stop(); }
+  await sourcesUnchanged();
+  const first = inspectIndex(seed.statePath);
+  const currentNames = Object.keys(first.corpora).filter((n) => n.startsWith("keyword_fts_v1_"));
+  const historyNames = Object.keys(first.corpora).filter((n) => n.startsWith("keyword_history_fts_v1_"));
+  expect(currentNames).toHaveLength(1);
+  expect(historyNames).toHaveLength(1);
+  if (phase === "base") {
+    // These bytes came from real old registered-tool calls, never hand-built FTS rows.
+    expect(first.corpora[currentNames[0]!]!.find((r) => r.id === "canonical_alias")!.aliases).toBe("βη\u0301τα");
+    expect(first.corpora[historyNames[0]!]!.find((r) => r.id === "canonical_old")!.body).toBe("δε\u0301λτα");
+    seed.oldIndex = first;
+    await writeFile(receiptPath, JSON.stringify(seed, null, 2) + "\n", { flag: "wx" });
+  } else {
+    expect(first.state).not.toEqual(seed.oldIndex.state);
+    expect(first.tracked).not.toEqual(seed.oldIndex.tracked);
+    expect(first.corpora[currentNames[0]!]!.find((r) => r.id === "canonical_alias")!.aliases).toBe("βήτα");
+    expect(first.corpora[historyNames[0]!]!.find((r) => r.id === "canonical_old")!.body).toBe("δέλτα");
+    // Reopen normally, issue the identical query, stop, then inspect. No concurrent reader/worker.
+    factories.clear();
+    const reopened = hostApi(base, { policy: { writesEnabled: false }, extra });
+    plugin.register(reopened.api);
+    context = toolContext(reopened.api).tool;
+    try { expect((await grep({ query: "cobaltmarker" })).hits.map((h) => h.record.id)).toEqual(["canonical_control"]); }
+    finally { await stop(); }
+    expect(inspectIndex(seed.statePath)).toEqual(first);
+    await sourcesUnchanged();
+  }
+  console.info("H21_UPGRADE_TERMINAL", JSON.stringify({ phase, sourceHashes: seed.sourceHashes, oldIndex: seed.oldIndex, finalIndex: first, retainedRoot: base, workersStopped: services.length === 0 }));
+});

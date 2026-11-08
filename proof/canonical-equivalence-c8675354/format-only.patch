@@ -1,0 +1,37 @@
+--- original/config/test-lines-allocations/195031-canonical-equivalence.txt
++++ formatted/config/test-lines-allocations/195031-canonical-equivalence.txt
+@@ -1,2 +1,2 @@
+ # Knowledge canonical-equivalence and original snippet regressions (issue #195031).
+-163
++168
+--- original/extensions/knowledge/src/retrieval.test.ts
++++ formatted/extensions/knowledge/src/retrieval.test.ts
+@@ -683,7 +683,12 @@
+             : sample.field === "body"
+               ? sample.body
+               : sample.aliases.join("\n");
+-        expect(hit.snippet).toMatchObject({ field: sample.field, text, start: 0, end: text.length });
++        expect(hit.snippet).toMatchObject({
++          field: sample.field,
++          text,
++          start: 0,
++          end: text.length,
++        });
+         expect(hit.citation).toMatchObject({
+           id: sample.id,
+           revision: 1,
+--- original/extensions/knowledge/src/retrieval.ts
++++ formatted/extensions/knowledge/src/retrieval.ts
+@@ -356,11 +356,7 @@
+   const insert = db.prepare(`INSERT INTO ${table}(id,title,aliases,body) VALUES (?,?,?,?)`),
+     track = db.prepare(`INSERT INTO ${rows} VALUES (?,?,?)`);
+   for (const r of wanted.values()) {
+-    track.run(
+-      r.id,
+-      keywordRowHash(r),
+-      insert.run(r.id, ...keywordFields(r)).lastInsertRowid,
+-    );
++    track.run(r.id, keywordRowHash(r), insert.run(r.id, ...keywordFields(r)).lastInsertRowid);
+   }
+ }
+ 

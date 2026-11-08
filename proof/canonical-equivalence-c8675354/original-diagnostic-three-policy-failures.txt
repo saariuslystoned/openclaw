@@ -1,0 +1,172 @@
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+[vitest] still running with no output for 30000ms.
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+[vitest-workers] prepared d878603065cb in 30846ms (15062 inputs, 24050 outputs)
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+stdout | extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+PUBLIC_CANONICAL_TEXT_PROOF {"stage":"composed","noteId":"eebcbbe8-dde6-4edb-bc66-38dfd7dda11a","controlId":"5b28c3c3-cd33-43ea-b381-c823236d87aa","body":"Fictional glossary token: άλφα.","exact":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfc":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfd":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"unaccented":[],"latin":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"unrelated":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"bodyHash":"cd409a818c46942c601b6a5bf32f687bb9ac8f585cb307d3500623a541d9afe5","revision":1,"sourceUnchanged":true}
+
+stdout | extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+PUBLIC_CANONICAL_TEXT_PROOF {"stage":"canonically-equivalent-decomposed","noteId":"eebcbbe8-dde6-4edb-bc66-38dfd7dda11a","controlId":"5b28c3c3-cd33-43ea-b381-c823236d87aa","body":"Fictional glossary token: άλφα.","exact":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfc":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfd":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"unaccented":[],"latin":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"unrelated":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"bodyHash":"87d798655f18c086810ace003f80493ff927a410e5248596a0a8c46c55789897","revision":2,"sourceUnchanged":true}
+
+stdout | extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+PUBLIC_CANONICAL_TEXT_PROOF {"stage":"composed-restored","noteId":"eebcbbe8-dde6-4edb-bc66-38dfd7dda11a","controlId":"5b28c3c3-cd33-43ea-b381-c823236d87aa","body":"Fictional glossary token: άλφα.","exact":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfc":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"nfd":["eebcbbe8-dde6-4edb-bc66-38dfd7dda11a"],"unaccented":[],"latin":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"unrelated":["5b28c3c3-cd33-43ea-b381-c823236d87aa"],"bodyHash":"3a96db2b1576fcdcf218b56ec4fe171babfd4c092d6b2e0704c8905ccf185e71","revision":3,"sourceUnchanged":true}
+
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-text-proof.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ×  extensions  extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching 5579ms
+   → expected [] to deeply equal [ Array(1) ]
+   → expected [] to deeply equal [ Array(1) ]
+   → expected [] to deeply equal [ Array(1) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "eebcbbe8-dde6-4edb-bc66-38dfd7dda11a",
+- ]
++ []
+
+ ❯ observe extensions/knowledge/src/public-canonical-text-proof.test.ts:82:29
+     80|     expect.soft(nfc).toEqual([note.id]);
+     81|     expect.soft(nfd).toEqual([note.id]);
+     82|     expect.soft(unaccented).toEqual([note.id]);
+       |                             ^
+     83|   }
+     84|   async function replace(word: string) {
+ ❯ extensions/knowledge/src/public-canonical-text-proof.test.ts:92:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "eebcbbe8-dde6-4edb-bc66-38dfd7dda11a",
+- ]
++ []
+
+ ❯ observe extensions/knowledge/src/public-canonical-text-proof.test.ts:82:29
+     80|     expect.soft(nfc).toEqual([note.id]);
+     81|     expect.soft(nfd).toEqual([note.id]);
+     82|     expect.soft(unaccented).toEqual([note.id]);
+       |                             ^
+     83|   }
+     84|   async function replace(word: string) {
+ ❯ extensions/knowledge/src/public-canonical-text-proof.test.ts:94:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-text-proof.test.ts > registered keyword search preserves canonical Greek equivalence and advertised accent matching
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "eebcbbe8-dde6-4edb-bc66-38dfd7dda11a",
+- ]
++ []
+
+ ❯ observe extensions/knowledge/src/public-canonical-text-proof.test.ts:82:29
+     80|     expect.soft(nfc).toEqual([note.id]);
+     81|     expect.soft(nfd).toEqual([note.id]);
+     82|     expect.soft(unaccented).toEqual([note.id]);
+       |                             ^
+     83|   }
+     84|   async function replace(word: string) {
+ ❯ extensions/knowledge/src/public-canonical-text-proof.test.ts:96:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  07:38:47
+   Duration  113.36s (transform 85%, import 8%, tests 5%, worker 2%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 115.82s
+[test] FAILED (exit 1)

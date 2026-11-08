@@ -1,0 +1,317 @@
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+[vitest] still running with no output for 30000ms.
+[vitest-workers] prepared 92d21b5f668a in 30511ms (15062 inputs, 24050 outputs)
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_title","query":"άλφα","mode":"all","full":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.159Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_title","title":"άλφα","kind":"page","type":"note","path":"notes/canonical_title.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_title","path":"notes/canonical_title.md","revision":1,"hash":"d15bcb32af95cd88a3444f0cf3991fb03e4a089141a63b21f4a5bc41adf00068"},"snippet":{"field":"title","text":"άλφα","start":0,"end":4,"startLine":null,"endLine":null,"truncated":false},"matches":["title"],"score":2.73755867529669,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.172Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_title","title":"άλφα","kind":"page","type":"note","path":"notes/canonical_title.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_title","path":"notes/canonical_title.md","revision":1,"hash":"d15bcb32af95cd88a3444f0cf3991fb03e4a089141a63b21f4a5bc41adf00068"},"snippet":{"field":"title","text":"άλφα","start":0,"end":4,"startLine":null,"endLine":null,"truncated":false},"matches":["title"],"score":1.7888818049431203,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_title","query":"άλφα","mode":"all","full":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.188Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.204Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_alias","query":"βήτα","mode":"any","full":{"mode":"keyword","queryMode":"any","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.241Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"any","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.255Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_alias","query":"βήτα","mode":"any","full":{"mode":"keyword","queryMode":"any","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.270Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_alias","title":"Alias example","kind":"page","type":"note","path":"notes/canonical_alias.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_alias","path":"notes/canonical_alias.md","revision":1,"hash":"f838c8cb6569b126eb6ecf2d03b110b549471c18f2634ba28721464901879ee6"},"snippet":{"field":"aliases","text":"βήτα","start":0,"end":5,"startLine":null,"endLine":null,"truncated":false},"matches":["aliases"],"score":2.688254717222954,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"any","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.282Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_alias","title":"Alias example","kind":"page","type":"note","path":"notes/canonical_alias.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_alias","path":"notes/canonical_alias.md","revision":1,"hash":"f838c8cb6569b126eb6ecf2d03b110b549471c18f2634ba28721464901879ee6"},"snippet":{"field":"aliases","text":"βήτα","start":0,"end":5,"startLine":null,"endLine":null,"truncated":false},"matches":["aliases"],"score":1.7601281294306894,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_body","query":"γάμμα","mode":"phrase","full":{"mode":"keyword","queryMode":"phrase","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.304Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"phrase","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.314Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_QUERY {"phase":"base","id":"canonical_body","query":"γάμμα","mode":"phrase","full":{"mode":"keyword","queryMode":"phrase","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.327Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_body","title":"Body example","kind":"page","type":"note","path":"notes/canonical_body.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_body","path":"notes/canonical_body.md","revision":1,"hash":"8c04d33582875f0c2571b2229c50ab34b3406935e8d88ba3cd04b78d6e462288"},"snippet":{"field":"body","text":"on.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nγάμμα marker","start":4460,"end":4573,"startLine":203,"endLine":208,"truncated":true},"matches":["body"],"score":0.44611346252984896,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}},"filtered":{"mode":"keyword","queryMode":"phrase","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.347Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[{"record":{"id":"canonical_body","title":"Body example","kind":"page","type":"note","path":"notes/canonical_body.md","revision":1,"lifecycle":"active","valid":true},"citation":{"id":"canonical_body","path":"notes/canonical_body.md","revision":1,"hash":"8c04d33582875f0c2571b2229c50ab34b3406935e8d88ba3cd04b78d6e462288"},"snippet":{"field":"body","text":"on.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nγάμμα marker","start":4460,"end":4573,"startLine":203,"endLine":208,"truncated":true},"matches":["body"],"score":0.3905116362538349,"attribution":"","assertionOrigin":"","evidence":[],"evidenceTruncated":false}],"resultCount":1,"total":1,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"active","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.360Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"active","tag":"chosen","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.375Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.100Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"superseded","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.390Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.389Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"19e9c4584919305db93884a87a680c0a9f78f688fb475f5a4d7e6ddaaefe6a36","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"superseded","tag":"chosen","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.414Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.389Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"19e9c4584919305db93884a87a680c0a9f78f688fb475f5a4d7e6ddaaefe6a36","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"all","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.429Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.389Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"19e9c4584919305db93884a87a680c0a9f78f688fb475f5a4d7e6ddaaefe6a36","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_HISTORY {"phase":"base","lifecycle":"all","tag":"chosen","result":{"mode":"keyword","queryMode":"all","offset":0,"freshness":{"queriedAt":"2026-11-08T07:33:17.447Z","scannedAt":"2026-11-08T07:33:17.093Z","indexedAt":"2026-11-08T07:33:17.389Z"},"coverage":{"complete":true,"message":"Current eligible scoped records only. Ranked search is not exhaustive vault listing."},"hits":[],"resultCount":0,"total":0,"nextOffset":null,"index":{"state":"ready","lag":false,"snapshot":"19e9c4584919305db93884a87a680c0a9f78f688fb475f5a4d7e6ddaaefe6a36","message":"Indexed from the current reconciled scope. Higher BM25 scores rank first; compare scores only within this query and snapshot."}}}
+
+stdout | extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+H21_UPGRADE_TERMINAL {"phase":"base","sourceHashes":{"private/notes/canonical_title.md":"d15bcb32af95cd88a3444f0cf3991fb03e4a089141a63b21f4a5bc41adf00068","private/notes/canonical_alias.md":"f838c8cb6569b126eb6ecf2d03b110b549471c18f2634ba28721464901879ee6","private/notes/canonical_body.md":"8c04d33582875f0c2571b2229c50ab34b3406935e8d88ba3cd04b78d6e462288","private/notes/canonical_now.md":"2ef3e9859121635e1e8a62d2ef1745a1a4456ba3bf9e268446cc92e04f17e77f","private/notes/canonical_old.md":"92e933378ddaeaf29cb11fbff05838ad2a86785875317d61ca6ea598ee0d61cd","private/notes/outside_now.md":"8f84d95c257d473ac1356feac82a5f638da959f5034a5365676d524a6536e063","private/notes/outside_old.md":"1b95649d25ce6962b890a6a04f3d456d163979745672519bbb54d055b7c7e2a8","private/notes/canonical_control.md":"036c10487f9e9a17469c42500fff294f246378248ca3b4980ab3bd0e72899a92"},"oldIndex":{"state":[{"binding":"012a61a4-2193-4b7e-8055-43e81d2e90d4:private","snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","indexed_at":"2026-11-08T07:33:17.459Z"}],"corpora":{"keyword_fts_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_alias","title":"Alias example","aliases":"βήτα","body":"alias field only"},{"id":"canonical_body","title":"Body example","aliases":"","body":"Fictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nγάμμα marker"},{"id":"canonical_control","title":"Latin control","aliases":"","body":"Café cobaltmarker"},{"id":"canonical_now","title":"Current plan","aliases":"","body":"current answer"},{"id":"canonical_title","title":"άλφα","aliases":"","body":"title field only"},{"id":"outside_now","title":"Other current","aliases":"","body":"outside answer"}],"keyword_history_fts_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_old","title":"Earlier plan","aliases":"","body":"δέλτα"},{"id":"outside_old","title":"Other earlier","aliases":"","body":"unrelated history"}]},"tracked":{"keyword_history_rows_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_old","hash":"92e933378ddaeaf29cb11fbff05838ad2a86785875317d61ca6ea598ee0d61cd","fts_rowid":1},{"id":"outside_old","hash":"1b95649d25ce6962b890a6a04f3d456d163979745672519bbb54d055b7c7e2a8","fts_rowid":2}],"keyword_rows_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_alias","hash":"f838c8cb6569b126eb6ecf2d03b110b549471c18f2634ba28721464901879ee6","fts_rowid":1},{"id":"canonical_body","hash":"8c04d33582875f0c2571b2229c50ab34b3406935e8d88ba3cd04b78d6e462288","fts_rowid":2},{"id":"canonical_control","hash":"036c10487f9e9a17469c42500fff294f246378248ca3b4980ab3bd0e72899a92","fts_rowid":3},{"id":"canonical_now","hash":"2ef3e9859121635e1e8a62d2ef1745a1a4456ba3bf9e268446cc92e04f17e77f","fts_rowid":4},{"id":"canonical_title","hash":"d15bcb32af95cd88a3444f0cf3991fb03e4a089141a63b21f4a5bc41adf00068","fts_rowid":5},{"id":"outside_now","hash":"8f84d95c257d473ac1356feac82a5f638da959f5034a5365676d524a6536e063","fts_rowid":6}]}},"finalIndex":{"state":[{"binding":"012a61a4-2193-4b7e-8055-43e81d2e90d4:private","snapshot":"f1f260cbcd85fdf926fb0cad5315740e5ab60ea97595610c5401c87b79f74278","indexed_at":"2026-11-08T07:33:17.459Z"}],"corpora":{"keyword_fts_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_alias","title":"Alias example","aliases":"βήτα","body":"alias field only"},{"id":"canonical_body","title":"Body example","aliases":"","body":"Fictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nFictional introduction.\nγάμμα marker"},{"id":"canonical_control","title":"Latin control","aliases":"","body":"Café cobaltmarker"},{"id":"canonical_now","title":"Current plan","aliases":"","body":"current answer"},{"id":"canonical_title","title":"άλφα","aliases":"","body":"title field only"},{"id":"outside_now","title":"Other current","aliases":"","body":"outside answer"}],"keyword_history_fts_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_old","title":"Earlier plan","aliases":"","body":"δέλτα"},{"id":"outside_old","title":"Other earlier","aliases":"","body":"unrelated history"}]},"tracked":{"keyword_history_rows_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_old","hash":"92e933378ddaeaf29cb11fbff05838ad2a86785875317d61ca6ea598ee0d61cd","fts_rowid":1},{"id":"outside_old","hash":"1b95649d25ce6962b890a6a04f3d456d163979745672519bbb54d055b7c7e2a8","fts_rowid":2}],"keyword_rows_v1_bf19170f693b927cc9c222f52f82184c6b5cec88d714998e789d26910d652059":[{"id":"canonical_alias","hash":"f838c8cb6569b126eb6ecf2d03b110b549471c18f2634ba28721464901879ee6","fts_rowid":1},{"id":"canonical_body","hash":"8c04d33582875f0c2571b2229c50ab34b3406935e8d88ba3cd04b78d6e462288","fts_rowid":2},{"id":"canonical_control","hash":"036c10487f9e9a17469c42500fff294f246378248ca3b4980ab3bd0e72899a92","fts_rowid":3},{"id":"canonical_now","hash":"2ef3e9859121635e1e8a62d2ef1745a1a4456ba3bf9e268446cc92e04f17e77f","fts_rowid":4},{"id":"canonical_title","hash":"d15bcb32af95cd88a3444f0cf3991fb03e4a089141a63b21f4a5bc41adf00068","fts_rowid":5},{"id":"outside_now","hash":"8f84d95c257d473ac1356feac82a5f638da959f5034a5365676d524a6536e063","fts_rowid":6}]}},"retainedRoot":"/proof/retained-store","workersStopped":true}
+
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/public-canonical-upgrade-proof.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ×  extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records 3873ms
+   → expected [] to deeply equal [ 'canonical_title' ]
+   → expected [] to deeply equal [ 'canonical_title' ]
+   → expected [] to deeply equal [ 'canonical_alias' ]
+   → expected [] to deeply equal [ 'canonical_alias' ]
+   → expected [] to deeply equal [ 'canonical_body' ]
+   → expected [] to deeply equal [ 'canonical_body' ]
+   → expected [] to deeply equal [ 'canonical_now' ]
+   → expected [] to deeply equal [ 'canonical_now' ]
+   → expected [] to deeply equal [ 'canonical_old' ]
+   → expected [] to deeply equal [ 'canonical_old' ]
+   → expected [] to deeply equal [ 'canonical_old' ]
+   → expected [] to deeply equal [ 'canonical_old' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_title' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_title",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:121:58
+    119|           const filtered = await grep({ query, mode, tag: "chosen", de…
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+       |                                                          ^
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+    123|           const h = full.hits.find(isFullHit);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_title' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_title",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:122:62
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+       |                                                              ^
+    123|           const h = full.hits.find(isFullHit);
+    124|           if (h) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_alias' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_alias",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:121:58
+    119|           const filtered = await grep({ query, mode, tag: "chosen", de…
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+       |                                                          ^
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+    123|           const h = full.hits.find(isFullHit);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_alias' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_alias",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:122:62
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+       |                                                              ^
+    123|           const h = full.hits.find(isFullHit);
+    124|           if (h) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_body' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_body",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:121:58
+    119|           const filtered = await grep({ query, mode, tag: "chosen", de…
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+       |                                                          ^
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+    123|           const h = full.hits.find(isFullHit);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_body' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_body",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:122:62
+    120|           console.info("H21_UPGRADE_QUERY", JSON.stringify({ phase, id…
+    121|           expect.soft(full.hits.map((h) => h.record.id)).toEqual([c.id…
+    122|           expect.soft(filtered.hits.map((h) => h.record.id)).toEqual([…
+       |                                                              ^
+    123|           const h = full.hits.find(isFullHit);
+    124|           if (h) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_now' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_now",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:138:58
+    136|         const result = await grep({ query: "δέλτα", lifecycle, ...(tag…
+    137|         console.info("H21_UPGRADE_HISTORY", JSON.stringify({ phase, li…
+    138|         expect.soft(result.hits.map((h) => h.record.id)).toEqual([life…
+       |                                                          ^
+    139|         if (lifecycle === "active" && result.hits.length) expect(resul…
+    140|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+ FAIL   extensions  extensions/knowledge/src/public-canonical-upgrade-proof.test.ts > registered grep upgrades the actual old same-path canonical projection without editing records
+AssertionError: expected [] to deeply equal [ 'canonical_old' ]
+
+- Expected
++ Received
+
+- [
+-   "canonical_old",
+- ]
++ []
+
+ ❯ extensions/knowledge/src/public-canonical-upgrade-proof.test.ts:138:58
+    136|         const result = await grep({ query: "δέλτα", lifecycle, ...(tag…
+    137|         console.info("H21_UPGRADE_HISTORY", JSON.stringify({ phase, li…
+    138|         expect.soft(result.hits.map((h) => h.record.id)).toEqual([life…
+       |                                                          ^
+    139|         if (lifecycle === "active" && result.hits.length) expect(resul…
+    140|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  07:31:32
+   Duration  105.53s (transform 86%, import 8%, tests 4%, worker 2%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 107.96s
+[test] FAILED (exit 1)

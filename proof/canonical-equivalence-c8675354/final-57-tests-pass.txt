@@ -1,0 +1,195 @@
+[test] starting test/vitest/vitest.extensions.config.ts
+
+ RUN  v5.0.5 /work
+
+[vitest] still running with no output for 30000ms.
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js (48:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/resolve-evaluate-options.js:48:1 ]
+    │
+ 48 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js (6:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-create.js:6:1 ]
+   │
+ 6 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js (11:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/@mdx-js+mdx@3.1.1_supports-color@10.2.2/node_modules/@mdx-js/mdx/lib/util/estree-util-is-declaration.js:11:1 ]
+    │
+ 11 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js (12:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js" may not be preserved when bundling.
+    ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/comment.js:12:1 ]
+    │
+ 12 │ ''
+    │ ─┬  
+    │  ╰── module level directive may not be preserved
+    │ 
+    │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+────╯
+
+node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js (9:0) [MODULE_LEVEL_DIRECTIVE] The semantics of the module level directive "" in "node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js" may not be preserved when bundling.
+   ╭─[ node_modules/.pnpm/hast-util-to-estree@3.1.3_supports-color@10.2.2/node_modules/hast-util-to-estree/lib/handlers/text.js:9:1 ]
+   │
+ 9 │ ''
+   │ ─┬  
+   │  ╰── module level directive may not be preserved
+   │ 
+   │ Help: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+───╯
+
+[vitest-workers] prepared 268029d1abf1 in 30853ms (15062 inputs, 24050 outputs)
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > UI and tool share FTS title/alias/body retrieval, literal modes and stable citation contracts 3861ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > exact ID/name/alias lookup normalizes names, exposes ambiguity and never selects arbitrarily 1057ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > all saved records are discoverable regardless of legacy approval metadata; lifecycle filters still apply 987ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > scope isolates results, counts, exact identity, snippets, corpus statistics and cached projections 2018ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > invalid, duplicate, broken evidence and unavailable dependent records cannot leak through retrieval 1137ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > observed withdrawals persist across stale-file reappearance, restart and projection rebuild 2024ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > external edits, rename, deletion, malformed replacement and ontology changes replace the projection 1195ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > failed index updates return unavailable, not empty/stale; exact lookup and listing still work; retry rebuilds 1127ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > revoked authority rejects retrieval without cached fallback 1061ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > hardlinks and symlinks cannot import another scope into the keyword corpus 967ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > bounded contextual snippets have truthful original Markdown lines 993ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > FTS operators are literal words, malformed/oversized input is rejected, Unicode terms work 1120ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > ranking preserves pagination and scope without rereading the filtered corpus 1159ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > published pages are immediately searchable without approval; restored generations cannot serve a newer index 1519ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > empty conversations return a ready empty scope without materializing a directory 996ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > editing a legacy page removes approval metadata through journaled publication and preserves authored material 1647ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > an index built before row tracking is repopulated, never left empty and ready 1022ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > an active search follows superseded wording to the current replacement after direct matches 1092ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > superseded wording ranks only among histories whose current records pass the filters 1088ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > superseded-record edits update the persistent history index and the search snapshot 1159ms
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > canonical queries share original citations across current, filtered and historical corpora 1323ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/retrieval.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/retrieval.test.ts > NFC highlight origins retain original UTF-16 snippets through composition and reordering 1439ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > shared search/get/health roundtrip uses native publication, provenance and revision refs 1447ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > ungranted conversation audiences never acquire private scope 1749ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > operator authorization and missing, foreign, host, and sandbox audience rejection 1977ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > host status receives health only and every other host purpose is denied 1411ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > host readiness redacts all states and storage errors while preserving lease fences 6ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > index failure is not empty success and late backend results are fenced 6ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > queued result release revalidates authority, cancellation and service incarnation 1921ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > cursor preserves query/scope/snapshot and revision fences reject stale reads 2302ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > native mutation and shared reads use one operation queue; errors do not poison it 3721ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > unsupported corpus/project filters are explicit, mixed corpus is partial 1521ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > knowledge_recall sets and clears service approval with exact replay 2397ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > knowledge_recall rejects non-owner authority, unavailable writes and invalid metadata 1968ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > automatic candidates select by kind, inject summary only and order deterministically 3813ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > automatic candidates exclude withdrawn, superseded and invalid recall blocks 5118ms
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > withdrawn records stay unavailable after external restoration; fixtures are excluded 3416ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/memory-provider.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/memory-provider.test.ts > retirement drains the shared lane, rollback resumes, close-all fences retained handles 995ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > one batch resolves forward references, self-links, claims/edges; one bounded verification checks all outputs 3055ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > batch interruption after-accept resumes once with no partial reads 2992ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > batch interruption after-install:private/people/ resumes once with no partial reads 3045ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > batch interruption after-install:private/claims/ resumes once with no partial reads 3159ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > batch interruption before-receipt resumes once with no partial reads 2988ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > prevalidation rejects a late invalid item without accepting any records 1132ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > source ID/hash receipts survive replacement; changed bytes require reconciliation, unchanged never republish 4667ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > verification catches evidence damage, broken links, changed revisions and explicit absent owner/date expectations 2917ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > expected graph checks authored links in both directions, subset associations and exact endpoints 2940ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > expected link identities stay bound to stable IDs across renames and fail closed for ambiguity 4004ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > group scope cannot discover private source receipts or verification content 1672ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > batch edits retain external changes on conflict and cannot publish partially 2254ms
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > evidence changed before acceptance rejects the entire batch 1070ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.agentDatabaseBorrowers
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.agentDatabaseReaders
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.sqliteWalCheckpointListeners
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateSnapshotOwners
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.agentDatabaseLifecycle
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.github-publication
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.repository-workspace
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.plugin-state
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.pluginStatePublication
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.personal-model-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.auth-profile-credentials
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.sessionDiskBudgetWorkers
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.sessionStateNotices
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.pluginStateNamespaceOwner
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.workspace-state
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.exec-approvals
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.devicePairingPublications
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.devicePairSetupChanges
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.sessionGroupCatalog
+[sqlite-test-lifecycle] extensions/knowledge/src/ingestion.test.ts: retiring openclaw.stateDomainPublication.sandbox-registry
+
+ ✓  extensions  extensions/knowledge/src/ingestion.test.ts > verification reports unavailable index instead of a false pass 2109ms
+ ✓  extensions  extensions/knowledge/src/record-capacity.test.ts > near-limit records scan, publish annotations, retain history and page recovery without large responses 6503ms
+ ✓  extensions  extensions/knowledge/src/record-capacity.test.ts > durable bytes accept exact boundary and reject one byte over independently of auxiliary reads 403ms
+ ✓  extensions  extensions/knowledge/src/record-capacity.test.ts > text windows preserve Unicode and bound JSON escapes 22ms
+ ✓  extensions  extensions/knowledge/src/record-capacity.test.ts > large full-record keyword matches keep ranking and label non-localized previews 352ms
+stderr | unknown test
+[sqlite-test-lifecycle] extensions/knowledge/src/record-capacity.test.ts: retiring openclaw.agentDatabaseReaders
+
+ ✓  extensions  extensions/knowledge/src/record-capacity.test.ts > publication keeps auxiliary and descriptor limits through staging and retained copies 205ms
+
+ Test Files  4 passed (4)
+      Tests  57 passed (57)
+   Start at  07:41:50
+   Duration  212.03s (tests 52%, transform 43%, import 4%, worker 1%)
+
+[vitest-workers] verifying completed generation before cleanup
+[test] passed 1 Vitest shard in 214.85s

@@ -1,0 +1,2 @@
+Test lines: 6574590; ceiling: 6574578; over by: 12; net delta: +168.
+Offset the added lines by deleting or consolidating tests elsewhere, or add a justified allocation in config/test-lines-allocations/<change>.txt.
