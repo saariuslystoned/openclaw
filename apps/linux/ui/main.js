@@ -19,6 +19,7 @@ const elements = {
   footerMode: document.querySelector("#footer-mode"),
   gatewayList: document.querySelector("#gateway-list"),
   discoveryStatus: document.querySelector("#discovery-status"),
+  discoveryFeedback: document.querySelector("#discovery-feedback"),
   editConnection: document.querySelector("#edit-connection"),
   installButton: document.querySelector("#install-button"),
   installControls: document.querySelector("#install-controls"),
@@ -260,6 +261,7 @@ function renderGateways(gateways) {
         return;
       }
       button.disabled = true;
+      show(elements.discoveryFeedback, false);
       void invoke("connect_discovered_gateway", {
         host: gateway.host,
         port: gateway.port,
@@ -269,9 +271,11 @@ function renderGateways(gateways) {
           button.disabled = false;
           elements.discoveryStatus.textContent = "WINDOW OPENED";
         })
-        .catch(() => {
+        .catch((error) => {
           button.disabled = false;
           elements.discoveryStatus.textContent = "CONNECT FAILED";
+          elements.discoveryFeedback.textContent = friendlyError(error);
+          show(elements.discoveryFeedback, true);
         });
     });
     elements.gatewayList.append(button);
