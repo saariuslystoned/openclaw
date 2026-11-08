@@ -1,0 +1,156 @@
+// Artifact-only diagnostic. Coordinator execution only; no OpenClaw imports.
+// In-memory SQLite and wholly fictional text; no files/network/model calls.
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { DatabaseSync } from 'node:sqlite';
+assert.equal(Number(process.versions.node.split('.')[0]), 26, 'Qualified Node 26 required');
+const started = performance.now();
+const hash = (s) => createHash('sha256').update(s, 'utf8').digest('hex');
+const nfc = (s) => s.normalize('NFC');
+const cps = (s) => Array.from(s, (c) => 'U+' + c.codePointAt(0).toString(16).toUpperCase().padStart(4, '0'));
+const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
+const open = '__H21_OPEN_6f27__', close = '__H21_CLOSE_6f27__';
+function expression(query) {
+  const tokens = nfc(query).match(/[\p{L}\p{N}\p{M}]+/gu) ?? [];
+  assert(tokens.length > 0 && tokens.length <= 64);
+  return tokens.map((t) => '"' + t + '"').join(' AND ');
+}
+// Bounded diagnostic, NOT a production mapper. Ask native NFC whether each
+// code-point split in one tiny changed grapheme is normalization-stable.
+function mapBoundary(original, offset) {
+  const projected = nfc(original);
+  assert(offset >= 0 && offset <= projected.length);
+  const segments = Array.from(segmenter.segment(original));
+  assert.equal(segments.map((s) => nfc(s.segment)).join(''), projected);
+  let normalizedStart = 0;
+  for (const s of segments) {
+    const normalized = nfc(s.segment), end = normalizedStart + normalized.length;
+    if (offset >= normalizedStart && offset < end) {
+      const relative = offset - normalizedStart, changed = normalized !== s.segment;
+      const candidates = [];
+      if (!changed) candidates.push(s.index + relative);
+      else {
+        assert(s.segment.length <= 32, 'Diagnostic fixture bound; not a production fallback');
+        const cuts = [0]; let cursor = 0;
+        for (const cp of s.segment) { cursor += cp.length; cuts.push(cursor); }
+        for (const cut of cuts) {
+          const left = nfc(s.segment.slice(0, cut)), right = nfc(s.segment.slice(cut));
+          if (left.length === relative && left + right === normalized) candidates.push(s.index + cut);
+        }
+      }
+      const exact = candidates.filter((cut) =>
+        nfc(original.slice(0, cut)) === projected.slice(0, offset) &&
+        nfc(original.slice(cut)) === projected.slice(offset));
+      return { mapped: exact.length === 1 ? exact[0] : null, candidates: exact,
+        changed, interior: relative > 0, oldBoundaryOnlyWouldReject: changed && relative > 0,
+        originalSegmentStart: s.index, projectedSegmentStart: normalizedStart,
+        originalSegment: cps(s.segment), projectedSegment: cps(normalized), relative };
+    }
+    normalizedStart = end;
+  }
+  assert.equal(offset, projected.length);
+  return { mapped: original.length, candidates: [original.length], changed: false,
+    interior: false, oldBoundaryOnlyWouldReject: false };
+}
+// Source-derived hit/compact arithmetic, NOT calls to production functions.
+function snippets(original, raw, at) {
+  let start = Math.max(0, at - 100), end = Math.min(original.length, start + 480);
+  if (start && /[\uDC00-\uDFFF]/.test(original[start] ?? '')) start--;
+  if (end < original.length && /[\uDC00-\uDFFF]/.test(original[end] ?? '')) end--;
+  if (end - start > 480) end--;
+  const text = original.slice(start, end), bodyStart = raw.length - original.length;
+  const line = (offset) => raw.slice(0, bodyStart + offset).split('\n').length;
+  const from = start > 0 ? 60 : 0;
+  let to = Math.min(text.length, from + 200);
+  if (to < text.length && /[\uDC00-\uDFFF]/.test(text[to] ?? '')) to--;
+  const compact = text.slice(from, to);
+  assert(text.length <= 480 && compact.length <= 200);
+  assert(text.isWellFormed() && compact.isWellFormed());
+  return { start, end, startLine: line(start), endLine: line(Math.max(start, end - 1)), text, compact };
+}
+const cases = [
+  { id: 'ascii', cluster: 'needle', query: 'needle', plainPrefix: true },
+  { id: 'prepend-ascii-unchanged', cluster: '\u0600needle', query: 'needle', plainPrefix: true },
+  { id: 'bare-jamo-changed', cluster: '\u1100\u1161', query: '\uAC00' },
+  { id: 'prepend-jamo-changed', cluster: '\u0600\u1100\u1161', query: '\uAC00' },
+  { id: 'prepend-latin-changed', cluster: '\u0600e\u0301clair', query: '\u00E9clair' },
+  { id: 'prepend-greek-changed', cluster: '\u0600\u03B1\u0301\u03BB\u03C6\u03B1', query: '\u03AC\u03BB\u03C6\u03B1' },
+  { id: 'prepend-reordered-marks', cluster: '\u0600a\u0315\u0300', query: '\u00E0\u0315' },
+];
+const results = [], db = new DatabaseSync(':memory:');
+try {
+  const sqlite = db.prepare('SELECT sqlite_version() AS version').get().version;
+  const schema = "id UNINDEXED, title, aliases, body, tokenize='unicode61 remove_diacritics 2'";
+  db.exec('CREATE VIRTUAL TABLE original_fts USING fts5(' + schema + ')');
+  db.exec('CREATE VIRTUAL TABLE projected_fts USING fts5(' + schema + ')');
+  function query(table, q) {
+    return db.prepare('SELECT id,body,highlight(' + table + ',3,?,?) AS paired,highlight(' + table + ",3,?,'') AS opening FROM " + table + ' WHERE ' + table + ' MATCH ? ORDER BY id')
+      .all(open, close, open, expression(q));
+  }
+  for (const c of cases) {
+    const prefix = (c.plainPrefix ? 'prelude plain 🪶\n' : 'prelude e\u0301 🪶\n').repeat(320) + 'TARGET LINE ';
+    const original = prefix + c.cluster + ' after\n' + 'tail '.repeat(100), projected = nfc(original);
+    const raw = '---\nid: fictional-' + c.id + '\nkind: page\ntype: note\n---\n' + original;
+    const beforeHash = hash(raw);
+    assert(!original.includes(open) && !original.includes(close));
+    assert(Buffer.byteLength(original, 'utf8') < 65536);
+    for (const [table, text] of [['original_fts', original], ['projected_fts', projected]]) {
+      db.exec('DELETE FROM ' + table);
+      const insert = db.prepare('INSERT INTO ' + table + '(id,title,aliases,body) VALUES (?,?,?,?)');
+      insert.run(c.id, 'Fictional note', '', text);
+      insert.run('unrelated-control', 'Separate fictional note', '', 'separatecontroltoken');
+      assert.deepEqual(query(table, 'separatecontroltoken').map((r) => r.id), ['unrelated-control']);
+      assert.deepEqual(query(table, 'absentcontroltoken'), []);
+    }
+    const baseline = query('original_fts', c.query), projectedHits = query('projected_fts', c.query);
+    assert.deepEqual(projectedHits.map((r) => r.id), [c.id], 'Projected exact query must reach intended row: ' + c.id);
+    const row = projectedHits[0], paired = String(row.paired), opening = String(row.opening);
+    assert.equal(row.body, projected);
+    const at = paired.indexOf(open), closeAt = paired.indexOf(close, at + open.length);
+    assert(at >= 0 && closeAt >= 0);
+    assert.equal(paired.indexOf(open, at + open.length), -1, 'One matched target per fixture');
+    const end = closeAt - open.length;
+    assert.equal(opening.indexOf(open), at);
+    assert.equal(paired.replace(open, '').replace(close, ''), projected);
+    assert.equal(opening.replace(open, ''), projected);
+    const startMap = mapBoundary(original, at), endMap = mapBoundary(original, end);
+    const sourceMatch = startMap.mapped !== null && endMap.mapped !== null
+      ? original.slice(startMap.mapped, endMap.mapped) : null;
+    if (sourceMatch !== null) assert.equal(nfc(sourceMatch), projected.slice(at, end));
+    const full = startMap.mapped === null ? null : snippets(original, raw, startMap.mapped);
+    const naive = snippets(original, raw, at), openingExcerpt = snippets(original, raw, 0);
+    if (full) {
+      const originalTarget = c.cluster.replace(/^\u0600/, '');
+      assert(full.text.includes(originalTarget));
+      assert(full.compact.includes(originalTarget));
+    }
+    if (full && sourceMatch !== null) {
+      assert.equal(full.text, original.slice(full.start, full.end));
+      assert(full.text.includes(sourceMatch)); assert(full.compact.includes(sourceMatch));
+      assert(raw.split('\n').slice(full.startLine - 1, full.endLine).join('\n').includes(full.text));
+    }
+    assert.equal(hash(raw), beforeHash);
+    assert.equal(db.prepare('SELECT body FROM original_fts WHERE id=?').get(c.id).body, original);
+    const report = { id: c.id, query: cps(c.query), cluster: cps(c.cluster),
+      baselineIds: baseline.map((r) => r.id), projectedIds: projectedHits.map((r) => r.id),
+      originalUtf16: original.length, projectedUtf16: projected.length, originalRawSha256: beforeHash,
+      projectedMatchStart: at, projectedMatchEnd: end, originalTargetRegionStart: prefix.length,
+      projectedTargetRegionStart: nfc(prefix).length, projectedMatchedCodepoints: cps(projected.slice(at, end)),
+      startMap, endMap, originalMatchedCodepoints: sourceMatch === null ? null : cps(sourceMatch), full,
+      naiveNormalizedOffset: { start: naive.start, end: naive.end,
+        compactContainsMatch: sourceMatch === null ? null : naive.compact.includes(sourceMatch) },
+      openingExcerptContainsMatch: sourceMatch === null ? null : openingExcerpt.text.includes(sourceMatch),
+      controls: { separateRow: true, absentQuery: true, originalBytesUnchanged: true, markerRoundTrip: true } };
+    results.push(report); console.log(JSON.stringify({ stage: 'case', ...report }));
+  }
+  const interior = results.filter((r) => r.startMap.oldBoundaryOnlyWouldReject);
+  console.log(JSON.stringify({ stage: 'summary', node: process.versions.node, icu: process.versions.icu,
+    unicode: process.versions.unicode, sqlite, cases: results.length,
+    reachableInteriorChangedGrapheme: interior.map((r) => r.id),
+    uniquelyMappedByStableSplit: interior.filter((r) => r.startMap.mapped !== null).map((r) => r.id),
+    conclusion: interior.length ? 'changed-grapheme interior token start observed'
+      : 'not observed in this bounded matrix; not a universal refutation',
+    productProof: false, elapsedMs: performance.now() - started }));
+} finally {
+  db.close(); console.log(JSON.stringify({ stage: 'cleanup', inMemoryDatabaseClosed: true }));
+}

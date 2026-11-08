@@ -1,0 +1,27 @@
+{
+  "source_head": "bffe6728a1a102512a477e48526341083a4f0f5c",
+  "issue": 195031,
+  "claim": "bounded in-memory FTS/NFC token-start reachability; not product implementation",
+  "files": [
+    {
+      "path": "proof/canonical-token-boundaries-bffe6728/PROOF.md",
+      "bytes": 3316,
+      "sha256": "96bc76b71c767f9799184fef0af8b93186105528cb931f642e59f78de3245e58"
+    },
+    {
+      "path": "proof/canonical-token-boundaries-bffe6728/TERMINAL.jsonl",
+      "bytes": 15398,
+      "sha256": "6ca31c5c12aa3d167ce29c9af6c65fdbe6e4564afb89341f2d39469a0ddf8f0a"
+    },
+    {
+      "path": "proof/canonical-token-boundaries-bffe6728/diagnostic.mjs.txt",
+      "bytes": 10020,
+      "sha256": "18a9b56f0314980aa732726eb2dac7d961021abc140eb54f7068e6ea3a242593"
+    },
+    {
+      "path": "proof/canonical-token-boundaries-bffe6728/receipt.json",
+      "bytes": 4728,
+      "sha256": "673b5cd146ff0fde686a8245886aaf1d55cfd65ba793c0701c27d8cf5948adc3"
+    }
+  ]
+}

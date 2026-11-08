@@ -1,0 +1,120 @@
+{
+  "observed_at": "2026-11-08T06:46:54.436469+00:00",
+  "repository": "openclaw/openclaw",
+  "source_head": "bffe6728a1a102512a477e48526341083a4f0f5c",
+  "source_files": [
+    {
+      "path": "extensions/knowledge/src/index.ts",
+      "bytes": 1410,
+      "sha256": "bc6fac66b3ef7e8bf365051e6b01a51700df4c8ccdf6691f33fbca08ac6a2a1e",
+      "same_as_frozen_binding": true,
+      "git_blob": "93f79293b687dca741a371d546b34271780be9ab"
+    },
+    {
+      "path": "extensions/knowledge/src/contract.ts",
+      "bytes": 40503,
+      "sha256": "b261aad99574b1dbdb6ff5649849e321c47e315670cadab5519040021728e5d1",
+      "same_as_frozen_binding": true,
+      "git_blob": "5a9ae43258accd8f4ace7b2af4ffe2b0d68d51c3"
+    },
+    {
+      "path": "extensions/knowledge/src/service.ts",
+      "bytes": 23436,
+      "sha256": "c551e60852be5277e2d4afd5e4130f7587c883a074f771717fdf5c7ae033ee39",
+      "same_as_frozen_binding": true,
+      "git_blob": "88cca4bc3a531fd0ad6466b94b1aa8dde8ff3ad8"
+    },
+    {
+      "path": "extensions/knowledge/src/storage.ts",
+      "bytes": 12327,
+      "sha256": "9fc8dcb16852b4c4e66003cca341e937ef517c48b36fafd826a664788949af54",
+      "same_as_frozen_binding": true,
+      "git_blob": "74af9e0d2929cca1b86a69bce6116a3adae1595c"
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval.ts",
+      "bytes": 24082,
+      "sha256": "a558b8f30ea9f8e17a95d8477aa457ee51cac1624cb40fe434ae36dd2f285a9e",
+      "same_as_frozen_binding": true,
+      "git_blob": "0ed68516ad9fee644069f9dcb44b47fd0a69cf26"
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval-contract.ts",
+      "bytes": 5691,
+      "sha256": "032b5b44712cb1465d5e93506ded17a7e1dbea882be6959e8328ede3c0f258f0",
+      "same_as_frozen_binding": true,
+      "git_blob": "1f120200e5021c4b65601da123c8d6945edf6097"
+    },
+    {
+      "path": "extensions/knowledge/src/search-detail.ts",
+      "bytes": 3540,
+      "sha256": "a6507949bef10822d44088fffcc179322ff151b9c65aeb409b6904aefbee7026",
+      "same_as_frozen_binding": true,
+      "git_blob": "0f597e4d22caa4396a1d25446732e904df9396b5"
+    },
+    {
+      "path": "extensions/knowledge/src/test-support.ts",
+      "bytes": 10852,
+      "sha256": "aa61f3518d9c6f1f43afaeb48144ba2a0186ad82b06621b7a448d8e4a1524974",
+      "same_as_frozen_binding": true,
+      "git_blob": "e800f4575c17f21e44d06b431949e7aca636cc38"
+    },
+    {
+      "path": "extensions/knowledge/src/retrieval.test.ts",
+      "bytes": 28447,
+      "sha256": "d0c72937be587f461899f65cd9bf2e0f8e98efce70479248907158fec3a8657d",
+      "same_as_frozen_binding": true,
+      "git_blob": "c54d6461888a91477a4a09b6f28de45cceaa16cd"
+    },
+    {
+      "path": "docs/plugins/knowledge/retrieval.md",
+      "bytes": 10605,
+      "sha256": "13ad7897e161e2d5057d54db55839801ce279bc1572567ad481056a9f3a617f7",
+      "same_as_frozen_binding": true,
+      "git_blob": "3e6b2bd9564be69c72e2d49cb712338612b7c329"
+    }
+  ],
+  "diagnostic_sha256": "18a9b56f0314980aa732726eb2dac7d961021abc140eb54f7068e6ea3a242593",
+  "execution": {
+    "exit_code": 0,
+    "elapsed_seconds": 0.09,
+    "runtime": {
+      "node": "26.13.0",
+      "icu": "78.3",
+      "unicode": "17.0",
+      "sqlite": "3.54.0"
+    },
+    "seven_cases_controls_cleanup_passed": true
+  },
+  "observed": {
+    "changed_grapheme_interior_starts": [
+      "prepend-jamo-changed",
+      "prepend-latin-changed",
+      "prepend-greek-changed",
+      "prepend-reordered-marks"
+    ],
+    "all_four_start_mappings_unique_exact": true,
+    "prepend_witness": {
+      "projected_start": 4173,
+      "original_start": 4493,
+      "original_cluster_start": 4492,
+      "projected_cluster_start": 4172
+    },
+    "naive_offset_compact_loses_match": [
+      "bare-jamo-changed",
+      "prepend-jamo-changed",
+      "prepend-latin-changed",
+      "prepend-greek-changed"
+    ],
+    "reordered_mark_end_unmappable": true,
+    "end_limit": "one reordered-mark token-end boundary null; production snippet consumer takes matchstart only; this is not a general all-boundary mapper proof"
+  },
+  "limits": [
+    "No production imports or store/Gateway/model calls. SQLite in-memory tokenizer and native NFC only.",
+    "Full/compact snippet arithmetic mirrors source; not production-function integration.",
+    "The tiny-grapheme exhaustive split probe is diagnostic-only, not a bounded-cost production mapper.",
+    "One reordered-mark token-end unmappable; all seven first-start mappings exact. Actual snippet consumer takes first-start.",
+    "No new fallback policy, canonical repair or broader Greek accent-insensitivity policy implemented."
+  ],
+  "redaction": "Public source and wholly fictional strings only; host paths, private session/goal IDs and unrelated task context omitted."
+}
