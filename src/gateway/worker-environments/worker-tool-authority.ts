@@ -129,6 +129,11 @@ export async function resolveWorkerToolAuthority(params: {
         logWarn(
           "Worker exec/process withheld: captured exec policy requires another execution host. Run this turn locally.",
         );
+      } else if (host === "node" || host === "sandbox") {
+        // Worker placement tools omit exec/process for these hosts; name the cause.
+        logWarn(
+          `Worker exec/process withheld: exec host "${host}" is unavailable in hosted sessions. Set this agent's tools.exec.host to "gateway" or "auto" to run commands on the hosting device.`,
+        );
       }
       const presentation = prepareAgentToolSurfacePresentation({
         ...turn,

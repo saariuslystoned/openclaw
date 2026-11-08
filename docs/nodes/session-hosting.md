@@ -179,6 +179,13 @@ installed supervisor recognizing their tool names. Updated nodes continue
 advertising the Gateway tools expected by older Gateways, preserving those
 tools when the node is updated first.
 
+Hosted turns run `exec` and `process` on the hosting device only when the agent's
+exec host is `gateway` or `auto`. If `tools.exec.host` resolves to `node` or
+`sandbox` for the agent, hosted turns keep the file tools but have no `exec` or
+`process`, and the Gateway logs `Worker exec/process withheld`. To send Gateway-local
+exec to a node while also hosting sessions, set the exec host per agent with
+`agents.entries.<id>.tools.exec.host`.
+
 This setting enables supervised session turns on the paired device, including
 Gateway-owned workspace transfer and result reconciliation. The Gateway prepares
 the tool definitions and filesystem policy before the worker starts using tools.

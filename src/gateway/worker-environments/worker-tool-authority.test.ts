@@ -11,6 +11,7 @@ import * as conversationPolicy from "../../agents/conversation-capability-profil
 import { applyEmbeddedAttemptToolsAllow } from "../../agents/embedded-agent-runner/run/attempt-tool-construction-plan.js";
 import type { SessionPlacementTurnParams } from "../../agents/session-placement-admission.js";
 import { createInstalledSkillTools } from "../../agents/tools/installed-skill-tools.js";
+import * as logger from "../../logger.js";
 import { createFixtureSkillEntry } from "../../skills/test-support/test-helpers.js";
 import { createWorkerPlacementTools } from "../../worker/worker-placement-tools.js";
 import { resolveWorkerToolAuthority } from "./worker-tool-authority.js";
@@ -130,6 +131,28 @@ describe("resolveWorkerToolAuthority", () => {
       expect(await authority(overrides)).toEqual(expect.arrayContaining(["exec", "process"]));
     },
   );
+
+  it("names the exec host when hosted turns lose exec and process", async () => {
+    const warn = vi.spyOn(logger, "logWarn").mockImplementation(() => {});
+    const tools = await authority({ config: { tools: { exec: { host: "node", mode: "full" } } } });
+
+    expect(tools).not.toContain("exec");
+    expect(tools).not.toContain("process");
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('Worker exec/process withheld: exec host "node"'),
+    );
+  });
+
+  it("does not warn when hosted turns keep exec and process", async () => {
+    const warn = vi.spyOn(logger, "logWarn").mockImplementation(() => {});
+    const tools = await authority({
+      config: { tools: { exec: { host: "gateway", mode: "full" } } },
+    });
+
+    expect(tools).toEqual(expect.arrayContaining(["exec", "process"]));
+    expect(warn).not.toHaveBeenCalledWith(expect.stringContaining("Worker exec/process withheld"));
+  });
+
   it("exports the turn model's byProvider exec ceiling to worker exec authority", async () => {
     const byProvider = (key: string) =>
       ({
