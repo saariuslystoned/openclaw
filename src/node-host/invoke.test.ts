@@ -24,6 +24,7 @@ import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../plug
 import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { createOpenClawTestState } from "../test-utils/openclaw-test-state.js";
+import { withMockedPlatform } from "../test-utils/vitest-spies.js";
 import * as nodeRunCommand from "./invoke-run-command.js";
 import { handleInvoke, type NodeInvokeRequestPayload } from "./invoke.js";
 import type { SkillBinsProvider } from "./runtime-skill-bins.js";
@@ -355,6 +356,46 @@ describe("node host invoke", () => {
     expect(await list(selected.path)).toMatchObject({
       path: selected.path,
       entries: [{ name: "child", path: path.join(selected.path, "child") }],
+    });
+  });
+
+  it.skipIf(process.platform === "win32")(
+    "skips directories and non-executable files in system.which",
+    async () => {
+      const shadowDir = tempDirs.make("openclaw-node-which-shadow-");
+      const binDir = tempDirs.make("openclaw-node-which-bin-");
+      fs.mkdirSync(path.join(shadowDir, "probe"));
+      fs.writeFileSync(path.join(shadowDir, "plain"), "data");
+      for (const name of ["probe", "plain"]) {
+        fs.writeFileSync(path.join(binDir, name), "#!/bin/sh\n");
+        fs.chmodSync(path.join(binDir, name), 0o755);
+      }
+
+      const { result } = await withEnvAsync(
+        { PATH: [shadowDir, binDir].join(path.delimiter) },
+        async () => await invokeCommand("system.which", { bins: ["probe", "plain", "missing"] }),
+      );
+
+      expect(JSON.parse(result.payloadJSON ?? "{}")).toEqual({
+        bins: { probe: path.join(binDir, "probe"), plain: path.join(binDir, "plain") },
+      });
+    },
+  );
+
+  it("finds Windows executables named with their extension in system.which", async () => {
+    const binDir = tempDirs.make("openclaw-node-which-win-");
+    fs.writeFileSync(path.join(binDir, "probe.exe"), "");
+
+    const { result } = await withMockedPlatform("win32", async () =>
+      withEnvAsync(
+        { PATH: binDir, PATHEXT: ".EXE;.CMD;.BAT;.COM" },
+        async () => await invokeCommand("system.which", { bins: ["probe", "probe.exe"] }),
+      ),
+    );
+
+    const probe = path.join(binDir, "probe.exe");
+    expect(JSON.parse(result.payloadJSON ?? "{}")).toEqual({
+      bins: { probe, "probe.exe": probe },
     });
   });
 

@@ -196,20 +196,35 @@ function requireExecApprovalsBaseHash(
   }
 }
 
+/** Match shell lookup: skip directories and, outside Windows, files without execute permission. */
+function isExecutableCandidate(candidate: string, windows: boolean): boolean {
+  try {
+    if (!fs.statSync(candidate).isFile()) {
+      return false;
+    }
+    if (!windows) {
+      fs.accessSync(candidate, fs.constants.X_OK);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function handleSystemWhich(rawBins: unknown[], env?: Record<string, string>) {
-  const extensions =
-    process.platform === "win32"
-      ? (
-          env?.PATHEXT ??
-          env?.PathExt ??
-          env?.Pathext ??
-          process.env.PATHEXT ??
-          process.env.PathExt ??
-          ".EXE;.CMD;.BAT;.COM"
-        )
-          .split(";")
-          .map((ext) => normalizeLowercaseStringOrEmpty(ext))
-      : [""];
+  const windows = process.platform === "win32";
+  const extensions = windows
+    ? (
+        env?.PATHEXT ??
+        env?.PathExt ??
+        env?.Pathext ??
+        process.env.PATHEXT ??
+        process.env.PathExt ??
+        ".EXE;.CMD;.BAT;.COM"
+      )
+        .split(";")
+        .map((ext) => normalizeLowercaseStringOrEmpty(ext))
+    : [""];
   const envPath =
     env?.PATH ?? env?.Path ?? process.env.PATH ?? process.env.Path ?? DEFAULT_NODE_PATH;
   const directories = envPath.split(path.delimiter).filter(Boolean);
@@ -218,10 +233,16 @@ async function handleSystemWhich(rawBins: unknown[], env?: Record<string, string
     if (bin.includes("/") || bin.includes("\\")) {
       continue;
     }
+    // A name that already ends in a PATHEXT extension is tried as written first, as cmd.exe does.
+    const lowerBin = normalizeLowercaseStringOrEmpty(bin);
+    const suffixes =
+      windows && extensions.some((ext) => ext && lowerBin.endsWith(ext))
+        ? ["", ...extensions]
+        : extensions;
     for (const dir of directories) {
-      for (const ext of extensions) {
+      for (const ext of suffixes) {
         const candidate = path.join(dir, bin + ext);
-        if (fs.existsSync(candidate)) {
+        if (isExecutableCandidate(candidate, windows)) {
           found[bin] = candidate;
           continue bins;
         }
