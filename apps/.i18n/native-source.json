@@ -2537,6 +2537,7 @@
     {"path":"apps/android/app/src/main/java/ai/openclaw/app/ui/chat/ChatContextPopoverContent.kt","kind":"ui-call","surface":"android","id":"native.android.ba5f829fbee774e9","source":"Output"},
     {"path":"apps/android/app/src/main/java/ai/openclaw/app/ui/chat/ChatContextPopoverContent.kt","kind":"ui-call","surface":"android","id":"native.android.39785345ba2c3bff","source":"Unknown"},
     {"path":"apps/macos/Sources/OpenClaw/GatewayBrowserOnboardingController.swift","kind":"ui-call","surface":"apple","id":"native.apple.addaba7d7374d016","source":"Cancel"},
+    {"path":"apps/macos/Sources/OpenClaw/GatewayBrowserOnboardingController.swift","kind":"ui-localized-call","surface":"apple","id":"native.apple.96f8cae1b4487dcc","source":"Add Gateway"},
     {"path":"apps/macos/Sources/OpenClaw/GatewayBrowserOnboardingController.swift","kind":"ui-localized-call","surface":"apple","id":"native.apple.778ee016f8779750","source":"Gateway sign-in"},
     {"path":"apps/ios/Sources/Gateway/GatewayQuickSetupSheet.swift","kind":"conditional-branch","surface":"apple","id":"native.apple.53925d6f2160184d","source":"Local"},
     {"path":"apps/ios/Sources/Gateway/GatewayQuickSetupSheet.swift","kind":"conditional-branch","surface":"apple","id":"native.apple.1c5b74f182a37abe","source":"Secure"},
