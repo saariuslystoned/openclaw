@@ -37,6 +37,8 @@ export type MuseRuntime = {
   close: () => Promise<void>;
 };
 type MuseLease = { runtime: MuseRuntime; release: () => void };
+// A large local store on a busy host can take well over 30s to answer initialize.
+const MUSE_STARTUP_TIMEOUT_MS = 120_000;
 
 function credentialFingerprint(apiKey?: string): string {
   return apiKey ? createHash("sha256").update(apiKey).digest("hex") : "cli-login";
@@ -238,9 +240,12 @@ export class MusePool {
       env,
       shutdownTimeoutMs: 1000,
     });
+    const startedAt = Date.now();
+    let startupTimedOut = false;
     const startup = setTimeout(() => {
+      startupTimedOut = true;
       void handshake.close();
-    }, 30_000);
+    }, MUSE_STARTUP_TIMEOUT_MS);
     startup.unref();
     const abort = () => {
       void handshake.close();
@@ -291,8 +296,11 @@ export class MusePool {
       return runtime;
     } catch (error) {
       await handshake.close();
+      const stderr = handshake.child.stderrTail.join("\n");
       throw new Error(
-        `Cannot start Muse Code (${this.binaryPath}). Install Muse and run muse to sign in. ${String(error)} ${handshake.child.stderrTail.join("\n")}`,
+        startupTimedOut
+          ? `Muse Code (${this.binaryPath}) did not finish starting within ${MUSE_STARTUP_TIMEOUT_MS / 1000}s (waited ${Math.round((Date.now() - startedAt) / 1000)}s). Muse is slow to start on a busy host or with a large local store; retry when the host is less loaded. ${stderr}`
+          : `Cannot start Muse Code (${this.binaryPath}). Install Muse and run muse to sign in. ${String(error)} ${stderr}`,
         { cause: error },
       );
     } finally {

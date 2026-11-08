@@ -1,4 +1,5 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,6 +23,34 @@ afterAll(async () => {
 });
 
 describe("Muse process pool", () => {
+  it("reports a slow Muse start as a startup timeout, not a missing install", async () => {
+    // The fake holds its initialize reply until this socket answers; it never does.
+    const gate = join(await mkdtemp(join(tmpdir(), "muse-gate-")), "init.sock");
+    const server = createServer(() => {});
+    await new Promise<void>((resolve) => {
+      server.listen(gate, resolve);
+    });
+    // The fake connects only after it receives initialize, so the startup timer exists.
+    const waiting = new Promise<void>((resolve) => {
+      server.once("connection", () => resolve());
+    });
+    vi.stubEnv("MUSE_FIXTURE_INITIALIZE_GATE", gate);
+    const pool = new MusePool(fixture);
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
+    try {
+      const start = expect(pool.acquire(workspace, undefined, false)).rejects.toThrow(
+        /did not finish starting within 120s/,
+      );
+      await waiting;
+      // Past the startup limit and the 1s shutdown grace that closing the host waits on.
+      await vi.advanceTimersByTimeAsync(125_000);
+      await start;
+    } finally {
+      vi.useRealTimers();
+      await pool.dispose();
+      server.close();
+    }
+  });
   it.each([undefined, "key-a"])(
     "retires a warm process when managed auth changes with API key %s",
     async (apiKey) => {
