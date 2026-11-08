@@ -1,0 +1,27 @@
+{
+  "source_head": "bffe6728a1a102512a477e48526341083a4f0f5c",
+  "issue": 195031,
+  "claim": "finite actualSQLite/NFC counterexample to totalstableprefixmapping, not currentproductbug or implementation",
+  "files": [
+    {
+      "path": "proof/canonical-origin-counterexample-bffe6728/PROOF.md",
+      "bytes": 3147,
+      "sha256": "e63868009d0ec55765e66827f632508c846c1d542c9ddcf30c78670704a1ddd8"
+    },
+    {
+      "path": "proof/canonical-origin-counterexample-bffe6728/TERMINAL.jsonl",
+      "bytes": 30377,
+      "sha256": "ab3b0385d20d7f81a44297c141f0fc9a860b2b60358e6d7d1568d58a85d49baf"
+    },
+    {
+      "path": "proof/canonical-origin-counterexample-bffe6728/diagnostic.mjs.txt",
+      "bytes": 10682,
+      "sha256": "80be266fc904d93cbeb7d995c6d596ebddc45570e66db468d8262b04e6263bc7"
+    },
+    {
+      "path": "proof/canonical-origin-counterexample-bffe6728/receipt.json",
+      "bytes": 4854,
+      "sha256": "57bf24b123373467df1068cbeea75e4ee4e36c435223a97c85e305c73b1ab6e8"
+    }
+  ]
+}

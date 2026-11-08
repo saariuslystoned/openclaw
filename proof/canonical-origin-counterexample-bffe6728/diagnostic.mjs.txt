@@ -1,0 +1,177 @@
+// Artifact-only H21 diagnostic. Execute unchanged only in the coordinator's
+// already-qualified disposable Node 26 environment. No product code is imported.
+import { createHash } from 'node:crypto';
+import { DatabaseSync } from 'node:sqlite';
+
+const openedAt = new Date().toISOString();
+const started = performance.now();
+const OPEN = '__H21_CATEGORY_ZERO_OPEN__';
+const CLOSE = '__H21_CATEGORY_ZERO_CLOSE__';
+const unrelated = 'copperbeacon';
+const absent = 'zirconabsent';
+const cases = [
+  { id: 'reordered-category-zero', original: ' \u1AB0\u0323atlas', query: '\u1AB0atlas',
+    expected: { projected: ' \u0323\u1AB0atlas', originalStart: 1, projectedStart: 2,
+      candidate: 2, left: false, right: false, stableCuts: [] } },
+  { id: 'already-ordered-control', original: ' \u0323\u1AB0atlas', query: '\u1AB0atlas',
+    expected: { projected: ' \u0323\u1AB0atlas', originalStart: 2, projectedStart: 2,
+      candidate: 2, left: true, right: true, stableCuts: [2] } },
+  { id: 'known-mark-control', original: ' \u0302\u0323atlas', query: 'atlas',
+    expected: { projected: ' \u0323\u0302atlas', originalStart: 3, projectedStart: 3,
+      candidate: 3, left: true, right: true, stableCuts: [3] } },
+  { id: 'plain-control', original: ' atlas', query: 'atlas',
+    expected: { projected: ' atlas', originalStart: 1, projectedStart: 1,
+      candidate: 1, left: true, right: true, stableCuts: [1] } },
+];
+const hash = (text) => createHash('sha256').update(text, 'utf8').digest('hex');
+const emit = (event, data) => console.log(JSON.stringify({ event, ...data }));
+function scalars(text) {
+  let offset = 0;
+  return Array.from(text, (scalar) => {
+    const result = { utf16: offset, scalar: 'U+' + scalar.codePointAt(0).toString(16).toUpperCase().padStart(4, '0') };
+    offset += scalar.length;
+    return result;
+  });
+}
+function textReceipt(text) {
+  return { text, utf16Length: text.length, utf8Bytes: Buffer.byteLength(text, 'utf8'),
+    utf8Hex: Buffer.from(text, 'utf8').toString('hex'), sha256: hash(text), scalars: scalars(text) };
+}
+function weight(text) {
+  let result = 0;
+  for (const scalar of text) result += scalar.normalize('NFD').length;
+  return result;
+}
+// This inspects one prescribed short input; it is not a replacement mapper.
+function mappingObservation(original, projected, projectedStart) {
+  if (projectedStart === null) return null;
+  const wantedWeight = weight(projected.slice(0, projectedStart));
+  let accumulated = 0;
+  let offset = 0;
+  let candidate = wantedWeight === 0 ? 0 : null;
+  const boundaries = [0];
+  for (const scalar of original) {
+    offset += scalar.length;
+    accumulated += weight(scalar);
+    boundaries.push(offset);
+    if (accumulated === wantedWeight) candidate = offset;
+  }
+  const equalities = (cut) => ({
+    cut,
+    left: original.slice(0, cut).normalize('NFC') === projected.slice(0, projectedStart),
+    right: original.slice(cut).normalize('NFC') === projected.slice(projectedStart),
+  });
+  // Exhaustive oracle ONLY for the four fixed inputs (6 or 8 UTF-16 units).
+  const oracle = boundaries.map(equalities);
+  return { projectedStart, wantedWeight, totalWeight: accumulated, candidate,
+    candidateEqualities: candidate === null ? null : equalities(candidate), oracle,
+    stableCuts: oracle.filter((entry) => entry.left && entry.right).map((entry) => entry.cut) };
+}
+const literalQuery = (text) => '"' + text.replaceAll('"', '""') + '"';
+function buildTable(db, name) {
+  // name is selected below from two fixed local constants, never external input.
+  db.exec('CREATE VIRTUAL TABLE ' + name + " USING fts5(id UNINDEXED, title, aliases, body, tokenize='unicode61 remove_diacritics 2')");
+  return {
+    clear: db.prepare('DELETE FROM ' + name),
+    insert: db.prepare('INSERT INTO ' + name + '(id,title,aliases,body) VALUES (?, ?, ?, ?)'),
+    search: db.prepare('SELECT id, body, highlight(' + name + ',3,?,?) AS highlighted, highlight(' + name + ",3,?,'') AS openingOnly FROM " + name + ' WHERE ' + name + ' MATCH ? ORDER BY id'),
+    all: db.prepare('SELECT id, body FROM ' + name + ' ORDER BY id'),
+  };
+}
+function search(table, query) {
+  return table.search.all(OPEN, CLOSE, OPEN, literalQuery(query)).map((row) => {
+    const index = row.openingOnly.indexOf(OPEN);
+    return { id: row.id, body: row.body, highlighted: row.highlighted, openingOnly: row.openingOnly,
+      firstStartUtf16: index < 0 ? null : index, bodyScalars: scalars(row.body) };
+  });
+}
+let db;
+let closed = false;
+let setupOrExecutionError = null;
+let cleanupError = null;
+let versions = { node: process.versions.node, icu: process.versions.icu,
+  unicode: process.versions.unicode, sqlite: null };
+const observations = [];
+const failures = [];
+function check(condition, name, details) {
+  if (!condition) failures.push({ name, details });
+}
+try {
+  db = new DatabaseSync(':memory:');
+  versions.sqlite = db.prepare('SELECT sqlite_version() AS version').get().version;
+  emit('versions-before-predictions', { openedAt, versions, storage: ':memory:', productImports: false });
+  const originalTable = buildTable(db, 'original_fts');
+  const projectedTable = buildTable(db, 'projected_fts');
+  for (const item of cases) {
+    const projected = item.original.normalize('NFC');
+    const query = item.query.normalize('NFC');
+    for (const [table, body] of [[originalTable, item.original], [projectedTable, projected]]) {
+      table.clear.run();
+      table.insert.run(item.id, 'fixture', '', body);
+      table.insert.run('positive-control', 'fixture', '', query);
+      table.insert.run('unrelated-control', 'fixture', '', unrelated);
+    }
+    const originalMatches = search(originalTable, query);
+    const projectedMatches = search(projectedTable, query);
+    const originalStart = originalMatches.find((row) => row.id === item.id)?.firstStartUtf16 ?? null;
+    const projectedStart = projectedMatches.find((row) => row.id === item.id)?.firstStartUtf16 ?? null;
+    const observation = {
+      id: item.id, original: textReceipt(item.original), projected: textReceipt(projected), query: textReceipt(query),
+      originalMatches, projectedMatches, originalStart, projectedStart,
+      mapping: mappingObservation(item.original, projected, projectedStart),
+      controls: {
+        originalUnrelated: search(originalTable, unrelated), projectedUnrelated: search(projectedTable, unrelated),
+        originalAbsent: search(originalTable, absent), projectedAbsent: search(projectedTable, absent),
+      },
+      storedAfter: {
+        original: originalTable.all.all().map((row) => ({ id: row.id, ...textReceipt(row.body) })),
+        projected: projectedTable.all.all().map((row) => ({ id: row.id, ...textReceipt(row.body) })),
+      },
+    };
+    observations.push(observation);
+    // Every case's actual observations are emitted before any prediction check.
+    emit('actual-observation-before-predictions', observation);
+  }
+  check(process.versions.node.split('.')[0] === '26', 'Node 26 qualification', versions);
+  check(observations.length === 4, 'exactly four observations', observations.length);
+  for (const observation of observations) {
+    const item = cases.find((entry) => entry.id === observation.id);
+    const expected = item.expected;
+    const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    check(observation.original.utf16Length <= 8, item.id + ': fixed short oracle domain', observation.original.utf16Length);
+    check(observation.projected.text === expected.projected, item.id + ': NFC prediction', observation.projected);
+    check(observation.originalStart === expected.originalStart, item.id + ': original start prediction', observation.originalStart);
+    check(observation.projectedStart === expected.projectedStart, item.id + ': projected start prediction', observation.projectedStart);
+    check(observation.mapping?.candidate === expected.candidate, item.id + ': additive candidate', observation.mapping);
+    check(observation.mapping?.candidateEqualities?.left === expected.left, item.id + ': prefix NFC equality', observation.mapping);
+    check(observation.mapping?.candidateEqualities?.right === expected.right, item.id + ': suffix NFC equality', observation.mapping);
+    check(same(observation.mapping?.stableCuts, expected.stableCuts), item.id + ': exhaustive stable cuts', observation.mapping);
+    for (const surface of ['original', 'projected']) {
+      const rows = observation[surface + 'Matches'];
+      check(same(rows.map((row) => row.id).sort(), [item.id, 'positive-control'].sort()), item.id + ': ' + surface + ' intended and positive only', rows);
+      check(rows.find((row) => row.id === 'positive-control')?.firstStartUtf16 === 0, item.id + ': ' + surface + ' positive starts at zero', rows);
+      check(same(observation.controls[surface + 'Unrelated'].map((row) => row.id), ['unrelated-control']), item.id + ': ' + surface + ' unrelated isolation', observation.controls);
+      check(observation.controls[surface + 'Absent'].length === 0, item.id + ': ' + surface + ' absent query', observation.controls);
+      const stored = observation.storedAfter[surface];
+      const target = surface === 'original' ? item.original : observation.projected.text;
+      const expectedBodies = { [item.id]: target, 'positive-control': observation.query.text, 'unrelated-control': unrelated };
+      check(stored.length === 3 && stored.every((row) => row.text === expectedBodies[row.id] && row.sha256 === hash(expectedBodies[row.id])), item.id + ': ' + surface + ' stored bytes unchanged', stored);
+      check(!target.includes(OPEN) && !target.includes(CLOSE), item.id + ': markers absent from corpus', null);
+    }
+  }
+  emit('prediction-and-control-checks', { checkedAfterAllActualObservations: true, failures, passed: failures.length === 0 });
+} catch (error) {
+  setupOrExecutionError = { name: error.name, message: error.message };
+  emit('setup-or-execution-error', { error: setupOrExecutionError, observedCases: observations.length });
+} finally {
+  if (db) {
+    try { db.close(); closed = true; }
+    catch (error) { cleanupError = { name: error.name, message: error.message }; }
+  }
+  emit('cleanup', { inMemoryDatabaseClosed: closed, cleanupError, filesystemOrNetworkCreated: false });
+}
+const passed = observations.length === 4 && failures.length === 0 && !setupOrExecutionError && !cleanupError && closed;
+emit('terminal', { passed, versions, cases: observations.length, failures: failures.length,
+  setupOrExecutionError, cleanupError, elapsedMs: performance.now() - started,
+  meaning: 'Four prescribed SQLite/native-normalization token-boundary observations only; not product proof or implementation approval.' });
+process.exitCode = passed ? 0 : 1;
