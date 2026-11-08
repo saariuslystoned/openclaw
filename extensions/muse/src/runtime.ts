@@ -38,7 +38,7 @@ export type MuseRuntime = {
 };
 type MuseLease = { runtime: MuseRuntime; release: () => void };
 // A large local store on a busy host can take well over 30s to answer initialize.
-const MUSE_STARTUP_TIMEOUT_MS = 120_000;
+export const MUSE_STARTUP_TIMEOUT_MS = 120_000;
 
 function credentialFingerprint(apiKey?: string): string {
   return apiKey ? createHash("sha256").update(apiKey).digest("hex") : "cli-login";
@@ -296,6 +296,12 @@ export class MusePool {
       return runtime;
     } catch (error) {
       await handshake.close();
+      // A caller that gave up (for example a catalog deadline) owns the reason, not install state.
+      if (signal.aborted && !startupTimedOut) {
+        throw signal.reason instanceof Error
+          ? signal.reason
+          : new Error("Muse Code startup was cancelled.", { cause: error });
+      }
       const stderr = handshake.child.stderrTail.join("\n");
       throw new Error(
         startupTimedOut
