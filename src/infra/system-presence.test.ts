@@ -143,6 +143,29 @@ describe("system-presence", () => {
     });
   });
 
+  it("stores lastInputSeconds as the non-negative integer presence snapshots declare", () => {
+    const instanceId = `presence-idle-${randomUUID()}`;
+    const fractional = updateSystemPresence({
+      text: "Node: idle-probe",
+      instanceId,
+      lastInputSeconds: 4.5,
+    });
+    expect(fractional.next.lastInputSeconds).toBe(4);
+
+    const negative = updateSystemPresence({
+      text: "Node: idle-probe",
+      instanceId,
+      lastInputSeconds: -3,
+    });
+    expect(negative.next.lastInputSeconds).toBe(4);
+    const notFinite = updateSystemPresence({
+      text: "Node: idle-probe",
+      instanceId,
+      lastInputSeconds: Number.POSITIVE_INFINITY,
+    });
+    expect(notFinite.next.lastInputSeconds).toBe(4);
+  });
+
   it("keeps fallback text keys UTF-16 safe", () => {
     const keyPrefix = `presence-${randomUUID()}`.padEnd(63, "x");
     const update = updateSystemPresence({ text: `${keyPrefix}🚀tail` });

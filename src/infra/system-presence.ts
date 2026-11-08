@@ -147,6 +147,14 @@ function operatorPresenceIdentity(presence: SystemPresence): string | undefined 
   );
 }
 
+// Presence snapshots declare lastInputSeconds as a non-negative integer (PresenceEntry), and
+// native clients decode it as an integer: one fractional value breaks their hello decode.
+function normalizeLastInputSeconds(value: number | undefined): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0
+    ? Math.floor(value)
+    : undefined;
+}
+
 export function updateSystemPresence(payload: SystemPresencePayload) {
   const parsed = parsePresence(payload.text);
   const key =
@@ -170,7 +178,9 @@ export function updateSystemPresence(payload: SystemPresencePayload) {
     lastInputSeconds:
       payload.lastInputSeconds === null
         ? undefined
-        : (payload.lastInputSeconds ?? parsed.lastInputSeconds ?? existing.lastInputSeconds),
+        : (normalizeLastInputSeconds(payload.lastInputSeconds) ??
+          parsed.lastInputSeconds ??
+          existing.lastInputSeconds),
     reason: payload.reason ?? parsed.reason ?? existing.reason,
     deviceId: payload.deviceId ?? existing.deviceId,
     roles: mergeStringList(existing.roles, payload.roles),
