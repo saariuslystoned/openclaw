@@ -204,6 +204,7 @@ export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptPar
     params.preparedRunAdmission.assertSourceCurrent();
   };
   assertTrajectoryCurrent();
+  using preparationPhases = observeDiagnosticsTimelinePhases("agent.embedded.trajectory");
   const fallbackTrajectoryRecorder = await createTrajectoryRuntimeRecorder({
     cfg,
     runId,
@@ -216,6 +217,7 @@ export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptPar
     modelId: model,
     workspaceDir,
   });
+  preparationPhases.mark("agent.embedded.entry");
   assertTrajectoryCurrent();
   const deferredLifecycle = createDeferredEmbeddedRunLifecycleManager({
     runId,
@@ -356,6 +358,7 @@ export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptPar
           fallbackTrajectoryRecorder?.recordEvent("model.fallback_step", step);
         },
         runCandidate: async (providerOverride, modelOverride, runOptions) => {
+          using candidatePhases = observeDiagnosticsTimelinePhases("agent.candidate.setup");
           candidateAttempts += 1;
           clearAgentRunTerminalWriteContext(params.preparedRunAdmission.operationalRunInstance);
           const candidateAccounting = compactionAccounting.beginCandidate(deferredLifecycle.signal);
@@ -456,6 +459,8 @@ export async function runEmbeddedAgentAttempt(params: RunEmbeddedAgentAttemptPar
           });
           effectiveTurnThinkLevel = candidateThinkLevel;
           try {
+            // Includes the history read while assembling the unchanged attempt arguments.
+            candidatePhases.mark("agent.candidate.attempt");
             const candidateResult = await attemptExecutionRuntime.runAgentAttempt({
               ...runOptions,
               preparedRunAdmission: params.preparedRunAdmission,

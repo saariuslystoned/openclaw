@@ -22,6 +22,24 @@ import type {
 import type { AuthProfileFailurePolicy } from "./run/auth-profile-failure-policy.types.js";
 import type { EmbeddedAgentRunResult } from "./types.js";
 
+export type RunEntryCandidate<T> = {
+  result: T;
+  classification?: ModelFallbackResultClassification;
+  turnAttempt?: ContextEngineTurnAttemptFacts;
+};
+
+export type RunEntryHarnessCandidate = {
+  provider: string;
+  model: string;
+  agentHarnessRuntimeOverride?: string;
+};
+
+export type RunEntryFallbackSearchOptions = {
+  captureCyberRefusal?: boolean;
+  forceFallbackRetry?: boolean;
+  authProfileId?: string;
+};
+
 export type RunEntryModelResolve = {
   prompt: string;
   onDispatch?: () => void;

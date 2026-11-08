@@ -14,6 +14,16 @@ type PreparationStage =
   | "inner_admission"
   | "command_owned"
   | "embedded"
+  | "embedded_trajectory"
+  | "embedded_entry"
+  | "entry_placement"
+  | "entry_runtime"
+  | "entry_model_resolve"
+  | "entry_context_engine"
+  | "entry_worker_inference"
+  | "entry_fallback"
+  | "candidate_setup"
+  | "candidate_attempt"
   | "harness_selected"
   | "harness_invoked"
   | "dispatch_settlement"
@@ -48,6 +58,16 @@ const phases = new Map<string, PreparationStage>([
   ["agent.command.admission", "inner_admission"],
   ["agent.command.owned", "command_owned"],
   ["agent.embedded", "embedded"],
+  ["agent.embedded.trajectory", "embedded_trajectory"],
+  ["agent.embedded.entry", "embedded_entry"],
+  ["agent.entry.placement", "entry_placement"],
+  ["agent.entry.runtime", "entry_runtime"],
+  ["agent.entry.model-resolve", "entry_model_resolve"],
+  ["agent.entry.context-engine", "entry_context_engine"],
+  ["agent.entry.worker-inference", "entry_worker_inference"],
+  ["agent.entry.fallback", "entry_fallback"],
+  ["agent.candidate.setup", "candidate_setup"],
+  ["agent.candidate.attempt", "candidate_attempt"],
   ["agent.dispatch.settlement", "dispatch_settlement"],
 ]);
 const startupStages = new Map<string, PreparationStage>([

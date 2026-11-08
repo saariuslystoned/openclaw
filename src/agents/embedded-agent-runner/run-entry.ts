@@ -6,6 +6,7 @@ import {
   emitAgentEventForRunContext,
 } from "../../infra/agent-events.js";
 import { getAgentRunContext } from "../../infra/agent-run-registry.js";
+import { observeDiagnosticsTimelinePhases } from "../../infra/diagnostics-timeline.js";
 import { requireActivePluginRegistry } from "../../plugins/runtime.js";
 import { modelKey } from "../../shared/model-key.js";
 import { mergeAcceptedSessionSpawnsForRun } from "../accepted-session-spawn.js";
@@ -60,18 +61,15 @@ import {
 import type {
   EmbeddedAgentRunEntryParams,
   EmbeddedAgentRunEntryResult,
+  RunEntryCandidate,
+  RunEntryFallbackSearchOptions,
+  RunEntryHarnessCandidate,
 } from "./run-entry.types.js";
 import type { EmbeddedAgentMeta, EmbeddedAgentRunResult } from "./types.js";
 import { createUsageAccumulator } from "./usage-accumulator.js";
 
 export type { EmbeddedAgentRunEntryTerminal } from "./run-entry-terminal.js";
 export type { RunEntryCandidateOptions } from "./run-entry.types.js";
-
-type RunEntryCandidate<T> = {
-  result: T;
-  classification?: ModelFallbackResultClassification;
-  turnAttempt?: ContextEngineTurnAttemptFacts;
-};
 
 /** Runs one logical turn across model candidates and advances only the accepted winner. */
 export async function runEmbeddedAgentEntry<T extends EmbeddedAgentRunResult>(
@@ -90,6 +88,7 @@ export async function runEmbeddedAgentEntry<T extends EmbeddedAgentRunResult>(
         params.selection.model,
       ),
     });
+    using placementPhase = observeDiagnosticsTimelinePhases("agent.entry.placement");
     const result = await withRequiredSessionPlacement(
       params.identity,
       {
@@ -97,7 +96,11 @@ export async function runEmbeddedAgentEntry<T extends EmbeddedAgentRunResult>(
         assertCurrent: admission?.assertSourceCurrent,
         signal: params.abortSignal,
       },
-      () => withAgentPromptProjects(() => runEmbeddedAgentEntryInternal(params)),
+      () => {
+        // Admission ends when its callback starts, not when the entire turn returns.
+        placementPhase[Symbol.dispose]();
+        return withAgentPromptProjects(() => runEmbeddedAgentEntryInternal(params));
+      },
     );
     // Placement and asynchronous terminal cleanup have finished. Only this
     // accepted logical result may release children retained across candidates.
@@ -114,6 +117,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
   const operatorAuthority = readPreparedRunOperatorAuthority(params.preparedRunAdmission);
   const lifecycleGeneration = captureAgentRunLifecycleGeneration(params.identity.runId);
   const runContext = getAgentRunContext(params.identity.runId);
+  using entryPhases = observeDiagnosticsTimelinePhases("agent.entry.runtime");
   const placementRuntime = await resolveSessionPlacementRuntimeOverride(params.identity);
   const assertCurrent = () => {
     params.abortSignal?.throwIfAborted();
@@ -121,6 +125,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
     assertAgentRunLifecycleGenerationCurrent(lifecycleGeneration);
   };
   assertCurrent();
+  entryPhases.mark("agent.entry.model-resolve");
   const hookSelection = await resolveRunEntryModelSelection({
     ...params,
     workspaceDir: params.harness.workspaceDir,
@@ -176,6 +181,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
     }
   };
   const awaitSessionDiffBaseline = params.modelResolve?.awaitSessionDiffBaseline;
+  entryPhases.mark("agent.entry.context-engine");
   const contextEngineLogicalTurnLease = await createContextEngineLogicalTurnLease({
     identity: params.identity,
     config: params.selection.cfg,
@@ -188,6 +194,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
         }
       : undefined,
   });
+  entryPhases[Symbol.dispose]();
   const assistantErrorTranscript = createAssistantErrorTranscript();
   let failed = true;
   let candidateIndex = 0;
@@ -197,11 +204,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
   const readChannelDeliveryEvidence =
     params.behavior.kind === "channel-delivery" ? params.behavior.readDeliveryEvidence : undefined;
   const preparedHarnessRuntimes = new Set<string>();
-  const prepareHarnessRuntime = async (candidate: {
-    provider: string;
-    model: string;
-    agentHarnessRuntimeOverride?: string;
-  }) => {
+  const prepareHarnessRuntime = async (candidate: RunEntryHarnessCandidate) => {
     assistantErrorTranscript.clear();
     const key = [
       candidate.provider,
@@ -245,16 +248,15 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
       | undefined;
     const runFallbackSearch = async (
       selection: EmbeddedAgentRunEntryParams<T>["selection"],
-      runOptions: {
-        captureCyberRefusal?: boolean;
-        forceFallbackRetry?: boolean;
-        authProfileId?: string;
-      } = {},
+      runOptions: RunEntryFallbackSearchOptions = {},
     ) => {
       const resolveCandidateRuntime = runOptions.forceFallbackRetry
         ? () => "openclaw"
         : resolveRuntimeOverride;
-      return runWithModelFallback<RunEntryCandidate<T>>({
+      using fallbackPhases = observeDiagnosticsTimelinePhases("agent.entry.worker-inference");
+      const skipAuthProfileRuntime = await sessionPlacementUsesWorkerInference(params.identity);
+      fallbackPhases.mark("agent.entry.fallback");
+      return await runWithModelFallback<RunEntryCandidate<T>>({
         ...selection,
         ...params.identity,
         operatorAuthority,
@@ -265,7 +267,7 @@ async function runEmbeddedAgentEntryInternal<T extends EmbeddedAgentRunResult>(
           (!hookSelection ||
             (hookSelection.provider === params.selection.provider &&
               hookSelection.modelId === params.selection.model)),
-        skipAuthProfileRuntime: await sessionPlacementUsesWorkerInference(params.identity),
+        skipAuthProfileRuntime,
         abortSignal: params.abortSignal,
         resolveAgentHarnessRuntimeOverride: resolveCandidateRuntime,
         prepareCandidateChain: async (candidates) => {
