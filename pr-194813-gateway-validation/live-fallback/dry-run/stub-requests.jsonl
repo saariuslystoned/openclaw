@@ -1,0 +1,12 @@
+{"ts":"2026-11-08T01:19:57.481Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":63570}
+{"ts":"2026-11-08T01:19:57.806Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":69486}
+{"ts":"2026-11-08T01:19:57.924Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":75402}
+{"ts":"2026-11-08T01:19:58.028Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":81318}
+{"ts":"2026-11-08T01:19:58.132Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":87234}
+{"ts":"2026-11-08T01:19:58.231Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":93150}
+{"ts":"2026-11-08T01:19:58.331Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":99066}
+{"ts":"2026-11-08T01:19:58.462Z","provider":"replay","model":"model-a","kind":"chat","method":"streamGenerateContent","status":200,"bytes":104982}
+{"ts":"2026-11-08T01:20:13.089Z","provider":"replay","model":"model-a","kind":"summary","method":"streamGenerateContent","status":429,"bytes":44307}
+{"ts":"2026-11-08T01:20:13.616Z","provider":"replay","model":"model-a","kind":"summary","method":"streamGenerateContent","status":429,"bytes":44307}
+{"ts":"2026-11-08T01:20:14.497Z","provider":"replay","model":"model-a","kind":"summary","method":"streamGenerateContent","status":429,"bytes":44307}
+{"ts":"2026-11-08T01:20:14.612Z","provider":"dryfallback","model":"m","kind":"summary","status":200,"bytes":44347}

@@ -1,0 +1,34 @@
+{
+  "checkoutHead": "30ff6a55d5b755cf4f677b9a579e684c72f7282e",
+  "node": "v24.22.1",
+  "waitStatus": "ok",
+  "stubRequestsDuringCompact": [
+    "replay:summary:429",
+    "replay:summary:429",
+    "replay:summary:429"
+  ],
+  "compactions": [
+    {
+      "tokensBefore": 26322,
+      "summaryChars": 2388
+    }
+  ],
+  "modelSnapshotsAndCompaction": [
+    {
+      "seq": 3,
+      "type": "custom",
+      "customType": "model-snapshot",
+      "provider": "replay"
+    },
+    {
+      "seq": 20,
+      "type": "custom",
+      "customType": "model-snapshot",
+      "provider": "<provider-b>"
+    },
+    {
+      "seq": 21,
+      "type": "compaction"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[provider-error] Model request failed requestNumber=1 nativeError={"provider":"replay","model":"model-a","name":"ApiError","status":429}
+[provider-error] Model request failed requestNumber=2 nativeError={"provider":"replay","model":"model-a","name":"ApiError","status":429}
+[provider-error] Model request failed requestNumber=3 nativeError={"provider":"replay","model":"model-a","name":"ApiError","status":429}
+[compaction-safeguard] Compaction summarization failed; cancelling compaction to preserve history.
+[agent/embedded] [compaction-diag] end trigger=manual provider=replay/model-a attempt=1 maxAttempts=1 outcome=failed reason=guard_blocked
+[model-fallback/decision] decision=candidate_failed candidate=replay/model-a reason=rate_limit status=429 code=429 next=<provider-b>/<model-b> outcome=next_fallback
+[model-fallback/decision] decision=candidate_succeeded candidate=<provider-b>/<model-b> outcome=succeeded
+[/compact reply] ⚙️ Compacted (26k → 2.0k) • Context 2.0k/1.0m (0%)
+[agent.wait] status=ok error=null
