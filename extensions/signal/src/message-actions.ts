@@ -14,6 +14,25 @@ import { removeReactionSignal, sendReactionSignal } from "./send-reactions.js";
 import { sendMessageSignal } from "./send.js";
 
 const providerId = "signal";
+
+// Signal clients aim every later edit at the newest revision: Signal-Android moves reactions
+// and pins from the revision an edit names, so re-targeting the original drops them. Each
+// timestamp in an edit chain maps to the chain's newest revision. In-process only: after a
+// restart the next edit targets whatever messageId the caller passes (accepted edge case).
+const EDIT_CHAIN_LIMIT = 512;
+const signalEditChains = new Map<string, { latest: number }>();
+
+function rememberSignalEdit(key: (timestamp: number) => string, edited: number, revision: number) {
+  const chain = signalEditChains.get(key(edited)) ?? { latest: revision };
+  chain.latest = revision;
+  for (const timestamp of [edited, revision]) {
+    signalEditChains.delete(key(timestamp));
+    signalEditChains.set(key(timestamp), chain);
+  }
+  while (signalEditChains.size > EDIT_CHAIN_LIMIT) {
+    signalEditChains.delete(signalEditChains.keys().next().value as string);
+  }
+}
 const GROUP_PREFIX = "group:";
 
 export const signalMessageActions: ChannelMessageActionAdapter = {
@@ -156,12 +175,17 @@ export const signalMessageActions: ChannelMessageActionAdapter = {
       if (!text) {
         throw new Error("Signal edit requires text, newText, or message.");
       }
+      const chainKey = (ts: number) => `${account.accountId}\u0000${to}\u0000${ts}`;
       const result = await sendMessageSignal(to, text, {
         cfg,
         accountId: account.accountId,
-        editTimestamp: timestamp,
+        editTimestamp: signalEditChains.get(chainKey(timestamp))?.latest ?? timestamp,
         ...(assertDirectAdapterHandoff ? { assertDirectAdapterHandoff } : {}),
       });
+      const revision = parseStrictNonNegativeInteger(result.messageId);
+      if (revision !== undefined) {
+        rememberSignalEdit(chainKey, timestamp, revision);
+      }
       return jsonResult({ ok: true, edited: messageId, messageId: result.messageId });
     }
 

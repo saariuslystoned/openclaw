@@ -80,6 +80,26 @@ describe("signalMessageActions", () => {
     );
   });
 
+  it("aims a second edit of the original message at its newest revision", async () => {
+    sendMessageSignalMock.mockClear();
+    const edit = (text: string) =>
+      signalMessageActions.handleAction?.({
+        channel: "signal",
+        action: "edit",
+        cfg: DEFAULT_CFG,
+        params: { to: "+15559999998", messageId: "1700000000500", text },
+      });
+    sendMessageSignalMock.mockResolvedValueOnce({
+      messageId: "1700000000600",
+      receipt: {} as never,
+    });
+    await edit("rev 1");
+    await edit("rev 2");
+    expect(sendMessageSignalMock.mock.calls.map((call) => call[2]?.editTimestamp)).toEqual([
+      1700000000500, 1700000000600,
+    ]);
+  });
+
   it.each(["implicit", "explicit"] as const)(
     "prepares %s replies without bypassing suppression",
     async (replyToIdSource) => {
