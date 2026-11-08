@@ -22,17 +22,24 @@ afterAll(async () => {
   await rm(workspace, { recursive: true, force: true });
 });
 
+// The fake holds its initialize reply until this socket answers; it never does.
+// `waiting` settles once the fake has received initialize, so the startup timer exists.
+async function holdInitialize() {
+  const gate = join(await mkdtemp(join(tmpdir(), "muse-gate-")), "init.sock");
+  const server = createServer(() => {});
+  await new Promise<void>((resolve) => {
+    server.listen(gate, resolve);
+  });
+  const waiting = new Promise<void>((resolve) => {
+    server.once("connection", () => resolve());
+  });
+  vi.stubEnv("MUSE_FIXTURE_INITIALIZE_GATE", gate);
+  return { server, waiting };
+}
+
 describe("Muse process pool", () => {
   it("reports a caller's cancelled start as that cancellation, not a missing install", async () => {
-    const gate = join(await mkdtemp(join(tmpdir(), "muse-gate-")), "init.sock");
-    const server = createServer(() => {});
-    await new Promise<void>((resolve) => {
-      server.listen(gate, resolve);
-    });
-    const waiting = new Promise<void>((resolve) => {
-      server.once("connection", () => resolve());
-    });
-    vi.stubEnv("MUSE_FIXTURE_INITIALIZE_GATE", gate);
+    const { server, waiting } = await holdInitialize();
     const pool = new MusePool(fixture);
     const controller = new AbortController();
     try {
@@ -48,17 +55,7 @@ describe("Muse process pool", () => {
     }
   });
   it("reports a slow Muse start as a startup timeout, not a missing install", async () => {
-    // The fake holds its initialize reply until this socket answers; it never does.
-    const gate = join(await mkdtemp(join(tmpdir(), "muse-gate-")), "init.sock");
-    const server = createServer(() => {});
-    await new Promise<void>((resolve) => {
-      server.listen(gate, resolve);
-    });
-    // The fake connects only after it receives initialize, so the startup timer exists.
-    const waiting = new Promise<void>((resolve) => {
-      server.once("connection", () => resolve());
-    });
-    vi.stubEnv("MUSE_FIXTURE_INITIALIZE_GATE", gate);
+    const { server, waiting } = await holdInitialize();
     const pool = new MusePool(fixture);
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
     try {
