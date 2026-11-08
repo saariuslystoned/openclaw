@@ -102,15 +102,16 @@ struct OnboardingWizardView: View {
         case .none:
             ""
         case .tokenMissing:
-            "Gateway auth token is missing."
+            String(localized: "Gateway auth token is missing.")
         case .passwordMissing:
             self.connectMessage ?? self.statusLine
         case .unauthorized:
-            "Gateway rejected credentials."
+            String(localized: "Gateway rejected credentials.")
         case let .pairingRequired(requestId):
-            requestId.map { "Pairing required (request \($0))." } ?? "Pairing required."
+            requestId.map { String(format: String(localized: "Pairing required (request %@)."), $0) }
+                ?? String(localized: "Pairing required.")
         case .network:
-            "Could not reach the gateway."
+            String(localized: "Could not reach the gateway.")
         case let .unknown(message):
             message
         }
@@ -888,7 +889,7 @@ extension OnboardingWizardView {
         self.setupCodeStatus = String(localized: "Setup code applied. Connecting…")
         self.connectMessage = String(localized: "Connecting via setup code…")
         self.statusLine = String(
-            format: String(localized: "Setup code loaded. Connecting to %@:%ld…"),
+            format: String(localized: "Setup code loaded. Connecting to %1$@:%2$ld…"),
             link.host,
             link.port)
         await self.prepareFocusedFieldForStepTransition()
@@ -936,7 +937,7 @@ extension OnboardingWizardView {
         self.qrCodeCompletion.stage(link)
         self.connectMessage = String(localized: "Connecting via setup code…")
         self.statusLine = String(
-            format: String(localized: "Setup code loaded. Connecting to %@:%ld…"),
+            format: String(localized: "Setup code loaded. Connecting to %1$@:%2$ld…"),
             link.host,
             link.port)
         self.navigate(to: .connect)
@@ -957,7 +958,7 @@ extension OnboardingWizardView {
         self.stagedGatewaySetupLink = link
         self.localConnectionFailure = nil
         self.setupCodeStatus = String(
-            format: String(localized: "Setup link loaded for %@:%ld. Tap Connect to apply."),
+            format: String(localized: "Setup link loaded for %1$@:%2$ld. Tap Connect to apply."),
             link.host,
             link.port)
         self.connectMessage = nil
@@ -988,7 +989,7 @@ extension OnboardingWizardView {
         self.setupCodeStatus = String(localized: "Setup link applied. Connecting…")
         self.issue = .none
         self.connectMessage = String(format: String(localized: "Connecting to %@…"), link.host)
-        self.statusLine = String(format: String(localized: "Connecting to %@:%ld…"), link.host, link.port)
+        self.statusLine = String(format: String(localized: "Connecting to %1$@:%2$ld…"), link.host, link.port)
         await self.connectCurrentManualGateway(
             host: link.host,
             port: link.port,
@@ -1412,7 +1413,7 @@ extension OnboardingWizardView {
         self.localConnectionFailure = nil
         self.issue = .none
         self.connectMessage = String(format: String(localized: "Connecting to %@…"), host)
-        self.statusLine = String(format: String(localized: "Connecting to %@:%ld…"), host, port)
+        self.statusLine = String(format: String(localized: "Connecting to %1$@:%2$ld…"), host, port)
         defer { self.connectingGateway = nil }
         await self.connectCurrentManualGateway(
             host: host,
