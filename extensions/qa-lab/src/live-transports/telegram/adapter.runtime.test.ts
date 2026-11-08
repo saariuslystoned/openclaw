@@ -564,6 +564,34 @@ it.each([
   }
 });
 
+it.each([
+  ["proxy startup", "startApiProxy"],
+  ["stale-update drain", "proxyDrainUpdates"],
+  ["userbot startup", "userbotStart"],
+] as const)("attributes a setup timeout to %s", async (stage, mockName) => {
+  const timeout = Object.assign(new Error("The operation was aborted due to timeout"), {
+    name: "TimeoutError",
+    code: 23,
+  });
+  mocks[mockName].mockRejectedValueOnce(timeout);
+
+  const caught = await createAdapter().then(
+    () => undefined,
+    (error: unknown) => error,
+  );
+
+  expect(caught).toBeInstanceOf(Error);
+  const failure = caught as Error;
+  expect(failure.message).toBe(
+    `Telegram QA setup failed during ${stage}: The operation was aborted due to timeout`,
+  );
+  expect(failure.cause).toBe(timeout);
+  expect(mocks.leaseRelease).toHaveBeenCalledOnce();
+  if (stage !== "userbot startup") {
+    expect(mocks.userbotStart).not.toHaveBeenCalled();
+  }
+});
+
 it("retains a quarantined lease after stopping the userbot and proxy", async () => {
   mocks.shouldRetainQaGatewayCredentialLease.mockResolvedValueOnce(true);
   const adapter = await createAdapter();
