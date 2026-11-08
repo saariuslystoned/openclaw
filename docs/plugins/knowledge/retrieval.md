@@ -30,7 +30,10 @@ ranked search never proves that an inventory is complete.
 
 Queries accept 1–64 word tokens within 500 characters. Punctuation separates
 tokens; `OR`, `NOT`, column syntax, and quotes are not executed as FTS syntax.
-Matching is case- and diacritic-insensitive. There is no stemming, prefix search,
+Queries and indexed titles, joined aliases, and bodies use NFC, so canonically
+equivalent composed and decomposed spellings match. Case and diacritic folding
+follow SQLite's unicode61 tokenizer; Latin accent folding does not imply that
+unaccented Greek matches accented Greek. There is no stemming, prefix search,
 or language-specific segmentation, so unsegmented CJK substrings may not match.
 
 Exact lookup accepts up to 200 characters. IDs are case-sensitive; names and
@@ -72,12 +75,14 @@ finds the current answer.
 Each hit has a summary, lifecycle, matched fields, attribution and assertion
 origin, and the stable ID, path, revision, and SHA-256 of the observed Markdown.
 
-- Snippets are at most 480 UTF-16 characters with zero-based start/end offsets.
-  Body snippets also carry one-based Markdown line ranges, counting frontmatter
-  lines.
+- Snippets are at most 480 UTF-16 characters with zero-based start/end offsets
+  into the original text, not its NFC search projection. A composed match anchors
+  at its earliest contributing original character. Body snippets also carry
+  one-based Markdown line ranges, counting frontmatter lines. Search does not
+  rewrite source bytes, revisions, or citation hashes.
 - At most three verified evidence locators are included. `evidenceTruncated`
   points to `knowledge_record` for more.
-- For bodies over 64 KiB, the snippet is an opening excerpt, not the match
+- For indexed bodies over 64 KiB, the snippet is an opening excerpt, not the match
   location (`snippet.matchLocated: false`).
 - Citation hashes identify the searched revision. Compare hashes before relying
   on a later read.
@@ -92,8 +97,12 @@ or snippets.
 Markdown is authoritative. Each search first runs the scoped scan and
 validation, then reconciles per-scope FTS5 projections in the store's
 `state.sqlite`: one for the searched records and one for superseded records
-whose replacement chain reaches a current record. Only records whose content
-hash changed are re-indexed. These tables are not shared with `memory-core` or
+whose replacement chain reaches a current record. Records are re-indexed when
+their content hash or the keyword projection format changes. Upgrading from the
+pre-NFC format refreshes unchanged rows in both projections on their next query;
+subsequent queries reuse the refreshed index while its inputs are unchanged.
+Filtered temporary corpora use the same NFC representation. These tables are not
+shared with `memory-core` or
 other plugins.
 
 - A publication receipt's `indexed: false` means indexing is pending until the

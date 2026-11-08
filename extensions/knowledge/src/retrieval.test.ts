@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, writeFile, readFile, rm, rename, link, symlink } from "node:fs/promises";
 import path from "node:path";
 import { constants } from "node:sqlite";
@@ -617,4 +617,172 @@ it("superseded-record edits update the persistent history index and the search s
     db.exec(`DROP TABLE ${String(fts.name)}`);
   });
   expect(ids(await f.service.grep({ query: "inkword" }, f.owner))).toStrictEqual(["plan_two"]);
+});
+
+it("canonical queries share original citations across current, filtered and historical corpora", async () => {
+  const f = await fixture();
+  const samples = [
+    {
+      id: "nfc_title",
+      title: "άλφα",
+      body: "Title only",
+      aliases: [],
+      query: "άλφα",
+      field: "title",
+      mode: "all",
+    },
+    {
+      id: "nfd_alias",
+      title: "Alias",
+      body: "Alias only",
+      aliases: ["Other name", "βη\u0301τα"],
+      query: "βήτα",
+      field: "aliases",
+      mode: "any",
+    },
+    {
+      id: "nfd_body",
+      title: "Body",
+      body: "γα\u0301μμα",
+      aliases: [],
+      query: "γάμμα",
+      field: "body",
+      mode: "phrase",
+    },
+  ] as const;
+  const originals = new Map<string, Buffer>();
+  for (const sample of samples) {
+    const file = await f.put(sample.id, sample.title, sample.body, {
+      aliases: sample.aliases,
+      tags: ["kept"],
+    });
+    originals.set(file, await readFile(file));
+  }
+  await f.put("canonical_now", "Current", "Current answer", { tags: ["kept"] });
+  const oldFile = await f.put("canonical_old", "Earlier", "δε\u0301λτα", {
+    ...superseded("canonical_now"),
+    tags: ["kept"],
+  });
+  originals.set(oldFile, await readFile(oldFile));
+  await f.put("outside_now", "Outside", "Other current answer");
+  await f.put("outside_old", "Outside history", "Other earlier answer", superseded("outside_now"));
+  await f.put("latin_control", "Control", "Café cobaltmarker");
+  for (const sample of samples) {
+    for (const query of [sample.query, sample.query.normalize("NFD")]) {
+      for (const tag of [undefined, "kept"]) {
+        const result = await f.service.grep(
+          { query, tag, mode: sample.mode, detail: "full" },
+          f.owner,
+        );
+        expect(result.index.state).toBe("ready");
+        expect(ids(result)).toEqual([sample.id]);
+        const hit = result.hits.find(isFullHit)!;
+        const text =
+          sample.field === "title"
+            ? sample.title
+            : sample.field === "body"
+              ? sample.body
+              : sample.aliases.join("\n");
+        expect(hit.snippet).toMatchObject({
+          field: sample.field,
+          text,
+          start: 0,
+          end: text.length,
+        });
+        expect(hit.citation).toMatchObject({
+          id: sample.id,
+          revision: 1,
+          hash: createHash("sha256")
+            .update(originals.get(path.join(f.root, "private/notes", sample.id + ".md"))!)
+            .digest("hex"),
+        });
+      }
+    }
+  }
+  for (const lifecycle of ["active", "superseded", "all"] as const) {
+    const result = await f.service.grep(
+      { query: "δέλτα", lifecycle, tag: "kept", detail: "full" },
+      f.owner,
+    );
+    expect(ids(result)).toEqual([lifecycle === "active" ? "canonical_now" : "canonical_old"]);
+    if (lifecycle === "active") {
+      expect(result.hits[0]).toMatchObject({
+        via: { id: "canonical_old", revision: 1 },
+        matches: ["superseded"],
+      });
+    } else {
+      expect(result.hits[0]!.snippet.text).toBe("δε\u0301λτα");
+      expect(result.hits[0]!.via).toBeUndefined();
+    }
+  }
+  expect(ids(await f.service.grep({ query: "CAFE" }, f.owner))).toEqual(["latin_control"]);
+  expect(await f.total({ query: "absentzircon" })).toBe(0);
+  const first = await f.service.grep({ query: "γάμμα" }, f.owner);
+  const second = await f.service.grep({ query: "γα\u0301μμα" }, f.owner);
+  expect(second.index.snapshot).toBe(first.index.snapshot);
+  expect(second.freshness.indexedAt).toBe(first.freshness.indexedAt);
+  await f.put("shared_note", "Shared", "γα\u0301μμα", {}, "conversations/" + f.sessionId);
+  f.group();
+  expect(ids(await f.service.grep({ query: "γάμμα" }, f.owner))).toEqual(["shared_note"]);
+  expect(await f.total({ query: "δέλτα", lifecycle: "all" })).toBe(0);
+  for (const [file, bytes] of originals) {
+    expect(await readFile(file)).toEqual(bytes);
+  }
+});
+
+it("NFC highlight origins retain original UTF-16 snippets through composition and reordering", async () => {
+  const f = await fixture();
+  // The changed prefix makes a projected offset miss the original match by 120 units.
+  const prefix = "e\u0301 ".repeat(120) + "\n";
+  const samples = [
+    { id: "jamo_origin", text: "\u0600\u1100\u1161", query: "가", at: 1 },
+    { id: "reordered_origin", text: " \u1AB0\u0323atlas", query: "\u1AB0atlas", at: 1 },
+    {
+      id: "repeated_origin",
+      text: " \u1AB0\u0323\u1AB0atlas",
+      query: "\u1AB0\u1AB0atlas",
+      at: 1,
+    },
+    { id: "excluded_origin", text: "\u0344atlas", query: "atlas", at: 1 },
+    {
+      id: "supplementary_origin",
+      text: "\u{10400}\nA\u0327\u030A",
+      query: "\u{10400}",
+      at: 0,
+    },
+    { id: "composed_origin", text: "\u{10400}\nA\u0327\u030A", query: "Å", at: 3 },
+    { id: "nfc_control", text: "Plain atlas", query: "atlas", at: 6 },
+  ];
+  for (const sample of samples) {
+    const lead = sample.id === "nfc_control" ? prefix.normalize("NFC") : prefix;
+    const body = lead + sample.text + "\n" + "unchanged tail ".repeat(40);
+    const file = await f.put(sample.id, "Origin sample", body, { tags: [sample.id] });
+    const raw = await readFile(file, "utf8");
+    const result = await f.service.grep(
+      { query: sample.query, tag: sample.id, detail: "full" },
+      f.owner,
+    );
+    expect(result.index.state).toBe("ready");
+    expect(ids(result)).toEqual([sample.id]);
+    const hit = result.hits.find(isFullHit)!;
+    const start = lead.length + sample.at - 100;
+    expect(hit.snippet).toMatchObject({
+      field: "body",
+      start,
+      end: start + 480,
+      text: body.slice(start, start + 480),
+      startLine: raw.slice(0, raw.length - body.length + start).split("\n").length,
+      endLine: raw.slice(0, raw.length - body.length + start + 479).split("\n").length,
+    });
+    expect(hit.snippet.matchLocated).not.toBe(false);
+    expect(hit.citation).toMatchObject({
+      id: sample.id,
+      revision: 1,
+      hash: createHash("sha256").update(raw).digest("hex"),
+    });
+    const compact = await f.service.grep({ query: sample.query, tag: sample.id }, f.owner);
+    expect(compact.hits[0]!.snippet.text).toBe(body.slice(start + 60, start + 260));
+    expect(compact.hits[0]!.snippet.text.isWellFormed()).toBe(true);
+    expect(await readFile(file, "utf8")).toBe(raw);
+  }
 });

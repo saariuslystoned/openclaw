@@ -112,6 +112,54 @@ const coverage = (data: Snapshot) => ({
     ? "Some authorized source material has validation issues. Invalid, ambiguous, withdrawn and dependent records are excluded; inspect Activity & issues. Results do not establish a complete vault inventory."
     : "Current eligible scoped records only. Ranked search is not exhaustive vault listing.",
 });
+function recordText(r: LoadedRecord, field: Hit["snippet"]["field"]): string {
+  return field === "body"
+    ? r.body
+    : field === "title"
+      ? r.title
+      : (r.metadata.aliases ?? []).join("\n");
+}
+
+/** Locate the first highlighted NFC scalar in the original UTF-16 text.
+ * Native NFD supplies components; canonical ordering preserves the occurrence
+ * order of equal components. Separate FIFO queues therefore retain provenance
+ * through reordering, composition and one-to-many decomposition without tables
+ * or repeated prefix normalization. A composed scalar anchors at its earliest
+ * contributing source scalar. */
+function originalMatchOffset(value: string, at: number): number {
+  const projected = value.normalize("NFC");
+  if (projected === value) {
+    return at;
+  }
+  const queues = new Map<string, { origins: number[]; cursor: number }>();
+  let sourceAt = 0;
+  for (const scalar of value) {
+    for (const component of scalar.normalize("NFD")) {
+      let queue = queues.get(component);
+      if (!queue) {
+        queue = { origins: [], cursor: 0 };
+        queues.set(component, queue);
+      }
+      queue.origins.push(sourceAt);
+    }
+    sourceAt += scalar.length;
+  }
+  let projectedAt = 0;
+  for (const scalar of projected) {
+    let origin = Infinity;
+    for (const component of scalar.normalize("NFD")) {
+      // Both streams decompose the same value: every occurrence has one owner.
+      const queue = queues.get(component)!;
+      origin = Math.min(origin, queue.origins[queue.cursor++]!);
+    }
+    if (projectedAt === at) {
+      return origin;
+    }
+    projectedAt += scalar.length;
+  }
+  throw new Error("Keyword highlight is not at an NFC scalar boundary.");
+}
+
 function hit(
   r: LoadedRecord,
   field: Hit["snippet"]["field"],
@@ -119,8 +167,7 @@ function hit(
   matches: string[],
   score: number | null,
 ): Hit {
-  const value =
-    field === "body" ? r.body : field === "title" ? r.title : (r.metadata.aliases ?? []).join("\n");
+  const value = recordText(r, field);
   let start = Math.max(0, at - 100),
     end = Math.min(value.length, start + 480);
   // Do not split UTF-16 surrogate pairs at the snippet boundaries.
@@ -241,7 +288,7 @@ export function keywordExpression(input: SearchInput): string {
   if (!Check(SearchInput, input)) {
     throw new Error("Invalid keyword search input.");
   }
-  const tokens = input.query.match(/[\p{L}\p{N}\p{M}]+/gu) ?? [];
+  const tokens = input.query.normalize("NFC").match(/[\p{L}\p{N}\p{M}]+/gu) ?? [];
   if (!tokens.length || tokens.length > 64) {
     throw new Error("Keyword search requires 1–64 word tokens. Use exact lookup for a name or ID.");
   }
@@ -251,6 +298,16 @@ export function keywordExpression(input: SearchInput): string {
 }
 
 const FTS_COLUMNS = "id UNINDEXED, title, aliases, body, tokenize='unicode61 remove_diacritics 2'";
+// One format identity invalidates both the scope snapshot and unchanged tracked rows.
+const KEYWORD_PROJECTION = "nfc-v1";
+const keywordRowHash = (r: LoadedRecord) => digest(KEYWORD_PROJECTION + ":" + r.hash);
+function keywordFields(r: LoadedRecord): [string, string, string] {
+  return [
+    r.title.normalize("NFC"),
+    recordText(r, "aliases").normalize("NFC"),
+    r.body.normalize("NFC"),
+  ];
+}
 
 /** The scope's keyword corpora: eligible current records, and the eligible
  * superseded records whose `superseded_by` chain reaches one of them, each mapped to
@@ -282,14 +339,14 @@ function keywordCorpora(data: Snapshot, withdrawn: Set<string>) {
 }
 
 /** Bring one tracked FTS table to exactly `records`. Rows are tracked by record ID
- * and content hash, so a change re-indexes only the records that changed. */
+ * and projection/content hash, so a change re-indexes only affected records. */
 function syncFts(db: DatabaseSync, table: string, rows: string, records: LoadedRecord[]) {
   const wanted = new Map(records.map((r) => [r.id, r]));
   const remove = db.prepare(`DELETE FROM ${table} WHERE rowid=?`),
     untrack = db.prepare(`DELETE FROM ${rows} WHERE id=?`);
   for (const row of db.prepare(`SELECT id,hash,fts_rowid FROM ${rows}`).all()) {
     const r = wanted.get(String(row.id));
-    if (r && r.hash === row.hash) {
+    if (r && keywordRowHash(r) === row.hash) {
       wanted.delete(r.id);
       continue;
     }
@@ -299,11 +356,7 @@ function syncFts(db: DatabaseSync, table: string, rows: string, records: LoadedR
   const insert = db.prepare(`INSERT INTO ${table}(id,title,aliases,body) VALUES (?,?,?,?)`),
     track = db.prepare(`INSERT INTO ${rows} VALUES (?,?,?)`);
   for (const r of wanted.values()) {
-    track.run(
-      r.id,
-      r.hash,
-      insert.run(r.id, r.title, (r.metadata.aliases ?? []).join("\n"), r.body).lastInsertRowid,
-    );
+    track.run(r.id, keywordRowHash(r), insert.run(r.id, ...keywordFields(r)).lastInsertRowid);
   }
 }
 
@@ -330,6 +383,7 @@ function reconcileKeywordIndex(
   ] as const;
   const snapshot = digest(
     JSON.stringify([
+      KEYWORD_PROJECTION,
       generation,
       data.ontology?.fingerprint,
       records.map((r) => [r.id, r.path, r.hash, r.revision]),
@@ -435,7 +489,7 @@ function temporaryCorpus(db: DatabaseSync, name: string, records: LoadedRecord[]
   db.exec(`CREATE VIRTUAL TABLE temp.${name} USING fts5(${FTS_COLUMNS})`);
   const insert = db.prepare(`INSERT INTO temp.${name}(id,title,aliases,body) VALUES (?,?,?,?)`);
   for (const r of records) {
-    insert.run(r.id, r.title, (r.metadata.aliases ?? []).join("\n"), r.body);
+    insert.run(r.id, ...keywordFields(r));
   }
 }
 
@@ -537,10 +591,14 @@ export function keywordSearch(
             String(row[field]).includes(marker),
           );
           const field = fields.includes("body") ? "body" : (fields[0] ?? "title");
+          const record = byId.get(String(row.id))!;
           return hit(
-            byId.get(String(row.id))!,
+            record,
             field,
-            Math.max(0, String(row[field]).indexOf(marker)),
+            originalMatchOffset(
+              recordText(record, field),
+              Math.max(0, String(row[field]).indexOf(marker)),
+            ),
             fields,
             -Number(row.score),
           );
