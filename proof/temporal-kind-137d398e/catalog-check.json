@@ -1,0 +1,49 @@
+{
+  "proof": "H5-running-Gateway-catalog-response-inspection",
+  "scope": "Offline validation of supplied responses; runtime/source binding requires the separate command and process receipts",
+  "agentId": "main",
+  "responseHashes": {
+    "withPlugins": "81978879e895eca95134a5b0131de847f7ad0823f285404d475dcad06a8c9b46",
+    "coreOnly": "df66f8838b95ecb901bc5497052eb00c03357eab26a6d41824d1a79369ee7678"
+  },
+  "responseBytes": {
+    "withPlugins": 137135,
+    "coreOnly": 17784
+  },
+  "observations": [
+    {
+      "id": "knowledge_timeline",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    },
+    {
+      "id": "knowledge_chronicle_day",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    },
+    {
+      "id": "knowledge_chronicle_since",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    }
+  ],
+  "status": "PASS"
+}

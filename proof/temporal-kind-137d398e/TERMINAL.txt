@@ -1,0 +1,69 @@
+Sanitized actual command/output excerpt; not an expected-result rendering.
+source_head=137d398ed80839087a44e1efd25eead82d517752
+built_entrypoint=dist/index.js sha256=eef2eaef41acf419ae8d4c2c74e7048279c43e433e722bf6ddb984b33be371a7
+normal_runtime_build_exit=0
+$ node dist/index.js --profile h5-kind-proof-case4 setup --baseline --skip-bootstrap --workspace [disposable-path] --json
+exit_code=0
+stdout_sha256=4a19cd2ef790afc1539f4c28469cb181bb486358fb45819a05b015dc12c27444
+$ node dist/index.js --profile h5-kind-proof-case4 config validate --json
+exit_code=0
+stdout_sha256=7609accab7dc56b595ca2378ee54ea760b8235454867e29152398aef503ab754
+$ node dist/index.js --profile h5-kind-proof-case4 gateway call tools.catalog --port [owned isolated port] --expect-url [private loopback] --params {"includePlugins":true} --timeout 30000 --json
+exit_code=0
+stdout_sha256=81978879e895eca95134a5b0131de847f7ad0823f285404d475dcad06a8c9b46
+$ node dist/index.js --profile h5-kind-proof-case4 gateway call tools.catalog --port [owned isolated port] --expect-url [private loopback] --params {"includePlugins":false} --timeout 30000 --json
+exit_code=0
+stdout_sha256=df66f8838b95ecb901bc5497052eb00c03357eab26a6d41824d1a79369ee7678
+$ node check-catalog.mjs OBSERVED_WITH_PLUGINS.json OBSERVED_CORE_ONLY.json
+{
+  "proof": "H5-running-Gateway-catalog-response-inspection",
+  "scope": "Offline validation of supplied responses; runtime/source binding requires the separate command and process receipts",
+  "agentId": "main",
+  "responseHashes": {
+    "withPlugins": "81978879e895eca95134a5b0131de847f7ad0823f285404d475dcad06a8c9b46",
+    "coreOnly": "df66f8838b95ecb901bc5497052eb00c03357eab26a6d41824d1a79369ee7678"
+  },
+  "responseBytes": {
+    "withPlugins": 137135,
+    "coreOnly": 17784
+  },
+  "observations": [
+    {
+      "id": "knowledge_timeline",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    },
+    {
+      "id": "knowledge_chronicle_day",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    },
+    {
+      "id": "knowledge_chronicle_since",
+      "pluginId": "knowledge",
+      "kind": {
+        "name": "kind",
+        "required": false,
+        "type": "string",
+        "description": "Exact record.type filter, such as decision, event, or meeting; unlike search/lookup kind (page, claim, relationship). Omit to include all eligible dated types."
+      },
+      "absentWithoutPlugins": true
+    }
+  ],
+  "status": "PASS"
+}
+observer_exit_code=0
+canonical_cleanup={"canonicalStateCleanup": true, "logicalPortClaimReleased": true, "processClosed": true, "stateAndOpaqueCredentialTmpfsOnly": true}
+supported_test_wrapper_exit_code=0

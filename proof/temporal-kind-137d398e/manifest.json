@@ -1,0 +1,48 @@
+{
+  "schema": "public-openclaw-shipped-proof-v1",
+  "source_head": "137d398ed80839087a44e1efd25eead82d517752",
+  "source_tree": "74d001b334f42f3eb12164d7b163703baeea8ea5",
+  "source_parent": "f6abc882721d0facb24452469b77cf58b95d25a7",
+  "captured_run_started": "2026-11-08T05:21:27.916123+00:00",
+  "captured_run_finished": "2026-11-08T05:22:41.144052+00:00",
+  "claim": "actual shipped Gateway/CLI temporal kind guidance and opposite control, plus owned cleanup",
+  "files": [
+    {
+      "path": "PROOF.md",
+      "bytes": 3745,
+      "sha256": "7dddca57ddf729a8523248061e90db20aed2727c2173e2ef3edbe8f08b2d281c"
+    },
+    {
+      "path": "TERMINAL.txt",
+      "bytes": 3235,
+      "sha256": "fbd415d951071b8646c9c834bb1642f5c10e8cd5d0681d19105534afcc21efef"
+    },
+    {
+      "path": "catalog-check.json",
+      "bytes": 1743,
+      "sha256": "bcfac601c0d0ac4e638747c97eb26f0241f6665a9f3cd503ea2b7741601218a9"
+    },
+    {
+      "path": "check-catalog.mjs",
+      "bytes": 2832,
+      "sha256": "e4cda283d3d4f4e26727de45922d2bf19505d69d41d762cbe61deba9bea5fc91"
+    },
+    {
+      "path": "gateway-case4.fixture.ts.txt",
+      "bytes": 7759,
+      "sha256": "79e8a6991caf756fdd1a62883e905fee93eed27e2d1e79d04147c042b5b2c5e5"
+    },
+    {
+      "path": "make-case-patch.mjs",
+      "bytes": 1236,
+      "sha256": "8f4645ebb07d5db08e432ee2e43aef9b7b1f9fd8b768f101c66fd58d451fa885"
+    },
+    {
+      "path": "receipt.json",
+      "bytes": 5802,
+      "sha256": "b71dd2ab081e155b361ac9fe467175602acbe5f14e2a90c0291f0b99b5ce8adb"
+    }
+  ],
+  "gates": "native re-review and human merge remain separate; source candidate unchanged",
+  "media": "none; authentic sanitized terminal text only"
+}
