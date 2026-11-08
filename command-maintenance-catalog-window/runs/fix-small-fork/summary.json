@@ -1,0 +1,43 @@
+{
+  "label": "fix-small-fork",
+  "checkoutHead": "b17b49094f6aa64e28148502a09fc2d324fff6ec",
+  "model": "bigwindow/small",
+  "declaredWindow": 200000,
+  "spawnContext": "fork",
+  "parentTokensBeforeSpawn": 147556,
+  "seedRequests": 21,
+  "afterSeed": [
+    {
+      "kind": "spawn",
+      "estTokens": 79541,
+      "messages": 22,
+      "lastRole": "user",
+      "lastUserHead": "OpenClaw runtime context:\nGit co-author "
+    },
+    {
+      "kind": "after-tool",
+      "estTokens": 79796,
+      "messages": 24,
+      "lastRole": "tool",
+      "lastUserHead": "OpenClaw runtime context:\nGit co-author "
+    },
+    {
+      "kind": "child",
+      "estTokens": 74674,
+      "messages": 26,
+      "lastRole": "user",
+      "lastUserHead": "OpenClaw runtime context:\nConversation d"
+    },
+    {
+      "kind": "child",
+      "estTokens": 80827,
+      "messages": 27,
+      "lastRole": "user",
+      "lastUserHead": "OpenClaw runtime context:\nA background t"
+    }
+  ],
+  "summaryRequestsAfterSeed": 0,
+  "summaryRequestsTotal": 1,
+  "pressureDiagnosticBudgets": [],
+  "internalSessionEffectsLogLines": 0
+}

@@ -1,0 +1,20 @@
+{
+ "agent:main:main": {
+  "modelProvider": "bigwindow",
+  "model": "options",
+  "agentHarnessId": "openclaw",
+  "contextTokens": 1048576,
+  "contextTokensSource": "resolved",
+  "totalTokens": 57994,
+  "compactionCount": 1
+ },
+ "agent:main:subagent:530ca311-a697-4b5a-a7d4-f5953d1251f6": {
+  "modelProvider": "bigwindow",
+  "model": "options",
+  "agentHarnessId": "openclaw",
+  "contextTokens": 1048576,
+  "contextTokensSource": "resolved",
+  "totalTokens": 21375,
+  "compactionCount": null
+ }
+}
