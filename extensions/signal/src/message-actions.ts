@@ -29,7 +29,7 @@ export const signalMessageActions: ChannelMessageActionAdapter = {
     const reactionsEnabled = configuredAccounts.some((account) =>
       createActionGate(account.config.actions)("reactions"),
     );
-    return { actions: reactionsEnabled ? ["send", "react"] : ["send"] };
+    return { actions: reactionsEnabled ? ["send", "poll", "react"] : ["send", "poll"] };
   },
   supportsAction: ({ action }) => action === "react",
   prepareSendPayload: ({ ctx, payload, replyToId, replyToIdSource }) => {

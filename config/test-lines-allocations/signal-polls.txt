@@ -1,0 +1,2 @@
+# Signal polls: sendPollSignal cases (multi-answer direct poll; single-answer group poll) and the poll entry in the action-discovery cases.
+44
