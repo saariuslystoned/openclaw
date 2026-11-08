@@ -175,12 +175,14 @@ export function updateSystemPresence(payload: SystemPresencePayload) {
     deviceFamily: payload.deviceFamily ?? existing.deviceFamily,
     modelIdentifier: payload.modelIdentifier ?? existing.modelIdentifier,
     mode: payload.mode ?? parsed.mode ?? existing.mode,
+    // An explicit null clears; an explicit invalid value also clears instead of reviving
+    // stale idle time. The merged value is normalized so older fractional rows heal too.
     lastInputSeconds:
       payload.lastInputSeconds === null
         ? undefined
-        : (normalizeLastInputSeconds(payload.lastInputSeconds) ??
-          parsed.lastInputSeconds ??
-          existing.lastInputSeconds),
+        : payload.lastInputSeconds !== undefined
+          ? normalizeLastInputSeconds(payload.lastInputSeconds)
+          : normalizeLastInputSeconds(parsed.lastInputSeconds ?? existing.lastInputSeconds),
     reason: payload.reason ?? parsed.reason ?? existing.reason,
     deviceId: payload.deviceId ?? existing.deviceId,
     roles: mergeStringList(existing.roles, payload.roles),
@@ -214,6 +216,9 @@ export function upsertPresence(
     ...presence,
     roles,
     scopes,
+    lastInputSeconds: normalizeLastInputSeconds(
+      presence.lastInputSeconds ?? existing.lastInputSeconds,
+    ),
     ts: Date.now(),
     text:
       presence.text ||

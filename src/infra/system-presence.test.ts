@@ -145,25 +145,25 @@ describe("system-presence", () => {
 
   it("stores lastInputSeconds as the non-negative integer presence snapshots declare", () => {
     const instanceId = `presence-idle-${randomUUID()}`;
-    const fractional = updateSystemPresence({
-      text: "Node: idle-probe",
-      instanceId,
-      lastInputSeconds: 4.5,
-    });
-    expect(fractional.next.lastInputSeconds).toBe(4);
+    const text = "Node: idle-probe";
+    expect(
+      updateSystemPresence({ text, instanceId, lastInputSeconds: 4.5 }).next.lastInputSeconds,
+    ).toBe(4);
+    // Invalid explicit values clear the idle time instead of reviving the previous reading.
+    for (const invalid of [-3, Number.NaN, Number.POSITIVE_INFINITY]) {
+      updateSystemPresence({ text, instanceId, lastInputSeconds: 10 });
+      expect(
+        updateSystemPresence({ text, instanceId, lastInputSeconds: invalid }).next.lastInputSeconds,
+      ).toBeUndefined();
+    }
 
-    const negative = updateSystemPresence({
-      text: "Node: idle-probe",
-      instanceId,
-      lastInputSeconds: -3,
-    });
-    expect(negative.next.lastInputSeconds).toBe(4);
-    const notFinite = updateSystemPresence({
-      text: "Node: idle-probe",
-      instanceId,
-      lastInputSeconds: Number.POSITIVE_INFINITY,
-    });
-    expect(notFinite.next.lastInputSeconds).toBe(4);
+    // Rows written through upsertPresence are normalized too, and later heartbeats keep the integer.
+    const key = `presence-upsert-${randomUUID()}`;
+    upsertPresence(key, { deviceId: key, lastInputSeconds: 7.9, roles: ["node"] });
+    expect(listSystemPresence().find((entry) => entry.deviceId === key)?.lastInputSeconds).toBe(7);
+    expect(
+      updateSystemPresence({ text: "Node: upsert-probe", deviceId: key }).next.lastInputSeconds,
+    ).toBe(7);
   });
 
   it("keeps fallback text keys UTF-16 safe", () => {
