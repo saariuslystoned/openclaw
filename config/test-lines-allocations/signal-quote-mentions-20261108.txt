@@ -1,0 +1,4 @@
+473
+# Exact net LF growth: public Signal monitor/formatter/native delivery regression for quoted UTF16 mentions, visibility, current-target and cancellation controls.
+# Includes exactly 16 lines of measured comparison-base debt at c6f36bdf5dd95de85a1439ba9610dd5f496a8d61; requires explicit approval recorded with this change.
+# 457 justified regression lines + 16 inherited debt = 473 total credit; resulting ceiling 6574813 equals measured test lines, zero spare headroom.

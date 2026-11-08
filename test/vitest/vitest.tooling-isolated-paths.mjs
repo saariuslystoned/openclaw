@@ -1,5 +1,7 @@
 // Tooling tests that need fresh module or process state instead of shared workers.
 export const toolingIsolatedTestFiles = [
+  // Signal's real durable ingress queue requires the host-owned shared-state broker.
+  "test/signal-quote-mentions.integration.test.ts",
   // Personal account authority uses the host-owned shared-state broker.
   "test/codex-account-usage.integration.test.ts",
   // The admitted Browser fixture mutates the global runtime config snapshot.
