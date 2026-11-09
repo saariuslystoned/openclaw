@@ -238,7 +238,7 @@ internal fun ChatInlineWidget(
         }
       }
 
-      unavailable || resolvedResource != null -> {
+      unavailable || resolvedResource != null || !resolverReady -> {
         Text(
           text = nativeString("Widget unavailable"),
           style = ClawTheme.type.caption,
