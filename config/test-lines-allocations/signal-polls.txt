@@ -1,2 +1,2 @@
 # Signal polls: sendPollSignal cases (multi-answer direct poll; single-answer group poll), the channel outbound sendPoll registration (core.test), and the poll entry in the action-discovery cases.
-49
+45
