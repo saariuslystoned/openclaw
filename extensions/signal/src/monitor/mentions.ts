@@ -1,5 +1,12 @@
+import {
+  applyMarkdownTextEdits,
+  renderMarkdownWithMarkers,
+  type MarkdownStyle,
+  type MarkdownStyleSpan,
+} from "openclaw/plugin-sdk/text-chunking";
 import { normalizeE164 } from "openclaw/plugin-sdk/text-utility-runtime";
-import type { SignalMention } from "./event-handler.types.js";
+import type { SignalTextStyleRange } from "../format.js";
+import type { SignalDataMessage, SignalMention } from "./event-handler.types.js";
 
 const OBJECT_REPLACEMENT = "\uFFFC";
 
@@ -81,13 +88,35 @@ export function resolveSignalMentionFacts(
   };
 }
 
-export function renderSignalMentions(message: string, mentions?: SignalMention[] | null) {
-  if (!message || !mentions?.length) {
-    return message;
-  }
+const SIGNAL_STYLE_NAMES = new Map<SignalTextStyleRange["style"], MarkdownStyle>([
+  ["BOLD", "bold"],
+  ["ITALIC", "italic"],
+  ["STRIKETHROUGH", "strikethrough"],
+  ["MONOSPACE", "code"],
+  ["SPOILER", "spoiler"],
+]);
 
+/**
+ * Renders mentions as `@id` and returns the text twice: plain for command matching and quotes,
+ * and with Signal's text styles as Markdown for the agent, so a struck-out word stays struck out.
+ */
+export function renderSignalText(dataMessage?: SignalDataMessage | null) {
+  const message = dataMessage?.message ?? "";
+  let styles: MarkdownStyleSpan[] = (dataMessage?.textStyles ?? []).flatMap((range) => {
+    const style = SIGNAL_STYLE_NAMES.get(range.style);
+    const end = range.start + range.length;
+    const valid =
+      Number.isInteger(range.start) &&
+      Number.isInteger(range.length) &&
+      range.start >= 0 &&
+      range.length > 0 &&
+      end <= message.length;
+    return style && valid ? [{ start: range.start, end, style }] : [];
+  });
   let normalized = message;
-  const candidates = mentions.filter(isValidMention).toSorted((a, b) => b.start! - a.start!);
+  const candidates = (dataMessage?.mentions ?? [])
+    .filter(isValidMention)
+    .toSorted((a, b) => b.start! - a.start!);
 
   for (const mention of candidates) {
     const identifier = mention.uuid ?? mention.number;
@@ -105,8 +134,34 @@ export function renderSignalMentions(message: string, mentions?: SignalMention[]
       continue;
     }
 
-    normalized = normalized.slice(0, start) + `@${identifier}` + normalized.slice(end);
+    // Mentions and styles share the original UTF-16 offsets, so move the styles with each edit.
+    const edited = applyMarkdownTextEdits(normalized, [{ start, end, text: `@${identifier}` }]);
+    normalized = edited.text;
+    styles = styles.map((span) => ({
+      ...span,
+      start: edited.mapOffset(span.start),
+      end: edited.mapOffset(span.end),
+    }));
   }
 
-  return normalized;
+  let longestBacktickRun = 0;
+  for (const match of normalized.matchAll(/`+/g)) {
+    longestBacktickRun = Math.max(longestBacktickRun, match[0].length);
+  }
+  const fence = "`".repeat(longestBacktickRun + 1);
+  const padding = fence.length > 1 ? " " : "";
+  const formattedText = renderMarkdownWithMarkers(
+    { text: normalized, styles, links: [] },
+    {
+      escapeText: (text) => text,
+      styleMarkers: {
+        bold: { open: "**", close: "**" },
+        italic: { open: "_", close: "_" },
+        strikethrough: { open: "~~", close: "~~" },
+        code: { open: fence + padding, close: padding + fence },
+        spoiler: { open: "||", close: "||" },
+      },
+    },
+  );
+  return { plainText: normalized.trim(), formattedText: formattedText.trim() };
 }
