@@ -474,7 +474,7 @@ export function verifyReleasePreflightToolingIdentity({
   return validated;
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+async function main() {
   try {
     const { values } = parseArgs({
       options: {
@@ -613,8 +613,16 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
         : verifyReleasePreflightToolingIdentity(options);
     }
     process.stdout.write(`${JSON.stringify(identity)}\n`);
+    process.exitCode = 0;
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  // Complete module initialization before the validator can import this module.
+  // If the async CLI cannot finish, never report successful authorization.
+  process.exitCode = 1;
+  void main();
 }

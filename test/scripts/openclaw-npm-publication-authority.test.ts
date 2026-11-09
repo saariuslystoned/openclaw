@@ -250,6 +250,37 @@ if (process.argv[1] === root + '/bin/gh') {
 }
 
 describe("npm final publication authority", () => {
+  it("rejects invalid candidate lineage through the canonical preflight CLI", () => {
+    const root = tempDirs.make("npm-preflight-invalid-lineage-");
+    const manifest = join(root, "manifest.json");
+    writeFileSync(manifest, JSON.stringify({ sourceAdmission: { qualificationAdmission: true } }));
+    const result = spawnSync(
+      process.execPath,
+      [
+        resolve("scripts/npm-preflight-tooling-identity.mjs"),
+        "--verify-publication-lineage",
+        "--full-release-manifest",
+        manifest,
+        "--repository",
+        "openclaw/openclaw",
+        "--source-sha",
+        "a".repeat(40),
+        "--workflow-sha",
+        "b".repeat(40),
+        "--publisher-sha",
+        "c".repeat(40),
+        "--run-id",
+        "1",
+        "--run-attempt",
+        "1",
+      ],
+      { cwd: root, env: { PATH: process.env.PATH }, encoding: "utf8" },
+    );
+    expect(result.status, result.stderr).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toContain("Candidate-owned artifact source and qualification SHA differ");
+  });
+
   it.each([true, false])(
     "publishes through trusted tooling with candidate admission: %s",
     async (candidate) => {

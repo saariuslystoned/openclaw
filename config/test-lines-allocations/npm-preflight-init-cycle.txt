@@ -1,0 +1,2 @@
+# Exercise canonical preflight rejection through the real Node CLI.
+31
