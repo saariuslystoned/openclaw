@@ -406,7 +406,12 @@ extension MacNodeRuntime {
                     CanvasPlacement(x: $0.x, y: $0.y, width: $0.width, height: $0.height)
                 }
             } else {
-                target = try Self.decodeParams(OpenClawCanvasNavigateParams.self, from: req.paramsJSON).url
+                do {
+                    target = try Self.decodeParams(OpenClawCanvasNavigateParams.self, from: req.paramsJSON).url
+                } catch {
+                    return Self.errorResponse(
+                        req, code: .invalidRequest, message: "INVALID_REQUEST: invalid canvas.navigate params")
+                }
                 placement = nil
             }
             let effectiveURL = try await resolveCanvasTarget(target)

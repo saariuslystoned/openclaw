@@ -24,6 +24,19 @@ struct MacNodeNotifyMalformedParamsTests {
         #expect(response.error?.message == "INVALID_REQUEST: invalid system.notify params")
     }
 
+    @Test(arguments: [nil, "{", "{}"] as [String?])
+    func rejectsMalformedCanvasNavigateParams(_ paramsJSON: String?) async {
+        let runtime = self.makeRuntime()
+        let response = await runtime.handleInvoke(BridgeInvokeRequest(
+            id: "canvas-navigate-malformed", command: "canvas.navigate", paramsJSON: paramsJSON))
+
+        #expect(response.id == "canvas-navigate-malformed")
+        #expect(!response.ok)
+        #expect(response.payloadJSON == nil)
+        #expect(response.error?.code == .invalidRequest)
+        #expect(response.error?.message == "INVALID_REQUEST: invalid canvas.navigate params")
+    }
+
     @Test func preservesEmptyNotificationValidation() async {
         let runtime = self.makeRuntime()
         let response = await runtime.handleInvoke(BridgeInvokeRequest(
@@ -39,7 +52,7 @@ struct MacNodeNotifyMalformedParamsTests {
     private func makeRuntime() -> MacNodeRuntime {
         MacNodeRuntime(makeMainActorServices: {
             // Fail closed rather than constructing live permissions, location, or screen services.
-            fatalError("Invalid notification input must not initialize native services")
+            fatalError("Invalid command input must not initialize native services")
         })
     }
 }
