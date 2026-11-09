@@ -23,25 +23,35 @@ enum WideAreaGatewayDiscovery {
     private static let tailscaleDNSResolver = "100.100.100.100"
 
     struct DiscoveryContext: Sendable {
-        var run: @Sendable (_ path: String, _ args: [String], _ timeout: TimeInterval) async -> String?
-        var now: @Sendable () -> Date
+        let run: @Sendable (_ path: String, _ args: [String], _ timeout: TimeInterval) async -> String?
+        let tailscaleStatus: (@Sendable () async -> String?)?
+        let now: @Sendable () -> Date
+        let serviceDomain: @Sendable () -> String?
 
         init(
             run: @escaping @Sendable (String, [String], TimeInterval) async -> String?,
-            now: @escaping @Sendable () -> Date = { Date() })
+            now: @escaping @Sendable () -> Date = { Date() },
+            serviceDomain: @escaping @Sendable () -> String? = { OpenClawBonjour.wideAreaGatewayServiceDomain })
         {
             self.run = run
+            self.tailscaleStatus = nil
             self.now = now
+            self.serviceDomain = serviceDomain
         }
 
         init(
             tailscaleStatus: @escaping @Sendable () async -> String?,
-            dig: @escaping @Sendable ([String], TimeInterval) async -> String?)
+            dig: @escaping @Sendable ([String], TimeInterval) async -> String?,
+            now: @escaping @Sendable () -> Date = { Date() },
+            serviceDomain: @escaping @Sendable () -> String? = { OpenClawBonjour.wideAreaGatewayServiceDomain })
         {
-            self.init(run: { path, args, timeout in
-                if path == digPath { return await dig(args, timeout) }
-                return await tailscaleStatus()
-            })
+            self.run = { path, args, timeout in
+                guard path == digPath else { return nil }
+                return await dig(args, timeout)
+            }
+            self.tailscaleStatus = tailscaleStatus
+            self.now = now
+            self.serviceDomain = serviceDomain
         }
 
         static let live = DiscoveryContext(
@@ -61,7 +71,7 @@ enum WideAreaGatewayDiscovery {
 
         guard let statusJson = await self.readTailscaleStatus(remaining: remaining, context: context),
               hasTailnetIPv4(statusJson: statusJson),
-              let domain = OpenClawBonjour.wideAreaGatewayServiceDomain
+              let domain = context.serviceDomain()
         else { return [] }
 
         let domainTrimmed = domain.trimmingCharacters(in: CharacterSet(charactersIn: "."))
@@ -85,17 +95,25 @@ enum WideAreaGatewayDiscovery {
                 : ptrName
             let instanceName = self.decodeDnsSdEscapes(rawInstanceName)
 
+            let srvBudget = min(defaultTimeoutSeconds, remaining())
+            guard srvBudget > 0 else { break }
             guard let srv = await context.run(
                 self.digPath,
                 ["+short", "+time=1", "+tries=1", "@\(nameserver)", ptrName, "SRV"],
-                min(defaultTimeoutSeconds, remaining()))
+                srvBudget)
             else { continue }
             guard let (host, port) = parseSrv(srv) else { continue }
 
-            let txtRaw = await context.run(
-                self.digPath,
-                ["+short", "+time=1", "+tries=1", "@\(nameserver)", ptrName, "TXT"],
-                min(self.defaultTimeoutSeconds, remaining()))
+            let txtBudget = min(self.defaultTimeoutSeconds, remaining())
+            // Keep the resolved SRV even when no time remains for optional TXT metadata.
+            let txtRaw: String? = if txtBudget > 0 {
+                await context.run(
+                    self.digPath,
+                    ["+short", "+time=1", "+tries=1", "@\(nameserver)", ptrName, "TXT"],
+                    txtBudget)
+            } else {
+                nil
+            }
             let txtTokens = txtRaw.map(self.parseTxtTokens) ?? []
             let txt = self.mapTxt(tokens: txtTokens)
 
@@ -131,7 +149,13 @@ enum WideAreaGatewayDiscovery {
         remaining: @Sendable () -> TimeInterval,
         context: DiscoveryContext) async -> String?
     {
-        await BoundedCommand.tailscaleStatus { candidate in
+        guard remaining() > 0 else { return nil }
+        // The legacy closure owns the whole lookup. Do not retry it per executable
+        // or cache its result across separate discover calls using the same context.
+        if let tailscaleStatus = context.tailscaleStatus {
+            return await tailscaleStatus()
+        }
+        return await BoundedCommand.tailscaleStatus { candidate in
             // Status lookup shares the DNS budget; each fallback must spend only what remains.
             let budget = min(0.7, remaining())
             guard budget > 0 else { return nil }
