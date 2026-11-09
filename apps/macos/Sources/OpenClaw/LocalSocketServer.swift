@@ -262,8 +262,10 @@ final class LocalSocketServer: @unchecked Sendable {
                 if acceptError == EINTR || acceptError == ECONNABORTED {
                     continue
                 }
-                if acceptError == EMFILE || acceptError == ENFILE {
-                    // Avoid spinning while the process or system is out of descriptors.
+                if acceptError == EMFILE || acceptError == ENFILE || acceptError == ENOMEM
+                    || acceptError == EAGAIN || acceptError == EWOULDBLOCK
+                {
+                    // Avoid spinning while descriptors or memory are short, or no connection is ready.
                     do {
                         try await self.resourceBackoff()
                     } catch {

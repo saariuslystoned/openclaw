@@ -5,11 +5,11 @@ import Testing
 @testable import OpenClaw
 
 struct LocalSocketServerTests {
-    @Test(arguments: [EINTR, ECONNABORTED, EMFILE, ENFILE])
+    @Test(arguments: [EINTR, ECONNABORTED, EMFILE, ENFILE, ENOMEM, EAGAIN])
     func transientAcceptErrorsRetry(error: Int32) async throws {
         let observations = try await Self.runAcceptScript(firstError: error)
         #expect(observations.calls == 2)
-        #expect(observations.backoffs == ([EMFILE, ENFILE].contains(error) ? 1 : 0))
+        #expect(observations.backoffs == ([EMFILE, ENFILE, ENOMEM, EAGAIN].contains(error) ? 1 : 0))
     }
 
     @Test
