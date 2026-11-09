@@ -492,6 +492,42 @@ describe("GatewayClient", () => {
     ]);
     expect(methodsByConnection.flat().filter((method) => method === "chat.send")).toHaveLength(1);
   }, 5000);
+
+  test("detects a silent connection after the wall clock steps back", async () => {
+    const { server, url } = await startWebSocketServer();
+    server.on("connection", (socket) => {
+      sendChallenge(socket, { nonce: "nonce-clock-step", ts: 1_777_777_777_000 });
+      socket.on("message", (data) => {
+        const frame = JSON.parse(rawDataToString(data)) as { id: string; method: string };
+        if (frame.method === "connect") {
+          sendResponse(socket, frame.id, {
+            type: "hello-ok",
+            protocol: PROTOCOL_VERSION,
+            policy: { tickIntervalMs: 20 },
+          });
+        }
+      });
+    });
+
+    const hello = createDeferred();
+    const closed = createDeferred<{ code: number; reason: string }>();
+    const client = createClient({
+      url,
+      tickWatchMinIntervalMs: 5,
+      onHelloOk: () => hello.resolve(),
+      onClose: (code, reason) => closed.resolve({ code, reason }),
+    });
+
+    client.start();
+    try {
+      await hello.promise;
+      // The peer stays silent while the wall clock jumps back one hour.
+      vi.spyOn(Date, "now").mockReturnValue(Date.now() - 3_600_000);
+      await expect(closed.promise).resolves.toEqual({ code: 4000, reason: "tick timeout" });
+    } finally {
+      client.stop();
+    }
+  }, 5000);
 });
 
 it.each([
