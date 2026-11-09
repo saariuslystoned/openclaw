@@ -41,7 +41,7 @@ aggregate digest was
 `27778f56973fc6e4fb0f35b5842b22e99cfd93c57175435c5cb9d174d1009cbf`.
 To reproduce the comparison, copy the accompanying snapshot script to the same
 relative path in a baseline checkout, then run
-`node proof/ci-docs-source-mapping/snapshot-corpus.mjs /tmp/docs-corpus.json`
+`node scripts/ci-docs-corpus-snapshot.mjs /tmp/docs-corpus.json`
 from the repository root in each checkout. Compare the resulting JSON files.
 This checks the current corpus, not every possible input.
 
