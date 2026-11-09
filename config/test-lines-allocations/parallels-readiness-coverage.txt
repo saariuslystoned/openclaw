@@ -1,0 +1,2 @@
+119
+# Three external-command cases guard macOS readiness before reset: transient failure, invalid username, permanent refusal.

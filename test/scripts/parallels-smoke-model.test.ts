@@ -84,7 +84,7 @@ import {
   type FixtureReceiptChannel,
 } from "../helpers/fixture-receipts.js";
 import { withinTest } from "../helpers/promise.js";
-import { cleanupTempDirs, makeTempDir } from "../helpers/temp-dir.js";
+import { cleanupTempDirs, makeTempDir, useAutoCleanupTempDirTracker } from "../helpers/temp-dir.js";
 import { isProcessPresent } from "./run-process.test-support.js";
 
 const WRAPPERS = {
@@ -109,6 +109,7 @@ const readScriptSource = (name: string) => readFileSync(`scripts/e2e/parallels/$
 
 const OS_TS_PATHS = [TS_PATHS.linux, TS_PATHS.macos, TS_PATHS.windows];
 const tempDirs: string[] = [];
+const readinessTempDirs = useAutoCleanupTempDirTracker(afterEach);
 const pendingChildCompletions = new Set<Promise<unknown>>();
 const testNodeExecPath = resolveTestNodeExecPath();
 
@@ -949,6 +950,124 @@ ensure_vm_running`,
     expect(result.stderr).toContain("FAKE_GUEST_COMMAND_BOUNDARY");
     expect(result.stderr).not.toContain("UNEXPECTED_HOST_PACKAGE_BUILD");
   });
+
+  it.runIf(process.platform !== "win32").each([
+    {
+      name: "transient transport failure",
+      permanent: false,
+      replies: [
+        [255, ""],
+        [255, ""],
+        [0, "fixture-user"],
+      ],
+    },
+    {
+      name: "invalid successful username",
+      permanent: false,
+      replies: [
+        [0, ""],
+        [0, "not a user"],
+        [0, "fixture-user"],
+      ],
+    },
+    {
+      name: "permanently unavailable user",
+      permanent: true,
+      replies: [
+        [255, ""],
+        [255, ""],
+      ],
+    },
+  ])(
+    "requires usable macOS readiness before reset: $name",
+    ({ replies, permanent }) => {
+      const tempDir = readinessTempDirs.make("openclaw-macos-readiness-");
+      const statePath = join(tempDir, "clock.json");
+      const eventsPath = join(tempDir, "events.log");
+      const clockPath = join(tempDir, "clock.mjs");
+      const epoch = 1_800_000_000_000;
+      writeFileSync(statePath, JSON.stringify({ now: epoch, next: 0 }));
+      writeFileSync(eventsPath, "");
+      // Only the smoke process sees this clock; command children keep real deadlines.
+      writeFileSync(
+        clockPath,
+        `import { readFileSync } from "node:fs";
+Date.now = () => JSON.parse(readFileSync(${JSON.stringify(statePath)}, "utf8")).now;`,
+      );
+      writeNodeFakePrlctl(
+        tempDir,
+        `const fs = process.getBuiltinModule("node:fs");
+const record = (event) => fs.appendFileSync(${JSON.stringify(eventsPath)}, event + "\\n");
+if (args.includes("list")) {
+  console.log(JSON.stringify([{ name: "macOS Tahoe", status: "running" }]));
+  process.exit(0);
+}
+if (args.includes("whoami")) {
+  const state = JSON.parse(fs.readFileSync(${JSON.stringify(statePath)}, "utf8"));
+  const [status, user] = ${JSON.stringify(replies)}[state.next] ?? [255, ""];
+  // Fixed fictional command durations cross both readiness windows without waiting.
+  state.now = ${epoch} + (${permanent} ? [50_000, 400_000][state.next] ?? 400_000 : 0);
+  state.next++;
+  fs.writeFileSync(${JSON.stringify(statePath)}, JSON.stringify(state));
+  record(user === "fixture-user" ? "ready" : "unready");
+  console.log(user);
+  process.exit(status);
+}
+if (args.includes("/usr/bin/stat") || args.includes("/usr/bin/dscl")) {
+  record("no-fallback");
+  process.exit(1);
+}
+if (args.includes("/bin/dd")) {
+  record("write");
+  process.stderr.write("FIXTURE_RESET_WRITE_REFUSED\\n");
+  process.exit(73);
+}
+if (args.includes("/bin/rm")) process.exit(0);
+record("unexpected:" + JSON.stringify(args));
+process.exit(74);`,
+      );
+      const sleepPath = join(tempDir, "sleep");
+      writeFileSync(sleepPath, "#!/bin/sh\nexit 0\n");
+      chmodSync(sleepPath, 0o755);
+      const fakePnpm = join(tempDir, "pnpm");
+      writeFileSync(fakePnpm, "#!/bin/sh\necho UNEXPECTED_HOST_PACKAGE_BUILD >&2\nexit 86\n");
+      chmodSync(fakePnpm, 0o755);
+      const result = runSmoke(tempDir, {
+        version: "2026.8.25",
+        artifactRoot: join(tempDir, "artifacts"),
+        timeout: 20_000,
+        runtimeArgs: ["--import", clockPath, "--import", "tsx", TS_PATHS.macos],
+        env: {
+          OPENCLAW_PARALLELS_SKIP_SNAPSHOT_RESTORE: "1",
+          TMPDIR: tempDir,
+          npm_execpath: fakePnpm,
+        },
+      });
+      expect(result.error).toBeUndefined();
+      expect(result.status, result.stderr).toBe(1);
+      const events = readFileSync(eventsPath, "utf8").trim().split("\n");
+      expect(events.filter((event) => event.startsWith("unexpected:"))).toEqual([]);
+      expect(result.stderr).not.toContain("UNEXPECTED_HOST_PACKAGE_BUILD");
+      if (permanent) {
+        expect(events).not.toContain("write");
+        expect(result.stderr).toContain("guest current user did not become available");
+        expect(result.stderr).not.toContain("FIXTURE_RESET_WRITE_REFUSED");
+      } else {
+        expect(events.indexOf("ready"), events.join(",")).toBeGreaterThan(0);
+        expect(events.indexOf("write"), events.join(",")).toBeGreaterThan(events.indexOf("ready"));
+        expect(result.stderr).toContain("FIXTURE_RESET_WRITE_REFUSED");
+        expect(result.stderr).not.toContain("guest current user did not become available");
+      }
+      const summary = JSON.parse(result.stdout);
+      expect(summary.upgrade.status).toBe("fail");
+      const timings = JSON.parse(readFileSync(join(summary.runDir, "phase-timings.json"), "utf8"));
+      expect(timings.phases[0]).toMatchObject({
+        name: "upgrade.restore-snapshot",
+        status: permanent ? "fail" : "pass",
+      });
+    },
+    30_000,
+  );
 
   it.runIf(process.platform !== "win32")(
     "defers Windows Git preparation until the guest needs it",
