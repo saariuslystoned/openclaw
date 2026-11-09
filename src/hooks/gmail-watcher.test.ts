@@ -171,6 +171,31 @@ it("renews once after multiple starts and coalesces missed renewals after sleep"
   expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(4);
 });
 
+it("retries a failed watch start with backoff instead of waiting for the next renewal", async () => {
+  const clock = createGatewaySchedulerClock();
+  const scheduler = createTestGatewayScheduler(clock.clock);
+  const failure = { ...commandSuccess, code: 1, stderr: "getaddrinfo ENOTFOUND" };
+  mocks.runCommandWithTimeout
+    .mockResolvedValueOnce(failure)
+    .mockResolvedValueOnce(failure)
+    .mockResolvedValue(commandSuccess);
+  await startWatcher(createGmailConfig(), { scheduler });
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(1);
+
+  await clock.advanceBy(60_000);
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(2);
+  await clock.advanceBy(60_000);
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(2);
+  await clock.advanceBy(60_000);
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(3);
+
+  // Once the watch is established, only the regular renewal runs.
+  await clock.advanceBy(60 * 60_000);
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(3);
+  await clock.advanceBy(720 * 60_000);
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(4);
+});
+
 it.each(["watcher", "scheduler"])(
   "retires a stalled renewal on %s stop before replacement",
   async (stopOwner) => {
