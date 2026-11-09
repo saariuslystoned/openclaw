@@ -226,7 +226,7 @@ private fun parseTagAttributes(tag: String): Map<String, String> {
   return attributes
 }
 
-private fun decodeHtmlEntities(value: String): String =
+internal fun decodeHtmlEntities(value: String): String =
   value.replace(Regex("&#(x[0-9a-fA-F]+|[0-9]+);?|&(amp|lt|gt|quot|apos|nbsp);", RegexOption.IGNORE_CASE)) { match ->
     val numeric = match.groupValues[1]
     if (numeric.isNotEmpty()) {

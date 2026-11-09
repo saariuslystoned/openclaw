@@ -83,7 +83,7 @@ private fun parseProgressLiteral(source: String): ChatProgressElement? {
   for (match in progressAttributeRegex.findAll(rawAttributes)) {
     if (rawAttributes.substring(cursor, match.range.first).isNotBlank()) return null
     val name = match.groupValues[1].lowercase(Locale.ROOT)
-    val value = match.groupValues[2].ifEmpty { match.groupValues[3] }
+    val value = decodeHtmlEntities(match.groupValues[2].ifEmpty { match.groupValues[3] })
     if (attributes.put(name, value) != null) return null
     cursor = match.range.last + 1
   }
