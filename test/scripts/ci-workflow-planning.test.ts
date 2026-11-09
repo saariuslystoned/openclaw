@@ -6218,6 +6218,78 @@ describe("ci workflow guards", () => {
     });
   });
 
+  it.each([false, true])(
+    "routes a packaged template through PR Node planning (mixed=%s)",
+    (mixed) => {
+      const workflow = readCiWorkflow();
+      const root = tempDirs.make("openclaw-template-pr-");
+      const template = "docs/reference/templates/AGENTS.md";
+      const changedPaths = mixed ? [template, "scripts/check-changed.mjs"] : [template];
+      runGit(root, ["init", "--quiet"]);
+      runGit(root, ["config", "user.name", "CI Fixture"]);
+      runGit(root, ["config", "user.email", "ci-fixture@example.invalid"]);
+      runGit(root, ["config", "commit.gpgsign", "false"]);
+      for (const file of changedPaths) {
+        mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+        writeFileSync(path.join(root, file), "before\n");
+      }
+      runGit(root, ["add", "."]);
+      runGit(root, ["commit", "--quiet", "-m", "base"]);
+      const base = runGit(root, ["rev-parse", "HEAD"]);
+      for (const file of changedPaths) {
+        writeFileSync(path.join(root, file), "after\n");
+      }
+      runGit(root, ["add", "."]);
+      runGit(root, ["commit", "--quiet", "-m", "change"]);
+      const outputPath = path.join(root, "docs.out");
+      const detector = readWorkflow(".github/actions/detect-docs-changes/action.yml");
+      const detected = runWorkflowShellScript(detector.runs.steps[0].run, {
+        cwd: root,
+        env: { ...process.env, BASE_SHA: base, GITHUB_OUTPUT: outputPath },
+      });
+      expect(detected.status, detected.stderr).toBe(0);
+      const docs = readWorkflowOutputs(outputPath);
+      expect(docs).toMatchObject({ docs_only: "false", docs_changed: "true" });
+      const changed = runCiChangedScopeFixture(changedPaths);
+      expect(changed).toMatchObject({ run_node: "true", run_node_fast_only: "false" });
+      const context = {
+        eventName: "pull_request" as const,
+        repository: "openclaw/openclaw",
+        runAttempt: 1,
+        steps: { docs_scope: { outputs: docs }, changed_scope: { outputs: changed } },
+      };
+      const step = requiredWorkflowStep(workflow.jobs.preflight.steps, "Build CI manifest");
+      const scopeEnv = Object.fromEntries(
+        Object.entries(step.env)
+          .filter(
+            ([key]) =>
+              key.startsWith("OPENCLAW_CI_RUN_") ||
+              key.startsWith("OPENCLAW_CI_DOCS_") ||
+              key === "OPENCLAW_CI_NODE_TEST_DATA_ONLY",
+          )
+          .map(([key, expression]) => [
+            key,
+            String(evaluateWorkflowExpression(expression, context)),
+          ]),
+      );
+      const result = runCiManifestFixture({
+        bundledPlanner: true,
+        eventName: "pull_request",
+        changedPaths,
+        scopeEnv,
+      });
+      expect(result.status, result.output).toBe(0);
+      expect(result.outputs).toMatchObject({
+        docs_changed: "true",
+        run_check_docs: "true",
+        run_node: "true",
+      });
+      expect(
+        readJsonOutput(result.outputs, "checks_node_core_nondist_matrix").include.length,
+      ).toBeGreaterThan(0);
+    },
+  );
+
   it.each(["hybrid", "runson"] as const)(
     "executes main-shaped %s qualification with push coverage and an SDK comparison",
     (backend) => {

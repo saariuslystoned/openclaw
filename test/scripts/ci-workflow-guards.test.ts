@@ -1408,6 +1408,16 @@ AFTER_CD
       ["docs/old.md", "docs/new.md", "true", "true"],
       ["docs/old.md", "docs/.generated/config-baseline.counts.json", "true", "true"],
       ["docs/old.md", "docs/plugins/plugin-inventory.md", "true", "true"],
+      [null, "docs/reference/templates/AGENTS.md", "true", "false"],
+      ["docs/old.md", "docs/reference/templates/AGENTS.md", "true", "false"],
+      ["docs/reference/templates/AGENTS.md", "docs/new.md", "true", "false"],
+      ["docs/reference/templates/AGENTS.md", null, "true", "false"],
+      [
+        "docs/reference/templates/roles/old.md",
+        "docs/reference/templates/roles/presets/team.json",
+        "true",
+        "false",
+      ],
       ["src/old.ts", "src/new.ts", "false", "false"],
       ["test/fixtures/old.md", "docs/new.md", "true", "false"],
       ["docs/removed.md", null, "true", "true"],
@@ -1418,9 +1428,10 @@ AFTER_CD
       const root = tempDirs.make("openclaw-docs-diff-");
       const origin = path.join(root, "origin");
       const checkout = path.join(root, "checkout");
-      mkdirSync(path.dirname(path.join(origin, source)), { recursive: true });
+      const initial = source ?? "README.md";
+      mkdirSync(path.dirname(path.join(origin, initial)), { recursive: true });
       const content = Array.from({ length: 100 }, (_, index) => `line ${index}\n`).join("");
-      writeFileSync(path.join(origin, source), content);
+      writeFileSync(path.join(origin, initial), content);
       runGit(origin, ["init", "-q", "-b", "main"]);
       for (const [name, value] of [
         ["user.name", "CI Fixture"],
@@ -1433,8 +1444,10 @@ AFTER_CD
       runGit(origin, ["add", "."]);
       runGit(origin, ["commit", "-qm", "base"]);
       const base = runGit(origin, ["rev-parse", "HEAD"]);
-      const sourceBlob = runGit(origin, ["rev-parse", `HEAD:${source}`]);
-      rmSync(path.join(origin, source));
+      const sourceBlob = runGit(origin, ["rev-parse", `HEAD:${initial}`]);
+      if (source) {
+        rmSync(path.join(origin, source));
+      }
       if (destination) {
         mkdirSync(path.dirname(path.join(origin, destination)), { recursive: true });
         writeFileSync(path.join(origin, destination), `${content}edited after rename\n`);
@@ -1454,7 +1467,9 @@ AFTER_CD
       const localObjects = () =>
         runGit(checkout, ["cat-file", "--batch-all-objects", "--batch-check=%(objectname)"]);
       expect(localObjects()).toContain(base);
-      expect(localObjects()).not.toContain(sourceBlob);
+      if (source) {
+        expect(localObjects()).not.toContain(sourceBlob);
+      }
       const output = path.join(root, "output");
       const trace = path.join(root, "trace");
       const result = runWorkflowShellScript(run, {
@@ -1468,7 +1483,9 @@ AFTER_CD
         root_prose_only: source === "VISION.md" && destination === "AGENTS.md" ? "true" : "false",
       });
       expect(readFileSync(trace, "utf8")).not.toContain('"fetch"');
-      expect(localObjects()).not.toContain(sourceBlob);
+      if (source) {
+        expect(localObjects()).not.toContain(sourceBlob);
+      }
     }
   });
 

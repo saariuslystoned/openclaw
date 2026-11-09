@@ -17,6 +17,11 @@ import nativeProtocolInputs from "./native-protocol-inputs.json" with { type: "j
 const CHANGED_PATHS_OUTPUT_MAX_BYTES = 64 * 1024;
 
 /** @param {string} changedPath */
+function isPackagedWorkspaceTemplatePath(changedPath) {
+  return changedPath.startsWith("docs/reference/templates/");
+}
+
+/** @param {string} changedPath */
 export function isCiDocumentationPath(changedPath) {
   if (
     /(?:^|\/)(?:test|tests|__tests__|fixture|fixtures|__fixtures__|test-fixtures|templates)\//u.test(
@@ -300,7 +305,7 @@ export function detectChangedScope(changedPaths) {
     const isAppleBuildInput = isAppleSharedBuildInput(path);
     const hasNativeProtocolInput = isNativeProtocolInput(path);
 
-    if (facts.surface === "docs") {
+    if (facts.surface === "docs" && !isPackagedWorkspaceTemplatePath(path)) {
       continue;
     }
 
@@ -635,7 +640,7 @@ export function detectNodeFastScope(changedPaths) {
   for (const rawPath of changedPaths) {
     const facts = getChangedPathFacts(rawPath);
     const { path } = facts;
-    if (!path || facts.surface === "docs") {
+    if (!path || (facts.surface === "docs" && !isPackagedWorkspaceTemplatePath(path))) {
       continue;
     }
 

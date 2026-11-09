@@ -62,6 +62,8 @@ it("fails safe when no paths are provided", () => {
 
 it.each<[string | string[], string, boolean?]>([
   [["docs/ci.md", "docs/docs.json", "README.md"], ""],
+  ["docs/reference/templates/AGENTS.md", "Node"],
+  ["docs/reference/templates/roles/presets/team.json", "Node"],
   [["src/config/defaults.ts", "docs/docs.json"], "Node"],
   [".crabbox.yaml", "Node"],
   ["config/test-lines-allocations/regression.txt", "Node"],
@@ -112,6 +114,7 @@ it.each([
 it.each<[string[], string]>([
   [["src/plugins/contracts/registry.ts", "scripts/test-projects.test-support.mts"], "all"],
   [["scripts/check-changed.mjs", "docs/ci.md"], "ci"],
+  [["scripts/check-changed.mjs", "docs/reference/templates/AGENTS.md"], ""],
   [[".github/workflows/ci.yml"], ""],
   [["src/plugins/contracts/registry.ts", "src/plugins/contracts/manifest-loader.ts"], ""],
 ])("restricts fast-only Node scope for %j", (paths, scope) => {

@@ -1,8 +1,8 @@
 name: Detect docs-only changes
 description: >
-  Outputs docs_only=true when all changed files are under docs/ or are
-  markdown (.md/.mdx). Fail-safe: if detection fails, outputs false (run
-  everything). Uses git diff — no API calls, no extra permissions needed.
+  Outputs docs_only=true when changes are documentation rather than packaged
+  runtime templates or test fixtures. Fail-safe: if detection fails, outputs
+  false (run everything). Uses git diff — no API calls, no extra permissions needed.
 
 inputs:
   base-sha:
@@ -51,6 +51,10 @@ runs:
           esac
           case "$changed_path" in
             test/fixtures/*)
+              non_docs=true
+              ;;
+            docs/reference/templates/*)
+              docs_changed=true
               non_docs=true
               ;;
             docs/* | *.md | *.mdx | config/markdownlint*.jsonc)
