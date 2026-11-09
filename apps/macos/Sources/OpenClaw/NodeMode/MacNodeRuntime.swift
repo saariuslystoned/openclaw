@@ -804,7 +804,12 @@ extension MacNodeRuntime {
 
 extension MacNodeRuntime {
     private func handleSystemNotify(_ req: BridgeInvokeRequest) async throws -> BridgeInvokeResponse {
-        let params = try Self.decodeParams(OpenClawSystemNotifyParams.self, from: req.paramsJSON)
+        let params: OpenClawSystemNotifyParams
+        do {
+            params = try Self.decodeParams(OpenClawSystemNotifyParams.self, from: req.paramsJSON)
+        } catch {
+            return Self.errorResponse(req, code: .invalidRequest, message: "INVALID_REQUEST: invalid system.notify params")
+        }
         let title = params.title.trimmingCharacters(in: .whitespacesAndNewlines)
         let body = params.body.trimmingCharacters(in: .whitespacesAndNewlines)
         if title.isEmpty, body.isEmpty {
