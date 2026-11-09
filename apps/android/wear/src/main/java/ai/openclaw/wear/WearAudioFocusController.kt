@@ -28,7 +28,8 @@ internal class WearAudioFocusController(
           AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
           AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK,
           -> {
-            hasFocus = false
+            // Stopping playback also retires a transiently suspended focus request.
+            abandon()
             onFocusLost()
           }
         }
