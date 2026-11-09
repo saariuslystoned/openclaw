@@ -131,7 +131,7 @@ enum WideAreaGatewayDiscovery {
 
     private static func parseTxtTokens(_ stdout: String) -> [String] {
         stdout.split(whereSeparator: \.isNewline).flatMap { line in
-            line.matches(of: /"([^"]*)"/).map { self.unescapeTxt(String($0.1)) }
+            line.matches(of: /"((?:\\.|[^"\\])*)"/).map { self.unescapeTxt(String($0.1)) }
         }
     }
 
