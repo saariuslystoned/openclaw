@@ -60,6 +60,10 @@ a replacement. Restore the original tools and runtime configuration and retry
 from the original conversation. The review remains pending until Codex accepts
 the continuation; acknowledgment does not bypass the review checks or repair a
 binding that was already replaced by an earlier failed attempt.
+Cold MCP App initialization also honors the session's work-start pause: discovery
+cannot prepare a replacement native binding while provider review is pending.
+This prevents another source of binding drift; it does not restore an already
+mismatched reviewed thread or acknowledge its findings.
 
 ## Shared output projection
 

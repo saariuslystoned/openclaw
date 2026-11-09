@@ -19,6 +19,7 @@ import {
 import type { McpAppPrepareToolCall } from "../agents/mcp-ui-resource.js";
 import { resolveSandboxRuntimeStatus } from "../agents/sandbox/runtime-status.js";
 import { resolveEffectiveAgentRuntime } from "../agents/thinking-runtime.js";
+import { resolveSessionWorkStartBlock } from "../config/sessions/session-work-start.js";
 import { getGatewayPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-state.js";
 import { getPluginToolMeta } from "../plugins/tool-metadata.js";
 import { resolveMcpAppRequesterId } from "./mcp-app-host-files.js";
@@ -142,9 +143,15 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
           ...(options.signal ? [options.signal] : []),
         ]);
         const assertPreparationCurrent = () => {
-          current();
+          const live = current();
           retained.assertCurrent();
           signal.throwIfAborted();
+          // Cold App discovery can replace the native binding even without a model turn.
+          // Keep the work-start gate live through the preparation's effect assertions.
+          const blocked = resolveSessionWorkStartBlock(sessionKey, live.entry);
+          if (blocked) {
+            throw blocked;
+          }
         };
         assertPreparationCurrent();
         const source = await captureGatewayOperatorRunAuthority({

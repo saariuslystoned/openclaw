@@ -125,6 +125,61 @@ beforeEach(() => {
   });
 });
 describe("cold App request admission", () => {
+  it.each(["before setup", "during source admission", "during native preparation"])(
+    "preserves a provider-review pause %s without admitting a native binding write",
+    async (timing) => {
+      const review = {
+        id: "review",
+        sessionId: "session",
+        runId: "refused-run",
+        provider: "openai",
+        model: "model",
+        runtimeId: "codex",
+        nativeThreadId: "reviewed-thread",
+        nativeTurnId: "refused-turn",
+      };
+      const pause = () => {
+        entry = { ...entry, providerReview: review };
+      };
+      const nativeWrite = vi.fn();
+      if (timing === "before setup") {
+        pause();
+      } else if (timing === "during source admission") {
+        mocks.source.mockImplementation(async () => {
+          pause();
+          return { release: mocks.releaseSource };
+        });
+      }
+      mocks.prepare.mockImplementation(async ({ assertCurrent }) => ({
+        preparation: {
+          run: async () => {
+            if (timing === "during native preparation") {
+              pause();
+            }
+            // Native lifecycle effects recheck the preparation's host authority.
+            assertCurrent();
+            nativeWrite();
+          },
+        },
+        dispose: mocks.dispose,
+      }));
+      mocks.native.mockImplementation(async ({ prepareSession }) => {
+        const preparation = await prepareSession();
+        await preparation.run();
+        return { runtime: { getCatalog: mocks.catalog }, releaseLease: vi.fn() };
+      });
+      await expect(prepareMcpAppExtensionRuntime(options())).rejects.toThrow(
+        "paused as a precaution",
+      );
+      expect(nativeWrite).not.toHaveBeenCalled();
+      expect(entry.providerReview).toBe(review);
+      expect(mocks.direct).not.toHaveBeenCalled();
+      if (timing !== "during native preparation") {
+        expect(mocks.prepare).not.toHaveBeenCalled();
+      }
+    },
+  );
+
   it("joins an admitted late preparation before disposing setup, source, access and lease", async () => {
     const started = createDeferred();
     const finishSetup = createDeferred();
