@@ -376,6 +376,8 @@ export async function prepareNodeHostRuntime(params?: {
       }
       let skillBins = new SkillBinsCache(client, pathEnv);
       const activeInvokes = new Map<string, ActiveNodeInvoke>();
+      // A cancel can arrive while an invocation still waits behind disconnect cleanup.
+      const queuedInvokeCancellations = new Map<string, Set<{ cancelled: boolean }>>();
       const pendingInvokes = new Set<Promise<void>>();
       let disconnectCleanup: Promise<void> = Promise.resolve();
       let pendingDisconnectCleanups = 0;
@@ -484,6 +486,10 @@ export async function prepareNodeHostRuntime(params?: {
           const localMcp = localMcpPolicy?.sessionForCommand(frame.command, manager);
           try {
             const generation = connectionGeneration;
+            const queued = { cancelled: false };
+            const queuedForId = queuedInvokeCancellations.get(frame.id) ?? new Set();
+            queuedForId.add(queued);
+            queuedInvokeCancellations.set(frame.id, queuedForId);
             try {
               await disconnectCleanup;
             } catch {
@@ -494,8 +500,17 @@ export async function prepareNodeHostRuntime(params?: {
                 );
               }
               return;
+            } finally {
+              queuedForId.delete(queued);
+              if (
+                queuedForId.size === 0 &&
+                queuedInvokeCancellations.get(frame.id) === queuedForId
+              ) {
+                queuedInvokeCancellations.delete(frame.id);
+              }
             }
-            if (closing || generation !== connectionGeneration) {
+            // The caller has already stopped waiting for an invocation cancelled before launch.
+            if (closing || generation !== connectionGeneration || queued.cancelled) {
               return;
             }
             // Enforce the declaration locally too: a paired Gateway cannot widen
@@ -644,6 +659,9 @@ export async function prepareNodeHostRuntime(params?: {
           }
         },
         cancel(invokeId: string) {
+          for (const queued of queuedInvokeCancellations.get(invokeId) ?? []) {
+            queued.cancelled = true;
+          }
           activeInvokes.get(invokeId)?.controller.abort();
         },
         setLocalMcpAllowed: (allowed: boolean) => localMcpPolicy?.setAllowed(allowed),
