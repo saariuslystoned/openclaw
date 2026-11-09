@@ -155,6 +155,11 @@ it.each([
   }
 });
 
+it("registers native polls on the outbound adapter", () => {
+  // createChatChannelPlugin only takes sendPoll from attachedResults; a base sendPoll is dropped.
+  expect(outbound?.sendPoll).toBeTypeOf("function");
+});
+
 it("falls back to sourceUuid when sourceNumber has no digits", () => {
   const sender = resolveSignalSender({
     sourceNumber: "not a phone number",

@@ -442,14 +442,6 @@ export const signalPlugin: ChannelPlugin<ResolvedSignalAccount, SignalProbe> =
       base: {
         deliveryMode: "direct",
         pollMaxOptions: SIGNAL_POLL_MAX_OPTIONS,
-        sendPoll: async ({ cfg, to, poll, accountId, assertDirectAdapterHandoff }) => {
-          const result = await sendPollSignal(to, poll, {
-            cfg,
-            accountId: accountId ?? undefined,
-            ...(assertDirectAdapterHandoff ? { assertDirectAdapterHandoff } : {}),
-          });
-          return { messageId: result.messageId, pollId: result.messageId };
-        },
         resolveTarget: ({ cfg, to, accountId }) => {
           const raw = to?.trim();
           if (!raw) {
@@ -614,6 +606,14 @@ export const signalPlugin: ChannelPlugin<ResolvedSignalAccount, SignalProbe> =
         channel: "signal",
         sendText: sendSignalOutbound,
         sendMedia: sendSignalOutbound,
+        sendPoll: async ({ cfg, to, poll, accountId, assertDirectAdapterHandoff }) => {
+          const result = await sendPollSignal(to, poll, {
+            cfg,
+            accountId: accountId ?? undefined,
+            ...(assertDirectAdapterHandoff ? { assertDirectAdapterHandoff } : {}),
+          });
+          return { messageId: result.messageId, pollId: result.messageId };
+        },
       },
     },
   });
