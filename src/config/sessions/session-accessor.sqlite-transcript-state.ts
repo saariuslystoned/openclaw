@@ -413,14 +413,11 @@ export function ensureTranscriptSessionRoot(
   );
 }
 
-export function readNextTranscriptSeq(database: OpenClawAgentDatabase, sessionId: string): number {
-  const actor = readSessionActorTransactionState(database, { sessionId });
-  if (actor) {
-    if (actor.transcript.coldArchive) {
-      throw new SessionTranscriptColdError(sessionId);
-    }
-    return (actor.hot.transcript.version.rawSeq ?? -1) + 1;
-  }
+/** Table max+1 inside the caller's transaction. Ignores an actor snapshot. */
+export function readStoredTranscriptNextSeq(
+  database: OpenClawAgentDatabase,
+  sessionId: string,
+): number {
   const db = getSessionKysely(database.db);
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
@@ -445,6 +442,19 @@ export function readNextTranscriptSeq(database: OpenClawAgentDatabase, sessionId
   const maxSeq =
     row?.max_seq === null || row?.max_seq === undefined ? -1 : sqliteNumber(row.max_seq);
   return maxSeq + 1;
+}
+
+export function readNextTranscriptSeq(database: OpenClawAgentDatabase, sessionId: string): number {
+  const actor = readSessionActorTransactionState(database, { sessionId });
+  if (actor) {
+    if (actor.transcript.coldArchive) {
+      throw new SessionTranscriptColdError(sessionId);
+    }
+    // Pending actor writes are not in the table yet. Callers compare this
+    // planned seq with the table only after a primary-key conflict.
+    return (actor.hot.transcript.version.rawSeq ?? -1) + 1;
+  }
+  return readStoredTranscriptNextSeq(database, sessionId);
 }
 
 // Only compilation is retained; writer transactions must see their latest mutation fences.

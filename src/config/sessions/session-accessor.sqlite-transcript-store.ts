@@ -43,6 +43,7 @@ import {
   readTranscriptGenerationInTransaction,
   readTranscriptMutationStateInTransaction,
   readNextTranscriptSeq,
+  readStoredTranscriptNextSeq,
   readTranscriptAppendStateInTransaction,
   rotateTranscriptGenerationInTransaction,
   touchTranscriptMutationInTransaction,
@@ -75,6 +76,22 @@ export {
   rewriteSqliteTranscriptEventRowsInTransaction,
   updateSqliteTranscriptEventJsonInTransaction,
 } from "./session-accessor.sqlite-transcript-rewrite.js";
+
+const TRANSCRIPT_SEQ_PRIMARY_KEY = "transcript_events.session_id, transcript_events.seq";
+
+function isTranscriptSeqPrimaryKeyConflict(error: unknown): boolean {
+  const seen = new Set<unknown>();
+  let current: unknown = error;
+  while (current && typeof current === "object" && !seen.has(current)) {
+    seen.add(current);
+    const record = current as { message?: unknown; cause?: unknown };
+    if (typeof record.message === "string" && record.message.includes(TRANSCRIPT_SEQ_PRIMARY_KEY)) {
+      return true;
+    }
+    current = record.cause;
+  }
+  return false;
+}
 
 /** Returns the exact committed JSON, or false when an existing identity owns the event. */
 export function appendTranscriptEventInTransaction(
@@ -146,6 +163,8 @@ export function appendTranscriptEventInTransaction(
           if (initial.cold) {
             throw new SessionTranscriptColdError(scope.sessionId);
           }
+          // Keep the planned range contiguous. A sibling that already committed
+          // this seq is corrected once, when the insert hits the primary key.
           cursor.nextSeq = initial.nextSeq;
           cursor.generation = initial.generation ?? undefined;
           cursor.appendToIndex = createTranscriptIndexAppenderInTransaction(
@@ -161,7 +180,7 @@ export function appendTranscriptEventInTransaction(
         cursor.windowUpdatedAt = createdAt;
       }
       // Sequence admission also refuses cold archives, once for the entire batch.
-      const seq = (cursor.nextSeq ??= readNextTranscriptSeq(database, scope.sessionId));
+      let seq = (cursor.nextSeq ??= readNextTranscriptSeq(database, scope.sessionId));
       const identity = readTranscriptEventIdentity(persistedEvent);
       const batch = cursor.batch;
       if (identity && (batch || actor?.transcript.complete)) {
@@ -224,10 +243,27 @@ export function appendTranscriptEventInTransaction(
             ...row,
             eventId: actor?.transcript.complete ? undefined : identity?.eventId,
           };
-          accepted =
+          const insert = () =>
             insertWithIdentity && identity
               ? insertWithIdentity(input, identity)
               : insertEvent(input);
+          try {
+            accepted = insert();
+          } catch (error) {
+            if (!isTranscriptSeqPrimaryKeyConflict(error)) {
+              throw error;
+            }
+            // The planned seq was read before this transaction. The table read
+            // sees the sibling commit and this transaction's own rows.
+            const storedNext = readStoredTranscriptNextSeq(database, scope.sessionId);
+            if (storedNext <= seq) {
+              throw error;
+            }
+            seq = storedNext;
+            row.seq = seq;
+            input.seq = seq;
+            accepted = insert();
+          }
           if (!accepted) {
             return;
           }
