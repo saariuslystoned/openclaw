@@ -1,2 +1,2 @@
-46
-# Signal edit action: action-handler cases prove edits reach signal-cli with edit-timestamp and a repeat edit targets the newest revision; one send RPC case; action-list cases updated.
+64
+# Signal edit action: action-handler and send RPC cases prove edits reach signal-cli with edit-timestamp; edit-revisions case proves repeat edits target the newest revision via plugin state; action-list cases updated.

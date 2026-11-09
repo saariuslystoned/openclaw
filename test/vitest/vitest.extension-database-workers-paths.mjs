@@ -483,6 +483,7 @@ export const databaseWorkerExtensionTestFiles = [
   "extensions/reef/src/replay-state.test.ts",
   "extensions/reef/src/transport-capacity-recovery.test.ts",
   "extensions/reef/src/trust-store.test.ts",
+  "extensions/signal/src/edit-revisions.test.ts",
   "extensions/signal/src/reply-authors.test.ts",
   "extensions/signal/src/monitor/event-handler.partial-delivery.test.ts",
   "extensions/sms/src/media-limits.test.ts",
