@@ -344,10 +344,19 @@ pub fn build(
 }
 
 pub fn show_window(app: &AppHandle) {
-    if let Some(window) = app.get_window("main") {
-        let _ = window.show();
-        let _ = window.unminimize();
-        let _ = window.set_focus();
+    let current_app = app.clone();
+    if let Err(error) = app.run_on_main_thread(move || {
+        // Check beside the window effects, after any queued Quit event.
+        if current_app.state::<DesktopState>().is_quitting() {
+            return;
+        }
+        if let Some(window) = current_app.get_window("main") {
+            let _ = window.show();
+            let _ = window.unminimize();
+            let _ = window.set_focus();
+        }
+    }) {
+        eprintln!("Could not show the main window: {error}");
     }
 }
 
