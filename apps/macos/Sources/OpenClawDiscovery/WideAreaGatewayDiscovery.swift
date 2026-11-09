@@ -22,14 +22,31 @@ enum WideAreaGatewayDiscovery {
     // Probing arbitrary tailnet peers lets the fastest responder become DNS-SD authority.
     private static let tailscaleDNSResolver = "100.100.100.100"
 
-    struct DiscoveryContext {
-        var tailscaleStatus: @Sendable () async -> String?
-        var dig: @Sendable (_ args: [String], _ timeout: TimeInterval) async -> String?
+    struct DiscoveryContext: Sendable {
+        var run: @Sendable (_ path: String, _ args: [String], _ timeout: TimeInterval) async -> String?
+        var now: @Sendable () -> Date
+
+        init(
+            run: @escaping @Sendable (String, [String], TimeInterval) async -> String?,
+            now: @escaping @Sendable () -> Date = { Date() })
+        {
+            self.run = run
+            self.now = now
+        }
+
+        init(
+            tailscaleStatus: @escaping @Sendable () async -> String?,
+            dig: @escaping @Sendable ([String], TimeInterval) async -> String?)
+        {
+            self.init(run: { path, args, timeout in
+                if path == digPath { return await dig(args, timeout) }
+                return await tailscaleStatus()
+            })
+        }
 
         static let live = DiscoveryContext(
-            tailscaleStatus: { await readTailscaleStatus() },
-            dig: { args, timeout in
-                await BoundedCommand.run(path: digPath, arguments: args, timeout: timeout)
+            run: { path, args, timeout in
+                await BoundedCommand.run(path: path, arguments: args, timeout: timeout)
             })
     }
 
@@ -37,12 +54,12 @@ enum WideAreaGatewayDiscovery {
         timeoutSeconds: TimeInterval = 2.0,
         context: DiscoveryContext = .live) async -> [WideAreaGatewayBeacon]
     {
-        let startedAt = Date()
-        let remaining = {
-            timeoutSeconds - Date().timeIntervalSince(startedAt)
+        let startedAt = context.now()
+        let remaining: @Sendable () -> TimeInterval = {
+            timeoutSeconds - context.now().timeIntervalSince(startedAt)
         }
 
-        guard let statusJson = await context.tailscaleStatus(),
+        guard let statusJson = await self.readTailscaleStatus(remaining: remaining, context: context),
               hasTailnetIPv4(statusJson: statusJson),
               let domain = OpenClawBonjour.wideAreaGatewayServiceDomain
         else { return [] }
@@ -51,7 +68,8 @@ enum WideAreaGatewayDiscovery {
         let nameserver = self.tailscaleDNSResolver
         let budget = max(0, remaining())
         guard budget > 0,
-              let ptrRecords = await context.dig(
+              let ptrRecords = await context.run(
+                  self.digPath,
                   ["+short", "+time=1", "+tries=1", "@\(nameserver)", "_openclaw-gw._tcp.\(domainTrimmed)", "PTR"],
                   min(defaultTimeoutSeconds, budget))
         else { return [] }
@@ -67,13 +85,15 @@ enum WideAreaGatewayDiscovery {
                 : ptrName
             let instanceName = self.decodeDnsSdEscapes(rawInstanceName)
 
-            guard let srv = await context.dig(
+            guard let srv = await context.run(
+                self.digPath,
                 ["+short", "+time=1", "+tries=1", "@\(nameserver)", ptrName, "SRV"],
                 min(defaultTimeoutSeconds, remaining()))
             else { continue }
             guard let (host, port) = parseSrv(srv) else { continue }
 
-            let txtRaw = await context.dig(
+            let txtRaw = await context.run(
+                self.digPath,
                 ["+short", "+time=1", "+tries=1", "@\(nameserver)", ptrName, "TXT"],
                 min(self.defaultTimeoutSeconds, remaining()))
             let txtTokens = txtRaw.map(self.parseTxtTokens) ?? []
@@ -107,12 +127,15 @@ enum WideAreaGatewayDiscovery {
             .contains { $0.tailscaleIPs?.contains(where: TailscaleNetwork.isTailnetIPv4) == true } == true
     }
 
-    private static func readTailscaleStatus() async -> String? {
+    private static func readTailscaleStatus(
+        remaining: @Sendable () -> TimeInterval,
+        context: DiscoveryContext) async -> String?
+    {
         await BoundedCommand.tailscaleStatus { candidate in
-            await BoundedCommand.run(
-                path: candidate,
-                arguments: ["status", "--json"],
-                timeout: 0.7)
+            // Status lookup shares the DNS budget; each fallback must spend only what remains.
+            let budget = min(0.7, remaining())
+            guard budget > 0 else { return nil }
+            return await context.run(candidate, ["status", "--json"], budget)
         }
     }
 
