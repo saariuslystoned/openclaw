@@ -138,6 +138,7 @@ function setup(logRequests = false) {
       assertActive: () => undefined,
       bindToolSurface: (tools) => tools,
       runBeforeToolCall: async (request) => ({ blocked: false, params: request.params }),
+      reportModelProgress: vi.fn(),
       requestApproval: vi.fn(async () => ({ decision: "allow-once" as const })),
       waitForApproval: vi.fn(async () => undefined),
     },
@@ -516,6 +517,13 @@ describe("Muse native MSP harness", () => {
       firstController.abort();
       await first;
     }
+  });
+
+  it("reports Muse's streamed work as model progress so long turns are not judged stalled", async () => {
+    const { run, params } = setup();
+    await run();
+    // The fixture streams reasoning, then an answer: each item and delta counts.
+    expect(params.hostCapabilities.reportModelProgress).toHaveBeenCalled();
   });
 
   it("routes approvals through the host and submits the offered server choice", async () => {

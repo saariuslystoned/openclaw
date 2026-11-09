@@ -110,6 +110,12 @@ export type AgentHarnessHostCapabilities = Readonly<{
     | undefined;
   /** Reports one completed model call's output tokens to this admitted run's live total. */
   reportOutputTokens?: (outputTokens: number) => void;
+  /**
+   * Reports that the native runtime is still producing model output for this run.
+   * Native model calls bypass core's model diagnostics, so without this the session
+   * watchdog treats any long native turn as stalled and aborts it.
+   */
+  reportModelProgress?: () => void;
   /** Adds native provenance only to this host's exact current admitted prompt. */
   annotateCurrentUserTurn?: (
     annotation: import("../../sessions/user-turn-transcript.types.js").UserTurnTranscriptAnnotation,

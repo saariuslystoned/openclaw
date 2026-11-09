@@ -265,6 +265,33 @@ describe("agent harness host capability", () => {
     }
   });
 
+  it("credits native model progress to the admitting run's watchdog until closed", async () => {
+    const { attempt } = await admittedAttempt("run-native-progress");
+    const progressModel = vi.fn(() => true);
+    const watchdogAttempt = { progressModel } as unknown as NonNullable<
+      Parameters<typeof withGatewayToolCallerIdentity>[0]["watchdogAttempt"]
+    >;
+    const host = await withGatewayToolCallerIdentity(
+      {
+        agentId: "main",
+        sessionKey: "agent:main:session-1",
+        operationalRunInstance: attempt.admittedRunContext.operationalRunInstance,
+        watchdogAttempt,
+      },
+      () => createAgentHarnessHostCapabilities({ attempt, pluginId: "muse" }),
+    );
+    try {
+      // Native runtimes report from their own event loop, outside the caller scope.
+      host.capabilities.reportModelProgress?.();
+      expect(progressModel).toHaveBeenCalledWith("native_harness:model_progress");
+      host.close();
+      expect(() => host.capabilities.reportModelProgress?.()).toThrow("no longer active");
+      expect(progressModel).toHaveBeenCalledTimes(1);
+    } finally {
+      host.close();
+    }
+  });
+
   it("overwrites plugin policy fields with the host snapshot and revokes lexically", async () => {
     const { attempt, admission } = await admittedAttempt();
     const authority = getAdmittedRunDelegatedAuthority(attempt.admittedRunContext);

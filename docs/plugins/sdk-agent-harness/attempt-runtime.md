@@ -331,6 +331,19 @@ The capability is optional for compatibility with older hosts; when absent,
 live output-token reporting is unavailable. Keep last-response context
 snapshots and persisted billing usage separate from this live counter.
 
+## Native model progress
+
+Call `params.hostCapabilities.reportModelProgress?.()` whenever the native
+runtime streams model work for the current turn: reasoning, assistant text, or a
+new item. Native model calls do not pass through core's model diagnostics, so
+without these reports the session watchdog sees no progress after turn
+admission and aborts long native turns as stalled.
+
+The host binds the callback to the admitted run's watchdog when the capability is
+created, so it can be called from the runtime's own event loop. A closed or
+superseded capability rejects reporting. The capability is optional for
+compatibility with older hosts.
+
 ## Agent-end side effects
 
 Native harnesses must await `runAgentEndSideEffectsAsync(...)` from

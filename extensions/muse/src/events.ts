@@ -71,8 +71,17 @@ export async function consumeTurn(
     });
     return streamQueue;
   };
+  // Muse calls the model itself, so the session watchdog only sees progress Muse reports.
+  const reportProgress = () => {
+    try {
+      params.hostCapabilities.reportModelProgress?.();
+    } catch {
+      // A closed host scope ends the attempt through its own checks.
+    }
+  };
   const deltas = (async () => {
     for await (const delta of turn.deltas()) {
+      reportProgress();
       const field = delta.field ?? "text";
       const key = `${delta.itemId}:${field}`;
       const value = (streamed.get(key) ?? "") + delta.delta;
@@ -85,6 +94,7 @@ export async function consumeTurn(
   })();
   const projections = (async () => {
     for await (const item of turn.items()) {
+      reportProgress();
       const first = !items.has(item.itemId);
       items.set(item.itemId, item);
       if (item.kind !== "reminderChild" && item.kind !== "userMessage") {

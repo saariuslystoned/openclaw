@@ -1,6 +1,5 @@
 import { isDeepStrictEqual } from "node:util";
 import { buildActiveNodeContextText } from "../../infra/active-node-context.js";
-import { emitAgentRunOutputTokens } from "../../infra/agent-events.js";
 import { getActiveDiagnosticTraceContext } from "../../infra/diagnostic-trace-context.js";
 import { captureExecRequestCustody } from "../../infra/exec-request-context.js";
 import {
@@ -31,9 +30,7 @@ import {
   createOpenClawCodingToolsInternal,
   createOpenClawCodingToolsInternalAsync,
 } from "../agent-tools.js";
-import { log } from "../embedded-agent-runner/logger.js";
 import type { EmbeddedRunAttemptInternalParams } from "../embedded-agent-runner/run/internal-params.js";
-import { runBestEffortCallback } from "../embedded-agent-subscribe.callback.js";
 import { createCronScheduledToolProjection } from "../exec-tool-target-pinning.js";
 import { throwAgentRunRestartAbortReason } from "../run-termination.js";
 import { resolveToolLoopDetectionConfig } from "../tool-loop-detection-config.js";
@@ -51,6 +48,7 @@ import {
   transferCoreTtsToolResultProvenance,
 } from "../tools/tts-tool-result-provenance.js";
 import { bindHostToolSurface } from "./host-bound-tool.js";
+import { bindHarnessRunReporting } from "./host-capability-run-reporting.js";
 import type { AgentHarnessHostCapabilities } from "./host-capability-types.js";
 import {
   bindHostContinuationRetryCount,
@@ -473,22 +471,14 @@ export function createAgentHarnessHostCapabilities(params: {
     ...(bindModelExecution ? { bindModelExecution } : {}),
     retainSourceAuthority: () =>
       retainHarnessSource(attempt.admittedRunContext, assertActive, nativeModelPolicySupported),
-    reportOutputTokens: (outputTokens) => {
-      assertActive.assertScopeCurrent();
-      const data = emitAgentRunOutputTokens({
-        runId,
-        lifecycleGeneration,
-        sessionKey,
-        outputTokens,
-      });
-      if (data && onAgentEvent) {
-        runBestEffortCallback({
-          label: "usage agent event",
-          log,
-          callback: () => onAgentEvent({ stream: "usage", data }),
-        });
-      }
-    },
+    ...bindHarnessRunReporting({
+      assertScopeCurrent: assertActive.assertScopeCurrent,
+      runId,
+      lifecycleGeneration,
+      sessionKey,
+      onAgentEvent,
+      watchdogAttempt: sourceCaller?.watchdogAttempt,
+    }),
     ...(annotateCurrentUserTurn ? { annotateCurrentUserTurn } : {}),
     ...media.capabilities,
     ...bindBoundedSeed(attempt, assertActive, withCaller, capabilityAbortController.signal, media),
