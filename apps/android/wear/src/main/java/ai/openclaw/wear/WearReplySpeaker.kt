@@ -24,56 +24,59 @@ internal class WearReplySpeaker(
   private val _failed = MutableStateFlow(false)
   val failed: StateFlow<Boolean> = _failed.asStateFlow()
   private val audioFocus = WearAudioFocusController(context, ::stop)
+  private val appContext = context.applicationContext
 
   private var engine: TextToSpeech? = null
   private var ready = false
-  private var initializationFailed = false
   private var closed = false
   private var pendingText: String? = null
   private var activeUtterance: String? = null
 
   init {
-    handler.post {
-      engine =
-        TextToSpeech(context.applicationContext) { status ->
-          handler.post {
-            if (!closed) {
-              ready = status == TextToSpeech.SUCCESS
-              initializationFailed = !ready
-              if (ready) {
-                configureEngine()
-              } else if (pendingText != null) {
-                fail()
-              }
+    handler.post { initializeEngine() }
+  }
+
+  private fun initializeEngine() {
+    engine =
+      TextToSpeech(appContext) { status ->
+        handler.post {
+          if (!closed) {
+            ready = status == TextToSpeech.SUCCESS
+            if (ready) {
+              configureEngine()
+            } else {
+              engine?.shutdown()
+              engine = null
+              if (pendingText != null) fail()
             }
           }
-        }.also { created ->
-          created.setOnUtteranceProgressListener(
-            object : UtteranceProgressListener() {
-              override fun onStart(utteranceId: String) {
-                handler.post {
-                  if (!closed && activeUtterance == utteranceId) _isSpeaking.value = true
-                }
-              }
-
-              override fun onDone(utteranceId: String) = finish(utteranceId, failed = false)
-
-              @Suppress("OVERRIDE_DEPRECATION")
-              override fun onError(utteranceId: String) = finish(utteranceId, failed = true)
-
-              override fun onError(
-                utteranceId: String,
-                errorCode: Int,
-              ) = finish(utteranceId, failed = true)
-
-              override fun onStop(
-                utteranceId: String,
-                interrupted: Boolean,
-              ) = finish(utteranceId, failed = false)
-            },
-          )
         }
-    }
+      }.also { created ->
+        created.setOnUtteranceProgressListener(
+          object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String) {
+              handler.post {
+                if (!closed && activeUtterance == utteranceId) _isSpeaking.value = true
+              }
+            }
+
+            override fun onDone(utteranceId: String) = finish(utteranceId, failed = false)
+
+            @Suppress("OVERRIDE_DEPRECATION")
+            override fun onError(utteranceId: String) = finish(utteranceId, failed = true)
+
+            override fun onError(
+              utteranceId: String,
+              errorCode: Int,
+            ) = finish(utteranceId, failed = true)
+
+            override fun onStop(
+              utteranceId: String,
+              interrupted: Boolean,
+            ) = finish(utteranceId, failed = false)
+          },
+        )
+      }
   }
 
   private fun configureEngine() {
@@ -93,10 +96,7 @@ internal class WearReplySpeaker(
 
   private fun speakReady(text: String) {
     stopSpeaking()
-    if (initializationFailed) {
-      fail()
-      return
-    }
+    if (engine == null) initializeEngine()
     if (!ready) {
       pendingText = text
       return
