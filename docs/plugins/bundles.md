@@ -365,10 +365,13 @@ OpenClaw registers bundle MCP tools with provider-safe names in the form
   <Accordion title="Cursor bundles">
     Markers: `.cursor-plugin/plugin.json`
 
-    Optional content: `skills/`, `.cursor/commands/`, `.cursor/agents/`, `.cursor/rules/`, `.cursor/hooks.json`, `.mcp.json`
+    Optional content: `skills/`, `.cursor/commands/`, `.cursor/agents/`, `.cursor/rules/`, `.cursor/hooks.json`, `mcp.json`
 
     - `.cursor/commands/` is treated as skill content
     - `.cursor/rules/`, `.cursor/agents/`, and `.cursor/hooks.json` are detect-only
+    - Root `mcp.json` loads MCP server config. Legacy `.mcp.json` remains supported;
+      `mcp.json` takes precedence when both define the same server.
+    - Other MCP paths, such as `.cursor/mcp.json`, require a manifest `mcpServers` declaration.
 
   </Accordion>
 </AccordionGroup>
