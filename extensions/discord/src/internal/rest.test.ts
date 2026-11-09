@@ -197,6 +197,37 @@ describe("RequestClient", () => {
     },
   );
 
+  it("does not hold interaction callbacks for a global rate limit", async () => {
+    vi.useFakeTimers({ now: 0 });
+    const first = createDeferred<Response>();
+    const fetch = vi.fn(async () => {
+      if (fetch.mock.calls.length === 1) {
+        return await first.promise;
+      }
+      if (fetch.mock.calls.length === 2) {
+        return createJsonResponse({ ok: "callback" });
+      }
+      return createJsonResponse({ id: "after-global" });
+    });
+    const client = requestClient(fetch);
+    const limited = client.get(messagePath);
+    await Promise.resolve();
+    expect(fetch).toHaveBeenCalledTimes(1);
+    first.resolve(
+      rateLimitResponse(5, { "X-RateLimit-Global": "true", "X-RateLimit-Scope": "global" }, true),
+    );
+    await vi.advanceTimersByTimeAsync(0);
+    const callback = client.post("/interactions/123/token/callback", { body: { type: 6 } });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(fetch).toHaveBeenCalledTimes(2);
+    await expect(callback).resolves.toEqual({ ok: "callback" });
+    await vi.advanceTimersByTimeAsync(4_999);
+    expect(fetch).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(1);
+    await expect(limited).resolves.toEqual({ id: "after-global" });
+    expect(fetch).toHaveBeenCalledTimes(3);
+  });
+
   it("aborts stalled REST response bodies after the idle timeout", async () => {
     let cancelReason: unknown;
     const response = new Response(

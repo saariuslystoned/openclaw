@@ -269,6 +269,11 @@ export class RestScheduler<TData> {
     | { bucket?: never; queued?: never; waitMs?: number } {
     const now = Date.now();
     if (this.globalRateLimitUntil > now) {
+      // Interaction callbacks are outside the bot's 50/s global limit.
+      const exempt = this.takeInteractionCallback(now);
+      if (exempt) {
+        return exempt;
+      }
       return { waitMs: this.globalRateLimitUntil - now };
     }
     for (const [key, bucket] of this.buckets) {
@@ -318,6 +323,30 @@ export class RestScheduler<TData> {
     return { waitMs: nextDelayMs };
   }
 
+  /** Discord exempts interaction callbacks from the global rate limit. */
+  private takeInteractionCallback(
+    now: number,
+  ): { bucket: BucketState<TData>; queued: ScheduledRequest<TData> } | undefined {
+    for (const bucket of this.buckets.values()) {
+      if (bucket.active > 0) {
+        continue;
+      }
+      const queue = bucket.pending.critical;
+      const queued = queue[0];
+      if (!queued || !isInteractionCallbackPath(queued.path)) {
+        continue;
+      }
+      if (this.getBucketWaitMs(bucket, now) > 0) {
+        continue;
+      }
+      queue.shift();
+      queued.state = "dispatched";
+      this.queuedByLane.critical = Math.max(0, this.queuedByLane.critical - 1);
+      return { bucket, queued };
+    }
+    return undefined;
+  }
+
   private async runQueuedRequest(
     queued: ScheduledRequest<TData>,
     bucket: BucketState<TData>,
@@ -365,4 +394,11 @@ function isGlobalRateLimit(parsed: unknown): boolean {
   return parsed && typeof parsed === "object" && "global" in parsed
     ? Boolean(parsed.global)
     : false;
+}
+
+const INTERACTION_CALLBACK_PATH_RE = /^\/interactions\/\d+\/[^/]+\/callback$/;
+
+function isInteractionCallbackPath(path: string): boolean {
+  const pathname = path.split("?")[0] ?? path;
+  return INTERACTION_CALLBACK_PATH_RE.test(pathname.toLowerCase());
 }
