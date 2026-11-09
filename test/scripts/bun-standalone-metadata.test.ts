@@ -1716,7 +1716,8 @@ function loadLegacySessionSurface(rootPath: string) {
       throw new Error("Expected the physical resolver to own a descriptor");
     }
     expect(close).toHaveBeenLastCalledWith(opened.fd);
-    expect(() => fs.fstatSync(opened.fd)).toThrow(/EBADF/);
+    // A successful close releases the descriptor number for immediate reuse.
+    expect(close).toHaveReturnedTimes(1);
     close.mockClear();
     fs.chmodSync(external, 0o777);
     expect(resolve(external, "./resolver.js")).toBeUndefined();
