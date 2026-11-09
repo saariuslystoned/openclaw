@@ -49,6 +49,17 @@ it("sends a single-answer poll to a group", async () => {
   });
 });
 
+it("rejects a selection cap that Signal polls cannot express", async () => {
+  await expect(
+    signalPlugin.outbound!.sendPoll!({
+      cfg,
+      to: "group:abc123",
+      poll: { ...poll, maxSelections: 2 },
+    }),
+  ).rejects.toThrow("not maxSelections 2");
+  expect(signalRpcRequestMock).not.toHaveBeenCalled();
+});
+
 it("does not advertise or dispatch polls for the unsupported container transport", async () => {
   const containerCfg = signalAccountConfig("container", "http://signal.test");
   expect(signalPlugin.actions?.describeMessageTool?.({ cfg: containerCfg })?.actions).not.toContain(

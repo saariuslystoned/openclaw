@@ -31,11 +31,18 @@ export async function sendPollSignal(
     : target.startsWith("username:")
       ? { username: [target.slice("username:".length)] }
       : { recipient: [target] };
+  // Signal polls take one answer or any number of answers; there is no cap in between.
+  const maxSelections = poll.maxSelections ?? 1;
+  if (maxSelections > 1 && maxSelections < poll.options.length) {
+    throw new Error(
+      `Signal polls allow one answer or all ${poll.options.length} options, not maxSelections ${maxSelections}`,
+    );
+  }
   const params: Record<string, unknown> = {
     question: poll.question,
     option: poll.options,
     // Signal polls allow multiple answers unless the sender opts out.
-    ...((poll.maxSelections ?? 1) === 1 ? { "no-multi": true } : {}),
+    ...(maxSelections === 1 ? { "no-multi": true } : {}),
     ...targetParams,
     ...(account ? { account } : {}),
   };

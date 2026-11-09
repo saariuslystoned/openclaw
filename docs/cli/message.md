@@ -250,7 +250,7 @@ openclaw message poll --channel discord \
 - `--poll-option <choice>`: repeat 2-12 times.
 - `--poll-multi`: allow multiple selections.
 - Discord: `--poll-duration-hours`, `--silent`, `--message`.
-- Signal: native signal-cli transports only (managed or external), up to 10 options.
+- Signal: native signal-cli transports only (managed or external), up to 10 options. One answer, or any number with `--poll-multi`; no duration or `--silent`.
 - Telegram: `--poll-duration-seconds <n>` (5-604800; up to seven days), `--silent`,
   `--poll-anonymous` / `--poll-public`, `--thread-id`.
 
