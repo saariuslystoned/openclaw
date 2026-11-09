@@ -42,74 +42,40 @@ actor CameraCaptureService {
         }
     }
 
+    typealias SnapCapture = @Sendable (
+        _ preferFrontCamera: Bool,
+        _ deviceId: String?,
+        _ maxWidth: Int,
+        _ quality: Double,
+        _ settleExposure: @Sendable () async throws -> Void,
+        _ beforeCapture: @Sendable () async throws -> Void) async throws
+        -> (data: Data, size: CGSize)
+
     func snap(
         facing: OpenClawCameraFacing,
         maxWidth: Int?,
         quality: Double?,
         deviceId: String?,
-        delayMs: Int) async throws -> (data: Data, size: CGSize)
+        delayMs: Int,
+        capturePhoto: SnapCapture? = nil,
+        sleep: @escaping @Sendable (UInt64) async throws -> Void = { try await Task.sleep(nanoseconds: $0) })
+        async throws -> (data: Data, size: CGSize)
     {
         let (maxWidth, quality) = Self.normalizeSnap(maxWidth: maxWidth, quality: quality)
         let delayMs = max(0, delayMs)
         let deviceId = deviceId?.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        try await self.ensureAccess(for: .video)
-
-        let prepared = try CameraCapturePipelineSupport.preparePhotoSession(
-            preferFrontCamera: facing == .front,
-            deviceId: deviceId,
-            pickCamera: Self.pickCamera,
-            mapSetupError: { setupError in
-                CameraError.captureFailed(setupError.localizedDescription)
+        let capturePhoto = capturePhoto ?? self.capturePhoto
+        return try await capturePhoto(
+            facing == .front, deviceId, maxWidth, quality,
+            {
+                // Only the sleep policy crosses the boundary; device reads stay on this actor.
+                try await sleep(50_000_000)
+            },
+            {
+                try await Self.sleepDelayMs(delayMs, sleep: sleep)
+                try Task.checkCancellation()
             })
-        let session = prepared.session
-        let device = prepared.device
-        let output = prepared.output
-
-        session.startRunning()
-        defer { session.stopRunning() }
-        // The photo preset can choose a portrait format at startup on external webcams.
-        // Select its landscape counterpart only after negotiation and before capturing.
-        let formats = device.formats
-        if let index = CameraDeviceResolver.landscapePhotoFormatIndex(
-            deviceType: device.deviceType,
-            activeFormat: device.activeFormat.formatDescription,
-            formats: formats.map(\.formatDescription))
-        {
-            do {
-                try device.lockForConfiguration()
-                defer { device.unlockForConfiguration() }
-                device.activeFormat = formats[index]
-            } catch {
-                self.logger.warning(
-                    "camera landscape format selection failed: \(error.localizedDescription, privacy: .public)")
-            }
-        }
-        try await CameraCapturePipelineSupport.warmUpCaptureSession()
-        await self.waitForExposureAndWhiteBalance(device: device)
-        await self.sleepDelayMs(delayMs)
-
-        var delegate: PhotoCaptureDelegate?
-        let rawData: Data = try await withCheckedThrowingContinuation { continuation in
-            let captureDelegate = PhotoCaptureDelegate(continuation)
-            delegate = captureDelegate
-            output.capturePhoto(
-                with: CameraCapturePipelineSupport.makePhotoSettings(output: output),
-                delegate: captureDelegate)
-        }
-        withExtendedLifetime(delegate) {}
-
-        let res: (data: Data, widthPx: Int, heightPx: Int)
-        do {
-            res = try PhotoCapture.transcodeJPEGForGateway(
-                rawData: rawData,
-                maxWidthPx: maxWidth,
-                quality: quality)
-        } catch {
-            throw CameraError.captureFailed(error.localizedDescription)
-        }
-
-        return (data: res.data, size: CGSize(width: res.widthPx, height: res.heightPx))
     }
 
     func clip(
@@ -207,21 +173,94 @@ actor CameraCaptureService {
         }
     }
 
-    private func waitForExposureAndWhiteBalance(device: AVCaptureDevice) async {
-        let stepNs: UInt64 = 50_000_000
+    private func capturePhoto(
+        preferFrontCamera: Bool,
+        deviceId: String?,
+        maxWidth: Int,
+        quality: Double,
+        settleExposure: @Sendable () async throws -> Void,
+        beforeCapture: @Sendable () async throws -> Void) async throws
+        -> (data: Data, size: CGSize)
+    {
+        try await self.ensureAccess(for: .video)
+
+        let prepared = try CameraCapturePipelineSupport.preparePhotoSession(
+            preferFrontCamera: preferFrontCamera,
+            deviceId: deviceId,
+            pickCamera: Self.pickCamera,
+            mapSetupError: { setupError in
+                CameraError.captureFailed(setupError.localizedDescription)
+            })
+        let session = prepared.session
+        let device = prepared.device
+        let output = prepared.output
+
+        session.startRunning()
+        defer { session.stopRunning() }
+        // The photo preset can choose a portrait format at startup on external webcams.
+        // Select its landscape counterpart only after negotiation and before capturing.
+        let formats = device.formats
+        if let index = CameraDeviceResolver.landscapePhotoFormatIndex(
+            deviceType: device.deviceType,
+            activeFormat: device.activeFormat.formatDescription,
+            formats: formats.map(\.formatDescription))
+        {
+            do {
+                try device.lockForConfiguration()
+                defer { device.unlockForConfiguration() }
+                device.activeFormat = formats[index]
+            } catch {
+                self.logger.warning(
+                    "camera landscape format selection failed: \(error.localizedDescription, privacy: .public)")
+            }
+        }
+        try await CameraCapturePipelineSupport.warmUpCaptureSession()
+        try await self.waitForExposureAndWhiteBalance(device: device, settleExposure: settleExposure)
+        try await beforeCapture()
+
+        var delegate: PhotoCaptureDelegate?
+        let rawData: Data = try await withCheckedThrowingContinuation { continuation in
+            let captureDelegate = PhotoCaptureDelegate(continuation)
+            delegate = captureDelegate
+            output.capturePhoto(
+                with: CameraCapturePipelineSupport.makePhotoSettings(output: output),
+                delegate: captureDelegate)
+        }
+        withExtendedLifetime(delegate) {}
+
+        let res: (data: Data, widthPx: Int, heightPx: Int)
+        do {
+            res = try PhotoCapture.transcodeJPEGForGateway(
+                rawData: rawData,
+                maxWidthPx: maxWidth,
+                quality: quality)
+        } catch {
+            throw CameraError.captureFailed(error.localizedDescription)
+        }
+
+        return (data: res.data, size: CGSize(width: res.widthPx, height: res.heightPx))
+    }
+
+    private func waitForExposureAndWhiteBalance(
+        device: AVCaptureDevice,
+        settleExposure: @Sendable () async throws -> Void) async throws
+    {
         let maxSteps = 30 // ~1.5s
         for _ in 0..<maxSteps {
             if !(device.isAdjustingExposure || device.isAdjustingWhiteBalance) {
                 return
             }
-            try? await Task.sleep(nanoseconds: stepNs)
+            try await settleExposure()
         }
     }
 
-    private func sleepDelayMs(_ delayMs: Int) async {
+    private nonisolated static func sleepDelayMs(
+        _ delayMs: Int,
+        sleep: @Sendable (UInt64) async throws -> Void) async throws
+    {
         guard delayMs > 0 else { return }
         let ns = UInt64(min(delayMs, 10000)) * 1_000_000
-        try? await Task.sleep(nanoseconds: ns)
+        try await sleep(ns)
     }
 }
 
