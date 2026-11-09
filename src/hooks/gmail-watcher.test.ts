@@ -196,6 +196,35 @@ it("retries a failed watch start with backoff instead of waiting for the next re
   expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(4);
 });
 
+it("does not start a second watch while a retry is still running", async () => {
+  const clock = createGatewaySchedulerClock();
+  const scheduler = createTestGatewayScheduler(clock.clock);
+  const pending = createDeferred<typeof commandSuccess>();
+  mocks.runCommandWithTimeout
+    .mockResolvedValueOnce({ ...commandSuccess, code: 1, stderr: "getaddrinfo ENOTFOUND" })
+    .mockReturnValueOnce(pending.promise)
+    .mockResolvedValue(commandSuccess);
+  await startWatcher(createGmailConfig("me@example.com", 2), { scheduler });
+  expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(1);
+
+  // The clock awaits due jobs, so leave the retry (60s) in flight while the renewal (120s) comes due.
+  const retrying = clock.advanceBy(60_000);
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(2);
+    const renewing = clock.advanceBy(60_000);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(2);
+    pending.resolve(commandSuccess);
+    await Promise.all([retrying, renewing]);
+    expect(mocks.runCommandWithTimeout).toHaveBeenCalledTimes(2);
+  } finally {
+    // Release the held start so watcher cleanup never waits on it.
+    pending.resolve(commandSuccess);
+    await retrying;
+  }
+});
+
 it.each(["watcher", "scheduler"])(
   "retires a stalled renewal on %s stop before replacement",
   async (stopOwner) => {

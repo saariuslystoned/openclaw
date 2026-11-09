@@ -420,11 +420,18 @@ export async function startGmailWatcherService(
       run: () => renewWatch(attempt + 1),
     });
   };
-  const renewWatch = async (attempt: number) => {
-    if (!(await startGmailWatch(runtimeConfig, executable, { signal: renewal.signal }))) {
-      scheduleRetry(attempt);
-    }
-  };
+  // One start at a time: a renewal that comes due while a retry runs joins it.
+  let inFlight: Promise<void> | undefined;
+  const renewWatch = (attempt: number) =>
+    (inFlight ??= (async () => {
+      try {
+        if (!(await startGmailWatch(runtimeConfig, executable, { signal: renewal.signal }))) {
+          scheduleRetry(attempt);
+        }
+      } finally {
+        inFlight = undefined;
+      }
+    })());
   renewal.schedule({
     id: "gmail-watch-renewal",
     delayMs: renewMs,
