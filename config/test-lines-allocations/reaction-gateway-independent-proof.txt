@@ -1,0 +1,7 @@
+# 651 net regression lines for the real CLI Gateway/agent protocol chain,
+# lost Discord receipt retry regression (opt-in vs passive add/remove), and
+# immediate Signal fixture rejection. The full chain covers provider and native
+# transport ownership that injected reply-resolver tests cannot prove; it runs
+# in the existing E2E tier, reusing one disposable Gateway across restarts.
+# No shared scalar, API baseline, per-file ceiling or timeout is raised.
+651

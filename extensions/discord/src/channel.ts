@@ -659,7 +659,12 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe, 
             : currentMessagingTarget,
           currentChatType,
           currentMessagingTarget,
-          currentMessageId: context.CurrentMessageId,
+          // A reaction occurrence is an ingress identity, never a native REST target.
+          currentMessageId:
+            typeof context.CurrentMessageId === "string" &&
+            context.CurrentMessageId.startsWith("reaction:")
+              ? context.ReplyToId
+              : context.CurrentMessageId,
           hasRepliedRef,
         };
       },

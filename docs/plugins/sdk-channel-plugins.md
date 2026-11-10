@@ -1106,6 +1106,59 @@ a request still waiting in a rate-limit queue or retry backoff. A provider reque
 already dispatched must still settle and keep its outcome, so an accepted write is
 never reported as unsent or replayed.
 
+## Conversational reactions
+
+Discord and Signal keep passive reaction notifications by default. Add
+`"reaction-conversations"` to the existing `channels.discord.capabilities` or
+`channels.signal.capabilities` array (also supported per account) to opt into
+conversation turns. Preserve any other capability entries. Omitting this entry
+keeps notifications passive; no new configuration key or schema budget is needed. Existing reaction-notification settings and access
+policy still filter eligible events. Authorized add/remove events enter ordinary channel dispatch
+as `room_event` observations, with command authorization disabled. They can wake
+the routed agent without requiring a text answer. The bounded `MsgContext.Reaction`
+(`ChannelReactionContext` from `openclaw/plugin-sdk/channel-inbound`) identifies
+the actor, account, conversation, transport occurrence, action, emoji and original
+target. Original text is included only when available and permitted by the
+channel's context policy; missing content is not reconstructed or invented.
+Occurrence IDs stay ingress identities. Native reply/reaction targets use the
+original message ID, never the occurrence ID. Conversation authority is retained
+through provider preparation, queueing, retries and the final network handoff.
+Signal conservatively rejects effects after any runtime-config snapshot change;
+a fresh admission is required, not reuse of an old allow decision.
+
+Discord uses gateway-session/sequence identity and the same durable ingress owner
+as messages. Signal uses its existing sender/timestamp ingress identity. Reconnect
+replays are deduped by retained ingress tombstones; history/sync data is not a new
+reaction request. These are conversational facts, not task acceptance, approval,
+or authority to perform a protected action. Existing explicitly bound native
+approval controls keep their separate authorization contract.
+
+For keyed outbound reactions, both plugins use `runReactionReplyWithReceipt`
+from `openclaw/plugin-sdk/channel-feedback` with their worker-backed plugin state.
+A stable `idempotencyKey` binds the account, destination, exact target and mutation.
+Receipt states distinguish `pending`, `claimed`, `uncertain`, `confirmed` and
+`not-sent`. Only a confirmed provider response completes a conversational reaction
+reply (`message` tool `react` with `final: true`); it never accepts a task or clears
+an approval gate. Opted-in observations do not enter native approval resolution;
+legacy explicitly bound native approval controls are unchanged when opt-in is off.
+Removal is not a terminal conversational answer.
+
+A timeout or interrupted claim remains uncertain and cannot automatically resend.
+Opted-in Discord reaction writes also disable ambiguous retries in the transport's
+retry owner: a lost response is not hidden behind a second PUT. Proven pre-connect
+failures and explicit rate-limit rejections retain their bounded retry policy;
+accounts without the capability keep their existing transport defaults.
+A proven pre-transport authority refusal records `not-sent`, permitting a later
+authorized retry under the same key. Receipt namespaces retain up to 5,000 rows
+and reject new entries at capacity rather than evict dedupe evidence. At capacity,
+use an ordinary text reply; do not delete receipts, switch namespaces, or retry
+with another key to circumvent the refusal. Existing receipts remain readable and
+settle normally. Increasing capacity requires a separately reviewed store-option
+migration; it is not a runtime reset or an automatic recovery action. Direct
+legacy calls without an idempotency key retain their existing non-durable API.
+Tests with injected model/provider boundaries do not establish live channel or
+phone delivery; deployment and real sends remain separate operator actions.
+
 ## Advanced topics
 
 <CardGroup cols={2}>

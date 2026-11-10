@@ -7,6 +7,7 @@ import {
   signalRpcRequest as nativeRpcRequest,
   streamSignalEvents as nativeStreamEvents,
 } from "./client.js";
+import { captureSignalRequestAuthority } from "./request-authority.js";
 
 const DEFAULT_TIMEOUT_MS = 10_000;
 
@@ -22,9 +23,15 @@ export async function signalRpcRequest<T = unknown>(
     maxAttachmentBytes?: number;
   },
 ): Promise<T> {
+  // Capture before asynchronous provider preparation; each transport rechecks
+  // this retained owner at its final socket/HTTP effect.
+  const options = {
+    ...opts,
+    assertDirectAdapterHandoff: captureSignalRequestAuthority(opts.assertDirectAdapterHandoff),
+  };
   return opts.transportKind === "container"
-    ? containerRpcRequest<T>(method, params, opts)
-    : nativeRpcRequest<T>(method, params, opts);
+    ? containerRpcRequest<T>(method, params, options)
+    : nativeRpcRequest<T>(method, params, options);
 }
 
 export async function signalCheck(

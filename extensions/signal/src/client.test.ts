@@ -2,8 +2,10 @@ import { Buffer } from "node:buffer";
 import http from "node:http";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRuntimeSpies } from "../../test-support/runtime-spies.js";
+import { signalRpcRequest as adapterRpcRequest } from "./client-adapter.js";
 import { signalCheck, signalRpcRequest, streamSignalEvents } from "./client.js";
 import { expectPreparedHandoff, useSignalHttpServer } from "./client.test-support.js";
+import { withSignalRequestAuthority } from "./request-authority.js";
 import { runSignalSseLoop, type SignalStatusSink } from "./sse-reconnect.js";
 
 vi.mock("openclaw/plugin-sdk/core", async (importOriginal) => ({
@@ -134,6 +136,19 @@ it("keeps an idle HTTP stream quiet through intentional shutdown", async () => {
 });
 
 describe("signalRpcRequest", () => {
+  it("surfaces a pre-preparation fixture failure instead of waiting for an unreachable handoff", async () => {
+    const error = new Error("socket admission refused before preparation");
+    await expect(
+      expectPreparedHandoff(false, async () => ({
+        send: async () => {
+          throw error;
+        },
+        assertCount: () => {},
+        result: undefined,
+      })),
+    ).rejects.toBe(error);
+  });
+
   it.each([false, true])(
     "prepares the HTTP handoff and rechecks its caller after waiting (revoked=%s)",
     (revoked) =>
@@ -154,6 +169,32 @@ describe("signalRpcRequest", () => {
                 baseUrl,
                 assertDirectAdapterHandoff: assertHandoff,
               },
+            ),
+          assertCount: (count) => expect(request).toHaveBeenCalledTimes(count),
+          result,
+        };
+      }),
+  );
+
+  it.each([false, true])(
+    "retains incoming conversation authority through native preparation (revoked=%s)",
+    (revoked) =>
+      expectPreparedHandoff(revoked, async ({ arrive, response, assertHandoff }) => {
+        const result = { timestamp: 1700000000000 };
+        const baseUrl = await withSignalServer(async (_req, res) => {
+          arrive();
+          await response;
+          res.end(JSON.stringify({ jsonrpc: "2.0", id: "test-id", result }));
+        });
+        const request = vi.spyOn(http, "request");
+        return {
+          send: () =>
+            withSignalRequestAuthority(assertHandoff, () =>
+              adapterRpcRequest(
+                "sendReaction",
+                { emoji: "✅" },
+                { baseUrl, transportKind: "external-native" },
+              ),
             ),
           assertCount: (count) => expect(request).toHaveBeenCalledTimes(count),
           result,
