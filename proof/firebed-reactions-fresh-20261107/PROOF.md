@@ -1,5 +1,30 @@
 # Reaction conversation proof
 
+## Fork PR review repair
+
+Fork-only PR: `saariuslystoned/openclaw#3`, base
+`review-base/reactions-876-d59f0028` at
+`d59f00281eb02167a86b57c42f04b2b59ed203fe`. Fork main/default are unchanged.
+The first comprehensive P3 review of source9d9b2048 identified a real fixture
+portability defect: `/private/tmp` does not exist on ordinary Linux runners.
+The override is now Darwin-only; other platforms use the existing QA temporary
+directory owner. Exact Linux filesystem boundary reproduced ENOENT before repair;
+this is not a claim of full Linux Gateway execution.
+
+Initial hosted CI also exposed a root-other test-type error in the deferred gate
+and an uncommented reaction ingress cast. The fixture now specifies `void`
+explicitly; ingress uses the existing SDK record predicate and actual identity
+field validation instead of asserting an unknown value has the complete event
+type. No assertion/ratchet/baseline/cap is waived. Correct root-other and production
+extension/test types, assertion-safety, touched lint/format and line ratchets pass.
+The two affected durable ingress suites pass16 cases, and the full shipped-CLI
+real-agent chain passes after these repairs. Earlier failed checks/review remain
+historical; renewed exact-head review and hosted CI are required after publication.
+The initial unrelated Labeler workflow lacks its required App key input; no secret
+or account/configuration repair is part of this source change. Signed-native
+review still requires a qualified fork route compatible with the nondefault base.
+No merge, installation, activation or real send is claimed.
+
 ## Independent product proof continuation (Turn 5)
 
 Starting published source24b787e9ea2fc70ba31d15c8c8598525c06ceef4;

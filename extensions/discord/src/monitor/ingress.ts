@@ -11,7 +11,10 @@ import {
 } from "openclaw/plugin-sdk/channel-outbound";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { danger, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeNullableString as nonEmptyString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import {
+  isRecord,
+  normalizeNullableString as nonEmptyString,
+} from "openclaw/plugin-sdk/string-coerce-runtime";
 import type { Client } from "../internal/discord.js";
 import { createMessageDispatchData } from "../internal/gateway-dispatch.js";
 import type { DiscordReactionIngressEvent } from "../internal/listeners.js";
@@ -52,23 +55,28 @@ type DiscordIngressMonitor = {
 const DiscordIngressPayloadError = createChannelIngressError("DiscordIngressPayloadError");
 
 function inspectDiscordMessage(rawMessage: unknown): { eventId: string; laneKey: string } {
-  if (!rawMessage || typeof rawMessage !== "object" || Array.isArray(rawMessage)) {
+  if (!isRecord(rawMessage)) {
     throw new DiscordIngressPayloadError("Discord MESSAGE_CREATE payload must be an object");
   }
-  if ("kind" in rawMessage && rawMessage.kind === "reaction") {
-    const reaction = rawMessage as DiscordReactionIngressEvent;
+  if (rawMessage.kind === "reaction") {
+    const data = rawMessage.data;
     if (
-      !/^[a-f0-9]{64}$/.test(reaction.occurrenceId) ||
-      !["added", "removed"].includes(reaction.action) ||
-      !/^[0-9]{15,22}$/.test(reaction.data?.channel_id ?? "") ||
-      !/^[0-9]{15,22}$/.test(reaction.data?.message_id ?? "") ||
-      !/^[0-9]{15,22}$/.test(reaction.data?.user_id ?? "")
+      typeof rawMessage.occurrenceId !== "string" ||
+      !/^[a-f0-9]{64}$/.test(rawMessage.occurrenceId) ||
+      (rawMessage.action !== "added" && rawMessage.action !== "removed") ||
+      !isRecord(data) ||
+      typeof data.channel_id !== "string" ||
+      !/^[0-9]{15,22}$/.test(data.channel_id) ||
+      typeof data.message_id !== "string" ||
+      !/^[0-9]{15,22}$/.test(data.message_id) ||
+      typeof data.user_id !== "string" ||
+      !/^[0-9]{15,22}$/.test(data.user_id)
     ) {
       throw new DiscordIngressPayloadError("Discord reaction occurrence is invalid");
     }
     return {
-      eventId: `reaction:${reaction.occurrenceId}`,
-      laneKey: `channel:${reaction.data.channel_id}`,
+      eventId: `reaction:${rawMessage.occurrenceId}`,
+      laneKey: `channel:${data.channel_id}`,
     };
   }
   const candidate = rawMessage as { id?: unknown; channel_id?: unknown };

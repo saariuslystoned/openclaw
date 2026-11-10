@@ -45,8 +45,8 @@ it(
     let sequence = 1;
     let silentNext = false;
     type Gate = {
-      entered: ReturnType<typeof createDeferredCore>;
-      release: ReturnType<typeof createDeferredCore>;
+      entered: ReturnType<typeof createDeferredCore<void>>;
+      release: ReturnType<typeof createDeferredCore<void>>;
     };
     let heldModel: Gate | undefined;
     let retryGate: Gate | undefined;
@@ -344,7 +344,7 @@ it(
         argsPrefix: [path.join(repoRoot, "dist/entry.js")],
         cwd: repoRoot,
         usePackagedPlugins: false,
-        tempParentDir: "/private/tmp",
+        tempParentDir: process.platform === "darwin" ? "/private/tmp" : undefined,
       },
       providerMode: "mock-openai",
       providerBaseUrl: modelBaseUrl,
