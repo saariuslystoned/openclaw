@@ -13,9 +13,16 @@ import type { DiscordReactionSummary, DiscordReactOpts } from "./send.types.js";
 
 function reactionMutation(operation: typeof createOwnMessageReaction, label: string) {
   return async (channelId: string, messageId: string, emoji: string, opts: DiscordReactOpts) => {
-    const { rest, request } = createDiscordClient(opts);
+    const { rest, request, account } = createDiscordClient(opts);
     const encoded = normalizeReactionEmoji(emoji);
-    await request(() => operation(rest, channelId, messageId, encoded), label);
+    // Conversational receipts must retain an ambiguous attempt, not hide a
+    // lost transport receipt behind the ordinary idempotent-mutation retry.
+    const strictReceipt = account.config.capabilities?.includes("reaction-conversations");
+    await request(
+      () => operation(rest, channelId, messageId, encoded),
+      label,
+      strictReceipt ? { safety: "non-idempotent-create" } : undefined,
+    );
     return { ok: true };
   };
 }

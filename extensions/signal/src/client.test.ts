@@ -136,6 +136,19 @@ it("keeps an idle HTTP stream quiet through intentional shutdown", async () => {
 });
 
 describe("signalRpcRequest", () => {
+  it("surfaces a pre-preparation fixture failure instead of waiting for an unreachable handoff", async () => {
+    const error = new Error("socket admission refused before preparation");
+    await expect(
+      expectPreparedHandoff(false, async () => ({
+        send: async () => {
+          throw error;
+        },
+        assertCount: () => {},
+        result: undefined,
+      })),
+    ).rejects.toBe(error);
+  });
+
   it.each([false, true])(
     "prepares the HTTP handoff and rechecks its caller after waiting (revoked=%s)",
     (revoked) =>

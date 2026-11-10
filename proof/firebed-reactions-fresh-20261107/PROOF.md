@@ -1,5 +1,51 @@
 # Reaction conversation proof
 
+## Independent product proof continuation (Turn 5)
+
+Starting published source24b787e9ea2fc70ba31d15c8c8598525c06ceef4;
+immutable base d59f00281eb02167a86b57c42f04b2b59ed203fe. This checkpoint
+supersedes the independent-proof gaps below, NOT the fork promotion gates.
+
+- `test/reaction-conversations.gateway.e2e.test.ts` starts the shipped compiled
+  CLI through the maintained QA Gateway child with empty disposable state and
+  loopback Discord WebSocket/REST, Signal SSE/native JSON-RPC and OpenAI Responses
+  fixtures. No dispatcher, agent, message tool, authority or state owner is mocked.
+  Both add/remove paths reach the real agent/tool/native effect, with exact native
+  target/account and original target text (Signal text seeded via ordinary ingress).
+  Races, restart/replay/history, denied/self/bot events, intentional silence,
+  opt-in absent/empty, source stop during awaited model work and queued Discord429
+  retry are exercised. External protocol peers are synthetic, not live delivery.
+- The stronger chain reproduced a real missing safeguard: Discord's idempotent
+  transport retry hid an accepted-but-response-lost PUT behind another PUT. The
+  plugin's opted-in reaction mutation now selects the existing strict retry policy,
+  retaining pre-connect/rate-limit retry and unchanged passive-account defaults.
+  The chain verifies an uncertain tool receipt and no replay after restart; focused
+  add/remove tests independently verify opted-in vs absent/empty behavior.
+- Model inventory contains only `message`, and the disposable Gateway's exec
+  approval snapshot is unchanged. No reaction executes commands, accepts worker
+  results, grants approval or clears a gate. These tests do not authorize deployment.
+- UNIX sibling failure is an inherited environment refusal, not a reaction-source
+  regression: baseline and24b socket admission source bytes are identical. Executing
+  the exact baseline boundary reproduces ancestor-ACL rejection; process-only
+  `TMPDIR=/private/tmp` uses a safe disposable root without altering ACLs/guards.
+  All70 affected native/container/UNIX sibling cases pass. Shared fixture now
+  surfaces pre-preparation rejection directly rather than waiting120s; assertions
+  and timeout budgets are unchanged. Baseline boundary execution is not a whole
+  baseline test suite claim.
+- Maintained SDK comparison d59f→24b completed EXIT=0 after438s renders (previous
+  180s timeout retained). Four added exports, no removals, digest7c97a093; reachable
+  surface requires normal review, not self-approval. A new final source commit must
+  bind renewed API evidence to its exact head.
+
+Coordinator proof retains all original failed logs and exact commands/exits.
+Latest precommit full protocol test:23.7s test time,37.29s wrapper with prepared
+runtime, EXIT=0 (earlier fresh runtime build included164.98s wrapper). Focused
+siblings:59 Discord send cases,10 durable cases and70 native Signal cases pass.
+New test growth has a dedicated651-line regression allocation,
+no shared scalar/API baseline/per-file cap increase. Fresh final-head checks,
+source publication and promotion review/CI are recorded separately by coordinator.
+No fork PR, merge, runtime installation or production activation is claimed.
+
 ## Current fork-only continuation
 
 This packet is source preparation, not accepted delivery. Earlier results below

@@ -1144,6 +1144,10 @@ legacy explicitly bound native approval controls are unchanged when opt-in is of
 Removal is not a terminal conversational answer.
 
 A timeout or interrupted claim remains uncertain and cannot automatically resend.
+Opted-in Discord reaction writes also disable ambiguous retries in the transport's
+retry owner: a lost response is not hidden behind a second PUT. Proven pre-connect
+failures and explicit rate-limit rejections retain their bounded retry policy;
+accounts without the capability keep their existing transport defaults.
 A proven pre-transport authority refusal records `not-sent`, permitting a later
 authorized retry under the same key. Receipt namespaces retain up to 5,000 rows
 and reject new entries at capacity rather than evict dedupe evidence. At capacity,

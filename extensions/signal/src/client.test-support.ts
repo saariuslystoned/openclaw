@@ -79,6 +79,12 @@ export async function expectPreparedHandoff(
       arrived.promise.then(() => {
         throw new Error("transport bypassed preparation");
       }),
+      sending.then((result) => {
+        if ("error" in result) {
+          throw result.error;
+        }
+        throw new Error("transport settled before preparation");
+      }),
     ]);
     fixture.assertCount(0);
     if (revoked) {
