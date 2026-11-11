@@ -55,11 +55,14 @@ export function createToolingDependencyFixture(root: string, staleAncestor = fal
   const checkout = join(root, "checkout");
   const tooling = join(root, "tooling #root");
   const lib = join(checkout, "scripts", "lib");
+  const origin = execFileSync("git", ["remote", "get-url", "origin"], {
+    encoding: "utf8",
+  }).trim();
   mkdirSync(lib, { recursive: true });
   for (const directory of [checkout, tooling]) {
     for (const args of [
       ["init", "--quiet", directory],
-      ["-C", directory, "remote", "add", "origin", "https://github.com/openclaw/openclaw.git"],
+      ["-C", directory, "remote", "add", "origin", origin],
     ]) {
       const result = spawnSync("git", args, { encoding: "utf8" });
       if (result.status !== 0) {
