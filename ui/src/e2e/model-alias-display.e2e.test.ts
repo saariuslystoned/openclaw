@@ -12,7 +12,7 @@ const model = (provider: string, id: string, name: string, alias: string) => ({
   alias,
 });
 const models = [
-  model("anthropic", "claude-opus-4-8", "Opus 4.8", "opus"),
+  model("anthropic", "claude-opus-4-8", "Opus 4.8", "writing"),
   model("nvidia", "moonshotai/kimi-k2.5", "Kimi K2.5", "Kimi K2.5 (NVIDIA)"),
 ];
 
@@ -34,7 +34,7 @@ suite.define(() => {
         main.locator(`[data-chat-model-option="${ref}"] .chat-controls__model-option-name`);
       const opus = option("anthropic/claude-opus-4-8");
       await revealChatModelOption(main, "anthropic/claude-opus-4-8");
-      await expect.poll(() => opus.textContent()).toBe("Opus 4.8 · opus");
+      await expect.poll(() => opus.textContent()).toBe("Opus 4.8 · writing");
 
       const nvidia = option("nvidia/moonshotai/kimi-k2.5");
       await revealChatModelOption(main, "nvidia/moonshotai/kimi-k2.5");
