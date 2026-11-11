@@ -1,0 +1,5 @@
+# #876 PR5 causal close-ordering and selected-transcript repair.
+# Observe actual scheduler cancellation while retaining accepted fork/rewind durability.
+# Keep exact selected3/inactive0 hydration and prove deferred recorder persistence
+# and canonical admission receipt at the real pre-inference transport boundary.
+24
