@@ -27,13 +27,17 @@ export {
 } from "./src/identity.js";
 export { installSignalCli, type SignalInstallResult } from "./src/install-signal-cli.js";
 export { signalMessageActions } from "./src/message-actions.js";
-export { type MonitorSignalOpts, monitorSignalProvider } from "./src/monitor.js";
+export type { MonitorSignalOpts } from "./src/monitor.js";
+export const monitorSignalProvider: typeof import("./src/monitor.js").monitorSignalProvider =
+  async (...args) => (await import("./src/monitor.js")).monitorSignalProvider(...args);
 export { looksLikeSignalTargetId, normalizeSignalMessagingTarget } from "./src/normalize.js";
 export {
   type ResolvedSignalOutboundTarget,
   resolveSignalOutboundTarget,
 } from "./src/outbound-session.js";
-export { probeSignal, type SignalProbe } from "./src/probe.js";
+export type { SignalProbe } from "./src/probe.js";
+export const probeSignal: typeof import("./src/probe.js").probeSignal = async (...args) =>
+  (await import("./src/probe.js")).probeSignal(...args);
 export {
   type ResolvedSignalReactionLevel,
   resolveSignalReactionLevel,

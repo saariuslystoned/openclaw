@@ -1,0 +1,2 @@
+# Signal API cold import and typed async delegation/default/error regression.
+64
