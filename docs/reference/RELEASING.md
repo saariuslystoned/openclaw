@@ -28,7 +28,11 @@ the regular stable channel. Its GitHub release is not marked Latest. A monthly
 line retires when `main` advances into the next month. Maintain only one
 extended-stable line: the trailing completed month relative to `main`'s version;
 older `.33+` lines are retired. Publishing a retired line requires an explicit
-maintainer decision; never bypass the release guards.
+maintainer decision; never bypass the release guards. The shared publisher records
+that decision with `retired_line_publication_reason` in its human-approved
+`npm-release` receipt, scoped to the exact release tag, source, channel, and
+parent attempt. Empty or historical ordinary approvals do not authorize a
+retired-line publication; all source, validation, and live-authority gates remain.
 
 ## Version naming
 
@@ -72,16 +76,20 @@ first published on the beta channel. Beta-profile evidence cannot qualify stable
 Every failed test needs an explicit release-lead decision: blocker or flake.
 Rerun a flake on the same Release SHA at most twice, file its fix-in-parallel
 issue or PR on `main`, and retain the original failure. Do not re-cut, change
-tooling, or start another Full Release Validation solely to clear a flake; a
-selected job that remains red blocks publication.
+tooling, or start another Full Release Validation solely to clear a flake.
+An intentional [release-tooling waiver](/reference/full-release-validation/evidence#release-tooling-waivers)
+is a reviewed policy change, not a retry. It requires validation under the new
+pinned tooling; the candidate stays unchanged.
 
 Blocking jobs include the CI coverage gate, seal/evidence,
 Build Artifacts, install smoke, survivor lanes, `update-first-hop-compat*`, pack/npm
 qualification, package integrity, and all Linux/Windows/macOS Gateway checks,
 including Windows packaged install/upgrade checks in Release Checks. A cancelled
 run still blocks. The selected `openclaw/ci-gate` must succeed; failed, missing,
-skipped, or cancelled coverage blocks. Publication waivers cannot bypass failures
-or required coverage. Validation covers source CI, packages, plugins,
+skipped, or cancelled coverage blocks. Only exact failed live-provider or
+Telegram leaves may use the checked-in release-tooling policy. FRV itself must
+conclude **success** before publication; the publisher has no waiver path.
+Validation covers source CI, packages, plugins,
 Gateway installs and upgrades, and selected app, UI, Telegram, QA, and
 live-provider checks. All-group qualification includes all nine Gateway
 install/upgrade combinations across Linux, Windows, and macOS. Coverage otherwise
@@ -142,6 +150,44 @@ approve; otherwise an eligible environment reviewer must act. An unavailable
 approval-status read is reported as unknown, not as no pending approval, and does
 not stop validation monitoring. Public release evidence can still use its existing
 anonymous rate-limit fallback; caller-specific approval reads cannot.
+
+### Resume activation while ClawHub recovery is independent
+
+For an already-published core, the hosted publisher accepts `defer_clawhub=true`
+with `openclaw_npm_resume_run_id=<original-successful-run>` and
+`wait_for_clawhub=false`. This recovery-only input requires direct core
+publication (`publish_openclaw_npm=true`, no `prepared_plugins`). The publisher
+still authenticates the original core's exact registry bytes and provenance,
+and retains all npm, source, artifact, approval, and finalization gates. It
+neither republishes core nor plans or dispatches new ClawHub work.
+
+The default remains normal ClawHub publication. A deferred run records
+`clawHubDeferred` in its authenticated dispatch receipt and explicit incomplete
+ClawHub proof. GitHub, Docker, and platform activation may continue, but the
+full release remains incomplete until independent ClawHub recovery verifies the
+original artifacts. Deferral does not authorize repacking or replacing them.
+
+### Explicit beta plugin authentication deferrals
+
+For an original all-package core beta publication with prepared qualification,
+the existing `prepared_plugins` JSON input accepts an optional operator-reviewed
+`corePluginDeferrals` array. An object containing only this array preserves normal
+publication; when artifact descriptors are present, retain the original `npm` and
+`clawhub` descriptors unchanged. Each entry names
+`packageName`, `version`, `sourceSha`, `reason`, and the original GitHub Actions
+job URL in `evidence`. Reasons are `npm-eneedauth` or
+`npm-trusted-publisher-exchange-http-404`; the latter describes a verified
+trusted-publisher token exchange failure, not an arbitrary registry 404. The
+human-approved parent receipt binds the declaration to the exact release source
+and tooling run. It is not available for stable or selected-package publication.
+
+The complete original roster and qualified artifacts remain verified, including
+the deferred packages. Every nondeferred package must be public before core npm
+publication. Final readback retains each original failure and explicit deferred
+disposition; it does not invent a successful publication. If a deferred version
+has since become public, normal registry integrity and selector checks apply.
+Deferred packages still require separately authorized recovery using their
+original qualified bytes.
 
 ### Watch publication
 
@@ -212,11 +258,13 @@ release dispatch or publication.
 New candidate qualification records three separate identities:
 
 - **C — candidate:** the exact commit whose source and publication bytes are checked.
-- **Q — qualification:** the full workflow closure at C, including reusable workflows,
-  local actions, scripts, planners, contracts, and coverage data. By default **Q=C**.
-- **P — admission, verification, and publication tooling:** an independently trusted
-  main revision or protected publication tag. P may differ from C/Q; C/Q does not
-  need to be an ancestor of P. Trust in P does not replace qualification of C.
+- **Q — qualification:** the candidate's test workflow closure at C, including
+  reusable workflows, local actions, scripts, planners, contracts, and coverage
+  data. By default **Q=C**.
+- **P — admission, aggregate validation, verification, and publication tooling:**
+  an independently trusted main revision or protected publication tag. P owns
+  the checked-in waiver policy and FRV's final verdict. P may differ from C/Q;
+  C/Q does not need to be an ancestor of P. Trust in P does not replace testing C.
 
 The standard SHA-pinned helper first asks P to record the reviewed operator
 attestation, complete normalized inputs, and data-only frozen Q coverage in an
@@ -228,8 +276,8 @@ Admission is not a successful test result or publication approval.
 `pnpm release:candidate --workflow-sha <P>` pins helper and publication tooling,
 not the qualification harness. Stable `npm-stable-v1` and admitted stable/full
 qualification already include mock-provider package Telegram proof. The helper
-reuses that authenticated proof for the exact FRV-qualified package, without a
-Telegram waiver; `npm-beta-v1` remains deferred, never passed. Separately packed
+reuses that authenticated proof for the exact FRV-qualified package;
+`npm-beta-v1` remains deferred, never passed. Separately packed
 historical packages and explicitly selected live-provider Telegram checks need
 their own proof at C. A supplemental check uses only the original retained
 `release-ci/*` ref verified at Q=C, with `harness_ref` pinned to that SHA; missing
@@ -250,11 +298,15 @@ and remain recoverable. New publish qualification requires admitted Q=C.
 
 Evidence reuse preserves both the original producer identity and the current
 consumer identity, inputs, coverage, and artifact provenance. It cannot relabel
-an old run as candidate-owned. Reconciliation is read-only; explicit resume is
-limited to a candidate request before any qualification-ref mutation or FRV
-dispatch. An uncertain write never authorizes another dispatch. All publication
-gates, stable soak, blocking performance, environment approvals, and exact-byte
-checks remain unchanged.
+an old run as candidate-owned. Reconciliation is read-only. Before the first FRV
+workflow POST, explicit resume may continue an admitted candidate request whose
+qualification ref is still intended, or reuse its existing uncertain ref after
+verifying the exact Q commit and a complete empty workflow inventory. Recovery
+revalidates admission and signer authority, then verifies the exact ref again
+before recording the first workflow attempt. An attempted or uncertain workflow
+POST remains observation-only and never authorizes another dispatch. All
+publication gates, stable soak, blocking performance, environment approvals, and
+exact-byte checks remain unchanged.
 
 Local contract tests can prove input binding, refusal, and recovery behavior.
 They do not prove hosted workflow admission, environment access, OIDC, signing,
@@ -262,6 +314,13 @@ or publication. Report hosted evidence and untested deployment prerequisites
 separately; a local green check is not a hosted release receipt.
 
 ## Packages and apps can become available at different times
+
+Selected official npm plugins publish successfully before core npm. ClawHub
+registry publication starts at its existing dispatch point and runs independently
+thereafter. ClawHub planning, authorization, dispatch, publication, verification,
+and recovery never block core npm, GitHub release finalization, main closeout,
+or the release retrospective PR. Pending or failed ClawHub work remains visible
+with its own owner and follow-up; a core release does not claim it is complete.
 
 A published Gateway release does not mean every native app is ready. Signing and publishing the apps can
 finish separately from npm, Docker, and the GitHub release.

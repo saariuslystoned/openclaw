@@ -1,3 +1,4 @@
+import type { SessionTranscriptRuntimeTarget } from "../../../config/sessions/session-accessor.js";
 import type { ContextEngine } from "../../../context-engine/types.js";
 import type { guardSessionManager } from "../../session-tool-result-guard-wrapper.js";
 import type { EmbeddedRunAttemptParams } from "./types.js";
@@ -14,5 +15,21 @@ export type EmbeddedAttemptSessionPreparationInput = {
   resolveActiveContextEnginePluginId: () => string | undefined;
   runAbortSignal: AbortSignal;
   sessionAgentId: string;
+  sessionTarget: SessionTranscriptRuntimeTarget;
   withOwnedTranscriptWrite: <T>(operation: () => Promise<T> | T) => Promise<T>;
 };
+
+export type SessionBoundaryAttempt = Pick<
+  EmbeddedRunAttemptParams,
+  | "config"
+  | "inputProvenance"
+  | "onUserMessagePersistenceInvalidated"
+  | "operation"
+  | "prompt"
+  | "promptCacheKey"
+  | "sessionId"
+  | "sessionKey"
+  | "skipPreparedUserTurnMessage"
+  | "suppressNextUserMessagePersistence"
+  | "userTurnTranscriptRecorder"
+>;

@@ -8,6 +8,7 @@ import {
   normalizeOptionalString,
   normalizeSingleOrTrimmedStringList,
 } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { terminalText } from "openclaw/plugin-sdk/terminal-safe-text";
 import { walkMemoryWikiDirectory } from "./bounded-walk.js";
 import { compileMemoryWikiVault } from "./compile.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
@@ -27,7 +28,6 @@ import {
 } from "./markdown.js";
 import { resolveMemoryWikiTimestamp } from "./time.js";
 import {
-  readExistingWikiPage,
   readExistingWikiPageUtf8,
   readWikiPageStat,
   writeGuardedVaultPage,
@@ -324,12 +324,7 @@ async function writeOkfConceptPage(params: {
 }): Promise<{ changed: boolean; created: boolean }> {
   const vault = await fsRoot(params.vaultRoot);
   const pageStat = await readWikiPageStat(vault, params.pagePath);
-  const existing = pageStat
-    ? await readExistingWikiPage(
-        () => vault.readText(params.pagePath),
-        (error) => error instanceof FsSafeError && error.code === "not-found",
-      )
-    : "";
+  const existing = pageStat ? await readExistingWikiPageUtf8(vault, params.pagePath, () => "") : "";
   const nextRendered = preserveHumanNotesBlock(params.content, existing, {
     producerMarkdown: true,
   });
@@ -385,7 +380,7 @@ async function removeStaleOkfConceptPages(params: {
 }
 
 export function formatOkfImportSummary(result: ImportMemoryWikiOkfResult): string {
-  return `Imported ${result.importedCount} OKF concept${result.importedCount === 1 ? "" : "s"} from ${result.bundlePath} into memory wiki. Updated ${result.updatedCount}; removed ${result.removedCount}; skipped ${result.skippedCount}; refreshed ${result.indexUpdatedFiles.length} index file${result.indexUpdatedFiles.length === 1 ? "" : "s"}.`;
+  return terminalText`Imported ${result.importedCount} OKF concept${result.importedCount === 1 ? "" : "s"} from ${result.bundlePath} into memory wiki. Updated ${result.updatedCount}; removed ${result.removedCount}; skipped ${result.skippedCount}; refreshed ${result.indexUpdatedFiles.length} index file${result.indexUpdatedFiles.length === 1 ? "" : "s"}.`;
 }
 
 export async function importMemoryWikiOkfBundle(params: {
@@ -487,6 +482,7 @@ export async function importMemoryWikiOkfBundle(params: {
     const conceptTimestamp = normalizeOptionalString(concept.frontmatter.timestamp);
 
     const frontmatter = {
+      type: concept.type,
       pageType: "concept",
       id: concept.pageId,
       title: concept.title,
@@ -527,13 +523,12 @@ export async function importMemoryWikiOkfBundle(params: {
     }
     pagePaths.push(concept.pagePath);
   }
-  const currentPagePaths = new Set(pagePaths);
   const removedPagePaths =
     warnings.length === 0
       ? await removeStaleOkfConceptPages({
           vaultRoot: params.config.vault.path,
           bundleKey,
-          currentPagePaths,
+          currentPagePaths: new Set(pagePaths),
         })
       : [];
 

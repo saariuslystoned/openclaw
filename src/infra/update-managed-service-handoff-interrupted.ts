@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import { isDeepStrictEqual } from "node:util";
-import { withExistingOpenClawStateDatabaseCurrentReadOnly } from "../state/openclaw-state-db-readonly.js";
 import {
   isPackageActivationComplete,
   openPackageActivationJournal,
@@ -14,23 +13,21 @@ import { verifyPackageUpdateRecovery } from "./update-global.js";
 import type { ManagedUpdateLeaseDatabaseIdentity } from "./update-managed-service-handoff-identity.js";
 import type { UpdateRecovery } from "./update-recovery.js";
 import { findUpdateGatewayStop } from "./update-run-gateway-stop.js";
+import { withUpdateRunRead } from "./update-run-read-admission.js";
 import { readUpdateRunRecord, readUpdateRuns } from "./update-run-read.kernel.js";
 import type { UpdateRunRecord } from "./update-run-record.js";
+import { loadPluginCohortRecovery } from "./update-run-recovery-store.js";
 import { readCurrentGitUpdateRecovery } from "./update-runner-git-recovery.js";
 
 /** This one-shot helper already owns the parked state; no installed snapshot worker is needed. */
 export function readManagedHandoffUpdateRun(runId: string) {
-  return withExistingOpenClawStateDatabaseCurrentReadOnly(
-    ({ db }) => readUpdateRunRecord(db, runId),
-    { allowNativeRead: true },
-  );
+  return withUpdateRunRead(({ db }) => readUpdateRunRecord(db, runId), { allowNativeRead: true });
 }
 
 export function readManagedHandoffGatewayStop() {
-  return withExistingOpenClawStateDatabaseCurrentReadOnly(
-    ({ db }) => findUpdateGatewayStop(readUpdateRuns(db, { limit: 100 })),
-    { allowNativeRead: true },
-  );
+  return withUpdateRunRead(({ db }) => findUpdateGatewayStop(readUpdateRuns(db, { limit: 100 })), {
+    allowNativeRead: true,
+  });
 }
 
 /** The parked helper continues its own run; publication keeps its sealed owner and checks. */
@@ -45,24 +42,13 @@ export async function recoverInterruptedManagedUpdate(params: {
   assertCurrent: () => void;
   /** Returns the run as read by the installed runtime after post-core repair. */
   finalize: () => Promise<UpdateRunRecord | undefined>;
-  /** Reads this run; the helper switches to the installed runtime once the schema advances. */
-  readRun?: (runId: string) => UpdateRunRecord | undefined;
 }) {
   const { root, assertCurrent } = params;
-  const run = (params.readRun ?? readManagedHandoffUpdateRun)(params.runId);
+  const run = readManagedHandoffUpdateRun(params.runId);
   if (!run || run.status !== "running") {
     throw new Error("Interrupted updater has no current running record");
   }
-  if (run.verification.settled || findUpdateGatewayStop([run])?.started) {
-    throw new Error("Gateway stop intent was superseded by a later running service");
-  }
-  const risk =
-    run.verification.recovery?.serviceRestartSafe === false
-      ? run.verification.recovery.dataAtRisk
-      : undefined;
-  if (risk) {
-    throw new Error(`keep the gateway stopped: data at risk (${risk})`);
-  }
+  assertRestartSafe(run);
   assertCurrent();
   const anchor = resolvePackageActivationAnchor(root);
   let publication;
@@ -119,7 +105,19 @@ export async function recoverInterruptedManagedUpdate(params: {
   if (original) {
     await publicationOwner?.retireVerified();
     assertCurrent();
-    return { recovery: params.original, status: "rolled-back" as const };
+    let warning: string | undefined;
+    // The original runtime settles a plugin cohort the killed updater reserved.
+    // A failure leaves it for update repair; the original Gateway still restarts.
+    if (loadPluginCohortRecovery(params.runId, { allowNativeRead: true })) {
+      const repaired = await params.finalize().catch((error: unknown) => {
+        warning = `Plugin recovery remains pending (${String(error)}); run openclaw update repair before the next update.`;
+        // A failed repair may still have recorded data risk for this run.
+        return readManagedHandoffUpdateRun(params.runId);
+      });
+      assertCurrent();
+      assertRestartSafe(repaired);
+    }
+    return { recovery: params.original, status: "rolled-back" as const, warning };
   }
   const candidate = publication?.descriptor.candidate;
   const expected = candidate
@@ -136,17 +134,20 @@ export async function recoverInterruptedManagedUpdate(params: {
   ) {
     throw new Error("Installed runtime does not match this update's recorded candidate");
   }
-  const recovery = (await params.finalize())?.verification.recovery;
+  const repaired = await params.finalize();
   assertCurrent();
-  if (
-    packageActivationIdentity(root, true) !== identity ||
-    (recovery?.serviceRestartSafe === false && recovery.dataAtRisk)
-  ) {
-    throw new Error(
-      "Installed generation changed or data risk was recorded during post-core repair",
-    );
+  assertRestartSafe(repaired);
+  if (packageActivationIdentity(root, true) !== identity) {
+    throw new Error("Installed generation changed during post-core repair");
   }
   await publicationOwner?.retireVerified();
   assertCurrent();
   return { recovery: installed, status: "succeeded" as const };
+}
+
+function assertRestartSafe(run: UpdateRunRecord | undefined) {
+  const recovery = run?.verification.recovery;
+  if (recovery?.serviceRestartSafe === false && recovery.dataAtRisk) {
+    throw new Error(`keep the gateway stopped: data at risk (${recovery.dataAtRisk})`);
+  }
 }

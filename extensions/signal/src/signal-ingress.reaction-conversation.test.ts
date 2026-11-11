@@ -26,7 +26,6 @@ import {
   createBaseSignalEventHandlerDeps,
   createSignalReceiveEvent,
 } from "./monitor/event-handler.test-harness.js";
-import * as questionReactions from "./question-reactions.js";
 import { registerSignalReplyContext } from "./reply-authors.js";
 import { setSignalRuntime } from "./runtime.js";
 import * as signalReactions from "./send-reactions.js";
@@ -218,7 +217,6 @@ it.each([true, false, undefined])(
       stateDir,
     });
     const approval = vi.spyOn(approvalReactions, "maybeResolveSignalApprovalReaction");
-    const question = vi.spyOn(questionReactions, "maybeResolveSignalQuestionReaction");
     const requests: Record<string, unknown>[] = [];
     const baseUrl = await withSignalServer(async (req, res) => {
       const chunks = [];
@@ -438,7 +436,6 @@ it.each([true, false, undefined])(
       expect(sends).not.toHaveBeenCalled();
       if (reactionConversations) {
         expect(approval).not.toHaveBeenCalled();
-        expect(question).not.toHaveBeenCalled();
       }
       expect(requests).toHaveLength(reactionConversations ? 2 : 0);
       for (const request of requests) {

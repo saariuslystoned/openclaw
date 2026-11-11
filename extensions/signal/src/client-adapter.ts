@@ -19,7 +19,6 @@ export async function signalRpcRequest<T = unknown>(
   method: string,
   params: Record<string, unknown> | undefined,
   opts: SignalRpcOptions & {
-    accountId?: string;
     transportKind?: SignalTransportKind;
     maxAttachmentBytes?: number;
   },
@@ -51,9 +50,9 @@ export async function signalCheck(
 export async function streamSignalEvents(params: {
   baseUrl: string;
   account?: string;
-  accountId?: string;
   abortSignal?: AbortSignal;
   timeoutMs?: number;
+  lastEventId?: string;
   onEvent: (event: SignalSseEvent) => unknown;
   onStreamOpen?: () => void;
   logger?: { log?: (msg: string) => void; error?: (msg: string) => void };

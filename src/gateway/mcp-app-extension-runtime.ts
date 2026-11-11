@@ -1,8 +1,9 @@
+import type { McpCatalogTool } from "../agents/agent-bundle-mcp-catalog.types.js";
 import { acquireSessionMcpRuntime } from "../agents/agent-bundle-mcp-manager-api.js";
 import { releaseSessionMcpRuntime } from "../agents/agent-bundle-mcp-manager-cleanup.js";
 import { buildBundleMcpToolsFromCatalog } from "../agents/agent-bundle-mcp-materialize.js";
 import { loadSessionMcpConfig } from "../agents/agent-bundle-mcp-runtime-config.js";
-import type { McpCatalogTool, SessionMcpRuntimeLease } from "../agents/agent-bundle-mcp-types.js";
+import type { SessionMcpRuntimeLease } from "../agents/agent-bundle-mcp-types.js";
 import { resolveAgentDir, resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
 import { getRegisteredAgentHarness } from "../agents/harness/registry.js";
 import type { prepareAgentHarnessSessionRuntime } from "../agents/harness/session-preparation.js";
@@ -10,10 +11,15 @@ import {
   requiresMcpCodexToolApproval,
   resolveProjectedMcpCodexToolApprovalMode,
 } from "../agents/mcp-codex-tool-approval.js";
-import { isMcpToolAllowed, normalizeMcpToolFilter } from "../agents/mcp-tool-filter.js";
+import {
+  createMcpToolFilter,
+  mcpCatalogToolFilterScope,
+  normalizeMcpToolFilter,
+} from "../agents/mcp-tool-filter.js";
 import type { McpAppPrepareToolCall } from "../agents/mcp-ui-resource.js";
 import { resolveSandboxRuntimeStatus } from "../agents/sandbox/runtime-status.js";
 import { resolveEffectiveAgentRuntime } from "../agents/thinking-runtime.js";
+import { resolveSessionWorkStartBlock } from "../config/sessions/session-work-start.js";
 import { getGatewayPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-state.js";
 import { getPluginToolMeta } from "../plugins/tool-metadata.js";
 import { resolveMcpAppRequesterId } from "./mcp-app-host-files.js";
@@ -108,9 +114,13 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
     let preparing:
       | Promise<import("../agents/harness/types.js").AgentHarnessSessionPreparationV1>
       | undefined;
+    let preparationClosed = false;
+    const preparationLifetime = new AbortController();
     const prepareSession = () => {
+      if (preparationClosed) {
+        throw new Error("MCP App session preparation is closed");
+      }
       preparing ??= (async () => {
-        current();
         const isolation = resolveSandboxRuntimeStatus({
           cfg,
           agentId,
@@ -127,13 +137,21 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         }
         const retained = access.retain();
         preparationOwner.access = retained;
-        const signal = options.signal
-          ? AbortSignal.any([retained.signal, options.signal])
-          : retained.signal;
+        const signal = AbortSignal.any([
+          preparationLifetime.signal,
+          retained.signal,
+          ...(options.signal ? [options.signal] : []),
+        ]);
         const assertPreparationCurrent = () => {
-          current();
+          const live = current();
           retained.assertCurrent();
           signal.throwIfAborted();
+          // Cold App discovery can replace the native binding even without a model turn.
+          // Keep the work-start gate live through preparation's effect assertions.
+          const blocked = resolveSessionWorkStartBlock(sessionKey, live.entry);
+          if (blocked) {
+            throw blocked;
+          }
         };
         assertPreparationCurrent();
         const source = await captureGatewayOperatorRunAuthority({
@@ -192,7 +210,19 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         assertPreparationCurrent();
         return setup.preparation;
       })();
+      // Observe rejected setup even when a plugin delays or omits awaiting its admitted promise.
+      void preparing.catch(() => {});
       return preparing;
+    };
+    const failures: unknown[] = [];
+    const settle = async (operation: () => unknown) => {
+      try {
+        await operation();
+      } catch (error) {
+        if (!failures.includes(error)) {
+          failures.push(error);
+        }
+      }
     };
     try {
       lease = await harness.acquireMcpAppRuntime({
@@ -207,16 +237,28 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         appRequester: requesterId ? { kind: "gateway-profile", profileId: requesterId } : undefined,
         prepareSession,
       });
+    } catch (error) {
+      failures.push(error);
     } finally {
-      try {
-        preparationOwner.setup?.dispose();
-      } finally {
-        try {
-          preparationOwner.source?.release();
-        } finally {
-          preparationOwner.access?.release();
-        }
+      // A plugin may return without awaiting prepareSession. Seal new admission,
+      // then join the admitted preparation before releasing its late-created owners.
+      preparationClosed = true;
+      preparationLifetime.abort(new Error("MCP App session preparation is closed"));
+      await settle(() => preparing);
+      await settle(() => preparationOwner.setup?.dispose());
+      await settle(() => preparationOwner.source?.release());
+      await settle(() => preparationOwner.access?.release());
+    }
+    if (failures.length > 0) {
+      // Acquisition can succeed before preparation cleanup fails; that lease is still ours.
+      if (lease) {
+        const acquired = lease;
+        await settle(() => releaseSessionMcpRuntime(acquired));
+        await settle(() => acquired.runtime.joinCleanup?.());
       }
+      throw failures.length === 1
+        ? failures[0]
+        : new AggregateError(failures, "MCP App runtime preparation failed");
     }
   } else {
     lease = await acquireSessionMcpRuntime({
@@ -273,7 +315,10 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         (!rawServer &&
           !(runtime.assertOwnerCurrent && catalog.servers[tool.serverName]?.pluginId)) ||
         (rawServer &&
-          !isMcpToolAllowed(normalizeMcpToolFilter(rawServer.toolFilter), tool.toolName))
+          !createMcpToolFilter(
+            normalizeMcpToolFilter(rawServer.toolFilter),
+            mcpCatalogToolFilterScope(catalog, tool.serverName),
+          )(tool.toolName))
       ) {
         throw new Error("MCP App tool is denied by server policy");
       }
@@ -314,7 +359,7 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         request.assertCurrent();
         assertTool(tool, false, assertAccess);
       };
-      assertCurrent();
+      request.assertCurrent();
       const required = assertTool(tool, true, assertAccess);
       if (required) {
         await requestMcpAppToolApproval({
@@ -331,7 +376,7 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         });
       }
       const assertExecutionCurrent = () => {
-        assertCurrent();
+        request.assertCurrent();
         if (assertTool(tool, true, assertAccess) && !required) {
           throw new Error("MCP App approval policy changed before execution");
         }
@@ -382,7 +427,6 @@ export async function prepareMcpAppExtensionRuntime(options: GatewayRequestHandl
         ...retained,
         prepareToolCall: prepareViewToolCall,
         assertCurrent: () => {
-          retained.assertCurrent();
           if (
             current(retained.assertCurrent).entry.permissionMode !== target.entry.permissionMode
           ) {

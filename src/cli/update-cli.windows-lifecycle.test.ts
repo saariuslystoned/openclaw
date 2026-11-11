@@ -9,7 +9,7 @@ import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths
 import { withEnvAsync } from "../test-utils/env.js";
 import { resolveTestNodeExecPath } from "../test-utils/node-process.js";
 import { createCommandResult as commandResult } from "../test-utils/npm-spec-install-test-helpers.js";
-import { waitForCliSignalExit } from "./signal-exit-barrier.js";
+import { registerSignalExitGate, waitForCliSignalExit } from "./signal-exit-barrier.js";
 import {
   expectNoSideEffects,
   freshRestartCalls,
@@ -137,7 +137,6 @@ describe("update-cli", () => {
   });
 
   it("does not inspect or mutate a Windows host service from an isolated install", async () => {
-    vi.spyOn(process, "platform", "get").mockReturnValue("win32");
     const tempDir = fixture.tempDirs.make("openclaw-update-isolated-service-");
     const { nodeModules } = await fixture.setupInstalledPackageRoot(tempDir);
     fixture.mockRunningManagedGateway();
@@ -146,6 +145,7 @@ describe("update-cli", () => {
 
     await withEnvAsync({ OPENCLAW_HOME: path.join(tempDir, "relocated-home") }, async () => {
       fixture.initializeExistingUpdateProfile();
+      vi.spyOn(process, "platform", "get").mockReturnValue("win32");
       await updateCommand({ yes: true });
     });
 
@@ -258,7 +258,6 @@ describe("update-cli", () => {
     async ({ command, fault }) => {
       const stopFailure = fault === "stop-enable-committed";
       runtimeRecovery.stubNodeRuntime();
-      vi.spyOn(process, "platform", "get").mockReturnValue("win32");
       fixture.setTty(true);
       fixture.setStdoutTty(true);
       const root = await fixture.mockPackageInstallAtCaseDir("openclaw-update-native-preparation");
@@ -282,6 +281,7 @@ describe("update-cli", () => {
         ...process.env,
         OPENCLAW_STATE_DIR: target.stateDir,
       });
+      vi.spyOn(process, "platform", "get").mockReturnValue("win32");
       fixture.tempDirsToCleanup.add(target.stateDir);
       await fs.mkdir(target.stateDir, { recursive: true });
       await writeJsonFixture(target.configPath, fixture.baseSnapshot.config);
@@ -389,6 +389,7 @@ describe("update-cli", () => {
         version: "1.0.0",
       });
       expect(serviceRestart).not.toHaveBeenCalled();
+      expect(freshRestartCalls()).toEqual([]);
       expect(triageCommand).toHaveBeenCalledOnce();
       expect(reportedError).toEqual(new ExitError(1));
       expect(defaultRuntime.exit).not.toHaveBeenCalled();
@@ -711,7 +712,7 @@ describe("update-cli", () => {
         async (
           _env,
           options: Parameters<
-            typeof import("../daemon/schtasks.js").resumeScheduledTaskAutoStartAfterUpdate
+            typeof import("../daemon/schtasks-control.js").resumeScheduledTaskAutoStartAfterUpdate
           >[1],
         ) => {
           await options?.beforeMutation?.();
@@ -730,11 +731,15 @@ describe("update-cli", () => {
       } else {
         serviceReadRuntime.mockResolvedValue({ status: "stopped", state: "stopped" });
       }
-
       const updatePromise = updateCommand({
         yes: true,
         restart: phase === "service pre-stop inspection",
+      }).catch((cause: unknown) => {
+        throw new Error(`${getLogOutput()}\n${getErrorOutput()}`, { cause });
       });
+      // The executable retains the whole command, including unwind, before signal cleanup.
+      const releaseCommandGate = registerSignalExitGate(updatePromise);
+      void updatePromise.then(releaseCommandGate, releaseCommandGate);
       try {
         await Promise.race([
           entered.promise,
@@ -746,19 +751,16 @@ describe("update-cli", () => {
           .filter(([event]) => event === signal)
           .map(([, listener]) => listener);
         expect(signalListeners.length).toBeGreaterThan(0);
-        // A native signal reaches every invocation-owned listener in registration order.
-        for (const listener of signalListeners) {
-          listener();
-        }
-        for (const listener of signalListeners) {
+        // Repeated signals reach every invocation-owned listener in registration order.
+        for (const listener of signalListeners.concat(signalListeners)) {
           listener();
         }
         expect(processExitSpy).not.toHaveBeenCalled();
         expect(resumeScheduledTaskAutoStartAfterUpdate).not.toHaveBeenCalled();
         expect(gitMutation).not.toHaveBeenCalled();
         gate.resolve();
-
         await updatePromise;
+        await expect(waitForCliSignalExit()).resolves.toBe(130);
         expect(resumeScheduledTaskAutoStartAfterUpdate).toHaveBeenCalledOnce();
         expect(serviceStop).not.toHaveBeenCalled();
         expect(Boolean(packageInstallCommandCall())).toBe(phase !== "Git task suspension");
@@ -768,12 +770,13 @@ describe("update-cli", () => {
           { phase: "finished", status: "skipped", reason: "cancelled" },
         ]);
         expect(defaultRuntime.exit).not.toHaveBeenCalledWith(1);
-        await expect(waitForCliSignalExit()).resolves.toBe(130);
         expect(process.exitCode).toBe(130);
         expect(processExitSpy).not.toHaveBeenCalled();
       } finally {
         gate.resolve();
-        await updatePromise;
+        // The try body observes command errors; cleanup joins work before signal finalization.
+        await Promise.allSettled([updatePromise]);
+        await waitForCliSignalExit();
       }
     },
   );
@@ -805,11 +808,9 @@ describe("update-cli", () => {
     suspendScheduledTaskAutoStartForUpdate.mockResolvedValue(true);
     resumeScheduledTaskAutoStartAfterUpdate.mockResolvedValue(true);
 
-    try {
-      await updateCommand({ yes: true, restart: false });
-    } catch (cause) {
+    await updateCommand({ yes: true, restart: false }).catch((cause: unknown) => {
       throw new Error(`${getLogOutput()}\n${getErrorOutput()}`, { cause });
-    }
+    });
 
     expect(serviceStop).not.toHaveBeenCalled();
     expect(packageInstallCommandCall()).toBeDefined();

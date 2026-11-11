@@ -1,5 +1,7 @@
+import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { parse as parseYaml } from "yaml";
 import {
   continueFailed,
   createClient,
@@ -29,7 +31,6 @@ import {
   withoutChildRunIdentity,
   plan,
   executionPlanArtifact,
-  historicalExecutionPlanArtifact,
   runFor,
   rootRun,
 } from "./frv.test-support.js";
@@ -259,16 +260,6 @@ describe("FRV immutable plan eligibility", () => {
     },
   );
 
-  it("keeps historical plan verification but rejects it for continuation", async () => {
-    const historical = historicalExecutionPlanArtifact();
-    expect(validateReleaseExecutionPlanArtifact(historical)).not.toHaveProperty(
-      "attemptEvidenceVersion",
-    );
-    await expect(
-      loadPlan({ repository: REPOSITORY, runId: "77" }, async () => historical),
-    ).rejects.toThrow("run predates attempt-aware immutable plans; run a fresh all-group FRV");
-  });
-
   it("rejects missing plans and focused roots", async () => {
     await expect(
       loadPlan({ repository: REPOSITORY, runId: "77" }, async () => undefined),
@@ -289,6 +280,7 @@ describe("FRV immutable plan eligibility", () => {
       repository: REPOSITORY,
       getRun: async () => structuredClone(active),
       getAttemptJobs: async () => [
+        { ...job("Prepare release npm artifacts", "failure"), run_attempt: attempt },
         {
           ...job("Seal release execution plan"),
           conclusion: null,
@@ -306,6 +298,14 @@ describe("FRV immutable plan eligibility", () => {
     ).resolves.toMatchObject({
       pending: {
         action: "waiting-for-plan",
+        blockers: [
+          {
+            owner: "parent",
+            job: "Prepare release npm artifacts",
+            conclusion: "failure",
+            runAttempt: attempt,
+          },
+        ],
         planAvailability: { runAttempt: attempt, state },
         nextCommand: "pnpm frv watch --run 77",
       },
@@ -569,11 +569,25 @@ describe("FRV continuation preflight", () => {
     });
   });
 
-  it.each(["npm", "docker"])(
-    "retries only failed %s producer jobs, preserves green diagnostics, and verifies the parent",
-    async (stage) => {
+  it.each([
+    { stage: "npm", missingPreparationIdentity: false },
+    { stage: "npm", missingPreparationIdentity: true },
+    { stage: "docker", missingPreparationIdentity: false },
+  ])(
+    "retries failed $stage jobs and verifies the parent (missing preparation identity: $missingPreparationIdentity)",
+    async ({ stage, missingPreparationIdentity }) => {
       const fixture = artifactFixture(stage);
       fixture.producer.conclusion = "failure";
+      if (missingPreparationIdentity) {
+        fixture.logs.dispatch = fixture.logs.dispatch.split("\n")[0]!;
+        const getParentJobs = fixture.client.getParentJobs;
+        fixture.client.getParentJobs = async () =>
+          (await getParentJobs()).map((entry) =>
+            entry.name === "Prepare release npm artifacts"
+              ? Object.assign(entry, { conclusion: "failure" })
+              : entry,
+          );
+      }
       let parentAttempt = 1;
       const read = fixture.client.getRun.getMockImplementation()!;
       fixture.client.getRun.mockImplementation(async (id) =>
@@ -602,17 +616,28 @@ describe("FRV continuation preflight", () => {
     },
   );
 
-  it("recovers an unconsumed npm producer without a preparation identity", async () => {
-    const fixture = artifactFixture("npm");
-    fixture.producer.conclusion = "failure";
-    fixture.logs.dispatch = fixture.logs.dispatch.split("\n", 1)[0]!;
+  it.each([
+    { candidateConsumed: true, identityCount: 0 },
+    { candidateConsumed: false, identityCount: 2 },
+  ])(
+    "rejects unsafe npm preparation logs before mutation ($candidateConsumed consumed, $identityCount identities)",
+    async ({ candidateConsumed, identityCount }) => {
+      const fixture = artifactFixture("npm");
+      fixture.producer.conclusion = "failure";
+      const [dispatch, identity] = fixture.logs.dispatch.split("\n");
+      fixture.logs.dispatch = [dispatch, ...Array(identityCount).fill(identity)].join("\n");
+      const recoveryPlan = {
+        ...fixture.plan,
+        ...(candidateConsumed ? { candidate: { producer: { runId: "606" } } } : {}),
+      };
 
-    await expect(
-      continueFailed(fixture.plan, "77", fixture.client, { dryRun: true }),
-    ).resolves.toMatchObject({ action: "would-rerun" });
-    expect(fixture.client.rerunFailed).not.toHaveBeenCalled();
-    expect(fixture.client.rerunParent).not.toHaveBeenCalled();
-  });
+      await expect(continueFailed(recoveryPlan, "77", fixture.client)).rejects.toThrow(
+        "Original npm preparation identity is unavailable or ambiguous",
+      );
+      expect(fixture.client.rerunFailed).not.toHaveBeenCalled();
+      expect(fixture.client.rerunParent).not.toHaveBeenCalled();
+    },
+  );
 
   it("refuses a consumed producer rerun before mutation and shows authenticated reuse", async () => {
     const fixture = artifactFixture("npm");
@@ -848,41 +873,6 @@ describe("FRV continuation preflight", () => {
     }
     expect(fixture.client.rerunFailed).toHaveBeenCalledExactlyOnceWith("81");
     expect(fixture.client.rerunParent).toHaveBeenCalledExactlyOnceWith("77");
-  });
-
-  it.each(["parent"])("rechecks artifact producers before retrying a %s rerun", async (target) => {
-    const fixture = artifactFixture("npm");
-    const read = fixture.client.getRun.getMockImplementation()!;
-    fixture.client.getRun.mockImplementation(async (id: string) =>
-      id === "77"
-        ? rootRun(1, target === "parent" ? "failure" : "success")
-        : id === "101"
-          ? runFor(fixture.selected, 1, target === "child" ? "failure" : "success")
-          : structuredClone(await read(id)),
-    );
-    const ambiguousMutation = vi.fn(async () => {
-      fixture.producer.run_attempt = 2;
-      throw Object.assign(new Error("gh api failed"), {
-        stderr: "gh: request failed (HTTP 502)",
-      });
-    });
-    if (target === "child") {
-      fixture.client.rerunFailed = ambiguousMutation;
-    } else {
-      fixture.client.rerunParent = ambiguousMutation;
-    }
-
-    await withFastPolling(
-      () =>
-        expect(
-          continueFailed(fixture.plan, "77", {
-            ...fixture.client,
-            verify: async () => "{}",
-          }),
-        ).rejects.toThrow("Artifact producer changed during recovery: 81"),
-      "5",
-    );
-    expect(ambiguousMutation).toHaveBeenCalledTimes(1);
   });
 
   it("does not invent rerunnable producers for retained publication artifacts", async () => {
@@ -2026,7 +2016,7 @@ describe("FRV same-parent recovery", () => {
     expect(posts).toEqual({ child: 1, parent: 1 });
   });
 
-  it.each(["parent"])("reconciles a write-once %s rerun", async (target) => {
+  it.each(["child", "parent"])("reconciles a write-once %s rerun", async (target) => {
     const transportError = Object.assign(new Error("read ECONNRESET after dispatch"), {
       code: "ECONNRESET",
     });
@@ -2424,6 +2414,25 @@ describe("FRV child rerun", () => {
     ).resolves.toMatchObject({ action: "reran-child", reruns: [{ runAttempt: 3 }] });
   });
 
+  it("keeps install-smoke payload verifiers independent of the consumer run attempt", () => {
+    const installSmoke = parseYaml(
+      readFileSync(".github/workflows/install-smoke-reusable.yml", "utf8"),
+    ) as { jobs: Record<string, { steps?: { run?: string }[] }> };
+    expect(
+      new Set(
+        Object.entries(installSmoke.jobs)
+          .filter(([, entry]) =>
+            entry.steps?.some(
+              (step) =>
+                step.run?.includes("install-smoke-candidate-payload.mts verify") &&
+                step.run.includes('--run-attempt "$GITHUB_RUN_ATTEMPT"'),
+            ),
+          )
+          .map(([id]) => id),
+      ),
+    ).toEqual(new Set());
+  });
+
   it.each([
     ["a failed consumer", ["installer_smoke_update", "installer_smoke"]],
     [
@@ -2462,8 +2471,7 @@ describe("FRV child rerun", () => {
           Object.assign(job(name, attempt === 1 ? "failure" : "success"), { id: index + 2 }),
         ),
       ],
-      rerunFailed: vi.fn(),
-      rerunRun: vi.fn(async () => scenario.client.rerunFailed()),
+      rerunFailed: vi.fn(async () => scenario.client.rerunFailed()),
     };
     await expect(
       continueFailed(plan([scenario.selected]), "77", client, { dryRun: true }),
@@ -2490,13 +2498,18 @@ describe("FRV child rerun", () => {
           ? [{ ...job("test", "failure"), id: 101 }]
           : Array.from({ length: copies }, () => queued),
     };
-    await withFastPolling(
-      () =>
-        expect(
+    vi.useFakeTimers();
+    try {
+      await withFastPolling(async () => {
+        const rejected = expect(
           continueFailed(plan([scenario.selected]), "77", client, { child: "101", log: vi.fn() }),
-        ).rejects.toThrow(message),
-      "5",
-    );
+        ).rejects.toThrow(message);
+        await Promise.all([rejected, vi.advanceTimersByTimeAsync(10)]);
+      }, "5");
+    } finally {
+      vi.useRealTimers();
+    }
+    expect(scenario.counters.reads.child).toBeGreaterThan(0);
     expect(scenario.counters.posts.child).toBe(1);
   });
 
@@ -2524,19 +2537,24 @@ const unsealedWatcherReads = {
   },
 };
 
+function watcherPlan() {
+  const immutable = executionPlanArtifact();
+  const source = sourceFact();
+  Object.assign(immutable, {
+    sourceAdmissionContract: "1",
+    sourceAdmission: sourceFact({
+      workflow: { ...source.workflow, ref: `refs/heads/${SOURCE_REF}` },
+      coverage: { ...source.coverage, release_profile: "beta" },
+    }),
+  });
+  immutable.sha256 = releaseExecutionPlanSha256(immutable);
+  return immutable;
+}
+
 describe("FRV watch", () => {
   it("resumes a missing or retired watcher with the immutable candidate, fresh tip, and no duplicate terminal notification", async () => {
     const statePath = path.join(tempDirs.make("frv-candidate-watch-"), "state.json");
-    const immutable = executionPlanArtifact();
-    const source = sourceFact();
-    Object.assign(immutable, {
-      sourceAdmissionContract: "1",
-      sourceAdmission: sourceFact({
-        workflow: { ...source.workflow, ref: `refs/heads/${SOURCE_REF}` },
-        coverage: { ...source.coverage, release_profile: "beta" },
-      }),
-    });
-    immutable.sha256 = releaseExecutionPlanSha256(immutable);
+    const immutable = watcherPlan();
     let tip = TARGET_SHA;
     let conclusion: string | null = null;
     const events: {
@@ -2618,37 +2636,66 @@ describe("FRV watch", () => {
     await expect(poll()).resolves.toMatchObject({ complete: true });
   });
 
-  it("labels every failed artifact qualification job as a blocker", async () => {
-    const statePath = path.join(tempDirs.make("frv-producer-blockers-"), "state.json");
-    const messages: string[] = [];
-    const client = {
-      ...unsealedWatcherReads,
-      repository: REPOSITORY,
-      getRun: async (runId: string) =>
-        runId === "77" ? rootRun(1, "failure") : runFor(child("normalCi", "808"), 1, "failure"),
-      getParentJobs: async () => [
-        { ...job("Prepare release npm artifacts"), id: 5, run_attempt: 1 },
-      ],
-      getJobLog: async () =>
-        `Dispatched full-release-artifacts.yml: https://github.com/${REPOSITORY}/actions/runs/808 (attempt 1)`,
-      getAttemptJobs: async () => [
-        job("Prepare npm artifacts / Check npm dependencies", "failure"),
-        job("Prepare npm artifacts / Check npm package contents", "timed_out"),
-      ],
-    };
+  it.each([
+    [1, 1, 1, true],
+    [2, 1, 2, false],
+    [2, 2, 2, true],
+  ])(
+    "labels every failed artifact qualification job as a blocker only for its parent attempt (%s/%s/%s)",
+    async (parentAttempt, dispatchAttempt, childAttempt, blocks) => {
+      const statePath = path.join(tempDirs.make("frv-producer-blockers-"), "state.json");
+      const messages: string[] = [];
+      const client = {
+        ...unsealedWatcherReads,
+        repository: REPOSITORY,
+        getRun: async (runId: string) =>
+          runId === "77"
+            ? rootRun(parentAttempt, "failure")
+            : runFor(child("normalCi", "808"), childAttempt, "failure"),
+        getParentJobs: async () => [
+          { ...job("Resolve target ref"), id: 4, run_attempt: parentAttempt },
+          { ...job("Prepare release npm artifacts"), id: 5, run_attempt: dispatchAttempt },
+        ],
+        getJobLog: async () =>
+          `Dispatched full-release-artifacts.yml: https://github.com/${REPOSITORY}/actions/runs/808 (attempt 1)`,
+        getAttemptJobs: async () => [
+          { ...job("Prepare npm artifacts / Check npm dependencies", "failure"), run_attempt: 1 },
+          {
+            ...job("Prepare npm artifacts / Check npm package contents", "timed_out"),
+            run_attempt: 1,
+          },
+        ],
+      };
 
-    await expect(
-      watchRelease("77", client, {
+      const result = await watchRelease("77", client, {
         statePath,
         once: true,
         emit: (event) => messages.push(event.message),
-      }),
-    ).resolves.toMatchObject({ complete: true });
-    expect(messages.filter((message) => message.includes("blocker"))).toEqual([
-      expect.stringContaining("Check npm dependencies"),
-      expect.stringContaining("Check npm package contents"),
-    ]);
-  });
+      });
+      expect(result).toMatchObject({ complete: true });
+      if (blocks) {
+        expect(result).toMatchObject({
+          complete: true,
+          blockers: [
+            expect.objectContaining({
+              blocker: true,
+              message: expect.stringContaining("Check npm dependencies"),
+            }),
+            expect.objectContaining({
+              blocker: true,
+              message: expect.stringContaining("Check npm package contents"),
+            }),
+          ],
+        });
+      } else {
+        expect(result).not.toHaveProperty("blockers");
+      }
+      expect(messages.filter((message) => message.includes("Check npm"))).toEqual([
+        expect.stringContaining("Check npm dependencies"),
+        expect.stringContaining("Check npm package contents"),
+      ]);
+    },
+  );
 
   it.each([
     "execution plan",
@@ -2892,15 +2939,20 @@ describe("FRV watch", () => {
       "normalCi run 101 attempt 1 completed failure",
       'normalCi job "checks-node-extensions-shard-1" timed_out (attempt 1; runner ubuntu-24.04 / GitHub Actions 1)',
     ]);
+    const saved = JSON.parse(readFileSync(statePath, "utf8"));
+    delete saved.children["101"].parentAttempt;
+    writeFileSync(statePath, JSON.stringify(saved));
     await poll();
     expect(messages.splice(0)).toEqual([]);
+    expect(JSON.parse(readFileSync(statePath, "utf8")).children["101"].parentAttempt).toBe(1);
     parentConclusion = "failure";
     await expect(poll()).resolves.toMatchObject({ complete: true });
     expect(messages).toEqual([
       "parent 77 attempt 1 completed failure",
       "parent 77 and every dispatched child are terminal",
     ]);
-    expect(getJobLog).toHaveBeenCalledExactlyOnceWith(5, expect.anything());
+    expect(getJobLog).toHaveBeenCalledTimes(2);
+    expect(getJobLog).toHaveBeenLastCalledWith(5, expect.anything());
   });
 
   it("advises a fresh FRV only for duplicate jobs that persist into a final attempt", async () => {
@@ -2943,97 +2995,160 @@ describe("FRV watch", () => {
     ]);
   });
 
-  it("labels carried-forward failures and does not replay them after a rerun", async () => {
-    const statePath = path.join(tempDirs.make("frv-carried-watch-"), "state.json");
-    const resumedStatePath = path.join(tempDirs.make("frv-carried-watch-"), "state.json");
-    const ci = child("normalCi", "101");
-    let attempt = 1;
-    const messages: string[] = [];
-    const client = {
-      ...unsealedWatcherReads,
-      repository: REPOSITORY,
-      getRun: async (runId: string) =>
-        runId === "77" ? rootRun(1, null) : runFor(ci, attempt, "failure"),
-      getParentJobs: async () => [
-        { ...job("Run normal full CI"), id: 5, run_attempt: 1, status: "completed" },
-      ],
-      getJobLog: async () =>
-        `Dispatched ci.yml: https://github.com/${REPOSITORY}/actions/runs/101 (attempt 1)`,
-      getAttemptJobs: async (_runId: string, requestedAttempt: number) => [
-        {
-          ...job("carried failure", "failure"),
-          id: requestedAttempt === 1 ? 900 : 901,
-          run_attempt: 1,
+  it.each(["reported", "restamped", "omitted", "rerun", "recovered"])(
+    "labels carried-forward blockers once per effective attempt across restarts (%s)",
+    async (kind) => {
+      const statePath = path.join(tempDirs.make("frv-carried-watch-"), "state.json");
+      const resumedStatePath = path.join(tempDirs.make("frv-carried-watch-"), "state.json");
+      const ci = child("normalCi", "101");
+      let attempt = 1;
+      const messages: string[] = [];
+      const client = {
+        ...unsealedWatcherReads,
+        repository: REPOSITORY,
+        getRun: async (runId: string) =>
+          runId === "77" ? rootRun(1, null) : runFor(ci, attempt, "failure"),
+        getParentJobs: async () => [
+          { ...job("Run normal full CI"), id: 5, run_attempt: 1, status: "completed" },
+        ],
+        getJobLog: async () =>
+          `Dispatched ci.yml: https://github.com/${REPOSITORY}/actions/runs/101 (attempt 1)`,
+        getAttemptJobs: async (_runId: string, requestedAttempt: number) => {
+          if (requestedAttempt === 2 && kind === "omitted") {
+            return [job("another completed job")];
+          }
+          return [
+            {
+              ...job("carried failure", "failure"),
+              id: requestedAttempt === 1 ? 900 : 901,
+              run_attempt: requestedAttempt === 2 && kind !== "reported" ? 2 : 1,
+              ...(requestedAttempt === 2 && kind === "recovered" ? { conclusion: "success" } : {}),
+              steps: [
+                {
+                  number: 1,
+                  name:
+                    requestedAttempt === 2 && kind === "rerun"
+                      ? "new execution"
+                      : "original execution",
+                  status: "completed",
+                  conclusion: "failure",
+                },
+              ],
+            },
+          ];
         },
-      ],
-    };
-    const poll = (watchStatePath = statePath) =>
-      watchRelease("77", client, {
-        emit: (event: { message: string }) => messages.push(event.message),
-        once: true,
-        statePath: watchStatePath,
-      });
+      };
+      const poll = (watchStatePath = statePath) =>
+        watchRelease("77", client, {
+          emit: (event: { message: string }) => messages.push(event.message),
+          once: true,
+          statePath: watchStatePath,
+        });
 
-    await poll();
-    expect(messages.splice(0)).toContain(
-      'normalCi job "carried failure" failure (attempt 1; runner none)',
-    );
-    attempt = 2;
-    await poll();
-    expect(messages.splice(0)).not.toContainEqual(expect.stringContaining('job "carried failure"'));
+      await poll();
+      expect(messages.splice(0)).toContain(
+        'normalCi job "carried failure" failure (attempt 1; runner none)',
+      );
+      attempt = 2;
+      const result = await poll();
+      const blocks = !["rerun", "recovered"].includes(kind);
+      if (blocks) {
+        expect(result).toMatchObject({ blockers: [expect.objectContaining({ blocker: true })] });
+        expect(messages.splice(0)).toContain(
+          'normalCi job "carried failure" failure (effective attempt 2; carried forward from attempt 1; runner none)',
+        );
+      } else {
+        expect(result).not.toHaveProperty("blockers");
+        expect(messages.splice(0)).not.toContainEqual(expect.stringContaining("carried forward"));
+      }
+      await poll();
+      expect(messages.splice(0)).toEqual([]);
 
-    await poll(resumedStatePath);
-    expect(messages).toContain(
-      'normalCi job "carried failure" failure (effective attempt 2; carried forward from attempt 1; runner none)',
-    );
-  });
-  it("waits for lagging dispatch and job snapshots before declaring the release terminal", async () => {
-    const statePath = path.join(tempDirs.make("frv-watch-"), "state.json");
-    const ci = child("normalCi", "101");
-    let snapshot: "in_progress" | "completed" = "in_progress";
-    const client = {
-      ...unsealedWatcherReads,
-      repository: REPOSITORY,
-      getRun: async (runId: string) =>
-        runId === "77" ? rootRun(1, "failure") : runFor(ci, 1, "failure"),
-      getParentJobs: async (): Promise<Record<string, unknown>[]> => [
-        { conclusion: null, id: 5, name: "Run normal full CI", run_attempt: 1, status: snapshot },
-      ],
-      getJobLog: async () =>
-        `Dispatched ci.yml: https://github.com/${REPOSITORY}/actions/runs/101 (attempt 1)`,
-      getAttemptJobs: async (): Promise<Record<string, unknown>[]> => [
-        { ...job("late"), conclusion: null, id: 7, status: "queued" },
-      ],
-    };
-    const poll = () => watchRelease("77", client, { emit: () => undefined, once: true, statePath });
-    const parentJobs = client.getParentJobs;
-    client.getParentJobs = async () => [];
-    await expect(poll()).resolves.toMatchObject({ complete: false });
-    // A newer parent attempt needs its own jobs in the snapshot.
-    const getRun = client.getRun;
-    client.getRun = async (runId: string) =>
-      runId === "77" ? rootRun(2, "failure") : getRun(runId);
-    client.getParentJobs = async () => [
-      {
-        conclusion: "success",
-        id: 4,
-        name: "Resolve target ref",
-        run_attempt: 1,
-        status: "completed",
-      },
-    ];
-    await expect(poll()).resolves.toMatchObject({ complete: false });
-    client.getRun = getRun;
-    client.getParentJobs = parentJobs;
+      const resumed = await poll(resumedStatePath);
+      if (blocks) {
+        expect(resumed).toMatchObject({ blockers: [expect.objectContaining({ blocker: true })] });
+        expect(messages).toContain(
+          'normalCi job "carried failure" failure (effective attempt 2; carried forward from attempt 1; runner none)',
+        );
+      } else {
+        expect(resumed).not.toHaveProperty("blockers");
+        expect(messages).not.toContainEqual(expect.stringContaining("carried forward"));
+      }
+    },
+  );
+  it.each([false, true])(
+    "waits for lagging dispatch and job snapshots before declaring the release terminal (artifact=%s)",
+    async (artifact) => {
+      const statePath = path.join(tempDirs.make("frv-watch-"), "state.json");
+      const ci = child("normalCi", "101");
+      let snapshot: "in_progress" | "completed" = "in_progress";
+      const client = {
+        ...unsealedWatcherReads,
+        repository: REPOSITORY,
+        getRun: async (runId: string) =>
+          runId === "77" ? rootRun(1, "failure") : runFor(ci, 1, "failure"),
+        getParentJobs: async (): Promise<Record<string, unknown>[]> => [
+          {
+            conclusion: null,
+            id: 5,
+            name: artifact ? "Prepare release npm artifacts" : "Run normal full CI",
+            run_attempt: 1,
+            status: snapshot,
+          },
+        ],
+        getJobLog: async () =>
+          `Dispatched ${artifact ? "full-release-artifacts.yml" : "ci.yml"}: https://github.com/${REPOSITORY}/actions/runs/101 (attempt 1)`,
+        getAttemptJobs: async (): Promise<Record<string, unknown>[]> => [
+          { ...job("late"), conclusion: null, id: 7, status: "queued" },
+        ],
+      };
+      const poll = () =>
+        watchRelease("77", client, { emit: () => undefined, once: true, statePath });
+      const parentJobs = client.getParentJobs;
+      client.getParentJobs = async () => [];
+      await expect(poll()).resolves.toMatchObject({ complete: false });
+      // A newer parent attempt needs its own jobs in the snapshot.
+      const getRun = client.getRun;
+      client.getRun = async (runId: string) =>
+        runId === "77" ? rootRun(2, "failure") : getRun(runId);
+      client.getParentJobs = async () => [
+        {
+          conclusion: "success",
+          id: 4,
+          name: "Resolve target ref",
+          run_attempt: 1,
+          status: "completed",
+        },
+      ];
+      await expect(poll()).resolves.toMatchObject({ complete: false });
+      client.getRun = getRun;
+      client.getParentJobs = parentJobs;
 
-    await expect(poll()).resolves.toMatchObject({ complete: false });
-    snapshot = "completed";
-    await expect(poll()).resolves.toMatchObject({ complete: false });
-    client.getAttemptJobs = async () => [];
-    await expect(poll()).resolves.toMatchObject({ complete: false });
-    client.getAttemptJobs = async () => [{ ...job("late", "failure"), id: 7 }];
-    await expect(poll()).resolves.toMatchObject({ complete: true });
-  });
+      await expect(poll()).resolves.toMatchObject({ complete: false });
+      snapshot = "completed";
+      await expect(poll()).resolves.toMatchObject({ complete: false });
+      client.getAttemptJobs = async () => [];
+      await expect(poll()).resolves.toMatchObject({ complete: false });
+      if (artifact) {
+        client.getAttemptJobs = async () => [
+          { ...job("late", "failure"), id: 7 },
+          { ...job("late"), id: 8, status: "queued", conclusion: null },
+        ];
+        await expect(poll()).resolves.toMatchObject({ complete: false });
+        const saved = JSON.parse(readFileSync(statePath, "utf8"));
+        expect(saved.reported).toContain("job:101:1:late");
+        saved.reported.push("jobs:101:1");
+        writeFileSync(statePath, JSON.stringify(saved));
+      }
+      client.getAttemptJobs = async () => [{ ...job("late", "failure"), id: 7 }];
+      const result = await poll();
+      expect(result).toMatchObject({ complete: true });
+      if (artifact) {
+        expect(result).toMatchObject({ blockers: [expect.objectContaining({ blocker: true })] });
+        await expect(poll()).resolves.not.toHaveProperty("blockers");
+      }
+    },
+  );
 });
 
 describe("FRV client", () => {
@@ -3051,29 +3166,32 @@ describe("FRV client", () => {
       ["api", "-X", "POST", `repos/${REPOSITORY}/actions/runs/77/rerun`],
     ]);
   });
-});
-
-describe("FRV strict verifier", () => {
-  it("uses the immutable trusted workflow identity and remaining operation budget", async () => {
+  it.each([30_000, -1])("verifies within the remaining %i ms budget", async (budgetMs) => {
     let args: string[] = [];
     let timeoutMs = 0;
+    let spawns = 0;
     const client = createClient(REPOSITORY, {
       execCommand: async (
         _command: string,
         commandArgs: string[],
         options: { timeoutMs: number },
       ) => {
+        spawns += 1;
         args = commandArgs;
         timeoutMs = options.timeoutMs;
         return "{}";
       },
     });
-    await expect(
-      client.verify("77", executionPlanArtifact(), Date.now() + 30_000, {
-        "77": 2,
-        "101": 2,
-      }),
-    ).resolves.toBe("{}");
+    const verification = client.verify("77", executionPlanArtifact(), Date.now() + budgetMs, {
+      "77": 2,
+      "101": 2,
+    });
+    if (budgetMs < 0) {
+      await expect(verification).rejects.toThrow("FRV verification timed out");
+      expect(spawns).toBe(0);
+      return;
+    }
+    await expect(verification).resolves.toBe("{}");
     expect(args).toEqual(
       expect.arrayContaining([
         "--validate-run",
@@ -3087,21 +3205,7 @@ describe("FRV strict verifier", () => {
       ]),
     );
     expect(timeoutMs).toBeGreaterThan(0);
-    expect(timeoutMs).toBeLessThanOrEqual(30_000);
-  });
-
-  it("rejects an expired verification budget before spawning the verifier", async () => {
-    let spawns = 0;
-    const client = createClient(REPOSITORY, {
-      execCommand: async () => {
-        spawns += 1;
-        return "{}";
-      },
-    });
-    await expect(client.verify("77", executionPlanArtifact(), Date.now() - 1)).rejects.toThrow(
-      "FRV verification timed out",
-    );
-    expect(spawns).toBe(0);
+    expect(timeoutMs).toBeLessThanOrEqual(budgetMs);
   });
 
   it("treats only typed verifier refresh failures as rerunnable", async () => {

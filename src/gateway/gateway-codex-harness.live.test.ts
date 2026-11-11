@@ -1,4 +1,3 @@
-// Codex harness live gateway tests exercise real CLI backend sessions, cron probes, media probes, and command surfaces.
 import { randomBytes, randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -47,7 +46,6 @@ import {
   renderBitmapTextPngBase64,
   renderSolidColorPngBase64,
 } from "../../test/helpers/live-image-probe.js";
-import { buildCanonicalTextReplyProbePrompt } from "../../test/helpers/live-tool-contract-prompts.js";
 import {
   buildLongOutputPrompt,
   validateLongOutput,
@@ -67,20 +65,16 @@ import {
   connectTestGatewayClient,
   ensurePairedTestGatewayClientIdentity,
 } from "./gateway-cli-backend.live-helpers.js";
-import { waitForSettledCodexCatalog } from "./gateway-codex-harness.catalog.live-helpers.js";
 import { requireSuccessfulNativeCommandCompactionEvidence } from "./gateway-codex-harness.command-evidence.live-helpers.js";
 import {
   buildCodexHarnessAppServerArgs,
   buildCodexHarnessLargeOutputCommand,
   CODEX_HARNESS_MAX_LARGE_OUTPUT_BYTES,
-  EXPECTED_CODEX_MODELS_COMMAND_TEXT,
   EXPECTED_CODEX_STATUS_COMMAND_TEXT,
   isExpectedCodexStatusCommandText,
   isExpectedYieldedAgentTimeout,
   isRetryableCodexHarnessLiveError,
   isStrictExpectedCodexModelsCommandText,
-  resolveBoundedPositiveIntEnv,
-  resolveLiveTimeoutMs,
   shouldUseCodexHarnessSubagentOnlyFastPath,
 } from "./gateway-codex-harness.live-helpers.js";
 import {
@@ -91,6 +85,8 @@ import {
   runOpenClawCliJson,
   type CronListJob,
 } from "./live-agent-probes.js";
+// Codex harness live gateway tests exercise real CLI backend sessions, cron probes, media probes, and command surfaces.
+import { liveOpenAiApiKeyModels } from "./live-openai-models.test-support.js";
 
 const LIVE = isLiveTestEnabled();
 const CODEX_HARNESS_LIVE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS);
@@ -258,6 +254,31 @@ type CodexHarnessThinkingLevel =
   | "xhigh"
   | "max"
   | "ultra";
+
+function resolveLiveTimeoutMs(raw: string | undefined, fallback: number): number {
+  const parsed = raw ? Number(raw) : Number.NaN;
+  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : fallback;
+}
+
+function resolveBoundedPositiveIntEnv(
+  name: string,
+  raw: string | undefined,
+  fallback: number,
+  max: number,
+  min = 1,
+): number {
+  if (raw === undefined || raw.trim() === "") {
+    return fallback;
+  }
+  if (!/^\d+$/u.test(raw)) {
+    throw new Error(`invalid ${name}: ${raw}`);
+  }
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed) || parsed < min || parsed > max) {
+    throw new Error(`${name} must be between ${min} and ${max}`);
+  }
+  return parsed;
+}
 
 function resolveCodexHarnessThinkingLevel(raw: string | undefined): CodexHarnessThinkingLevel {
   const normalized = raw?.trim().toLowerCase() || "low";
@@ -508,17 +529,7 @@ async function writeLiveGatewayConfig(params: {
     ...(CODEX_HARNESS_AUTH_MODE === "api-key" && parsedModel.provider === "openai"
       ? {
           secrets: { providers: { default: { source: "env" } } },
-          models: {
-            mode: "merge",
-            providers: {
-              openai: {
-                api: "openai-responses",
-                apiKey: { source: "env", provider: "default", id: "OPENAI_API_KEY" },
-                baseUrl: "https://api.openai.com/v1",
-                models: [],
-              },
-            },
-          },
+          models: liveOpenAiApiKeyModels(),
         }
       : {}),
   };
@@ -860,52 +871,6 @@ async function waitForChatFinalText(params: {
     await delay(50);
   }
   throw new Error(`timed out waiting for chat final for ${params.runId}`);
-}
-
-/**
- * A transcript-owned message-tool reply is delivered by its committed history row; the
- * chat final then omits it so clients do not render it twice (chat-send-source-finalization).
- */
-async function waitForChatRunReplyText(params: {
-  client: GatewayClient;
-  events: EventFrame[];
-  runId: string;
-  sessionKey: string;
-  timeoutMs: number;
-}): Promise<string> {
-  const deadline = Date.now() + params.timeoutMs;
-  while (Date.now() < deadline) {
-    const finals = params.events.filter(
-      (event) =>
-        event.event === "chat" &&
-        asOptionalRecord(event.payload)?.runId === params.runId &&
-        asOptionalRecord(event.payload)?.state === "final",
-    );
-    if (finals.length > 0) {
-      const text = finals.map((event) => extractChatFinalText(event, params.runId)).find(Boolean);
-      if (text) {
-        return text;
-      }
-      const history = await params.client.request<{ messages: unknown[] }>("chat.history", {
-        sessionKey: params.sessionKey,
-        limit: 100,
-      });
-      const committed = history.messages
-        .map(asOptionalRecord)
-        .filter(
-          (message) =>
-            message?.role === "assistant" &&
-            asOptionalRecord(message["__openclaw"])?.runId === params.runId,
-        )
-        .map((message) => extractFirstTextBlock(message)?.trim())
-        .filter((reply): reply is string => Boolean(reply));
-      if (committed.length > 0) {
-        return committed.at(-1)!;
-      }
-    }
-    await delay(250);
-  }
-  throw new Error(`timed out waiting for the reply to ${params.runId}`);
 }
 
 async function waitForChatAgentRunOk(client: GatewayClient, runId: string): Promise<void> {
@@ -2078,11 +2043,9 @@ describeLive("gateway live (Codex harness)", () => {
             await fs.writeFile(releasePath, "release");
           }
           await waitForChatAgentRunOk(firstClient, runId);
-          const finalText = await waitForChatRunReplyText({
-            client: firstClient,
+          const finalText = await waitForChatFinalText({
             events: gatewayEvents,
             runId,
-            sessionKey,
             timeoutMs: CODEX_HARNESS_REQUEST_TIMEOUT_MS,
           });
           // On mismatch, report the transcript answer to separate stream loss from model output.
@@ -2238,37 +2201,14 @@ describeLive("gateway live (Codex harness)", () => {
           return client;
         };
         client = await connect();
-        const catalog = await waitForSettledCodexCatalog(
-          (timeoutMs) =>
-            client!.request<SessionsCatalogListResult>(
-              "sessions.catalog.list",
-              { catalogId: "codex", agentId: "dev" },
-              { timeoutMs },
-            ),
-          CODEX_HARNESS_REQUEST_TIMEOUT_MS,
-        );
+        const catalog = await client.request<SessionsCatalogListResult>("sessions.catalog.list", {
+          catalogId: "codex",
+          agentId: "dev",
+        });
         const sources = catalog.catalogs.flatMap((entry) =>
           entry.hosts.flatMap((host) => host.sessions.map((session) => ({ host, session }))),
         );
-        expect(
-          sources,
-          JSON.stringify({
-            phase: "canonical-native-catalog",
-            seedExitCode: seeded.code,
-            catalogs: catalog.catalogs.map((entry) => ({
-              id: entry.id,
-              errorCode: entry.error?.code,
-              hosts: entry.hosts.map((host) => ({
-                kind: host.kind,
-                connected: host.connected,
-                pending: host.pending,
-                errorCode: host.error?.code,
-                sessionCount: host.sessions.length,
-                hasNextCursor: Boolean(host.nextCursor),
-              })),
-            })),
-          }),
-        ).toHaveLength(1);
+        expect(sources).toHaveLength(1);
         const { host, session } = sources[0]!;
         expect(session.modelProvider).toBe("openai");
         const source = await client.request<{ sessionKey: string }>("sessions.catalog.continue", {
@@ -2281,7 +2221,7 @@ describeLive("gateway live (Codex harness)", () => {
         await requestAgentText({
           client,
           sessionKey: source.sessionKey,
-          message: buildCanonicalTextReplyProbePrompt("CODEX-CANONICAL-SOURCE"),
+          message: "Reply exactly CODEX-CANONICAL-SOURCE.",
           expectedReply: "CODEX-CANONICAL-SOURCE",
           preserveNativeTurnSettings: true,
         });
@@ -2320,7 +2260,7 @@ describeLive("gateway live (Codex harness)", () => {
           await requestAgentText({
             client,
             sessionKey: child.sessionKey,
-            message: buildCanonicalTextReplyProbePrompt(`CODEX-CANONICAL-${phase.toUpperCase()}`),
+            message: `Reply exactly CODEX-CANONICAL-${phase.toUpperCase()}.`,
             expectedReply: `CODEX-CANONICAL-${phase.toUpperCase()}`,
             preserveNativeTurnSettings: true,
           });
@@ -2705,7 +2645,7 @@ describeLive("gateway live (Codex harness)", () => {
               events: gatewayEvents,
               sessionKey,
               command: "/codex models",
-              expectedText: [...EXPECTED_CODEX_MODELS_COMMAND_TEXT],
+              expectedText: "usable model evidence",
               isExpectedText: isStrictExpectedCodexModelsCommandText,
               predicateOnly: true,
             });

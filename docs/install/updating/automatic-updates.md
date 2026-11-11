@@ -79,6 +79,12 @@ from a CLI connected to its Gateway and inspect `nodes[].version`.
 `openclaw --version` reports that CLI's installed version, which can differ
 after a node update.
 
+Installed node services must launch through `openclaw.mjs` (or `dist/entry.js`),
+which starts the update supervisor. If an older service points directly at
+`dist/index.js`, run `openclaw doctor --fix` on that node machine to repair its
+entrypoint while preserving the installed connection options. A node started
+through the old entrypoint logs a warning when automatic updates are enabled.
+
 Look in the foreground node's stderr or its service logs for update preparation,
 busy deferral, activation, and fallback messages. If an update is deferred for
 schema migration or repair, run `openclaw update` on the node machine. Then
@@ -137,6 +143,39 @@ unattended updates.
 | `beta`            | Checks on a built-in interval and announces an update campaign as soon as a newer release is available.                                                             |
 | `dev`             | With `auto.enabled`, git installs check hourly. When upstream commits are available, the Gateway announces an update campaign pinned to the exact announced commit. |
 
+### Choose an automatic-update schedule
+
+In **Settings → Updates → Update schedule**, choose **Hourly (default)**,
+**Daily**, **Weekly**, or **Custom cron**. Daily lets you choose an hour and
+minute; weekly also lets you choose the day of the week. Times use the
+**Gateway host's timezone**, not the browser's timezone.
+
+Only one optional config field is stored. For example, to start automatic
+updates at 03:30 every Monday:
+
+```json5
+{ update: { auto: { enabled: true, schedule: "30 3 * * 1" } } }
+```
+
+Omit `update.auto.schedule` to keep the existing hourly cadence, including
+startup discovery. A configured cron expression opens a one-minute start
+window. Startup, restart, and **Check for updates** do not catch up missed
+windows. Changes take effect without restarting the Gateway. Invalid cron
+expressions are rejected, keeping the saved schedule unchanged.
+
+The schedule controls campaign starts, not completion time. Stable rollout
+delay and jitter still apply; if a release is not eligible in one window, it
+waits for a later one. Once announced, the idle/countdown policy below can
+finish outside that minute. **Hold 1 h** and manual **Update Gateway** retain
+their explicit override behavior. Changing the schedule cancels a pending
+campaign, but does not interrupt an update already applying.
+
+Cron timing uses the same owner as automations: nonexistent local times at
+the spring daylight-saving transition are skipped, and repeated local times
+run at their first occurrence. Missed windows after downtime or a forward
+clock jump are skipped. This setting does not change headless-node updates,
+manual updates, or extended-stable's read-only behavior.
+
 ### Update campaigns
 
 When an automatic update is due, the campaign waits for active work to finish,
@@ -148,8 +187,8 @@ apply. The Gateway restart ends these process-local PTYs, and terminal sessions
 are not recovered afterward.
 
 An admin can use **Hold 1 h** once to postpone the campaign and shift its hard
-deadline, or choose **Update now** from the sidebar update card or
-**Settings → Updates**. For a `dev` git install, the campaign installs the exact
+deadline, or choose **Update Gateway** from the sidebar update card or
+**Update Gateway…** in **Settings → Updates**. For a `dev` git install, the campaign installs the exact
 commit it announced. The displayed list previews up to five commits from that
 fixed target and does not move if upstream `main` advances during the countdown.
 
@@ -216,9 +255,10 @@ this `update.run` flow directly. This covers browser-hosted Control UI, remote
 Gateways, and manually managed local Gateways.
 
 Manual updates started from the Control UI always ask first. The first click on
-the sidebar update card or on **Settings → Updates → Update now** opens a
-confirmation naming the target, the installed and available versions when known,
-and the restart impact; it sends nothing until you choose **Update and restart**.
+the sidebar update card or on **Settings → Updates → Update Gateway…** opens a
+confirmation titled **Update and restart?**, naming the target, the installed and
+available versions when known, and the restart impact. It sends nothing until you
+choose **Update and restart**.
 Cancel, Escape, and dismissing the dialog leave the Gateway untouched. Automatic
 campaigns, the CLI, and `update.run` API clients are unaffected.
 
@@ -233,7 +273,7 @@ app runs `openclaw update --tag <app-version> --json`, restarts its Gateway,
 and verifies health in a setup-style progress window. The window appears only
 when that managed Gateway needs update, repair, or installation; app-only updates relaunch
 directly into the app. Failure details stay visible with Retry, [Update guide](/install/updating), and
-[Discord](https://discord.gg/clawd) actions. The app never uses this coordinated
+[Get support](https://community.openclaw.ai/) actions. The app never uses this coordinated
 path for a remote or externally managed Gateway, never downgrades a newer
 Gateway, and never overrides an `extended-stable` channel pin.
 

@@ -18,6 +18,8 @@ operator steering. Do not preserve superseded scope.
 - version decision: `<explicit version | approved resolved version>`
 - preparation/backport authority: `<instruction and approved set or selection scope>`
 - publication authority: `<held | beta management default | explicit approval; source and scope>`
+- channel/contact restrictions: `<none | exact operator restriction and affected operations>`
+- approved gate exceptions: `<none | pinned P policy grant, version/job/attempt scope; failed or not-run disposition>`
 - intake: `<open | frozen; pending approved changes or next-release queue>`
 - handoff: `<predecessor stopped writing; successor acknowledgement or pending>`
 - next checkpoint: `<candidate approval | publication | recovery | closeout>`
@@ -54,7 +56,7 @@ operator steering. Do not preserve superseded scope.
 ## Active evidence
 
 - Full Release Validation parent: `<run id / attempt / URL or none>`
-- qualification policy: `strict candidate-owned decision; every selected failure blocks, no P-only waiver recovery`
+- applied release-tooling waivers: `<none | pinned P, exact version/role/job and reason; raw failure retained>`
 - npm preflight: `<run id / URL or none>`
 - qualified npm/OCI descriptors: `<exact producer run/attempt and artifact identities>`
 - candidate acceptance: `<green untagged-SHA evidence | pending>`
@@ -99,7 +101,10 @@ ClawHub or native apps.
 | Post-docs release body    | `<approved bundle, release ID, fresh body read and verified update>`     | `<action>`             |
 
 A successful publish parent does not complete detached ClawHub verification or
-macOS. Preserve their exact identities and advance ready independent work while
+macOS. ClawHub starts at its existing dispatch point and never blocks core,
+GitHub finalization, main closeout, or the retrospective PR. Give pending or
+failed ClawHub work an owner and next action, without calling it complete.
+Preserve their exact identities and advance ready independent work while
 another surface waits. Staging is not public ClawHub byte verification; npm
 `latest` is not GitHub Latest verification. Use the owning platform/recovery
 reference for commands rather than redispatching the release parent.
@@ -124,10 +129,9 @@ reference for commands rather than redispatching the release parent.
 - selected test failure: record the lead's real-blocker-or-flake decision and
   its evidence. An untouched test or passing replay alone does not prove a
   flake or a fix. A flake gets at most two recorded reruns on the same Release
-  SHA and a fix-in-parallel issue or PR on `main`; never re-cut, change P, or
-  start another FRV solely to waive it. The branch's
-  [strict qualification policy](../SKILL.md#shared-release-boundaries) still
-  requires every selected lane to pass
+  SHA and a fix-in-parallel issue or PR on `main`; never re-cut for it. A deliberate
+  [tooling-code waiver](../../../../docs/reference/full-release-validation/evidence.md#release-tooling-waivers)
+  requires successful FRV validation under its pinned P, with C/Q unchanged
 - regular changelog-only failure before tagging: change the selected release entry and only
   its permitted record/index paths, freeze a new Release SHA, and reuse green
   Code SHA evidence after `split-changelog-release-v1` delta proof

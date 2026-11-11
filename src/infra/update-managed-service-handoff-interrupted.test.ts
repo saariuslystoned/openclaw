@@ -7,6 +7,41 @@ const { runManagedServiceManagerBoundary: runBoundary } =
   useManagedServiceHandoffLifecycleFixture(true);
 const itUnix = it.runIf(process.platform !== "win32");
 
+itUnix("uses the verified installed writer when post-core repair migrates then fails", async () => {
+  const result = await runBoundary("systemd", {
+    ledger: true,
+    controlDisconnect: "transferred",
+    interruptedUpdate: "after",
+    finalizeFailure: true,
+    helperExitCode: 1,
+  });
+  expect(result.state.postCoreRepaired, result.log).toBe(true);
+  expect(result.state.restored).toBeUndefined();
+  expect(result.run, result.log).toMatchObject({ status: "failed", phase: "finished" });
+  expect(result.log).toContain("post-core repair did not complete");
+  expect(result.log).not.toMatch(/no such column|failed to finalize update run/);
+});
+
+itUnix.each(["before-recovery", "service-inspection"] as const)(
+  "does not restart an operator-stopped replacement recorded at %s",
+  async (operatorRestart) => {
+    const result = await runBoundary("systemd", {
+      ledger: true,
+      controlDisconnect: "transferred",
+      interruptedUpdate: operatorRestart === "before-recovery" ? "after" : "before",
+      operatorRestart,
+      helperExitCode: 1,
+    });
+    expect(result.state.operatorRestartError, JSON.stringify(result.state)).toBeUndefined();
+    expect(result.log).toContain("update command exited code=null signal=SIGKILL");
+    expect(result.state.restored, result.log).toBeUndefined();
+    expect(result.state.guardedRestart).toBeUndefined();
+    expect(result.state.postCoreRepaired, result.log).toBeUndefined();
+    expect(result.log).toMatch(/stop intent was superseded/);
+    expect(result.run, result.log).toMatchObject({ status: "failed", phase: "finished" });
+  },
+);
+
 itUnix.each([
   ...(["before", "prepared", "publishing", "after"] as const).map((interruptedUpdate) => ({
     interruptedUpdate,
@@ -82,66 +117,47 @@ itUnix(
   },
 );
 
-itUnix.each(["systemd", "launchd"] as const)(
-  "preserves an operator stop after the helper parked and the updater started %s",
-  async (kind) => {
-    const result = await runBoundary(kind, {
-      ledger: true,
-      controlDisconnect: "transferred",
-      interruptedUpdate: "operator-stop",
-      helperExitCode: 1,
-    });
-    expect(result.state.restored, result.log).toBeUndefined();
-    expect(result.state.postCoreRepaired, result.log).toBeUndefined();
-    expect(result.log).toContain("Gateway stop intent was superseded by a later running service");
-    expect(result.run, result.log).toMatchObject({ status: "failed", phase: "finished" });
-  },
-);
-
-itUnix.each(["finalize-failure", "post-finalize-risk"] as const)(
-  "records failure through the verified installed runtime after %s",
-  async (interruptedUpdate) => {
+itUnix.each([
+  { interruptedUpdate: "prepared", pluginCohort: "own" },
+  { interruptedUpdate: "after", pluginCohort: "own" },
+  { interruptedUpdate: "after", pluginCohort: "foreign" },
+  { interruptedUpdate: "prepared", pluginCohort: "risk" },
+] as const)(
+  "settles only this run's plugin cohort after SIGKILL at $interruptedUpdate ($pluginCohort)",
+  async ({ interruptedUpdate, pluginCohort }) => {
+    const own = pluginCohort === "own";
+    const forward = interruptedUpdate === "after";
+    if (pluginCohort === "risk") {
+      // A failed repair that recorded data risk keeps even the original Gateway stopped.
+      const result = await runBoundary("systemd", {
+        ledger: true,
+        controlDisconnect: "transferred",
+        interruptedUpdate,
+        pluginCohort,
+        helperExitCode: 1,
+      });
+      expect(result.state.restored).toBeUndefined();
+      expect(result.log).toContain("data at risk (incomplete-migration)");
+      return;
+    }
     const result = await runBoundary("systemd", {
       ledger: true,
       controlDisconnect: "transferred",
       interruptedUpdate,
-      helperExitCode: 1,
+      pluginCohort,
+      helperExitCode: own && forward ? 0 : 1,
     });
-    expect(result.state, result.log).toMatchObject({
-      postCoreRepaired: true,
-      installedTerminalWriter: true,
+    expect(result.run, result.log).toMatchObject({
+      status: own ? (forward ? "succeeded" : "rolled-back") : "failed",
+      phase: "finished",
     });
-    expect(result.state.restored, result.log).toBeUndefined();
-    expect(result.run, result.log).toMatchObject({ status: "failed", phase: "finished" });
-    expect(result.log).toContain(
-      interruptedUpdate === "finalize-failure"
-        ? "Interrupted update post-core repair did not complete"
-        : "Installed generation changed or data risk was recorded during post-core repair",
-    );
-    expect(result.log).not.toContain("failed to finalize update run");
-  },
-);
-
-itUnix(
-  "recovers through the installed runtime after the candidate advances the schema",
-  async () => {
-    const result = await runBoundary("systemd", {
-      ledger: true,
-      controlDisconnect: "transferred",
-      interruptedUpdate: "schema-advance",
-      helperExitCode: 0,
-    });
-    expect(result.log).toContain("update command exited code=null signal=SIGKILL");
-    expect(result.log).toContain("staged runtime cannot open the advanced state schema");
-    expect(result.state, result.log).toMatchObject({
-      installedSchemaReader: true,
-      postCoreRepaired: true,
-      restored: true,
-      expectedVersion: "2.0.0",
-    });
-    expect(result.run, result.log).toMatchObject({ status: "succeeded", phase: "finished" });
-    expect(result.log).not.toMatch(
-      /Cannot find module|ERR_MODULE_NOT_FOUND|failed to finalize update run/,
-    );
+    // Another run's recovery is never this helper's to settle.
+    expect(result.publication).toMatchObject({ cohort: own ? "settled" : "pending" });
+    expect(result.state.postCoreRepaired).toBe(own ? true : undefined);
+    if (own) {
+      expect(result.state.restored).toBe(true);
+    } else {
+      expect(result.log).toContain("post-core repair did not complete");
+    }
   },
 );

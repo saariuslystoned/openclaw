@@ -1,2 +1,2 @@
-# Cover native/projected current image events and preserve fresh requests.
-67
+# Cover current image completions with native/projected history and media delivery, while preserving fresh requests.
+66

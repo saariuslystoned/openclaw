@@ -4,12 +4,14 @@ import { readManagedHandoffUpdateRun } from "./update-managed-service-handoff-in
 import {
   adoptUpdateRun,
   finishUpdateRun,
-  recordUpdateRunDiagnostic,
   recordUpdateRunStep,
   recordUpdateRunVerification,
 } from "./update-run-ledger.js";
 
 routeLogsToStderr();
+
+export { parseLaunchctlJob } from "../daemon/launchctl-job.js";
+export { classifyUpdateOutcome } from "../shared/update-outcome-classification.js";
 
 export { OPENCLAW_STATE_SCHEMA_SQL } from "../state/openclaw-state-schema.js";
 export { assertOpenClawStateWriteAllowed } from "../state/openclaw-state-ownership.js";
@@ -21,18 +23,21 @@ export {
   readManagedHandoffGatewayStop,
 } from "./update-managed-service-handoff-interrupted.js";
 export { findUpdateGatewayStop } from "./update-run-gateway-stop.js";
-export { isSqliteSchemaVersionError } from "./sqlite-user-version.js";
 export const handoffLedger = {
   adoptUpdateRun,
   finishUpdateRun,
   getUpdateRun: readManagedHandoffUpdateRun,
-  recordUpdateRunDiagnostic,
   recordUpdateRunStep,
   recordUpdateRunVerification,
 };
 export {
-  readRestartSentinelRowSync,
-  writeRestartSentinelRowIfRevisionSync,
+  finishUpdateRun,
+  recordUpdateRunDiagnostic,
+  recordUpdateRunStep,
+} from "./update-run-ledger.js";
+export {
+  inspectManagedHandoffSentinelRowSync,
+  recordManagedHandoffSentinelOutcomeRowSync,
 } from "./restart-sentinel-store.js";
 export { extractSqliteTableSchema } from "./sqlite-schema-sql.js";
 export {

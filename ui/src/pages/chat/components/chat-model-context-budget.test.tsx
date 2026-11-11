@@ -3,6 +3,7 @@
 import { expect, it, vi } from "vitest";
 import type { GatewaySessionRow, ModelCatalogEntry } from "../../../api/types.ts";
 import { createSessionsListResult } from "../../../test-helpers/chat-model.ts";
+import { installModelPickerLayout } from "../../../test-helpers/model-picker-layout.ts";
 import { mountSolid } from "../../../test-helpers/mount-solid.ts";
 import { flush, waitForSolid } from "../../../test-helpers/solid-settle.ts";
 import { ChatModelControls } from "./chat-model-controls.tsx";
@@ -27,6 +28,7 @@ async function pickerRows(
   selectedSession: GatewaySessionRow | undefined,
   catalog = catalogRows(872_000, 272_000),
 ) {
+  installModelPickerLayout();
   const sessions = createSessionsListResult({
     model: "astra",
     modelProvider: "example",
@@ -72,7 +74,7 @@ it("prefers the selected session's budget only for its own row", async () => {
     agentRuntime: runtime,
     contextTokens: 258_400,
   });
-  expect(rows.selected).toContain("258.4k active · 872k max");
+  expect(rows.selected).toContain("258k active · 872k max");
   expect(rows.unselected).toContain("272k active · 872k max");
 });
 
@@ -82,7 +84,7 @@ it("shows only the session's runtime budget when the catalog maximum is smaller"
     { ...sessions.sessions[0]!, agentRuntime: runtime, contextTokens: 258_400 },
     catalogRows(128_000),
   );
-  expect(rows.selected).toContain("258.4k");
+  expect(rows.selected).toContain("258k");
   expect(rows.selected).not.toContain("max");
   expect(rows.unselected).toContain("128k");
 });

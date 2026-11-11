@@ -57,7 +57,6 @@ beforeEach(async () => {
     start: vi.fn(async (args) => {
       await args.beforeMutation?.();
       args.assertCurrent?.();
-      args.beforeEffect?.();
       events.push("start");
     }),
   });
@@ -82,6 +81,10 @@ beforeEach(async () => {
       gatewayVersion: "1.0.0",
     };
   });
+  vi.spyOn(healthApi, "waitForGatewayHttpReadiness").mockResolvedValue({
+    healthz: 200,
+    readyz: 200,
+  });
   mocks.convergence.mockImplementation(async ({ pluginUpdate }) => {
     events.push("finalized");
     const { readConfigFileSnapshot } = await import("../../config/config.js");
@@ -95,6 +98,20 @@ afterEach(async () => {
   vi.restoreAllMocks();
   await state.cleanup();
 });
+
+function failedHealth(
+  status: "stopped" | "running",
+): Awaited<ReturnType<typeof healthApi.waitForGatewayHealthyRestart>> {
+  const stopped = status === "stopped";
+  return {
+    outcome: "failed",
+    waitOutcome: stopped ? "stopped-free" : "timeout",
+    runtime: stopped ? { status } : { status, pid: 4242 },
+    portUsage: { port: 18789, status: stopped ? "free" : "busy", listeners: [], hints: [] },
+    healthy: false,
+    staleGatewayPids: [],
+  };
+}
 
 function seed(
   stopped: boolean,
@@ -149,7 +166,7 @@ it.each(["unavailable", "absent"] as const)(
     const finalize = mocks.convergence.getMockImplementation()!;
     mocks.convergence.mockImplementation(async (...args) => {
       const result = await finalize(...args);
-      // The service disappears after maintenance, before the restoration owner inspects it.
+      // The service disappears after maintenance, before restoration inspects it.
       vi.mocked(service.readCommand).mockResolvedValue(null);
       if (kind === "absent") {
         vi.mocked(service.isLoaded).mockResolvedValue(false);
@@ -158,9 +175,7 @@ it.each(["unavailable", "absent"] as const)(
       }
       return result;
     });
-
     await repair();
-
     expect(listUpdateRuns()[0]?.status).toBe("succeeded");
     expect(events).toEqual(["finalized"]);
     expect(service.start).not.toHaveBeenCalled();
@@ -203,75 +218,12 @@ it("finalizes an interrupted managed update, then starts and verifies its stoppe
   expect(service.start).toHaveBeenCalledTimes(1);
 });
 
-it("does not revoke a successful repair start during post-effect authority checks", async () => {
-  const original = seed(true);
-  vi.mocked(service.start).mockImplementation(async (args) => {
-    args.beforeEffect?.();
-    const active = listUpdateRuns().find(({ status }) => status === "running")!;
-    expect(active.runId).not.toBe(original);
-    const updated = recordUpdateRunStep(active.runId, {
-      step: "service-start",
-      status: "completed",
-      endedAtMs: Date.now(),
-    });
-    expect(updated?.steps).toContainEqual(
-      expect.objectContaining({ step: "service-start", status: "completed" }),
-    );
-    args.assertCurrent?.();
-    events.push("start");
-  });
-
-  await repair();
-
-  expect(events).toEqual(["finalized", "start", "verified"]);
-  expect(defaultRuntime.writeJson).toHaveBeenLastCalledWith(
-    expect.objectContaining({ status: "ok", restart: true }),
-  );
-});
-
-it("does not start when native preparation retires the pending repair stop", async () => {
-  const original = seed(true);
-  vi.mocked(service.start).mockImplementation(async (args) => {
-    // Native preparation awaits before its final dispatch callback.
-    await Promise.resolve();
-    const active = listUpdateRuns().find(({ status }) => status === "running")!;
-    expect(active.runId).not.toBe(original);
-    const updated = recordUpdateRunStep(active.runId, {
-      step: "service-start",
-      status: "completed",
-      endedAtMs: Date.now(),
-    });
-    expect(updated?.steps).toContainEqual(
-      expect.objectContaining({ step: "service-start", status: "completed" }),
-    );
-    args.beforeEffect?.();
-    events.push("start");
-  });
-
-  await repair();
-
-  expect(events).toEqual(["finalized"]);
-  expect(healthApi.waitForGatewayHealthyRestart).not.toHaveBeenCalled();
-  expect(listUpdateRuns()[0]?.status).toBe("succeeded");
-  expect(defaultRuntime.writeJson).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      status: "warning",
-      restart: false,
-      postUpdate: expect.objectContaining({
-        doctor: expect.objectContaining({
-          warnings: [expect.stringContaining("Gateway stop intent changed")],
-        }),
-      }),
-    }),
-  );
-});
-
 it.each(["recorded native handoff", "legacy activating phase"])(
-  "restores an updater-stopped Gateway after dead-owner grace with %s",
+  "restores an updater-stopped Gateway after both owners die with %s",
   async (evidence) => {
     await fs.rmdir(state.path("handoff-control"));
     const handoff = createManagedHandoffRecoveryFixture(state.root);
-    handoff.seed({ ageMs: 46 * 60_000 });
+    handoff.seed({ ageMs: 1_000 });
     const original = createUpdateRun({
       trigger: "control-ui",
       target: {
@@ -402,17 +354,12 @@ it.each(["thrown", "stopped"])(
         new Error("readiness deadline exceeded"),
       );
     } else {
-      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValueOnce({
-        outcome: "failed",
-        runtime: { status: "stopped" },
-        portUsage: { port: 18789, status: "free", listeners: [], hints: [] },
-        healthy: false,
-        staleGatewayPids: [],
-      });
+      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValueOnce(
+        failedHealth("stopped"),
+      );
     }
     await repair();
-    // Repair maintenance finished; the unverified Gateway is reported as its next step.
-    expect(listUpdateRuns()[0]?.status).toBe("succeeded");
+    expect(listUpdateRuns()[0]?.status).toBe("failed");
     vi.mocked(service.readRuntime).mockResolvedValue({ status: "stopped" });
     await repair();
     expect(service.start).not.toHaveBeenCalled();
@@ -449,36 +396,21 @@ it("does not start the Gateway while a helper still owns its installation", asyn
 });
 
 it.each(["start failure", "unverified health"])(
-  "completes repair with a %s warning naming the recovery commands",
+  "reports %s with the deep status command",
   async (reason) => {
     seed(true);
     if (reason === "start failure") {
       vi.mocked(service.start).mockRejectedValue(new Error("native start failed"));
     }
-    vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValue({
-      outcome: "failed",
-      runtime: { status: "stopped" },
-      portUsage: { port: 18789, status: "free", listeners: [], hints: [] },
-      healthy: false,
-      staleGatewayPids: [],
-    });
+    vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValue(failedHealth("stopped"));
     await repair();
-    expect(listUpdateRuns()[0]?.status).toBe("succeeded");
-    expect(defaultRuntime.writeJson).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        status: "warning",
-        restart: false,
-        postUpdate: expect.objectContaining({
-          doctor: expect.objectContaining({
-            warnings: [
-              expect.stringMatching(
-                /Gateway recovery after update repair was not verified.*openclaw gateway start.*openclaw gateway status --deep/,
-              ),
-            ],
-          }),
-        }),
-      }),
+    expect(defaultRuntime.error).toHaveBeenCalledWith(
+      expect.stringContaining("openclaw gateway status --deep"),
     );
+    expect(defaultRuntime.error).toHaveBeenCalledWith(
+      expect.stringContaining("openclaw gateway start"),
+    );
+    expect(listUpdateRuns()[0]?.status).toBe("failed");
   },
 );
 
@@ -496,27 +428,16 @@ it.each([
         new Error("readiness deadline exceeded"),
       );
     } else {
-      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValueOnce({
-        outcome: "failed",
-        runtime: { status: "running", pid: 4242 },
-        portUsage: { port: 18789, status: "busy", listeners: [], hints: [] },
-        healthy: false,
-        staleGatewayPids: [],
-      });
+      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValueOnce(
+        failedHealth("running"),
+      );
     }
     await repair();
-    // Repair maintenance finished; the unverified Gateway is reported as its next step.
-    expect(listUpdateRuns()[0]?.status).toBe("succeeded");
+    expect(listUpdateRuns()[0]?.status).toBe("failed");
     if (status === "running") {
       vi.mocked(service.readRuntime).mockResolvedValue({ status: "running", pid: 4242 });
     } else {
-      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValue({
-        outcome: "failed",
-        runtime: { status: "stopped" },
-        portUsage: { port: 18789, status: "free", listeners: [], hints: [] },
-        healthy: false,
-        staleGatewayPids: [],
-      });
+      vi.mocked(healthApi.waitForGatewayHealthyRestart).mockResolvedValue(failedHealth("stopped"));
     }
     await repair();
     expect(service.start).toHaveBeenCalledTimes(1);

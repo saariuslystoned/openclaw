@@ -1,6 +1,6 @@
 ---
 name: release-openclaw-maintainer
-description: "Manage one OpenClaw release or orchestrate release owners across beta, stable, and extended-stable: preparation, hotfix routing, publication, handoff, and closeout."
+description: "Manage one OpenClaw release or orchestrate release owners across beta, stable, and extended-stable: preparation, fix-inclusion tracing, hotfix routing, publication, handoff, and closeout."
 ---
 
 # OpenClaw Release Maintainer
@@ -29,6 +29,7 @@ with current evidence rather than starting another release.
 Read only the references needed for the selected phase:
 
 - Regular beta/stable preparation or publication: [regular release](references/regular-release.md), which routes preparation and phase-specific proof. If the request does not specify stable/full, default to beta; beta authorization does not authorize later stable promotion.
+- Fix status, candidate inclusion, first published version, or cumulative upstream-fix counts: [fix-inclusion tracing](references/fix-inclusion.md).
 - Backport discovery and porting: [candidate inventory and worker brief](references/backport-discovery.md). For extended-stable also read [backport preparation](references/extended-stable-backports.md); SDK/config changes need a visible maintenance-risk warning and maintainer decision.
 - Extended-stable `.33+` Gateway publication: [extended-stable publication](references/extended-stable-publish.md). Use the shared publisher with extended-stable inputs; its non-Latest GitHub Release carries evidence without native-app or ClawHub publication.
 - Validation selection or failed proof: [validation and confidence](references/validation.md), with `$release-openclaw-ci` for workflow execution and immutable manifests.
@@ -73,24 +74,21 @@ later. This is recommended bookkeeping, not another release gate.
 
 ## Shared release boundaries
 
-This release branch predates trusted-P waiver evaluation: its Release Decision
-runs candidate-owned tooling. Changing P alone cannot retrofit waiver support
-into a frozen C/Q workflow. Follow the branch's strict
-[evidence policy](../../../docs/reference/full-release-validation/evidence.md#evidence-to-keep),
-not main's post-cutover waiver policy. A deliberate workflow cutover would need
-its own reviewed backport and newly qualified C/Q; this skill update does not
-provide one.
-
-FRV must conclude **success**, and every selected validation lane must pass,
-including live-provider and Telegram leaves. Required lanes include Windows
+FRV must conclude **success** under pinned P's
+[checked-in release-tooling policy](../../../docs/reference/full-release-validation/evidence.md#release-tooling-waivers).
+Apply only the exact exceptions in that policy, including its operator-authorized
+Kova grants; preserve each grant’s version, job, and optional attempt restrictions.
+A failed-job grant is not permission to skip the job or change C/Q. All other
+required lanes must succeed: Windows
 and macOS Node and other normal CI jobs, install smoke, survivor
 lanes, `update-first-hop-compat*`, pack/npm qualification, package integrity,
 and Linux/Windows/macOS Gateway checks, including Windows packaged
 install/upgrade checks in Release Checks. A cancelled run still blocks. Preserve
 first failures and classify each one as below before recovery. Stable
 publication requires stable/full evidence, soak, and blocking performance.
-Beta-profile evidence cannot authorize stable publication. No selected lane,
-soak, or performance requirement can be waived on this branch. All nine Gateway install/upgrade
+Beta-profile evidence cannot authorize stable publication. Hard gates and soak
+remain mandatory; performance exceptions are limited to the checked-in policy.
+All nine Gateway install/upgrade
 combinations across Linux, Windows, and macOS are required for all-group
 qualification. Preserve identity, provenance, complete evidence, and existing
 publication approvals.
@@ -103,9 +101,9 @@ that is not a regression (for example the 2026.9.6 "Assign to…" bug). A real
 blocker is a regression in shipped bytes or behavior, or an update/install/
 publish defect; fix it on the release branch. Rerun a flake on
 the same Release SHA with at most two recorded reruns by default, and file a
-fix-in-parallel issue or PR on `main` with the evidence. Never re-cut, change
-P, or start a new FRV solely to waive a flake. A selected flake that remains red
-blocks publication.
+fix-in-parallel issue or PR on `main` with the evidence. Never re-cut for a flake.
+A deliberate tooling-code waiver requires FRV validation under the new pinned P,
+not a publisher override. An unwaived flake that remains red blocks publication.
 Main-only failures and infrastructure
 failures (runner outages, GitHub ghost jobs, hosted-runner offload) count as
 flakes for the release.
@@ -186,12 +184,11 @@ matching record, and root index may use `split-changelog-release-v1`
 to reuse product proof while qualifying new publication bytes. Any other
 source delta, rename, or deletion returns to the Code SHA loop. Historical
 root-only receipts retain `changelog-only-release-v1`.
-New qualification freezes **Q=C**: the entire qualification workflow closure,
-including the aggregate Release Decision, belongs to the candidate. Keep
-independently trusted **P** (admission, verifier, and publisher) separate.
-A qualification harness or aggregate-decision repair requires a new C/Q and
-newly bound evidence; P-only or infrastructure repairs can preserve the candidate.
-Missing qualification contracts need a deliberate backport, never future-main fallback.
+New test qualification freezes **Q=C**: the candidate's test workflow closure
+belongs to the candidate. Keep independently trusted **P** (admission, aggregate
+decision, verifier, and publisher) separate. A Q harness repair requires a new C/Q and newly bound
+evidence; P-only or infrastructure repairs can preserve the candidate. Missing
+qualification contracts need a deliberate backport, never future-main fallback.
 
 Once a candidate is cut, its base is the operator's decision. Never re-cut
 (re-base the candidate on newer `main`) unless Peter explicitly asks for it in
@@ -224,7 +221,7 @@ an unresolved repair. List every PR created during the release (`gh pr list --au
 each repair PR with a reason; confirm its fix is on `main` and, when it is release
 tooling, on the release branch. Also remove the release's temporary worktrees,
 abandoned local cut branches, and stale `scripts/pr` worktrees. Then write the
-[retrospective](references/retrospective.md) and open its `openclaw/maintainers`
+[retrospective](references/retrospective.md) and open its `openclaw/tideclaw`
 PR with the issue-ledger update; keep a findings notes file from the start of the
 release so it can be written from evidence.
 
@@ -235,9 +232,15 @@ failures, repair their owner, retry the affected surface, then reassess rather
 than repeating the full release.
 
 Required publication proofs and enforced environment approvals remain required.
-A passing sibling cannot replace missing required evidence. npm + ClawHub is the
-priority path. macOS, Windows, Linux, and Android native publication runs in
-parallel and never gates npm/ClawHub, GitHub release finalization, or main closeout.
+A passing sibling cannot replace missing required evidence. Successfully publish
+selected npm plugins before core npm. ClawHub publication starts at its existing
+dispatch point but runs independently from then on: planning, authorization,
+dispatch, publication, verification, and recovery never gate core npm, GitHub
+release finalization, main closeout, or the retrospective PR. Retain a separate
+owner, run/attempt, status, and follow-up for pending or failed ClawHub work; do
+not report it as complete. macOS, Windows, Linux, and Android native publication
+also runs in parallel and never gates npm/ClawHub, GitHub release finalization,
+or main closeout.
 Selected Windows Node, Linux/Windows/macOS Gateway, and native-app CI failures
 block release validation. Platform publishers retain their own artifact
 and updater contracts; report pending platforms and proof gaps accurately.

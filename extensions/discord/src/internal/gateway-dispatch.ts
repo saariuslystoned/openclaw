@@ -3,26 +3,10 @@ import {
   type APIMessage,
   type APIReaction,
   type APIUser,
-  type GatewayDispatchPayload,
 } from "discord-api-types/v10";
 import type { Client } from "./client.js";
 import type { DiscordReactionIngressEvent } from "./listeners.js";
 import { Guild, Message, User } from "./structures.js";
-
-export function dispatchVoiceGatewayEvent(client: Client, payload: GatewayDispatchPayload): void {
-  const guildId = readGuildId(payload.d);
-  if (!guildId) {
-    return;
-  }
-  const adapters = client.getPlugin("voice")?.adapters;
-  const adapter = adapters?.get(guildId);
-  if (payload.t === GatewayDispatchEvents.VoiceServerUpdate) {
-    adapter?.onVoiceServerUpdate?.(payload.d);
-  }
-  if (payload.t === GatewayDispatchEvents.VoiceStateUpdate) {
-    adapter?.onVoiceStateUpdate?.(payload.d);
-  }
-}
 
 export function mapGatewayDispatchData(
   client: Client,
@@ -50,7 +34,7 @@ type MessageCreatePayload = {
   member?: { roles?: string[] };
 };
 
-function createMessageDispatchData(client: Client, data: MessageCreatePayload) {
+export function createMessageDispatchData(client: Client, data: MessageCreatePayload) {
   const message = new Message(client, data as APIMessage);
   return {
     ...data,
@@ -89,12 +73,4 @@ export function createReactionDispatchData(client: Client, data: ReactionPayload
       channelId: data.channel_id,
     }),
   };
-}
-
-function readGuildId(data: unknown): string | undefined {
-  return data &&
-    typeof data === "object" &&
-    typeof (data as { guild_id?: unknown }).guild_id === "string"
-    ? (data as { guild_id: string }).guild_id
-    : undefined;
 }

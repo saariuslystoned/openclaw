@@ -50,6 +50,7 @@ export function buildReleaseValidationManifest({ plan, drain, context, reusedMan
     publicationArtifacts: context.publicationArtifacts ?? { npmPreflight: null, docker: null },
     publishInputs: context.publishInputs,
     advisoryJobs: drain?.advisoryJobs ?? [],
+    waivers: drain?.waivers ?? [],
     childEvidence,
     ...(plan.qualificationCoverage
       ? {
@@ -119,6 +120,7 @@ export function buildReleaseValidationManifest({ plan, drain, context, reusedMan
         runReleaseSoak: context.runReleaseSoak,
         validationInputs: {
           ...context.validationInputs,
+          ...(plan.targetVersion ? { targetVersion: plan.targetVersion } : {}),
           ...(plan.sourceAdmissionContract
             ? {
                 ...publicationIntentInputs(plan.sourceAdmission),
@@ -132,8 +134,8 @@ export function buildReleaseValidationManifest({ plan, drain, context, reusedMan
           performanceReportPublication: "artifact-only",
         },
         childRuns: plan.qualificationCoverage
-          ? Object.fromEntries(
-              plan.children.map((child) => [
+          ? Object.fromEntries([
+              ...plan.children.map((child) => [
                 child.key,
                 child.key === "productPerformance"
                   ? {
@@ -143,7 +145,15 @@ export function buildReleaseValidationManifest({ plan, drain, context, reusedMan
                     }
                   : child.runId,
               ]),
-            )
+              ...(plan.qualificationCoverage.exemptions ?? []).map((exemption) => [
+                exemption.childRole,
+                {
+                  disposition: exemption.disposition,
+                  runId: "",
+                  supportingEvidence: exemption.supportingEvidence,
+                },
+              ]),
+            ])
           : {
               normalCi: runs.normalCi ?? "",
               pluginPrereleaseIndependent: runs.pluginPrereleaseIndependent ?? "",
@@ -162,8 +172,7 @@ export function buildReleaseValidationManifest({ plan, drain, context, reusedMan
   return manifest;
 }
 
-export function manifestContextFromEnvironment(source) {
-  const env = process.env;
+export function manifestContextFromEnvironment(source, env = process.env) {
   const coverage = source?.coverage ?? {};
   const inputs = {};
   for (const [key, variable, sourceKey] of [
@@ -203,10 +212,6 @@ export function manifestContextFromEnvironment(source) {
   }
   inputs.targetContextRef = env.TARGET_CONTEXT_REF ?? source?.targetContextRef ?? "";
   inputs.targetVersion = env.TARGET_VERSION ?? source?.projection?.version ?? "";
-  const waiver = env.TELEGRAM_WAIVER ?? coverage.telegram_waiver ?? "";
-  if (waiver) {
-    inputs.telegramWaiver = waiver;
-  }
   return {
     runId: env.GITHUB_RUN_ID,
     runAttempt: env.GITHUB_RUN_ATTEMPT,

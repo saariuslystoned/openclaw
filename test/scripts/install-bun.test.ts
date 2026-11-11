@@ -12,9 +12,9 @@ import {
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { readStandaloneInstaller } from "../../scripts/lib/standalone-installers.mjs";
-import { resolveExecutablePath } from "../../src/infra/executable-path.js";
 import { requireNodeTool } from "../helpers/node-toolchain.js";
 import { useAutoCleanupTempDirTracker } from "../helpers/temp-dir.js";
+import { makeStoredZip } from "./actions-artifact-zip.test-support.js";
 
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 const installer = readStandaloneInstaller(process.cwd(), "install.sh");
@@ -37,11 +37,6 @@ function fixture() {
   for (const path of [bin, home, tmp, join(root, "bun-linux-x64")]) {
     mkdirSync(path);
   }
-  const unzipTool = resolveExecutablePath("unzip");
-  if (!unzipTool) {
-    throw new Error("install-bun fixture requires unzip on PATH");
-  }
-  symlinkSync(unzipTool, join(bin, "unzip"));
   const bun = join(root, "bun-linux-x64", "bun");
   executable(
     bun,
@@ -74,16 +69,11 @@ case "$1" in
 esac
 `,
   );
-  const zip = join(root, "bun.zip");
-  const zipTool = resolveExecutablePath("zip");
-  if (!zipTool) {
-    throw new Error("install-bun fixture requires zip on PATH");
-  }
-  const zipped = spawnSync(zipTool, ["-q", zip, "bun-linux-x64/bun"], { cwd: root });
-  expect(zipped.status).toBe(0);
+  const archiveBytes = makeStoredZip({ "bun-linux-x64/bun": readFileSync(bun, "utf8") });
+  writeFileSync(join(root, "bun.zip"), archiveBytes);
   const artifact = {
     asset: "bun.zip",
-    sha256: sha(readFileSync(zip)),
+    sha256: sha(archiveBytes),
     executable: "bun-linux-x64/bun",
     executableSha256: sha(readFileSync(bun)),
   };

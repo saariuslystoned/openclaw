@@ -2,17 +2,6 @@ import { MAX_TIMER_TIMEOUT_MS } from "@openclaw/normalization-core/number-coerci
 import { createAbortError, racePromiseWithAbortSignal } from "../infra/abort-signal.js";
 import { withTimeout } from "../infra/fs-safe.js";
 import type { CommandQueueTaskDeadline } from "../process/command-queue.types.js";
-import { resolveSafeTimeoutDelayMs } from "../utils/timer-delay.js";
-
-/** Clamp an auth refresh deadline to a safe setTimeout delay. */
-export function clampRuntimeAuthRefreshDelayMs(params: {
-  refreshAt: number;
-  now: number;
-  minDelayMs: number;
-}): number {
-  return resolveSafeTimeoutDelayMs(params.refreshAt - params.now, { minMs: params.minDelayMs });
-}
-
 /** Bound caller-owned exchanges; native OAuth owners retain durable refresh settlement. */
 export function createRuntimeAuthDeadline(params: {
   provider: string;
@@ -32,7 +21,9 @@ export function createRuntimeAuthDeadline(params: {
   const withAuthDeadline = <T>(
     step: string,
     operation: (signal: AbortSignal) => Promise<T>,
+    requestSignal?: AbortSignal,
   ): Promise<T> => {
+    const signal = requestSignal ? AbortSignal.any([authSignal, requestSignal]) : authSignal;
     const deadline = params.getDeadline?.() ?? startupDeadline;
     const remainingMs =
       deadline.kind === "bounded" ? deadline.deadlineAtMs - Date.now() : undefined;
@@ -48,8 +39,8 @@ export function createRuntimeAuthDeadline(params: {
     }
     return withTimeout(
       racePromiseWithAbortSignal(
-        () => operation(authSignal),
-        authSignal,
+        () => operation(signal),
+        signal,
         () =>
           createAbortError(
             `${params.provider} ${step} aborted; authentication capability is closed. Retry the run when authentication is available.`,

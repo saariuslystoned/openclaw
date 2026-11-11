@@ -12,6 +12,7 @@ import { resolveIsConfigReadOnly } from "../config/paths.js";
 import type { OpenClawConfig } from "../config/types.openclaw.js";
 import { resolveClawHubBaseUrl } from "../infra/clawhub-client.js";
 import { fetchClawHubPluginDetail } from "../infra/clawhub-plugin-catalog.js";
+import { idFeatureVisible } from "../shared/openclaw-id-policy.js";
 import { resolvePluginActivationSourceConfig } from "./activation-source-config.js";
 import { resolvePendingPluginCapabilityReview } from "./capability-consent.js";
 import {
@@ -46,6 +47,7 @@ import {
 import { createInstalledPluginOwnershipResolver } from "./installed-plugin-package-ownership.js";
 import {
   type ManagedPluginIconSource,
+  type ManagedPluginClawHubIconSource,
   resolveInstalledPluginClawHubIconSource,
   resolvePluginIconSource,
   resolvePluginIconSources,
@@ -56,6 +58,7 @@ import {
   prepareCatalogEntries,
   loadOfficialCatalog,
   loadInstalledPluginCategories,
+  loadInstalledPluginPublisherHandle,
   pluginVersionKey,
   normalizeKinds,
   normalizeFeaturedAt,
@@ -80,7 +83,6 @@ import {
   createPluginCache,
   getPluginCache,
   getProcessPluginCache,
-  retainPluginCache,
   withPluginCache,
 } from "./plugin-cache.js";
 import { resolvePluginConfigEnablement } from "./plugin-config-enablement.js";
@@ -124,17 +126,12 @@ export function loadFreshManagedPluginMetadata(
     const params = configWide
       ? { config, env: capturedEnv }
       : resolveManagedPluginMetadataParams(config, capturedEnv);
-    const release = retainPluginCache(cache);
-    try {
-      const assertCurrent = await preparePluginMetadataMachineStateAsync({ env: capturedEnv });
-      assertCurrent();
-      // Management requires fresh inventory even when a generic reader could reuse boot facts.
-      return configWide
-        ? resolveConfigWidePluginMetadataSnapshot({ ...params, allowCurrent: false })
-        : loadPluginMetadataSnapshot({ ...params, allowCurrent: false });
-    } finally {
-      release();
-    }
+    const assertCurrent = await preparePluginMetadataMachineStateAsync({ env: capturedEnv });
+    assertCurrent();
+    // Management requires fresh inventory even when a generic reader could reuse boot facts.
+    return configWide
+      ? resolveConfigWidePluginMetadataSnapshot({ ...params, allowCurrent: false })
+      : loadPluginMetadataSnapshot({ ...params, allowCurrent: false });
   });
 }
 
@@ -190,17 +187,14 @@ export const resolveManagedPluginActivityIconSource = withManagedPluginCache(
 export function resolveManagedSetupCatalogIconUrl(params: {
   config: OpenClawConfig;
   iconUrl: string;
-  env?: NodeJS.ProcessEnv;
 }): string | undefined {
   const requested = normalizeCatalogIconUrl(normalizeOptionalString(params.iconUrl) ?? "");
   if (!requested) {
     return undefined;
   }
-  const env = params.env ?? process.env;
   const allowedUrls = [
     ...resolveManifestProviderAuthChoices({
       config: params.config,
-      env,
       includeUntrustedWorkspacePlugins: false,
       includeWorkspacePlugins: false,
     }).map((choice) => choice.icon),
@@ -260,6 +254,7 @@ export const listManagedPlugins = withManagedPluginCache(
       listOfficialExternalPluginCatalogEntries(),
     );
     const installedIconsById = new Map<string, boolean>();
+    const installedToolBrandSources = new Map<string, ManagedPluginClawHubIconSource>();
     const installedClawHubPackages = new Set<string>();
     const discoveryRegistry = resolveClawHubBaseUrl();
     const categoryTargetsByRegistry = new Map<
@@ -341,6 +336,8 @@ export const listManagedPlugins = withManagedPluginCache(
               ? "needs-setup"
               : "disabled",
         removable,
+        hasNativeUi: manifest ? Boolean(manifest.controlUi) : undefined,
+        recommendedPrompts: manifest?.recommendedPrompts,
       };
       Object.assign(plugin, projectPluginCatalogCategoryFacts(manifest, enabled));
       if (record.packageName) {
@@ -381,6 +378,9 @@ export const listManagedPlugins = withManagedPluginCache(
           normalizedPluginId,
           Boolean(resolvePluginIconSource({ metadata, pluginId: record.pluginId }) || remoteIcon),
         );
+        if (record.origin !== "bundled" && remoteIcon) {
+          installedToolBrandSources.set(normalizedPluginId, remoteIcon);
+        }
       }
       if (installedIconsById.get(normalizedPluginId)) {
         plugin.hasIcon = true;
@@ -424,6 +424,26 @@ export const listManagedPlugins = withManagedPluginCache(
       }
       return plugin;
     });
+    const toolBrandPluginIds = new Set<string>();
+    await Promise.all(
+      [...installedToolBrandSources].map(async ([pluginId, source]) => {
+        const publisher = await loadInstalledPluginPublisherHandle(
+          source,
+          params.cachedCatalogOnly,
+        );
+        if (publisher && publisher !== "openclaw") {
+          toolBrandPluginIds.add(pluginId);
+        }
+      }),
+    );
+    for (const plugin of plugins) {
+      if (
+        plugin.origin !== "bundled" &&
+        toolBrandPluginIds.has(metadata.normalizePluginId(plugin.id))
+      ) {
+        plugin.hasToolBrandIcon = true;
+      }
+    }
     for (const [baseUrl, categoryTargets] of categoryTargetsByRegistry) {
       const resolved = await loadInstalledPluginCategories({
         baseUrl,
@@ -521,7 +541,7 @@ export const listManagedPlugins = withManagedPluginCache(
       });
     }
     return {
-      plugins: plugins.toSorted(compareCatalogEntries),
+      plugins: plugins.filter(idFeatureVisible(params.config)).toSorted(compareCatalogEntries),
       diagnostics,
       mutationAllowed: !resolveIsConfigReadOnly(env),
     };

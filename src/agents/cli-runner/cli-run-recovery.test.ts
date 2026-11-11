@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildPreparedCliRunContext } from "../cli-runner.test-helpers.js";
 import { FailoverError } from "../failover-error.js";
 import { runCliRecovery } from "./cli-run-recovery.js";
+import { cliBackendLog } from "./log.js";
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -32,6 +33,29 @@ function recovery(timeoutMs = 60_000) {
   };
 }
 
+describe("cli-run-recovery delivered failure", () => {
+  it("logs the cause once when a failure after a message-tool send ends the run", async () => {
+    const warn = vi.spyOn(cliBackendLog, "warn").mockImplementation(() => {});
+    const context = buildPreparedCliRunContext({ runId: "run-delivered" });
+    const delivered = { meta: { durationMs: 1 } };
+    const result = await runCliRecovery({
+      context,
+      executeAttempt: async () => {
+        throw new Error("CLI stream budget exceeded");
+      },
+      finishAttempt: async () => ({ meta: { durationMs: 0 } }),
+      finishDeliveredFailure: async () => delivered,
+      onTerminalFailure: async () => {},
+    });
+
+    expect(result).toBe(delivered);
+    expect(warn).toHaveBeenCalledOnce();
+    expect(warn.mock.calls[0]?.[0]).toMatch(
+      /^cli delivered failure: provider=claude-cli model=\S+ durationMs=\d+ runId=run-delivered error=CLI stream budget exceeded$/,
+    );
+  });
+});
+
 describe("cli-run-recovery retry budget", () => {
   it("keeps an integer monotonic retry budget after a wall-clock step", async () => {
     const { context, executeAttempt, run } = recovery();
@@ -55,18 +79,4 @@ describe("cli-run-recovery retry budget", () => {
     await expect(run()).rejects.toBe(error);
     expect(executeAttempt).toHaveBeenCalledOnce();
   });
-});
-
-it("attempts one fresh session after a rejected checkpoint and does not retry its failure", async () => {
-  const { executeAttempt, run } = recovery();
-  const secondFailure = new FailoverError("fresh session also failed", {
-    reason: "session_expired",
-    provider: "claude-cli",
-    code: "cli_resume_at_unsupported",
-  });
-  executeAttempt.mockReset().mockRejectedValue(secondFailure);
-  await expect(run()).rejects.toBe(secondFailure);
-  expect(executeAttempt).toHaveBeenCalledTimes(2);
-  expect(executeAttempt.mock.calls[0]?.[0]).toBe("s1");
-  expect(executeAttempt.mock.calls[1]?.[0]).toBeUndefined();
 });

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { defaultRuntime, ExitError } from "../../runtime.js";
 import { runRegisteredCli } from "../../test-utils/command-runner.js";
 import { withConsoleLogsRoutedToStderrForJson } from "../json-output-mode.js";
+import { createCliTtyMock } from "../test-runtime-capture.js";
 import { registerUpdateCli } from "../update-cli.js";
 import { updateCommand } from "./update-command.js";
 
@@ -31,20 +32,16 @@ vi.mock("./shared.js", async (importOriginal) => ({
 // mock-isolation: Exercise wizard delegation without loading the updater activation, ledger, and runtime-retirement owners.
 vi.mock("./update-command.js", () => ({ updateCommand: vi.fn() }));
 
-const stdinTty = Object.getOwnPropertyDescriptor(process.stdin, "isTTY");
+const tty = createCliTtyMock([process.stdin]);
 beforeEach(() => {
-  Object.defineProperty(process.stdin, "isTTY", { value: true, configurable: true });
+  tty.set(true);
   vi.spyOn(defaultRuntime, "error").mockImplementation(() => {});
   vi.spyOn(defaultRuntime, "exit");
   vi.spyOn(defaultRuntime, "writeJson").mockImplementation(() => {});
 });
 afterEach(() => {
   vi.restoreAllMocks();
-  if (stdinTty) {
-    Object.defineProperty(process.stdin, "isTTY", stdinTty);
-  } else {
-    Reflect.deleteProperty(process.stdin, "isTTY");
-  }
+  tty.restore();
 });
 
 async function runWizard(json = false) {

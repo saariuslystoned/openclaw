@@ -72,7 +72,6 @@ async function fixture(direction: "inbound" | "outbound" = "outbound") {
     manager,
     provider,
     {},
-    undefined,
     {} as never,
   );
   onTestFinished(() => server.stop());

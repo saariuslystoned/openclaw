@@ -4,6 +4,7 @@ import { resolveZstdCodec } from "../../infra/zstd-codec.js";
 import { runOpenClawAgentWriteTransaction } from "../../state/openclaw-agent-db.js";
 import { withOpenClawTestState } from "../../test-utils/openclaw-test-state.js";
 import { withCurrentProjectionSnapshot } from "./session-accessor.sqlite-active-projection.js";
+import { clearHistoryNavigation } from "./session-accessor.sqlite-history.test-support.js";
 import { appendTranscriptEventsInTransaction } from "./session-accessor.sqlite-transcript-store.js";
 import { readCacheTtlProjectionPrefix } from "./session-cache-ttl-prefix.js";
 import { createSessionCompoundWorkerFixture } from "./session-compound-worker.test-support.js";
@@ -92,8 +93,10 @@ it.each([
               .prepare("DELETE FROM transcript_event_identities WHERE session_id = ? AND seq = 0")
               .run(scope.sessionId);
           }
-          // This release's predicate migration eagerly fills navigation fields.
-          // Unlike schema 39, clearing them would manufacture an invalid fixture.
+          if (analyzed) {
+            // The same type-index seek must cover transcripts admitted without a backfill.
+            clearHistoryNavigation(database, scope.sessionId);
+          }
         },
         { agentId: database.agentId, path: database.path },
       );
@@ -139,15 +142,16 @@ it.each([
         const drivingSearch = plan.find(
           ({ detail }) => typeof detail === "string" && detail.startsWith("SEARCH "),
         )?.detail;
-        expect(drivingSearch).toBeDefined();
-        expect(
-          plan.some(
-            ({ detail }) =>
-              typeof detail === "string" &&
-              detail.includes("idx_agent_transcript_event_identity_sequence") &&
-              detail.includes("LEFT-JOIN"),
-          ),
-        ).toBe(true);
+        if (legacy) {
+          expect(
+            plan.some(
+              ({ detail }) =>
+                typeof detail === "string" && detail.includes("(session_id=? AND seq=?) LEFT-JOIN"),
+            ),
+          ).toBe(true);
+        } else {
+          expect(drivingSearch).toMatch(/\(session_id=\? AND event_type=\?/u);
+        }
       } finally {
         spy.mockRestore();
       }
@@ -184,11 +188,7 @@ it("decodes only the live cache-TTL prefix after sorting obsolete checkpoints", 
       anchor,
     ]);
     expectCompressed({ database, scope }, obsolete.length + 1);
-    const codec = resolveZstdCodec();
-    if (!codec) {
-      throw new Error("Expected zstd codec");
-    }
-    const decompress = vi.spyOn(codec, "decompress");
+    const decompress = vi.spyOn(resolveZstdCodec(), "decompress");
     try {
       expect(prefixAt(scope, anchor)).toEqual({ anchorIds: [anchor.id], entries: [marker, delta] });
       expect(decompress).toHaveBeenCalledTimes(1);

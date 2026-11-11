@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { createServer, type ServerResponse } from "node:http";
 import path from "node:path";
@@ -8,8 +8,11 @@ import { rawDataToString } from "@openclaw/gateway-client/websocket-data";
 import { expect, it } from "vitest";
 import { WebSocketServer, type WebSocket } from "ws";
 import { createQaGatewayChild } from "../extensions/qa-lab/api.js";
+import { checkTargetDatabaseSchemasForContexts } from "../src/cli/update-cli/schema-preflight.js";
 import { buildMockOpenAiResponsesProvider } from "../src/gateway/test-openai-responses-model.js";
+import { readUpdateStateSchemaVersions } from "../src/infra/update-candidate-state.js";
 import { createDeferredCore } from "../src/shared/deferred.js";
+import { withArtifactPreservingStateReads } from "../src/state/openclaw-state-db-readonly.js";
 import { reserveTestPortListener } from "../src/test-utils/port-claims.js";
 import { writeOpenAiResponsesText } from "./helpers/openai-responses-sse.js";
 import {
@@ -518,7 +521,40 @@ it(
         "signal:sendReaction",
       ]);
     const beforeRestart = modelRequests.length;
-    await gateway.restartAfterStateMutation(async () => {});
+    await gateway.restartAfterStateMutation(async ({ configPath, runtimeEnv, stateDir }) => {
+      // Inspect only this stopped disposable owner's real schemas and retained data.
+      // No production data, marker relabeling, migration or serving-owner access.
+      const config = JSON.parse(await readFile(configPath, "utf8"));
+      const versions = await readUpdateStateSchemaVersions({
+        stateDir,
+        config,
+        env: runtimeEnv,
+        root: repoRoot,
+      });
+      expect(versions).toContainEqual({
+        path: path.join(stateDir, "state", "openclaw.sqlite"),
+        userVersion: 39,
+        contentVersion: 39,
+      });
+      expect(versions.some((entry) => entry.userVersion === 41)).toBe(true);
+      const hashes = () =>
+        Promise.all(
+          versions.map(async (entry) =>
+            createHash("sha256")
+              .update(await readFile(entry.path))
+              .digest("hex"),
+          ),
+        );
+      const retained = await hashes();
+      expect(
+        await withArtifactPreservingStateReads(() =>
+          checkTargetDatabaseSchemasForContexts({ state: 39, agent: 41 }, [
+            { config, env: runtimeEnv },
+          ]),
+        ),
+      ).toEqual({ incompatible: [], indeterminate: [] });
+      expect(await hashes()).toEqual(retained);
+    });
     await expect.poll(() => Boolean(discordSocket && signalStream)).toBe(true);
     assert(discordSocket && signalStream);
     discordSocket.send(JSON.stringify(add));

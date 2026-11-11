@@ -1,10 +1,9 @@
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
+import { getChannelMessage } from "./internal/api.messages.js";
 import {
   createOwnMessageReaction,
   deleteOwnMessageReaction,
-  getChannelMessage,
   listMessageReactionUsers,
-} from "./internal/discord.js";
+} from "./internal/api.reactions.js";
 import {
   buildReactionIdentifier,
   createDiscordClient,
@@ -12,17 +11,9 @@ import {
 } from "./send.shared.js";
 import type { DiscordReactionSummary, DiscordReactOpts } from "./send.types.js";
 
-function resolveDiscordReactionClient(opts: DiscordReactOpts) {
-  if (opts.rest && opts.cfg && opts.accountId) {
-    return createDiscordClient(opts);
-  }
-  const cfg = requireRuntimeConfig(opts.cfg, "Discord reactions");
-  return createDiscordClient({ ...opts, cfg });
-}
-
 function reactionMutation(operation: typeof createOwnMessageReaction, label: string) {
   return async (channelId: string, messageId: string, emoji: string, opts: DiscordReactOpts) => {
-    const { rest, request, account } = resolveDiscordReactionClient(opts);
+    const { rest, request, account } = createDiscordClient(opts);
     const encoded = normalizeReactionEmoji(emoji);
     // An uncertain conversational receipt must not hide an automatic resend.
     const strictReceipt = account.config.capabilities?.includes("reaction-conversations");
@@ -43,7 +34,7 @@ export async function removeOwnReactionsDiscord(
   messageId: string,
   opts: DiscordReactOpts,
 ): Promise<{ ok: true; removed: string[] }> {
-  const { rest, request } = resolveDiscordReactionClient(opts);
+  const { rest, request } = createDiscordClient(opts);
   const message = await request(
     () => getChannelMessage(rest, channelId, messageId),
     "reaction-list",
@@ -78,7 +69,7 @@ export async function fetchReactionsDiscord(
   messageId: string,
   opts: DiscordReactOpts & { limit?: number },
 ): Promise<DiscordReactionSummary[]> {
-  const { rest, request } = resolveDiscordReactionClient(opts);
+  const { rest, request } = createDiscordClient(opts);
   const message = await request(
     () => getChannelMessage(rest, channelId, messageId),
     "reaction-list",

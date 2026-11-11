@@ -1,96 +1,71 @@
-// Round-trip and naming coverage for the archived-transcript zstd cold tier.
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { zstdCompressSync } from "node:zlib";
+import { constants, zstdCompressSync } from "node:zlib";
 import { afterEach, describe, expect, it } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../../test/helpers/temp-dir.js";
 import {
-  encodeSessionArchiveContent,
-  materializeSessionArchiveForRead,
-  readSessionArchiveContentSync,
-  SESSION_ARCHIVE_ZSTD_SUFFIX,
+  openSessionArchiveReader,
+  readSessionArchivePrefix,
+  readSessionArchiveText,
 } from "./archive-compression.js";
-import { decodeSessionArchiveBytes } from "./archive-decode.js";
 
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("archive compression", () => {
-  it("bounds synchronous full-content reads without changing the archive", () => {
-    const dir = tempDirs.make("openclaw-archive-zstd-");
-    const archivePath = path.join(dir, "expanding.jsonl.zst");
-    const bytes = zstdCompressSync(Buffer.from("x".repeat(2 * 1024 * 1024)));
-    fs.writeFileSync(archivePath, bytes);
+  it("reads compressed UTF-8 text and bounded plaintext prefixes", async () => {
+    const content = `${JSON.stringify({ type: "message", body: "archive round trip 🦞" })}\n`;
+    const plain = path.join(tempDirs.make("openclaw-archive-zstd-"), "plain.jsonl");
+    const archive = `${plain}.zst`;
+    fs.writeFileSync(plain, content);
+    fs.writeFileSync(archive, zstdCompressSync(Buffer.from(content)));
+    expect(await readSessionArchiveText(archive)).toBe(content);
+    expect(await readSessionArchivePrefix(plain, 13)).toEqual(Buffer.from(content).subarray(0, 13));
+  });
 
-    expect(() => readSessionArchiveContentSync(archivePath, 1024 * 1024)).toThrow(
-      /Transcript archive .* exceeds .* limit/,
+  it("reads large archives forwards and backwards without creating plaintext files", async () => {
+    const dir = tempDirs.make("openclaw-archive-zstd-");
+    const archive = path.join(dir, "large.jsonl.zst");
+    const noise = Buffer.concat(
+      Array.from({ length: 4096 }, (_, index) =>
+        createHash("sha256").update(String(index)).digest(),
+      ),
     );
-    expect(fs.readFileSync(archivePath)).toEqual(bytes);
-  });
-
-  it("cleans an incomplete stream without publishing a cache entry", async () => {
-    const dir = tempDirs.make("openclaw-archive-zstd-");
-    const archivePath = path.join(dir, "broken.jsonl.zst");
-    fs.writeFileSync(archivePath, "not a zstd frame");
-    await expect(materializeSessionArchiveForRead(archivePath)).rejects.toThrow();
-    const encoded = encodeSessionArchiveContent("repaired archive");
-    fs.writeFileSync(archivePath, encoded.bytes);
-    const cachePath = await materializeSessionArchiveForRead(archivePath);
-    expect(fs.readFileSync(cachePath, "utf8")).toBe("repaired archive");
-  });
-
-  it("decodes both plain bytes and runtime-supported compressed archive bytes", () => {
-    const content = `${JSON.stringify({ type: "message", body: "archive round trip" })}\n`;
-    const encoded = encodeSessionArchiveContent(content);
-
-    expect(decodeSessionArchiveBytes(Buffer.from(content, "utf8"), false)).toBe(content);
-    expect(decodeSessionArchiveBytes(encoded.bytes, encoded.suffix !== "")).toBe(content);
-  });
-
-  it("invalidates a materialized cache when its source archive is removed", async () => {
-    const encoded = encodeSessionArchiveContent("cached archive contents\n");
-    if (encoded.suffix !== SESSION_ARCHIVE_ZSTD_SUFFIX) {
-      return;
-    }
-    const dir = tempDirs.make("openclaw-archive-zstd-");
-    const archivePath = path.join(dir, `removed.jsonl.deleted.2026-07-11${encoded.suffix}`);
-    fs.writeFileSync(archivePath, encoded.bytes);
-    const cachePath = await materializeSessionArchiveForRead(archivePath);
-    expect(fs.existsSync(cachePath)).toBe(true);
-
-    fs.rmSync(archivePath);
-
-    await expect(materializeSessionArchiveForRead(archivePath)).rejects.toThrow();
-    expect(fs.existsSync(cachePath)).toBe(false);
-  });
-
-  it("keeps plain archives readable regardless of runtime zstd support", () => {
-    const dir = tempDirs.make("openclaw-archive-zstd-");
-    const archivePath = path.join(dir, "sess.jsonl.reset.2026-07-11T00-00-00.000Z");
-    fs.writeFileSync(archivePath, "plain\n", "utf8");
-
-    expect(readSessionArchiveContentSync(archivePath)).toBe("plain\n");
-  });
-
-  it("materializes compressed archives to a stable plain JSONL cache path", async () => {
-    const content = `${JSON.stringify({ type: "message", body: "cold".repeat(256 * 1024) })}\n`;
-    const encoded = encodeSessionArchiveContent(content);
-    const dir = tempDirs.make("openclaw-archive-zstd-");
-    const archivePath = path.join(
-      dir,
-      `sess.jsonl.deleted.2026-07-11T00-00-00.000Z${encoded.suffix}`,
+    const frame = zstdCompressSync(
+      Buffer.concat([noise, Buffer.alloc(1024 * 1024 - noise.length, "x")]),
     );
-    fs.writeFileSync(archivePath, encoded.bytes);
-
-    const first = await materializeSessionArchiveForRead(archivePath);
-    const second = await materializeSessionArchiveForRead(archivePath);
-
-    expect(second).toBe(first);
-    expect(fs.readFileSync(first, "utf8")).toBe(content);
-    if (encoded.suffix === "") {
-      // Plain archives pass through untouched.
-      expect(first).toBe(archivePath);
-    } else {
-      expect(first.endsWith(".jsonl")).toBe(true);
+    const bytes = Buffer.concat(Array.from({ length: 64 }, () => frame));
+    fs.writeFileSync(archive, bytes);
+    const reader = await openSessionArchiveReader(archive);
+    const sibling = await openSessionArchiveReader(archive);
+    const buffer = Buffer.alloc(17);
+    try {
+      expect(await reader.read(buffer, 0)).toBe(17);
+      expect(await reader.read(buffer, 0)).toBe(17);
+      expect(buffer).toEqual(noise.subarray(0, 17));
+      expect(await reader.read(buffer, 64 * 1024 * 1024 - 5)).toBe(5);
+      expect(buffer.subarray(0, 5).toString()).toBe("xxxxx");
+      expect((await reader.stat()).size).toBe(bytes.length);
+    } finally {
+      await reader.close();
     }
+    try {
+      expect(await sibling.read(buffer, 17)).toBe(17);
+      expect(fs.readdirSync(dir)).toEqual(["large.jsonl.zst"]);
+    } finally {
+      await sibling.close();
+    }
+  });
+
+  it("reads a bounded prefix without decoding a corrupt distant suffix", async () => {
+    const archive = path.join(tempDirs.make("openclaw-archive-zstd-"), "prefix.jsonl.zst");
+    const frame = zstdCompressSync(Buffer.alloc(1024 * 1024, "a"), {
+      params: { [constants.ZSTD_c_checksumFlag]: 1 },
+    });
+    const damaged = Buffer.from(frame);
+    damaged[damaged.length - 1] = damaged.readUInt8(damaged.length - 1) ^ 1;
+    fs.writeFileSync(archive, Buffer.concat([frame, damaged]));
+    expect(await readSessionArchivePrefix(archive, 64)).toEqual(Buffer.alloc(64, "a"));
+    await expect(readSessionArchiveText(archive)).rejects.toThrow();
   });
 });

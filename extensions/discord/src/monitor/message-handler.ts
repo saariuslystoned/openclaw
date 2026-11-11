@@ -18,8 +18,7 @@ export function createDiscordMessageHandler(
   params: DiscordMessageHandlerParams & { client: Client },
 ): DiscordMessageHandlerWithLifecycle {
   const dispatcher = createDiscordMessageDispatcher(params);
-  const createIngressMonitor = params.testing?.createIngressMonitor ?? createDiscordIngressMonitor;
-  const ingress = createIngressMonitor({
+  const ingress = createDiscordIngressMonitor({
     ...params,
     dispatchReaction: async (event, lifecycle) => {
       let dispatched = false;
@@ -29,8 +28,6 @@ export function createDiscordMessageHandler(
         action: event.action,
         occurrenceId: event.occurrenceId,
         assertIngress: () => lifecycle.abortSignal.throwIfAborted(),
-        listener: "DiscordReactionIngress",
-        event: event.action,
         handlerParams: {
           ...params,
           groupPolicy:
@@ -57,6 +54,7 @@ export function createDiscordMessageHandler(
         abortSignal: lifecycle.abortSignal,
         turnAdoptionLifecycle: lifecycle,
       }),
+    onDeadLetter: (event, signal) => dispatcher.notifyDeadLetter(event, params.client, signal),
   });
   ingress.start();
   const activeAdmissions = new Set<Promise<void>>();
