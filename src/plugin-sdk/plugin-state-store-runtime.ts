@@ -8,6 +8,12 @@
  */
 
 export {
+  runReactionReplyWithReceipt,
+  type ReactionReplyOutcome,
+  type ReactionReplyReceipt,
+} from "../channels/reaction-reply.js";
+
+export {
   createPluginStateKeyedStore,
   createPluginStateKeyedStoreV2,
   createPluginStateSyncKeyedStore,

@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRuntimeSpies } from "../../test-support/runtime-spies.js";
 import { signalCheck, signalRpcRequest, streamSignalEvents } from "./client.js";
 import { expectPreparedHandoff, useSignalHttpServer } from "./client.test-support.js";
+import { withSignalRequestAuthority } from "./request-authority.js";
 import { runSignalSseLoop, type SignalStatusSink } from "./sse-reconnect.js";
 
 vi.mock("openclaw/plugin-sdk/core", async (importOriginal) => ({
@@ -134,9 +135,14 @@ it("keeps an idle HTTP stream quiet through intentional shutdown", async () => {
 });
 
 describe("signalRpcRequest", () => {
-  it.each([false, true])(
-    "prepares the HTTP handoff and rechecks its caller after waiting (revoked=%s)",
-    (revoked) =>
+  it.each([
+    { revoked: false, ingress: false },
+    { revoked: true, ingress: false },
+    { revoked: false, ingress: true },
+    { revoked: true, ingress: true },
+  ])(
+    "prepares the HTTP handoff and rechecks its caller (revoked=$revoked ingress=$ingress)",
+    ({ revoked, ingress }) =>
       expectPreparedHandoff(revoked, async ({ arrive, response, assertHandoff }) => {
         const result = { sent: true };
         const baseUrl = await withSignalServer(async (_req, res) => {
@@ -145,16 +151,22 @@ describe("signalRpcRequest", () => {
           res.end(JSON.stringify({ jsonrpc: "2.0", id: "test-id", result }));
         });
         const request = vi.spyOn(http, "request");
+        const { signalRpcRequest: adapterRpcRequest } = await import("./client-adapter.js");
         return {
           send: () =>
-            signalRpcRequest(
-              "send",
-              { message: "prepared" },
-              {
-                baseUrl,
-                assertDirectAdapterHandoff: assertHandoff,
-              },
-            ),
+            ingress
+              ? withSignalRequestAuthority(assertHandoff, () =>
+                  adapterRpcRequest(
+                    "sendReaction",
+                    { emoji: "✅" },
+                    { baseUrl, transportKind: "external-native" },
+                  ),
+                )
+              : signalRpcRequest(
+                  "send",
+                  { message: "prepared" },
+                  { baseUrl, assertDirectAdapterHandoff: assertHandoff },
+                ),
           assertCount: (count) => expect(request).toHaveBeenCalledTimes(count),
           result,
         };

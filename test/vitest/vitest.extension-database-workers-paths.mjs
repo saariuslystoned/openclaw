@@ -93,6 +93,8 @@ export const databaseWorkerExtensionTestFiles = [
   "extensions/minimax/speech-provider.test.ts",
   "extensions/minimax/tts.test.ts",
   "extensions/discord/src/monitor/ingress.test.ts",
+  "extensions/discord/src/monitor/reaction-conversation.test.ts",
+  "extensions/signal/src/signal-ingress.reaction-conversation.test.ts",
   "extensions/discord/src/monitor/listeners.thread-delete.session-store.integration.test.ts",
   "extensions/discord/src/monitor/message-handler.ingress-recovery.test.ts",
   "extensions/discord/src/monitor/native-command.guild-guards.test.ts",

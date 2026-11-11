@@ -10,6 +10,7 @@ import {
 } from "openclaw/plugin-sdk/command-auth-native";
 import { isAbortRequestText } from "openclaw/plugin-sdk/command-primitives-runtime";
 import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
 import type { SignalIngressLifecycle } from "../signal-ingress.js";
 
 export type SignalInboundEntry = {
@@ -24,6 +25,8 @@ export type SignalInboundEntry = {
   isGroup: boolean;
   bodyText: string;
   nativeReplyBody?: string;
+  reaction?: NonNullable<MsgContext["Reaction"]>;
+  assertAuthority?: () => void;
   commandBody: string;
   timestamp?: number;
   messageId?: string;
