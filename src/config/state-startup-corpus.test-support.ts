@@ -208,6 +208,16 @@ export function createStateStartupCorpusFixture() {
                   repairPrefixedConfig: true,
                   doctorOnlyStateMigrations: true,
                   preparePluginMetadataSnapshot: true,
+                  // Keep the original deadline and custody; expose the last real substep
+                  // on timeout instead of attributing every slow repair to Doctor as a whole.
+                  measure: async (name, run) => {
+                    diagnostics.stage(`${name}:start`);
+                    try {
+                      return await run();
+                    } finally {
+                      diagnostics.stage(`${name}:settled`);
+                    }
+                  },
                 }),
               );
               phase("startup-config-read");

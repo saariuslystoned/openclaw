@@ -1,0 +1,4 @@
+# #876: preserve full corpus deadlines while attributing real Doctor substeps;
+# retain cancellation/cleanup and selected-prefix revocation assertions.
+# Exact net test LF growth relative to 19414a1a4469beddb15298343834bf9d68c4f9d7.
+18
