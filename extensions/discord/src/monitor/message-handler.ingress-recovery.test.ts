@@ -15,7 +15,11 @@ import {
 import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
 import { withOpenClawTestState } from "openclaw/plugin-sdk/test-state";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createDiscordIngressMonitor, type DiscordIngressLifecycle } from "./ingress.js";
+import {
+  createDiscordIngressMonitor,
+  type DiscordIngressLifecycle,
+  type DiscordIngressPayload,
+} from "./ingress.js";
 import { createDiscordMessageHandler } from "./message-handler.js";
 import type { DiscordMessagePreflightParams } from "./message-handler.preflight.types.js";
 import { createBaseDiscordMessageContext } from "./message-handler.test-harness.js";
@@ -24,12 +28,6 @@ import {
   createDiscordQueuePreflightContextForMessage,
 } from "./message-handler.test-helpers.js";
 import { createDiscordMessageRunQueue } from "./message-run-queue.js";
-
-type DiscordIngressPayload = {
-  version: 1;
-  receivedAt: number;
-  rawMessage: APIMessage;
-};
 
 type DiscordQueue = ChannelIngressQueue<DiscordIngressPayload>;
 

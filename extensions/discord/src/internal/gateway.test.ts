@@ -90,6 +90,73 @@ describe("GatewayPlugin", () => {
     sharedGatewayIdentifyLimiter.reset();
   });
 
+  it("retains reaction occurrence identity on resume, not across fresh sessions", async () => {
+    const gateway = new GatewayPlugin({});
+    const client = { dispatchGatewayEvent: vi.fn() };
+    const internal = gateway as unknown as {
+      client: unknown;
+      handleDispatch(payload: { t: string; d: unknown; s?: number }): Promise<void>;
+    };
+    internal.client = client;
+    const raw = {
+      user_id: "150000000000000004",
+      channel_id: "150000000000000001",
+      message_id: "150000000000000002",
+      emoji: { id: null, name: "👍" },
+      burst: false,
+      type: 0,
+    };
+    const ready = { session_id: "session-1", guilds: [] };
+    await internal.handleDispatch({ t: GatewayDispatchEvents.Ready, d: ready, s: 1 });
+    await internal.handleDispatch({ t: GatewayDispatchEvents.MessageReactionAdd, d: raw, s: 10 });
+    await internal.handleDispatch({ t: GatewayDispatchEvents.Resumed, d: {}, s: 11 });
+    await internal.handleDispatch({ t: GatewayDispatchEvents.MessageReactionAdd, d: raw, s: 10 });
+    const expected = expect.objectContaining({
+      ingressEvent: {
+        kind: "reaction",
+        action: "added",
+        data: raw,
+        occurrenceId: "d75831d20d7e9044027fdd547271945d4ccc876714d1eaa96dba53e8f03d0fc6",
+      },
+    });
+    expect(client.dispatchGatewayEvent).toHaveBeenNthCalledWith(
+      2,
+      GatewayDispatchEvents.MessageReactionAdd,
+      expected,
+    );
+    expect(client.dispatchGatewayEvent).toHaveBeenNthCalledWith(
+      4,
+      GatewayDispatchEvents.MessageReactionAdd,
+      expected,
+    );
+    await internal.handleDispatch({
+      t: GatewayDispatchEvents.Ready,
+      d: { ...ready, session_id: "session-2" },
+      s: 1,
+    });
+    await internal.handleDispatch({
+      t: GatewayDispatchEvents.MessageReactionRemove,
+      d: raw,
+      s: 10,
+    });
+    expect(client.dispatchGatewayEvent).toHaveBeenLastCalledWith(
+      GatewayDispatchEvents.MessageReactionRemove,
+      expect.objectContaining({
+        ingressEvent: {
+          kind: "reaction",
+          action: "removed",
+          data: raw,
+          occurrenceId: "53d8f873be13ffda45e4a62b3f869543a91fba5c946e856146d50f41939ec8ed",
+        },
+      }),
+    );
+    await internal.handleDispatch({ t: GatewayDispatchEvents.MessageReactionAdd, d: raw });
+    expect(client.dispatchGatewayEvent).toHaveBeenLastCalledWith(
+      GatewayDispatchEvents.MessageReactionAdd,
+      expect.objectContaining({ ingressEvent: undefined }),
+    );
+  });
+
   it("emits async dispatch failures as gateway errors", async () => {
     const gateway = new GatewayPlugin({});
     const error = new Error("listener failed");

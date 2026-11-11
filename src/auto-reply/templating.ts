@@ -1,5 +1,6 @@
 /** Shared inbound message context types used by prompt templating and reply dispatch. */
 import type { InboundEventKind } from "../channels/inbound-event/kind.js";
+import type { ChannelReactionContext } from "../channels/reaction-context.js";
 import type { DmScope, ReplyToMode } from "../config/types.base.js";
 import type { GroupToolPolicyConfig } from "../config/types.tools.js";
 import type { GatewayUiCommandTarget } from "../gateway/ui-command-target.types.js";
@@ -116,6 +117,8 @@ export type CanonicalInboundText = {
 export type MsgContext = Partial<CanonicalInboundText> & {
   Body?: string;
   InboundEventKind?: InboundEventKind;
+  /** Authorized conversation observation; never a command or approval. */
+  Reaction?: ChannelReactionContext;
   /**
    * Agent prompt body (may include envelope/history/context). Prefer this for prompt shaping.
    * Should use real newlines (`\n`), not escaped `\\n`.

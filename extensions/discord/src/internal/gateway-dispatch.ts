@@ -1,10 +1,12 @@
 import {
   GatewayDispatchEvents,
   type APIMessage,
+  type APIReaction,
   type APIUser,
   type GatewayDispatchPayload,
 } from "discord-api-types/v10";
 import type { Client } from "./client.js";
+import type { DiscordReactionIngressEvent } from "./listeners.js";
 import { Guild, Message, User } from "./structures.js";
 
 export function dispatchVoiceGatewayEvent(client: Client, payload: GatewayDispatchPayload): void {
@@ -26,6 +28,7 @@ export function mapGatewayDispatchData(
   client: Client,
   type: GatewayDispatchEvents,
   data: unknown,
+  ingressEvent?: DiscordReactionIngressEvent,
 ): unknown {
   if (type === GatewayDispatchEvents.MessageCreate) {
     return createMessageDispatchData(client, data as MessageCreatePayload);
@@ -34,7 +37,7 @@ export function mapGatewayDispatchData(
     type === GatewayDispatchEvents.MessageReactionAdd ||
     type === GatewayDispatchEvents.MessageReactionRemove
   ) {
-    return createReactionDispatchData(client, data as ReactionPayload);
+    return { ...createReactionDispatchData(client, data as ReactionPayload), ingressEvent };
   }
   return data;
 }
@@ -66,11 +69,12 @@ type ReactionPayload = {
   user_id: string;
   channel_id: string;
   message_id: string;
+  emoji: APIReaction["emoji"];
   guild_id?: string;
   member?: { user?: unknown; roles?: string[] };
 };
 
-function createReactionDispatchData(client: Client, data: ReactionPayload) {
+export function createReactionDispatchData(client: Client, data: ReactionPayload) {
   const userRaw =
     data.member?.user && typeof data.member.user === "object"
       ? ({ id: data.user_id, username: "", ...data.member.user } as APIUser)

@@ -61,7 +61,7 @@ import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/secur
 import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
 import { normalizeE164, truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
-import { resolveSignalReplyToMode } from "../accounts.js";
+import { resolveSignalAccount, resolveSignalReplyToMode } from "../accounts.js";
 import {
   maybeResolveSignalApprovalReaction,
   resolveSignalApprovalConversationKey,
@@ -83,6 +83,7 @@ import { normalizeSignalMessagingTarget } from "../normalize.js";
 import { maybeResolveSignalQuestionReaction } from "../question-reactions.js";
 import { resolveSignalReactionLevel } from "../reaction-level.js";
 import { registerSignalReplyContext } from "../reply-authors.js";
+import { withSignalRequestAuthority } from "../request-authority.js";
 import { sendReactionSignal, type SignalReactionOpts } from "../send-reactions.js";
 import { sendMessageSignal, sendReadReceiptSignal, sendTypingSignal } from "../send.js";
 import type { SignalIngressLifecycle } from "../signal-ingress.js";
@@ -101,6 +102,7 @@ import type {
 } from "./event-handler.types.js";
 import { resolveSignalQuoteContext } from "./inbound-context.js";
 import { renderSignalMentions, resolveSignalMentionFacts } from "./mentions.js";
+import { prepareSignalReactionConversation } from "./reaction-conversation.js";
 import {
   buildSignalReactionSystemEventText,
   isSignalReactionMessage,
@@ -268,6 +270,7 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
         replyToId: entry.replyToId ?? entry.messageId,
       },
       message: {
+        inboundEventKind: entry.reaction ? "room_event" : "user_request",
         body: combinedBody,
         bodyForAgent: entry.bodyText,
         inboundHistory,
@@ -293,6 +296,7 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
       extra: {
         GroupSubject: entry.isGroup ? (entry.groupName ?? undefined) : undefined,
         ReplyThreading: replyThreading,
+        Reaction: entry.reaction,
       },
     });
 
@@ -301,7 +305,9 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
       logVerbose(`signal inbound: from=${ctxPayload.From} len=${body.length} preview="${preview}"`);
     }
 
-    const statusReactionTimestamp = resolveSignalStatusReactionTimestamp(entry);
+    const statusReactionTimestamp = entry.reaction
+      ? undefined
+      : resolveSignalStatusReactionTimestamp(entry);
     const statusReactionsConfig = cfg.messages?.statusReactions;
     const signalReactionLevel = resolveSignalReactionLevel({
       cfg,
@@ -469,129 +475,132 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
       sessionKey: route.sessionKey,
     });
 
-    await runChannelInboundEvent({
-      channel: "signal",
-      accountId: route.accountId,
-      raw: entry,
-      adapter: {
-        ingest: () => ({
-          id: entry.messageId ?? `${entry.timestamp ?? Date.now()}`,
-          timestamp: entry.timestamp,
-          rawText: entry.commandBody,
-          raw: entry,
-        }),
-        resolveTurn: () => ({
-          cfg,
-          channel: "signal",
-          accountId: route.accountId,
-          route: { agentId: route.agentId, sessionKey: route.sessionKey },
-          ctxPayload,
-          // Forward the owning runtime's bound dispatcher into the turn plan; never invoked here.
-          dispatchReplyFromConfig: deps.channelRuntime?.reply?.dispatchReplyFromConfig,
-          record: {
-            updateLastRoute: !entry.isGroup
-              ? {
-                  sessionKey: inboundLastRouteSessionKey,
-                  channel: "signal",
-                  to: entry.senderRecipient,
-                  accountId: route.accountId,
-                  mainDmOwnerPin: (() => {
-                    if (inboundLastRouteSessionKey !== route.mainSessionKey) {
-                      return undefined;
-                    }
-                    const pinnedOwner = resolvePinnedMainDmOwnerFromAllowlist({
-                      dmScope: cfg.session?.dmScope,
-                      allowFrom: deps.allowFrom,
-                      normalizeEntry: normalizeSignalAllowRecipient,
-                    });
-                    if (!pinnedOwner) {
-                      return undefined;
-                    }
-                    return {
-                      ownerRecipient: pinnedOwner,
-                      senderRecipient: entry.senderRecipient,
-                      onSkip: ({ ownerRecipient, senderRecipient }) => {
-                        logVerbose(
-                          `signal: skip main-session last route for ${senderRecipient} (pinned owner ${ownerRecipient})`,
-                        );
-                      },
-                    };
-                  })(),
-                }
-              : undefined,
-            onRecordError: (err) => {
-              logVerbose(`signal: failed updating session meta: ${String(err)}`);
+    await withSignalRequestAuthority(entry.assertAuthority, () =>
+      runChannelInboundEvent({
+        channel: "signal",
+        accountId: route.accountId,
+        raw: entry,
+        adapter: {
+          ingest: () => ({
+            id: entry.messageId ?? `${entry.timestamp ?? Date.now()}`,
+            timestamp: entry.timestamp,
+            rawText: entry.commandBody,
+            raw: entry,
+          }),
+          resolveTurn: () => ({
+            cfg,
+            channel: "signal",
+            accountId: route.accountId,
+            route: { agentId: route.agentId, sessionKey: route.sessionKey },
+            ctxPayload,
+            assertAuthority: entry.assertAuthority,
+            // Forward the owning runtime's bound dispatcher into the turn plan; never invoked here.
+            dispatchReplyFromConfig: deps.channelRuntime?.reply?.dispatchReplyFromConfig,
+            record: {
+              updateLastRoute: !entry.isGroup
+                ? {
+                    sessionKey: inboundLastRouteSessionKey,
+                    channel: "signal",
+                    to: entry.senderRecipient,
+                    accountId: route.accountId,
+                    mainDmOwnerPin: (() => {
+                      if (inboundLastRouteSessionKey !== route.mainSessionKey) {
+                        return undefined;
+                      }
+                      const pinnedOwner = resolvePinnedMainDmOwnerFromAllowlist({
+                        dmScope: cfg.session?.dmScope,
+                        allowFrom: deps.allowFrom,
+                        normalizeEntry: normalizeSignalAllowRecipient,
+                      });
+                      if (!pinnedOwner) {
+                        return undefined;
+                      }
+                      return {
+                        ownerRecipient: pinnedOwner,
+                        senderRecipient: entry.senderRecipient,
+                        onSkip: ({ ownerRecipient, senderRecipient }) => {
+                          logVerbose(
+                            `signal: skip main-session last route for ${senderRecipient} (pinned owner ${ownerRecipient})`,
+                          );
+                        },
+                      };
+                    })(),
+                  }
+                : undefined,
+              onRecordError: (err) => {
+                logVerbose(`signal: failed updating session meta: ${String(err)}`);
+              },
             },
-          },
-          history: {
-            isGroup: entry.isGroup,
-            historyKey,
-            historyMap: deps.groupHistories,
-            limit: deps.historyLimit,
-          },
-          afterRecord: () => {
-            if (statusReactionController) {
-              void statusReactionController.setThinking();
+            history: {
+              isGroup: entry.isGroup,
+              historyKey,
+              historyMap: deps.groupHistories,
+              limit: deps.historyLimit,
+            },
+            afterRecord: () => {
+              if (statusReactionController) {
+                void statusReactionController.setThinking();
+              }
+            },
+            dispatcherOptions,
+            delivery,
+            // Durable ingress owns redelivery; do not retry a dispatch inside the debounce lane.
+            sessionInitRetry: { delaysMs: [] },
+            replyOptions: {
+              ...(entry.turnAdoptionLifecycle
+                ? bindIngressLifecycleToReplyOptions(entry.turnAdoptionLifecycle)
+                : {}),
+              disableBlockStreaming:
+                typeof deps.blockStreaming === "boolean" ? !deps.blockStreaming : undefined,
+              ...(statusReactionController
+                ? {
+                    allowProgressCallbacksWhenSourceDeliverySuppressed: true,
+                    allowToolLifecycleWhenProgressHidden: true,
+                    onToolStart: async (payload: { name?: string }) => {
+                      const toolName = payload.name?.trim();
+                      if (toolName) {
+                        await statusReactionController.setTool(toolName);
+                      }
+                      return false;
+                    },
+                    onCompactionStart: async () => {
+                      await statusReactionController.setCompacting();
+                      return false;
+                    },
+                    onCompactionEnd: async () => {
+                      statusReactionController.cancelPending();
+                      await statusReactionController.setThinking();
+                      return false;
+                    },
+                  }
+                : {}),
+              onModelSelected,
+            },
+          }),
+          onFinalize: (result) => {
+            if (!statusReactionController) {
+              return;
             }
+            const hasFinalResponse =
+              result.dispatched && hasVisibleInboundReplyDispatch(result.dispatchResult);
+            const hasDeliveryFailure =
+              result.dispatched &&
+              Object.values(result.dispatchResult.settledReceipt?.counts ?? {}).some(
+                (counts) => counts.failedBeforeSend > 0 || counts.failedAfterSend > 0,
+              );
+            const hasAgentRunFailure =
+              result.dispatched && readAgentRunTerminalOutcome(result.dispatchResult) === "failed";
+            void finalizeSignalStatusReaction({
+              controller: statusReactionController,
+              outcome:
+                hasFinalResponse && !hasDeliveryFailure && !hasAgentRunFailure ? "done" : "error",
+            }).catch((err: unknown) => {
+              logVerbose(`signal: status reaction finalize failed: ${String(err)}`);
+            });
           },
-          dispatcherOptions,
-          delivery,
-          // Durable ingress owns redelivery; do not retry a dispatch inside the debounce lane.
-          sessionInitRetry: { delaysMs: [] },
-          replyOptions: {
-            ...(entry.turnAdoptionLifecycle
-              ? bindIngressLifecycleToReplyOptions(entry.turnAdoptionLifecycle)
-              : {}),
-            disableBlockStreaming:
-              typeof deps.blockStreaming === "boolean" ? !deps.blockStreaming : undefined,
-            ...(statusReactionController
-              ? {
-                  allowProgressCallbacksWhenSourceDeliverySuppressed: true,
-                  allowToolLifecycleWhenProgressHidden: true,
-                  onToolStart: async (payload: { name?: string }) => {
-                    const toolName = payload.name?.trim();
-                    if (toolName) {
-                      await statusReactionController.setTool(toolName);
-                    }
-                    return false;
-                  },
-                  onCompactionStart: async () => {
-                    await statusReactionController.setCompacting();
-                    return false;
-                  },
-                  onCompactionEnd: async () => {
-                    statusReactionController.cancelPending();
-                    await statusReactionController.setThinking();
-                    return false;
-                  },
-                }
-              : {}),
-            onModelSelected,
-          },
-        }),
-        onFinalize: (result) => {
-          if (!statusReactionController) {
-            return;
-          }
-          const hasFinalResponse =
-            result.dispatched && hasVisibleInboundReplyDispatch(result.dispatchResult);
-          const hasDeliveryFailure =
-            result.dispatched &&
-            Object.values(result.dispatchResult.settledReceipt?.counts ?? {}).some(
-              (counts) => counts.failedBeforeSend > 0 || counts.failedAfterSend > 0,
-            );
-          const hasAgentRunFailure =
-            result.dispatched && readAgentRunTerminalOutcome(result.dispatchResult) === "failed";
-          void finalizeSignalStatusReaction({
-            controller: statusReactionController,
-            outcome:
-              hasFinalResponse && !hasDeliveryFailure && !hasAgentRunFailure ? "done" : "error",
-          }).catch((err: unknown) => {
-            logVerbose(`signal: status reaction finalize failed: ${String(err)}`);
-          });
         },
-      },
-    });
+      }),
+    );
   }
 
   async function flushSignalInboundEntries(
@@ -655,7 +664,7 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
       agentId: route.agentId,
       sessionKey: route.sessionKey,
       ...(last.messageId ? { messageId: last.messageId } : {}),
-      inboundEventKind: "user_request",
+      inboundEventKind: last.reaction ? "room_event" : "user_request",
     };
     return await Promise.all(
       entries.flatMap((entry) =>
@@ -714,6 +723,7 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
     resolveDebounceMs: (entry) => resolveInboundDebounceMs({ cfg: entry.cfg, channel: "signal" }),
     buildKey: (entry) => resolveSignalInboundDebounceKey(deps.accountId, entry),
     shouldDebounce: (entry) =>
+      !entry.reaction &&
       shouldDebounceTextInbound({
         text: entry.commandBody,
         cfg: deps.cfg,
@@ -947,6 +957,50 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
       Boolean(messageText || visibleQuoteText) ||
       Boolean(!reaction && dataMessage?.attachments?.length);
 
+    if (
+      reaction &&
+      !hasBodyContent &&
+      resolveSignalAccount({ cfg, accountId: deps.accountId }).config.capabilities?.includes(
+        "reaction-conversations",
+      ) === true
+    ) {
+      if (!resolveSignalAccount({ cfg, accountId: deps.accountId }).enabled) {
+        return;
+      }
+      const assertAuthority = () => {
+        turnAdoptionLifecycle?.abortSignal.throwIfAborted();
+        deps.abortSignal?.throwIfAborted();
+        // Config replacement retires this prepared reaction, never renews its authority.
+        if (readConfig() !== cfg) {
+          throw new Error("Signal reaction authorization changed before effect");
+        }
+      };
+      const entry = await prepareSignalReactionConversation({
+        deps,
+        cfg,
+        sender,
+        senderName: envelope.sourceName,
+        reaction,
+        groupId,
+        groupName: dataMessage?.groupInfo?.groupName ?? reaction.groupInfo?.groupName,
+        timestamp: envelope.timestamp ?? dataMessage?.timestamp,
+        access: accessDecision,
+        lifecycle: turnAdoptionLifecycle,
+        assertAuthority,
+        resolveIngress: resolveChannelIngress,
+      });
+      if (!entry) {
+        return;
+      }
+      pendingInboundRegistry.track(entry);
+      activeEnqueueEntries.add(entry);
+      try {
+        await debouncer.enqueue(entry);
+      } finally {
+        activeEnqueueEntries.delete(entry);
+      }
+      return turnAdoptionLifecycle ? { kind: "deferred" } : undefined;
+    }
     if (
       reaction &&
       (await handleReactionOnlyInbound({

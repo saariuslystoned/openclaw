@@ -1,7 +1,9 @@
 import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
 import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
 import { danger, logVerbose, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { enqueueRoutedSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+import { mergeDiscordAccountConfig } from "../accounts.js";
 import {
   ChannelType,
   type Client,
@@ -9,6 +11,8 @@ import {
   MessageReactionRemoveListener,
   type User,
 } from "../internal/discord.js";
+import type { DiscordReactionIngressEvent } from "../internal/listeners.js";
+import { withDiscordRequestAuthority } from "../internal/request-authority.js";
 import {
   hasConfiguredDiscordChannels,
   isDiscordGroupAllowedByPolicy,
@@ -33,6 +37,7 @@ type DiscordReactionListenerParams = {
   runtime: RuntimeEnv;
   logger: DiscordListenerLogger;
   onEvent?: () => void;
+  admitReaction?: (event: DiscordReactionIngressEvent) => Promise<void>;
 } & DiscordReactionRoutingParams;
 
 type DiscordReactionRoutingParams = {
@@ -50,7 +55,19 @@ type DiscordReactionRoutingParams = {
 };
 
 type DiscordReactionMode = "off" | "own" | "all" | "allowlist";
-type DiscordFetchedReactionMessage = { author?: User | null } | null;
+type DiscordFetchedReactionMessage = { author?: User | null; content?: string } | null;
+
+export type DiscordReactionConversation = {
+  cfg: OpenClawConfig;
+  context: NonNullable<MsgContext["Reaction"]>;
+  route: ReturnType<typeof resolveAgentRoute>;
+  conversationKind: "direct" | "group" | "channel";
+  parentId?: string;
+  guildId?: string;
+  isThread: boolean;
+  memberRoleIds: string[];
+  assertAuthority: () => void;
+};
 
 export class DiscordReactionListener extends MessageReactionAddListener {
   constructor(private params: DiscordReactionListenerParams) {
@@ -59,6 +76,10 @@ export class DiscordReactionListener extends MessageReactionAddListener {
 
   async handle(data: DiscordReactionEvent, client: Client) {
     this.params.onEvent?.();
+    if (this.params.admitReaction && data.ingressEvent) {
+      await this.params.admitReaction(data.ingressEvent);
+      return;
+    }
     await runDiscordReactionHandler({
       data,
       client,
@@ -77,6 +98,10 @@ export class DiscordReactionRemoveListener extends MessageReactionRemoveListener
 
   async handle(data: DiscordReactionEvent, client: Client) {
     this.params.onEvent?.();
+    if (this.params.admitReaction && data.ingressEvent) {
+      await this.params.admitReaction(data.ingressEvent);
+      return;
+    }
     await runDiscordReactionHandler({
       data,
       client,
@@ -88,13 +113,16 @@ export class DiscordReactionRemoveListener extends MessageReactionRemoveListener
   }
 }
 
-async function runDiscordReactionHandler(params: {
+export async function runDiscordReactionHandler(params: {
   data: DiscordReactionEvent;
   client: Client;
   action: "added" | "removed";
   handlerParams: DiscordReactionListenerParams;
   listener: string;
   event: string;
+  occurrenceId?: string;
+  assertIngress?: () => void;
+  dispatchConversation?: (event: DiscordReactionConversation) => Promise<void>;
 }): Promise<void> {
   const policy = await params.handlerParams.readPolicy?.();
   const handlerParams = policy
@@ -108,13 +136,25 @@ async function runDiscordReactionHandler(params: {
     logger: handlerParams.logger,
     listener: params.listener,
     event: params.event,
-    run: async () =>
-      handleDiscordReactionEvent({
-        ...handlerParams,
-        data: params.data,
-        client: params.client,
-        action: params.action,
-      }),
+    run: async () => {
+      const assertAuthority = () => {
+        params.assertIngress?.();
+        if (handlerParams.isPolicyCurrent?.() === false) {
+          throw new Error("Discord reaction authorization changed before effect");
+        }
+      };
+      await withDiscordRequestAuthority(assertAuthority, () =>
+        handleDiscordReactionEvent({
+          ...handlerParams,
+          data: params.data,
+          client: params.client,
+          action: params.action,
+          occurrenceId: params.occurrenceId,
+          dispatchConversation: params.dispatchConversation,
+          assertAuthority,
+        }),
+      );
+    },
   });
 }
 
@@ -251,6 +291,9 @@ async function handleDiscordReactionEvent(
     action: "added" | "removed";
     cfg: OpenClawConfig;
     logger: DiscordListenerLogger;
+    occurrenceId?: string;
+    dispatchConversation?: (event: DiscordReactionConversation) => Promise<void>;
+    assertAuthority: () => void;
   } & DiscordReactionRoutingParams,
 ) {
   try {
@@ -258,7 +301,17 @@ async function handleDiscordReactionEvent(
     if (!("user" in data)) {
       return;
     }
-    const user = data.user;
+    const accountConfig = mergeDiscordAccountConfig(params.cfg, params.accountId);
+    const conversationsEnabled =
+      accountConfig.capabilities?.includes("reaction-conversations") === true;
+    if (accountConfig.enabled === false) {
+      return;
+    }
+    const eventUser = data.user;
+    const user =
+      conversationsEnabled && eventUser && eventUser.id !== botUserId && !eventUser.username
+        ? await client.fetchUser(eventUser.id)
+        : eventUser;
     if (!user || user.bot) {
       return;
     }
@@ -277,7 +330,13 @@ async function handleDiscordReactionEvent(
     if (isGuildMessage && guildEntries && Object.keys(guildEntries).length > 0 && !guildInfo) {
       return;
     }
-    const memberRoleIds = Array.isArray(data.rawMember?.roles) ? data.rawMember.roles.slice() : [];
+    const memberRoleIds = Array.isArray(data.rawMember?.roles)
+      ? data.rawMember.roles.slice()
+      : conversationsEnabled && data.guild_id
+        ? (await client.fetchMember(data.guild_id, user.id)).roles.map((role) =>
+            typeof role === "string" ? role : role.id,
+          )
+        : [];
     const reactionMode = guildInfo?.reactionNotifications ?? "own";
     if (
       isGuildMessage &&
@@ -407,8 +466,60 @@ async function handleDiscordReactionEvent(
       },
       parentPeer: parentId ? { kind: "channel", id: parentId } : undefined,
     });
-    enqueueRoutedSystemEvent(text, route, { contextKey });
+    if (conversationsEnabled && params.dispatchConversation && params.occurrenceId) {
+      const { resolveDiscordPreflightRoute } =
+        await import("./message-handler.routing-preflight.js");
+      const { effectiveRoute, boundSessionKey } = await resolveDiscordPreflightRoute({
+        preflight: {
+          cfg: params.cfg,
+          accountId: params.accountId,
+          data: { guild_id: data.guild_id },
+        },
+        author: user,
+        isDirectMessage,
+        isGroupDm,
+        messageChannelId: data.channel_id,
+        memberRoleIds,
+        earlyThreadParentId: parentId,
+      });
+      message ??= await data.message.fetch().catch(() => null);
+      params.assertAuthority();
+      await params.dispatchConversation({
+        cfg: params.cfg,
+        route: boundSessionKey
+          ? { ...effectiveRoute, sessionKey: boundSessionKey }
+          : effectiveRoute,
+        conversationKind: isDirectMessage ? "direct" : isGroupDm ? "group" : "channel",
+        parentId,
+        guildId: data.guild_id,
+        isThread: isThreadChannel,
+        memberRoleIds,
+        assertAuthority: params.assertAuthority,
+        context: {
+          channel: "discord",
+          accountId: params.accountId,
+          conversationId: data.channel_id,
+          actorId: user.id,
+          occurrenceId: params.occurrenceId,
+          action,
+          emoji: emojiLabel.slice(0, 100),
+          target: {
+            messageId: data.message_id,
+            authorId: message?.author?.id,
+            // Other senders' bodies need separate context-visibility proof.
+            ...(message?.author?.id === botUserId && message?.content
+              ? { body: message.content.slice(0, 2000) }
+              : {}),
+          },
+        },
+      });
+    } else {
+      enqueueRoutedSystemEvent(text, route, { contextKey });
+    }
   } catch (err) {
+    if (params.dispatchConversation) {
+      throw err; // Durable ingress owns retry and containment.
+    }
     params.logger.error(danger(`discord reaction handler failed: ${String(err)}`));
   }
 }

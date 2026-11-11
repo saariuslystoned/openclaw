@@ -256,6 +256,7 @@ export function registerDiscordMonitorListeners(params: {
     groupPolicy: params.groupPolicy,
     allowNameMatching: isDangerousNameMatchingEnabled(params.discordConfig),
     onEvent: params.trackInboundEvent,
+    admitReaction: params.messageHandler.acceptReaction,
   };
   register(
     new DiscordReactionListener(reactionListenerOptions),
