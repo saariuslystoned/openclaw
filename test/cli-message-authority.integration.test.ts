@@ -3,7 +3,7 @@ import path from "node:path";
 import { expectDefined } from "@openclaw/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { discordPlugin } from "../extensions/discord/api.js";
-import { setDiscordRuntime } from "../extensions/discord/runtime-setter-api.js";
+import discordEntry from "../extensions/discord/index.js";
 import { slackPlugin } from "../extensions/slack/api.js";
 import {
   createOperationalRunInstanceRef,
@@ -413,9 +413,12 @@ describe("CLI message authority integration", () => {
       }
       const api = owner.createApi(record, { config: cfg, registrationMode: "full" });
       if (plugin.id === "discord") {
-        // Mirror official registration so reactions retain real scoped state and authority.
+        // Use the public entry contract in this registry's exact instance, as official loading does.
         expectDefined(getPluginInstance(record), "registered Discord instance").run(() =>
-          setDiscordRuntime(api.runtime),
+          expectDefined(
+            discordEntry.setChannelRuntime,
+            "Discord entry runtime setter",
+          )(api.runtime),
         );
       }
       api.registerChannel({
