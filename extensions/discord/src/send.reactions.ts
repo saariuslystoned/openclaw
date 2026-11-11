@@ -22,9 +22,15 @@ function resolveDiscordReactionClient(opts: DiscordReactOpts) {
 
 function reactionMutation(operation: typeof createOwnMessageReaction, label: string) {
   return async (channelId: string, messageId: string, emoji: string, opts: DiscordReactOpts) => {
-    const { rest, request } = resolveDiscordReactionClient(opts);
+    const { rest, request, account } = resolveDiscordReactionClient(opts);
     const encoded = normalizeReactionEmoji(emoji);
-    await request(() => operation(rest, channelId, messageId, encoded), label);
+    // An uncertain conversational receipt must not hide an automatic resend.
+    const strictReceipt = account.config.capabilities?.includes("reaction-conversations");
+    await request(
+      () => operation(rest, channelId, messageId, encoded),
+      label,
+      strictReceipt ? { safety: "non-idempotent-create" } : undefined,
+    );
     return { ok: true };
   };
 }

@@ -1,0 +1,5 @@
+# Retain local execution/custody receipts without publishing private task metadata.
+# Only the sanitized validation summary belongs in the product diff.
+*
+!.gitignore
+!VALIDATION.md

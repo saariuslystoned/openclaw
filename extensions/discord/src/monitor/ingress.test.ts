@@ -14,16 +14,14 @@ import type { ChannelIngressQueue } from "openclaw/plugin-sdk/channel-outbound";
 import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createDiscordIngressMonitor, type DiscordIngressLifecycle } from "./ingress.js";
+import {
+  createDiscordIngressMonitor,
+  type DiscordIngressLifecycle,
+  type DiscordIngressPayload,
+} from "./ingress.js";
 import { createDiscordMessageHandler } from "./message-handler.js";
 import { createBaseDiscordMessageContext } from "./message-handler.test-harness.js";
 import { createDiscordHandlerParams } from "./message-handler.test-helpers.js";
-
-type DiscordIngressPayload = {
-  version: 1;
-  receivedAt: number;
-  rawMessage: APIMessage;
-};
 
 function createRawMessage(id: string, channelId = "channel-1"): APIMessage {
   return {

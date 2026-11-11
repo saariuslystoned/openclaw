@@ -57,6 +57,38 @@ approval, command, URL, web-app, question, callback, and model-picker actions
 distinguishable until that encoding boundary; never infer picker intent from a
 raw callback string. Actor and source-message checks remain channel-owned.
 
+## Reaction conversations
+
+Discord and Signal keep passive reaction behavior by default. Add
+`"reaction-conversations"` to the selected account's `capabilities` array to
+route authorized reaction additions and removals as ordinary conversation turns.
+Existing account, sender, group, and reaction-notification policies still apply.
+Signal's passive question and approval reaction handlers remain unchanged; the
+opted-in conversation path never invokes them.
+
+A conversation reaction is a `room_event` with commands unauthorized. Its
+`MsgContext.Reaction` contains the actor, account, conversation, action, emoji,
+transport occurrence identity, and a separate native target message identity.
+Available original text is bounded and subject to context visibility. Missing
+occurrence identity cannot create a new turn, and replay uses durable ingress.
+Reactions are not task acceptance or execution approval.
+
+The existing `message` tool can reply with a reaction. Only confirmed transport
+success can complete a reaction-only final reply; no text send is required.
+Keyed reaction actions retain receipts in the plugin's existing worker-backed
+keyed store. A matching confirmed receipt deduplicates a retry; a conflicting
+account, target, or reaction rejects the key. Interrupted claims and lost
+transport responses remain ambiguous and are not automatically resent. The
+5,000-row receipt limit rejects new keys rather than evicting dedupe evidence.
+An explicit pre-send authority refusal records `not-sent`, which a later
+authorized invocation can retry. Direct callers without a key retain their
+existing API behavior.
+
+Bundled callers share the receipt operation through the existing local-only
+`plugin-state-store-runtime` SDK entrypoint. This adds no public SDK export or
+subpath and does not replace channel delivery, final-source completion, or the
+transport's live-authority checks.
+
 ## Opted-in public child sessions
 
 The ingress resolver accepts an optional host-invocation intent,

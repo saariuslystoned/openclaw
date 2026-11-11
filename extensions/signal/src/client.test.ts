@@ -5,6 +5,7 @@ import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
 import * as fetchRuntime from "openclaw/plugin-sdk/fetch-runtime";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createRuntimeSpies } from "../../test-support/runtime-spies.js";
+import { withSignalRequestAuthority } from "./request-authority.js";
 import { runSignalSseLoop, type SignalStatusSink } from "./sse-reconnect.js";
 
 vi.mock("openclaw/plugin-sdk/core", async () => {
@@ -65,9 +66,14 @@ afterEach(async () => {
 });
 
 describe("signalRpcRequest", () => {
-  it.each([false, true])(
-    "prepares the HTTP handoff and rechecks its caller after waiting (revoked=%s)",
-    async (revoked) => {
+  it.each([
+    { revoked: false, ingress: false },
+    { revoked: true, ingress: false },
+    { revoked: false, ingress: true },
+    { revoked: true, ingress: true },
+  ])(
+    "rechecks HTTP authority after preparation (revoked=$revoked ingress=$ingress)",
+    async ({ revoked, ingress }) => {
       const preparing = createDeferred<void>();
       const prepared = createDeferred<void>();
       const arrived = createDeferred<void>();
@@ -90,13 +96,25 @@ describe("signalRpcRequest", () => {
       const caller = new AbortController();
       const failure = new Error("Signal caller ended during preparation");
       let settled = false;
-      const sending = signalRpcRequest(
-        "send",
-        { message: "prepared" },
-        {
-          baseUrl,
-          assertDirectAdapterHandoff: () => caller.signal.throwIfAborted(),
-        },
+      const assertCurrent = () => caller.signal.throwIfAborted();
+      const { signalRpcRequest: adapterRpcRequest } = await import("./client-adapter.js");
+      const sending = (
+        ingress
+          ? withSignalRequestAuthority(assertCurrent, () =>
+              adapterRpcRequest(
+                "sendReaction",
+                { emoji: "✅" },
+                { baseUrl, transportKind: "external-native" },
+              ),
+            )
+          : signalRpcRequest(
+              "send",
+              { message: "prepared" },
+              {
+                baseUrl,
+                assertDirectAdapterHandoff: assertCurrent,
+              },
+            )
       )
         .then(
           (value) => ({ value }),

@@ -45,11 +45,16 @@ type DiscordRawMessageEvent = Parameters<MessageCreateListener["handle"]>[0];
 export type DiscordMessageEvent = DiscordMessageDispatchData;
 type DiscordInteractionEvent = Parameters<InteractionCreateListener["handle"]>[0];
 
-export type DiscordMessageHandler = (
-  data: DiscordRawMessageEvent,
-  client: Client,
-  options?: { abortSignal?: AbortSignal },
-) => Promise<void>;
+export type DiscordMessageHandler = {
+  (
+    data: DiscordRawMessageEvent,
+    client: Client,
+    options?: { abortSignal?: AbortSignal },
+  ): Promise<void>;
+  acceptReaction?: (
+    event: import("../internal/listeners.js").DiscordReactionIngressEvent,
+  ) => Promise<void>;
+};
 
 export function registerDiscordListener(listeners: Array<object>, listener: object) {
   if (listeners.some((existing) => existing.constructor === listener.constructor)) {

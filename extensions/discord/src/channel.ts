@@ -628,7 +628,12 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe, 
             : currentMessagingTarget,
           currentChatType,
           currentMessagingTarget,
-          currentMessageId: context.CurrentMessageId,
+          // Occurrence identity must never become a native reaction target.
+          currentMessageId:
+            typeof context.CurrentMessageId === "string" &&
+            context.CurrentMessageId.startsWith("reaction:")
+              ? context.ReplyToId
+              : context.CurrentMessageId,
           hasRepliedRef,
         };
       },
