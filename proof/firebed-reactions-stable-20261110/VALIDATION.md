@@ -29,6 +29,17 @@ Exports synchronized. Public162 entrypoints /3880 exports /2239 callables, wildc
 
 Rollback argument is source-only: no new schema/migration means returning to the same-schema predecessor preserves existing rows and unknown reaction receipts, provided the predecessor is separately qualified and serving state remains compatible. Do not roll back to the historical22/27 stable artifact. Any future cutover requires exact core plus both plugins, independently verified backups, same-schema rollback artifact and fresh supervised owner authorization. This fixture is not production, phone, external API, release or rollout acceptance.
 
+## PR5 CI fixture repairs
+
+CI run43029934749 failed four jobs. Bounded reproduction established fixture drift, not new production defects:
+
+- Line-cap subprocess fixtures inherited the fork checkout origin but kept the donor's canonical origin. Both now use an explicit matching synthetic fork identity; wrong-repository, traversal and symlink refusals remain independently exercised. Reintroducing the mismatched donor reproduces the original five failures.
+- The extracted bundled-hook owner gained a literal workspace-module import, normally bundled by the standalone compiler. Its VM fixture now supplies that namespace while keeping the computed executable-only handler import and containment checks unchanged.
+- The withdrawn-appcast fixture now pins its synthetic canonical repository instead of inheriting the CI fork environment. Its exact URL and forbidden-replay lookup assertions remain strict.
+- Transcript replay expectations follow the pin's append-only Claude5.1 contract; legacy DeepSeek Flash follows the pin's image-capable alias metadata; SDK plain-object results follow intentional compact JSON serialization. Content/details, provider isolation and replay assertions remain complete. No production model, security or serialization behavior changed.
+
+The additional21-line test allocation covers only these fixture repairs and the distinct wrong-repository negative control. It does not change shared test ceilings or SDK caps. Changed-head CI and comprehensive review must be renewed; prior78f161 clearance remains historical. Build, Gateway, schema39/41, installed-fix and import-profile inputs are unchanged by these test-only repairs; reuse requires exact input-hash receipts, not relabeling prior executions.
+
 ## Delivery gates
 
 Actual new fork PR must bind repository/base/head/tree/diff; old PR3 and merged PR4 are not retargeted. Exact-head CI and one terminal comprehensive OpenClaw review throughP3 remain required, with no unresolvedP0/P1/P2 and documentedP3 dispositions. Native review is excluded by the fork owner's comprehensive-only policy. Independent sole closer accepts/merges; source owner never self-merges or deploys. Preserve all prior failure logs and receipts; no lock deletion, cleanup or old-cell activation.

@@ -202,6 +202,15 @@ it("uses qualified oxlint instead of a stale canonical bin in a code-only worktr
 function cliFixture(cliSource: string) {
   const donor = createToolingDependencyFixture(tempDirs.make("openclaw-line-cap-admission-"));
   const { env } = installLineCapToolingFixture(donor.checkout);
+  // Exercise a fork identity independent of the host checkout; the donor must match it.
+  for (const directory of [donor.checkout, donor.tooling]) {
+    git(
+      directory,
+      "config",
+      "remote.origin.url",
+      "https://github.com/example/openclaw-fixture.git",
+    );
+  }
   const root = fixture(2, "warn", [], donor.checkout);
   const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
   donor.writePackage("tsx", "export {};", manifest.devDependencies.tsx);
@@ -261,7 +270,7 @@ it.each([
   },
 );
 
-it.each(["bin traversal", "bin symlink"])(
+it.each(["bin traversal", "bin symlink", "repository mismatch"])(
   "rejects %s before executing the oxlint CLI",
   (invalid) => {
     const marker = 'console.error("UNQUALIFIED OXLINT EXECUTED"); process.exit(87);';
@@ -270,14 +279,18 @@ it.each(["bin traversal", "bin symlink"])(
     fs.writeFileSync(outside, marker);
     if (invalid === "bin traversal") {
       binManifest.bin.oxlint = "../../outside-cli.mjs";
-    } else {
+    } else if (invalid === "bin symlink") {
       fs.symlinkSync(outside, path.join(pkg, "cli.mjs"), "file");
       binManifest.bin.oxlint = "cli.mjs";
+    } else {
+      git(donor.tooling, "config", "remote.origin.url", "https://github.com/example/wrong.git");
     }
     const result = run();
     expect(result.status, result.stderr).toBe(1);
     expect(result.stderr).toContain(
-      "The oxlint CLI bin must be a file inside its admitted package.",
+      invalid === "repository mismatch"
+        ? "Different repository."
+        : "The oxlint CLI bin must be a file inside its admitted package.",
     );
     expect(result.stdout + result.stderr).not.toContain("UNQUALIFIED OXLINT EXECUTED");
     expect(fs.existsSync(path.join(root, "node_modules"))).toBe(false);
