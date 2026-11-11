@@ -87,17 +87,26 @@ it("joins an aborted Doctor phase and database cleanup before removing inputs or
     const stateEntered = createDeferred();
     const releaseState = createDeferred();
     let unregisterState: (() => void) | undefined;
-    const preflight = vi.spyOn(doctor, "runDoctorConfigPreflight").mockImplementation(async () => {
-      const snapshot = await createConfigIO({
-        configPath: process.env.OPENCLAW_CONFIG_PATH,
-        env: process.env,
-        homedir: () => process.env.HOME!,
-        observe: false,
-      }).readConfigFileSnapshot();
-      doctorEntered.resolve();
-      await releaseDoctor.promise;
-      return { snapshot, baseConfig: snapshot.sourceConfig };
-    });
+    const preflight = vi
+      .spyOn(doctor, "runDoctorConfigPreflight")
+      .mockImplementation(async (options) => {
+        const snapshot = await createConfigIO({
+          configPath: process.env.OPENCLAW_CONFIG_PATH,
+          env: process.env,
+          homedir: () => process.env.HOME!,
+          observe: false,
+        }).readConfigFileSnapshot();
+        const wait = async () => {
+          doctorEntered.resolve();
+          await releaseDoctor.promise;
+        };
+        if (iteration === 1 && options?.measure) {
+          await options.measure("fixture-doctor-substep", wait);
+        } else {
+          await wait();
+        }
+        return { snapshot, baseConfig: snapshot.sourceConfig };
+      });
     const databases = vi
       .spyOn(agentDatabases, "closeOpenClawAgentDatabasesAsync")
       .mockImplementation(async (stateDir) => {
@@ -126,7 +135,8 @@ it("joins an aborted Doctor phase and database cleanup before removing inputs or
       const report = String(diagnostics.mock.lastCall?.[0]);
       expect(JSON.parse(report.slice("[fixture-lifecycle] ".length))).toMatchObject({
         reason: "abort",
-        stage: "doctor-repair",
+        stage: iteration === 0 ? "doctor-repair" : "fixture-doctor-substep:start",
+        records: expect.arrayContaining([expect.objectContaining({ stage: "doctor-repair" })]),
       });
       teardown = fixture.cleanup().then(() => {
         restored = true;

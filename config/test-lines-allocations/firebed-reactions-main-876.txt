@@ -1,0 +1,5 @@
+# #876 opt-in Discord/Signal reaction conversations and retained installed fixes.
+# Distinct replay/restart, authority, uncertainty, capacity, passive-default and
+# shipped-Gateway boundaries; includes the three missing deployed-fix regressions.
+# Exact net LF growth relative to eafa24743a53d8079c32be72fb3c8ae4222e78ca.
+2278

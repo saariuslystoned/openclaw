@@ -45,7 +45,11 @@ const endpoint = inject("controlUiE2eChromium").wsEndpoint;
         path.join(root, "first.test.ts"),
         `${imports}
 suite.define(() => {
-  it("disconnects only its own contexts", async () => {
+  it("disconnects only its own contexts", async (test) => {
+    let phase = "context-isolation";
+    test.onTestFinished(() => {
+      if (test.task.result?.state === "fail") console.error("[browser-lifetime] incomplete phase: " + phase);
+    });
     fs.writeFileSync(${JSON.stringify(endpointFile)}, endpoint);
     const sibling = await chromium.connect(endpoint);
     try {
@@ -55,21 +59,26 @@ suite.define(() => {
       await ownContext.addCookies([{ name: "own", value: "one", url: "http://fixture.invalid/" }]);
       expect(await siblingContext.cookies()).toEqual([]);
       await siblingContext.addCookies([{ name: "sibling", value: "two", url: "http://fixture.invalid/" }]);
+      phase = "crash-target-setup";
       const crashed = await ownContext.newPage();
       await crashed.goto("data:text/html,<title>synthetic-private-page</title>");
       const cdp = await ownContext.newCDPSession(crashed);
       const { targetInfo } = await cdp.send("Target.getTargetInfo");
       const crashEvent = crashed.waitForEvent("crash");
       const crashCommand = cdp.send("Page.crash").catch(() => {});
+      phase = "crash-event";
       await crashEvent;
       // The raw CDP command can stay pending until its crashed target closes.
+      phase = "crashed-target-close";
       await crashed.close();
+      phase = "crash-command-settlement";
       await crashCommand;
       const readCrash = () => {
         const directory = process.env.OPENCLAW_UI_E2E_DIAGNOSTIC_DIR;
         const entry = fs.existsSync(directory) && fs.readdirSync(directory).find(name => name.startsWith("failure-chromium-"));
         return entry ? fs.readFileSync(directory + "/" + entry + "/failure.public.json", "utf8") : "";
       };
+      phase = "crash-diagnostic-publication";
       await expect.poll(readCrash).not.toBe("");
       const publicCrash = readCrash();
       expect(JSON.parse(publicCrash)).toMatchObject({
@@ -79,12 +88,15 @@ suite.define(() => {
       expect(publicCrash).not.toContain("synthetic-private-page");
       expect(publicCrash).not.toContain("data:text/html");
       expect(publicCrash).not.toContain(endpoint);
+      phase = "sibling-survival";
       expect(await (await siblingContext.newPage()).evaluate(() => 2 + 2)).toBe(4);
+      phase = "own-client-disconnect";
       await suite.browser.close();
       expect(ownPage.isClosed()).toBe(true);
       expect(sibling.isConnected()).toBe(true);
       expect((await siblingContext.cookies()).map(cookie => cookie.name)).toEqual(["sibling"]);
     } finally {
+      phase = "sibling-client-disconnect (after " + phase + ")";
       await sibling.close();
     }
   });

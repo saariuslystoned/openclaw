@@ -660,7 +660,14 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe, 
             : currentMessagingTarget,
           currentChatType,
           currentMessagingTarget,
-          currentMessageId: normalizeDiscordSnowflake(context.CurrentMessageId ?? "") ?? undefined,
+          // Occurrence identity must never become a native reaction target.
+          currentMessageId:
+            normalizeDiscordSnowflake(
+              typeof context.CurrentMessageId === "string" &&
+                context.CurrentMessageId.startsWith("reaction:")
+                ? (context.ReplyToId ?? "")
+                : (context.CurrentMessageId ?? ""),
+            ) ?? undefined,
           hasRepliedRef,
         };
       },

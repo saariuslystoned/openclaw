@@ -125,6 +125,119 @@ beforeEach(() => {
   });
 });
 describe("cold App request admission", () => {
+  it.each(["before setup", "during source admission", "during native preparation"])(
+    "preserves a provider-review pause %s without admitting a native binding write",
+    async (timing) => {
+      const review = {
+        id: "review",
+        sessionId: "session",
+        runId: "refused-run",
+        provider: "openai",
+        model: "model",
+        runtimeId: "codex",
+        nativeThreadId: "reviewed-thread",
+        nativeTurnId: "refused-turn",
+      };
+      const pause = () => {
+        entry = { ...entry, providerReview: review };
+      };
+      const nativeWrite = vi.fn();
+      if (timing === "before setup") {
+        pause();
+      } else if (timing === "during source admission") {
+        mocks.source.mockImplementation(async () => {
+          pause();
+          return { release: mocks.releaseSource };
+        });
+      }
+      mocks.prepare.mockImplementation(async ({ assertCurrent }) => ({
+        preparation: {
+          run: async () => {
+            if (timing === "during native preparation") {
+              pause();
+            }
+            // Native lifecycle effects recheck the preparation's host authority.
+            assertCurrent();
+            nativeWrite();
+          },
+        },
+        dispose: mocks.dispose,
+      }));
+      mocks.native.mockImplementation(async ({ prepareSession }) => {
+        const preparation = await prepareSession();
+        await preparation.run();
+        return { runtime: { getCatalog: mocks.catalog }, releaseLease: vi.fn() };
+      });
+      await expect(prepareMcpAppExtensionRuntime(options())).rejects.toThrow(
+        "paused as a precaution",
+      );
+      expect(nativeWrite).not.toHaveBeenCalled();
+      expect(entry.providerReview).toBe(review);
+      expect(mocks.direct).not.toHaveBeenCalled();
+      if (timing === "before setup") {
+        expect(mocks.source).not.toHaveBeenCalled();
+      }
+      if (timing !== "during native preparation") {
+        expect(mocks.prepare).not.toHaveBeenCalled();
+      }
+    },
+  );
+
+  it("rejects a pause while setup is pending and releases its late owners and lease", async () => {
+    const started = createDeferred();
+    const finishSetup = createDeferred();
+    const nativeWrite = vi.fn();
+    const joinLease = vi.fn(async () => {});
+    const lease = {
+      runtime: { getCatalog: mocks.catalog, joinCleanup: joinLease },
+      releaseLease: vi.fn(),
+    };
+    const review = {
+      id: "review",
+      sessionId: "session",
+      runId: "refused-run",
+      provider: "openai",
+      model: "model",
+      runtimeId: "codex",
+      nativeThreadId: "reviewed-thread",
+      nativeTurnId: "refused-turn",
+    };
+    mocks.prepare.mockImplementation(async () => {
+      started.resolve();
+      await finishSetup.promise;
+      return { preparation: { run: nativeWrite }, dispose: mocks.dispose };
+    });
+    mocks.native.mockImplementation(async ({ prepareSession }) => {
+      try {
+        const preparation = await prepareSession();
+        preparation.run();
+      } catch {
+        // A plugin can return a lease even after setup rejects; the host still owns cleanup.
+      }
+      return lease;
+    });
+    const pending = prepareMcpAppExtensionRuntime(options());
+    const rejected = expect(pending).rejects.toThrow("paused as a precaution");
+    await started.promise;
+    entry = { ...entry, providerReview: review };
+    expect(mocks.dispose).not.toHaveBeenCalled();
+    expect(mocks.releaseSource).not.toHaveBeenCalled();
+    expect(mocks.releaseAccess).not.toHaveBeenCalled();
+    expect(mocks.release).not.toHaveBeenCalled();
+    finishSetup.resolve();
+    await rejected;
+    expect(entry.providerReview).toBe(review);
+    expect(nativeWrite).not.toHaveBeenCalled();
+    expect(mocks.catalog).not.toHaveBeenCalled();
+    expect(mocks.direct).not.toHaveBeenCalled();
+    expect(mocks.prepare).toHaveBeenCalledOnce();
+    expect(mocks.dispose).toHaveBeenCalledOnce();
+    expect(mocks.releaseSource).toHaveBeenCalledOnce();
+    expect(mocks.releaseAccess).toHaveBeenCalledOnce();
+    expect(mocks.release).toHaveBeenCalledExactlyOnceWith(lease);
+    expect(joinLease).toHaveBeenCalledOnce();
+  });
+
   it("joins an admitted late preparation before disposing setup, source, access and lease", async () => {
     const started = createDeferred();
     const finishSetup = createDeferred();

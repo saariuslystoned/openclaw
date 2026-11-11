@@ -141,7 +141,10 @@ it("persists an accepted fork and queued rewind across the close prelude before 
       rewinding,
       "Rewind settled before entering the lifecycle queue",
     );
-    await race.close(undefined, undefined, { reason: "session rewind close regression" });
+    // Intake fencing precedes restart-marker persistence; observe cancellation itself.
+    await race.close(kernel.scheduler.signal, undefined, {
+      reason: "session rewind close regression",
+    });
     expect([kernel.scheduler.signal.aborted, race.closed, database.db.isOpen]).toEqual([
       true,
       false,

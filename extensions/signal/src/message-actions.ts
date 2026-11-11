@@ -6,10 +6,13 @@ import {
 } from "openclaw/plugin-sdk/channel-actions";
 import type { ChannelMessageActionAdapter } from "openclaw/plugin-sdk/channel-contract";
 import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
+import type { ReactionReplyReceipt } from "openclaw/plugin-sdk/plugin-state-store-runtime";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { listEnabledSignalAccounts, resolveSignalAccount } from "./accounts.js";
 import { normalizeSignalReactionRecipient } from "./normalize.js";
 import { resolveSignalReactionLevel } from "./reaction-level.js";
+import { captureSignalRequestAuthority } from "./request-authority.js";
+import { getSignalRuntime } from "./runtime.js";
 import { removeReactionSignal, sendReactionSignal } from "./send-reactions.js";
 
 const providerId = "signal";
@@ -122,15 +125,54 @@ export const signalMessageActions: ChannelMessageActionAdapter = {
         throw new Error(`Emoji required to ${remove ? "remove" : "add"} reaction.`);
       }
       const mutateReaction = remove ? removeReactionSignal : sendReactionSignal;
-      await mutateReaction(recipient ?? "", timestamp, emoji, {
-        cfg,
-        accountId: account.accountId,
-        groupId,
-        targetAuthor,
-        targetAuthorUuid,
-        ...(assertDirectAdapterHandoff ? { assertDirectAdapterHandoff } : {}),
+      const assertAuthority = captureSignalRequestAuthority(assertDirectAdapterHandoff);
+      const send = () =>
+        mutateReaction(recipient ?? "", timestamp, emoji, {
+          cfg,
+          accountId: account.accountId,
+          groupId,
+          targetAuthor,
+          targetAuthorUuid,
+          assertDirectAdapterHandoff: assertAuthority,
+        });
+      const key = readStringParam(params, "idempotencyKey");
+      if (!key) {
+        await send();
+        return jsonResult({ ok: true, [remove ? "removed" : "added"]: emoji });
+      }
+      const { runReactionReplyWithReceipt } =
+        await import("openclaw/plugin-sdk/plugin-state-store-runtime");
+      const receipt = await runReactionReplyWithReceipt({
+        store: getSignalRuntime().state.openKeyedStoreV2<
+          ReactionReplyReceipt<Awaited<ReturnType<typeof send>>>
+        >({
+          namespace: "reaction-replies.v1",
+          maxEntries: 5000,
+          overflowPolicy: "reject-new",
+        }),
+        key,
+        identity: JSON.stringify([
+          account.accountId,
+          { recipient, groupId },
+          timestamp,
+          targetAuthor,
+          targetAuthorUuid,
+          emoji,
+          Boolean(remove),
+        ]),
+        assertAuthority: () => assertAuthority?.(),
+        send,
+        isConfirmed: (result) => result.ok,
       });
-      return jsonResult({ ok: true, [remove ? "removed" : "added"]: emoji });
+      return jsonResult(
+        receipt.state === "confirmed"
+          ? {
+              ok: true,
+              [remove ? "removed" : "added"]: emoji,
+              reactionReceipt: { state: receipt.state },
+            }
+          : { ok: false, deliveryStatus: receipt.state, reactionReceipt: { state: receipt.state } },
+      );
     }
 
     throw new Error(`Action ${action} not supported for ${providerId}.`);

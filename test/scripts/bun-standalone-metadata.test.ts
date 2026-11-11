@@ -1625,7 +1625,9 @@ function loadLegacySessionSurface(rootPath: string) {
       hookOwner: { generation: { registrations: [] } },
       isHookLoadable: () => true,
       resolveInternalHookSelection: async () => ({ configured: true }),
-      prepareWorkspaceHookEntries: () => ({ entries: [entry], sources: [] }),
+      workspaceModule: {
+        prepareWorkspaceHookEntries: () => ({ entries: [entry], sources: [] }),
+      },
       safeRealpathSync: (name: string) => fs.realpathSync(name),
       openRootFile: async () => {
         throw new Error("Unexpected physical handler open");
@@ -1640,7 +1642,12 @@ function loadLegacySessionSurface(rootPath: string) {
     const filename = path.join(runtime, "dist/hooks-loader.js");
     const transformed = adapter.transform({
       filename,
-      contents: ownerSource("src/hooks/loader.ts", "prepareInternalHooks"),
+      // Literal imports are bundled by the compiler; this extracted-owner VM supplies
+      // that module namespace while retaining the real computed handler import below.
+      contents: ownerSource("src/hooks/loader.ts", "prepareInternalHooks").replace(
+        'await import("./workspace.js")',
+        "workspaceModule",
+      ),
     });
     vm.runInContext(
       rewriteStandaloneImports({

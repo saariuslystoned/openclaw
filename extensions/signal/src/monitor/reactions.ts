@@ -47,7 +47,16 @@ export function isSignalReactionMessage(
     normalizeOptionalString(reaction.targetAuthor) ||
     normalizeOptionalString(reaction.targetAuthorUuid),
   );
-  return Boolean(emoji && typeof timestamp === "number" && timestamp > 0 && hasTarget);
+  return Boolean(
+    emoji &&
+    emoji.length <= 100 &&
+    typeof timestamp === "number" &&
+    Number.isSafeInteger(timestamp) &&
+    timestamp > 0 &&
+    hasTarget &&
+    (reaction.targetAuthor?.length ?? 0) <= 100 &&
+    (reaction.targetAuthorUuid?.length ?? 0) <= 100,
+  );
 }
 
 export function shouldEmitSignalReactionNotification(params: {

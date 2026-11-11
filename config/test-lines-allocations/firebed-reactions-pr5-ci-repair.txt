@@ -1,0 +1,5 @@
+# #876 PR5 CI repair: exact additional net LF growth, not inherited SDK debt.
+# Matching synthetic fork tooling identity plus wrong-repository negative control,
+# extracted-owner bundled hook namespace, and isolated release fixture repository.
+# All existing authority, path/symlink, replay and content assertions are retained.
+21

@@ -7,7 +7,6 @@ import {
 } from "../../agents/test-helpers/agent-message-fixtures.js";
 import { createUserTurnTranscriptRecorder } from "../../sessions/user-turn-transcript.js";
 import { createDeferredCore } from "../../shared/deferred.js";
-import { WorkerRunnerUnavailableError } from "./tunnel-contract.js";
 import * as fixture from "./worker-turn-launcher.test-support.js";
 
 const INACTIVE_MARKER = "inactive fixture message ";
@@ -59,7 +58,7 @@ describe("Gateway worker-turn selected transcript preparation", () => {
       await fixture.seedActivePlacement();
       const reachedCredential = createDeferredCore();
       const releaseCredential = createDeferredCore();
-      const deliberateStop = new WorkerRunnerUnavailableError();
+      const deliberateStop = new Error("Synthetic pre-inference boundary reached");
       const fixtureAbort = new AbortController();
       const recorder =
         persistence === "recorder-owned"
@@ -84,11 +83,20 @@ describe("Gateway worker-turn selected transcript preparation", () => {
           calls.credential++;
           reachedCredential.resolve();
           await releaseCredential.promise;
-          throw deliberateStop;
+          if (!recorder) {
+            throw deliberateStop;
+          }
+          return fixture.credential();
         },
         startTunnel: async () => {
           calls.tunnel++;
-          throw new Error("Fixture must stop before tunnel creation");
+          return fixture.createWorkerTurnTunnel({
+            reconcileWorkspace: fixture.reconcileUnchangedLocalWorkspace,
+            // Legacy transport admission persists only after policy preparation.
+            launchTurn: async () => {
+              throw deliberateStop;
+            },
+          });
         },
         destroy: async () => {
           calls.destroy++;
@@ -154,6 +162,12 @@ describe("Gateway worker-turn selected transcript preparation", () => {
           inactiveLoadedMessages: 0,
         });
         if (recorder) {
+          // The policy gate now owns persistence after credential acquisition, not prefix reads.
+          expect(recorder.hasPersisted()).toBe(false);
+          expect(recorder.getAdmissionReceipt()).toBeUndefined();
+          releaseCredential.resolve();
+          outcome = await pending;
+          expect(outcome).toBe(deliberateStop);
           expect(recorder.hasPersisted()).toBe(true);
           expect(recorder.getAdmissionReceipt()?.entryId).toEqual(expect.any(String));
         }
@@ -177,6 +191,13 @@ describe("Gateway worker-turn selected transcript preparation", () => {
         }
       }
       expect(outcome).toBe(deliberateStop);
+      expect(calls).toEqual({
+        credential: 1,
+        context: 1,
+        tunnel: recorder ? 1 : 0,
+        local: 0,
+        destroy: 0,
+      });
       expect(fixture.placements.get(fixture.SESSION_ID)).toMatchObject({
         state: "active",
         turnClaim: null,
