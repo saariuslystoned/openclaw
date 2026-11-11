@@ -3,6 +3,7 @@ import path from "node:path";
 import { expectDefined } from "@openclaw/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { discordPlugin } from "../extensions/discord/api.js";
+import discordEntry from "../extensions/discord/index.js";
 import { slackPlugin } from "../extensions/slack/api.js";
 import {
   createOperationalRunInstanceRef,
@@ -39,12 +40,14 @@ import {
 } from "../src/gateway/message-action-turn-capability.js";
 import { createRequestGatewayMethodRegistry } from "../src/gateway/server-methods.js";
 import type { GatewayRequestContext } from "../src/gateway/server-methods/types.js";
+import { getPluginInstance } from "../src/plugins/plugin-instance-scope.js";
 import { createTestPluginRegistry } from "../src/plugins/registry-runtime.test-helpers.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../src/plugins/runtime.js";
 import {
   bindGatewayContextResolver,
   clearGatewayContextResolver,
 } from "../src/plugins/runtime/gateway-request-scope.js";
+import { createPluginRuntime } from "../src/plugins/runtime/index.js";
 import { createPluginRecord } from "../src/plugins/status.test-fixtures.js";
 import { trackAsyncWork } from "../src/shared/async-work-scope.js";
 import { closeOpenClawStateDatabaseForTest } from "../src/state/openclaw-state-db.js";
@@ -370,7 +373,7 @@ describe("CLI message authority integration", () => {
   });
 
   function registerChannelPlugins(options: { discordOrigin?: "global" | "bundled" } = {}) {
-    const owner = createTestPluginRegistry();
+    const owner = createTestPluginRegistry(createPluginRuntime());
     // Installer provenance has its own coverage; the official adapters and gates are real.
     for (const plugin of [discordPlugin, slackPlugin]) {
       const origin = plugin.id === "discord" ? (options.discordOrigin ?? "global") : "global";
@@ -393,7 +396,17 @@ describe("CLI message authority integration", () => {
       if (plugin.id === "discord") {
         registeredDiscordActions = actions;
       }
-      owner.createApi(record, { config: cfg, registrationMode: "full" }).registerChannel({
+      const api = owner.createApi(record, { config: cfg, registrationMode: "full" });
+      if (plugin.id === "discord") {
+        // Initialize the public runtime entry in the registry's exact instance.
+        expectDefined(getPluginInstance(record), "registered Discord instance").run(() =>
+          expectDefined(
+            discordEntry.setChannelRuntime,
+            "Discord entry runtime setter",
+          )(api.runtime),
+        );
+      }
+      api.registerChannel({
         plugin: { ...plugin, status: undefined, ...(actions ? { actions } : {}) },
       });
     }

@@ -1,0 +1,5 @@
+# #876 minimal opt-in Discord/Signal reaction conversations and retained fixes.
+# Distinct replay/restart, uncertainty/collision/capacity, passive-default and
+# final-authority boundaries, plus real shipped Gateway composition.
+# Exact net regression-test LF growth relative to ee2d00b13f786f568baa4c4c33376767e5c6f666.
+2278

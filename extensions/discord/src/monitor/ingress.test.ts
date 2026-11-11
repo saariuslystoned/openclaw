@@ -24,17 +24,11 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createAsyncGate } from "../../../test-support/async-gate.test-support.js";
 import * as ingressRuntime from "./ingress.js";
-import type { DiscordIngressLifecycle } from "./ingress.js";
+import type { DiscordIngressLifecycle, DiscordIngressPayload } from "./ingress.js";
 const createDiscordIngressMonitor = ingressRuntime.createDiscordIngressMonitor;
 import { createDiscordMessageHandler } from "./message-handler.js";
 import { createBaseDiscordMessageContext } from "./message-handler.test-harness.js";
 import { createDiscordHandlerParams } from "./message-handler.test-helpers.js";
-
-type DiscordIngressPayload = {
-  version: 1;
-  receivedAt: number;
-  rawMessage: APIMessage;
-};
 
 function createRawMessage(id: string, channelId = "channel-1"): APIMessage {
   return {
