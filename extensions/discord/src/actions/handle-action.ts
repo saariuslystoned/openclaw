@@ -279,7 +279,9 @@ async function dispatchDiscordMessageAction(
     }
     const emoji = readStringParam(params, "emoji", { allowEmpty: true });
     const remove = readBooleanParam(params, "remove");
-    const channelId = resolveDiscordChannelId(readTarget());
+    // The action owner resolves current-DM user targets to their native channel.
+    // Keep that maintained target contract instead of requiring channel syntax here.
+    const channelId = readTarget();
     const send = () => runAction({ action: "react", channelId, messageId, emoji, remove });
     const key = readStringParam(params, "idempotencyKey");
     if (!key) {

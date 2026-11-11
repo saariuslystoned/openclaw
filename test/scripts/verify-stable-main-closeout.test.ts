@@ -653,6 +653,9 @@ process.stdout.write(JSON.stringify([
       fixture.run(extra, {
         ...process.env,
         PATH: `${bin}:${process.env.PATH}`,
+        // This synthetic gh fixture models the canonical release repository,
+        // independent of the repository hosting the test's CI workflow.
+        GITHUB_REPOSITORY: "openclaw/openclaw",
         WITHDRAWAL_LOOKUPS: lookups,
       });
 
