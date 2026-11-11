@@ -129,9 +129,14 @@ it("keeps native transcript speech with its current application context", async 
     transcript,
     messages: [{ role: "assistant", content: speechText }],
   };
+  // Exercise the cold-row task split even when local rendering takes less than 15ms.
+  let tick = performance.now();
+  const clock = vi.spyOn(performance, "now").mockImplementation(() => (tick += 20));
   const container = renderChatView(props);
+  clock.mockRestore();
   const action = (name: string) =>
     container.querySelector<HTMLButtonElement>(`button[aria-label="${name}"]`);
+  await waitForSolid(() => expect(action("Read aloud")).not.toBeNull());
   const thread = container.querySelector(".chat-thread-inner");
   const button = action("Read aloud")!;
   button.click();
